@@ -24,13 +24,13 @@ public class AdminServlet extends HttpServlet {
 		String dbName = req.getParameter("dbName");
 		
 		FileBackupThread fileBackupThread = FileBackupThreadListener.FILE_BACKUP_THREAD;
-		req.setAttribute("token", IndexServlet.getToken());
+		req.setAttribute("token", LoginServlet.getToken());
 		req.setAttribute("dbs", fileBackupThread.getDbs());
 		req.setAttribute("backupCount", fileBackupThread.getBackupCount());
 		req.setAttribute("yetBackup", fileBackupThread.getYetBackup());
 		req.setAttribute("restoreCount", fileBackupThread.getRestoreCount());
 		req.setAttribute("yetRestore", fileBackupThread.getYetRestore());
-		req.setAttribute("DBPackage", fileBackupThread.findDBPackage(dbName));
+		req.setAttribute("DBPackage", fileBackupThread.findDB(dbName));
 		req.getRequestDispatcher(adminJsp).forward(req, resp);
 	}
 	

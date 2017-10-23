@@ -45,7 +45,7 @@ public class DeleteFileServlet extends HttpServlet {
 			jsonObject.put("info", "信息缺失");
 		} else {
 			FilePackage filePackage = new FilePackage(fileName, date, null);
-			if (FileBackupThreadListener.FILE_BACKUP_THREAD.deleteFilePackage(dbName, filePackage) && filePackage.getFile().delete()) {
+			if (FileBackupThreadListener.FILE_BACKUP_THREAD.deleteFile(dbName, filePackage)) {
 				jsonObject.put("result", true);
 				jsonObject.put("info", "删除成功");
 			} else {

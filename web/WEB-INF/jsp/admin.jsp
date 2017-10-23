@@ -13,7 +13,7 @@
     <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <title>首页</title>
+    <title>mycloud后台管理</title>
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
     <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css"
@@ -31,6 +31,7 @@
     <div class="row">
         <div class="col-md-2">
             <ul class="nav nav-sidebar">
+                <li><a target="_blank" href="/mycloud/druid/">druid</a></li>
                 <c:forEach var="db" items="${dbs}">
                     <li><a href="/mycloud/admin?dbName=${db.dbName}">${db.dbName}</a></li>
                 </c:forEach>
@@ -40,12 +41,10 @@
             <div class="page-header">
                 <h1>全局概况</h1>
             </div>
-            <form role="form" action="/mycloud/upload" method="post" enctype="multipart/form-data">
-                <div class="form-group">
-                    <label for="description">恢复：${yetRestore}/${restoreCount} 备份：${yetBackup}/${backupCount}</label>
-                    <button type="submit" class="btn btn-default" onclick="restoreDB('${DBPackage.dbName}')">恢复文件</button>
-                </div>
-            </form>
+            <div class="form-group">
+                <label for="description">恢复：${yetRestore}/${restoreCount} 备份：${yetBackup}/${backupCount}</label>
+                <button type="submit" class="btn btn-default" onclick="restoreDB('${DBPackage.dbName}')">恢复文件</button>
+            </div>
 
 
             <div class="page-header">
@@ -85,7 +84,7 @@
                         <td><fmt:formatDate value="${filePackage.uploadDate}" pattern="yyyy-MM-dd"/></td>
                         <td>${filePackage.fileName}</td>
                         <td>${filePackage.description}</td>
-                        <td><a target=“_blank” href="${filePackage.url}"><img src="${filePackage.url}" class="img-responsive" alt="Cinque Terre" style="width: 100px;height: 100px"></a></td>
+                        <td><a target="_blank" href="${filePackage.url}"><img src="${filePackage.url}" class="img-responsive" alt="Cinque Terre" style="width: 100px;height: 100px"></a></td>
                         <td><button class="btn btn-default" onclick="restoreFile('${DBPackage.dbName}','${filePackage.fileName}','<fmt:formatDate value="${filePackage.uploadDate}" pattern="yyyy-MM-dd"/>')">恢复</button></td>
                         <td><button class="btn btn-default" onclick="deleteFile('${DBPackage.dbName}','${filePackage.fileName}','<fmt:formatDate value="${filePackage.uploadDate}" pattern="yyyy-MM-dd"/>')">删除</button></td>
                     </tr>

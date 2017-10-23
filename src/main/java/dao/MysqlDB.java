@@ -24,11 +24,11 @@ public final class MysqlDB extends DB {
 	}
 	
 	public boolean insertFile(FilePackage filePackage) {
-		if (selectFilePackageInfo(filePackage) != null) {
-			deleteFilePackage(filePackage);
-		}
 		java.sql.Date sd = new java.sql.Date(filePackage.getUploadDate().getTime());
 		Connection connection = createConnection();
+		if (connection == null) {
+			return false;
+		}
 		PreparedStatement preparedStatement = null;
 		try {
 			connection.setAutoCommit(false);
@@ -40,33 +40,24 @@ public final class MysqlDB extends DB {
 			if (preparedStatement.executeUpdate() > 0) {
 				connection.commit();
 				return true;
+			} else {
+				connection.rollback();
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-			if (connection != null) {
-				try {
-					connection.rollback();
-				} catch (SQLException e1) {
-					e1.printStackTrace();
-				}
+			try {
+				connection.rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
 			}
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
-			if (connection != null) {
-				try {
-					connection.rollback();
-				} catch (SQLException e1) {
-					e1.printStackTrace();
-				}
+			try {
+				connection.rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
 			}
 		} finally {
-			if (connection != null) {
-				try {
-					connection.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
 			if (preparedStatement != null) {
 				try {
 					preparedStatement.close();
@@ -74,14 +65,25 @@ public final class MysqlDB extends DB {
 					e.printStackTrace();
 				}
 			}
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 		return false;
 	}
 	
-	public FilePackage[] selectAllFilePackage() {
-		Connection connection = createConnection();
-		List<Map<String, Object>> list = JDBCMethod.selectTableBySql(connection, SELECT_ALL_FILE_PACKAGE_SQL);
-		if (connection != null) {
+	public FilePackage[] selectAllFilePackageInfo() {
+		Connection connection;
+		List<Map<String, Object>> list;
+		connection = createConnection();
+		if (connection == null) {
+			return null;
+		}
+		try {
+			list = JDBCMethod.selectTableBySql(connection, SELECT_ALL_FILE_PACKAGE_SQL);
+		} finally {
 			try {
 				connection.close();
 			} catch (SQLException e) {
@@ -104,6 +106,9 @@ public final class MysqlDB extends DB {
 	public FilePackage selectFilePackageInfo(FilePackage filePackage) {
 		java.sql.Date sd = new java.sql.Date(filePackage.getUploadDate().getTime());
 		Connection connection = createConnection();
+		if (connection == null) {
+			return null;
+		}
 		PreparedStatement preparedStatement = null;
 		try {
 			preparedStatement = connection.prepareStatement(SELECT_FILE_PACKAGE_INFO_SQL);
@@ -124,12 +129,10 @@ public final class MysqlDB extends DB {
 					e.printStackTrace();
 				}
 			}
-			if (connection != null) {
-				try {
-					connection.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
 			}
 		}
 		return null;
@@ -138,6 +141,9 @@ public final class MysqlDB extends DB {
 	public boolean selectFilePackageBlob(FilePackage filePackage) {
 		java.sql.Date sd = new java.sql.Date(filePackage.getUploadDate().getTime());
 		Connection connection = createConnection();
+		if (connection == null) {
+			return false;
+		}
 		PreparedStatement preparedStatement = null;
 		InputStream inputStream = null;
 		OutputStream outputStream = null;
@@ -156,8 +162,8 @@ public final class MysqlDB extends DB {
 				while ((len = inputStream.read(bytes)) != -1) {
 					outputStream.write(bytes, 0, len);
 				}
+				return true;
 			}
-			return true;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} catch (FileNotFoundException e) {
@@ -165,20 +171,6 @@ public final class MysqlDB extends DB {
 		} catch (IOException e) {
 			e.printStackTrace();
 		} finally {
-			if (preparedStatement != null) {
-				try {
-					preparedStatement.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-			if (connection != null) {
-				try {
-					connection.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
 			if (inputStream != null) {
 				try {
 					inputStream.close();
@@ -193,6 +185,18 @@ public final class MysqlDB extends DB {
 					e.printStackTrace();
 				}
 			}
+			if (preparedStatement != null) {
+				try {
+					preparedStatement.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 		return false;
 	}
@@ -200,6 +204,9 @@ public final class MysqlDB extends DB {
 	public boolean deleteFilePackage(FilePackage filePackage) {
 		java.sql.Date sd = new java.sql.Date(filePackage.getUploadDate().getTime());
 		Connection connection = createConnection();
+		if (connection == null) {
+			return false;
+		}
 		PreparedStatement preparedStatement = null;
 		try {
 			connection.setAutoCommit(false);
@@ -209,15 +216,15 @@ public final class MysqlDB extends DB {
 			if (preparedStatement.executeUpdate() > -1) {
 				connection.commit();
 				return true;
+			} else {
+				connection.rollback();
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-			if (connection != null) {
-				try {
-					connection.rollback();
-				} catch (SQLException e1) {
-					e1.printStackTrace();
-				}
+			try {
+				connection.rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
 			}
 		} finally {
 			if (preparedStatement != null) {
@@ -227,12 +234,10 @@ public final class MysqlDB extends DB {
 					e.printStackTrace();
 				}
 			}
-			if (connection != null) {
-				try {
-					connection.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
 			}
 		}
 		return false;

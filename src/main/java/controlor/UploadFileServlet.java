@@ -107,15 +107,19 @@ public class UploadFileServlet extends HttpServlet {
 				}
 			}
 			
+			if (file == null) {
+				jsonObject.put("result", false);
+				jsonObject.put("info", "not find file");
+			}
 			Date date = new Date();
 			FilePackage filePackage = new FilePackage(file.getName(), date, description);
 			File reFile = filePackage.getFile();
-			if (token == null || !token.equals(IndexServlet.getToken())) {
+			if (token == null || !token.equals(LoginServlet.getToken())) {
 				file.delete();
 				jsonObject.put("result", false);
 				jsonObject.put("info", "unauthorized access");
 			} else if ((reFile.getParentFile().exists() || reFile.getParentFile().mkdirs()) && file.renameTo(reFile)) {
-				fileBackup.backupFile(filePackage);
+				fileBackup.backup(filePackage);
 				jsonObject.put("result", true);
 				jsonObject.put("info", filePackage.getUrl());
 			} else {

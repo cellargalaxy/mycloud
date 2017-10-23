@@ -10,9 +10,9 @@ import java.util.Date;
  * Created by cellargalaxy on 17-10-15.
  */
 public class FilePackage {
-	private final static DateFormat DATE_FORMAT=new SimpleDateFormat("yyyyMMdd");
-	private final static String PROJECT_NAME="/mycloud/drive/";
-	private final static String ROOT_PATH=new File(FilePackage.class.getResource("").getPath()).getParentFile().getParentFile().getParentFile()+"/drive/";
+	private final static DateFormat DATE_FORMAT = new SimpleDateFormat("yyyyMMdd");
+	private final static String PROJECT_NAME = "/mycloud/drive/";
+	private final static String ROOT_PATH = new File(FilePackage.class.getResource("").getPath()).getParentFile().getParentFile().getParentFile() + "/drive/";
 	
 	private String fileName;
 	private Date uploadDate;
@@ -26,11 +26,11 @@ public class FilePackage {
 		this.description = description;
 	}
 	
-	public static final File createFile(String fileName,Date uploadDate){
+	public static final File createFile(String fileName, Date uploadDate) {
 		return new File(ROOT_PATH + DATE_FORMAT.format(uploadDate) + "/" + fileName);
 	}
 	
-	public static final String createUrl(String fileName,Date uploadDate){
+	public static final String createUrl(String fileName, Date uploadDate) {
 		return PROJECT_NAME + DATE_FORMAT.format(uploadDate) + "/" + fileName;
 	}
 	
@@ -59,15 +59,15 @@ public class FilePackage {
 	}
 	
 	public File getFile() {
-		if (file==null) {
-			file=FilePackage.createFile(fileName,uploadDate);
+		if (file == null) {
+			file = FilePackage.createFile(fileName, uploadDate);
 		}
 		return file;
 	}
 	
 	public String getUrl() {
-		if (url==null) {
-			url= FilePackage.createUrl(fileName,uploadDate);
+		if (url == null) {
+			url = FilePackage.createUrl(fileName, uploadDate);
 		}
 		return url;
 	}

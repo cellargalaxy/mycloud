@@ -39,11 +39,32 @@
 
 
     <servlet>
-        <servlet-name>IndexServlet</servlet-name>
-        <servlet-class>controlor.IndexServlet</servlet-class>
+        <servlet-name>DruidStatView</servlet-name>
+        <servlet-class>com.alibaba.druid.support.http.StatViewServlet</servlet-class>
         <init-param>
-            <param-name>indexJsp</param-name>
-            <param-value>/WEB-INF/jsp/index.jsp</param-value>
+            <param-name>resetEnable</param-name>
+            <param-value>false</param-value>
+        </init-param>
+        <init-param>
+            <param-name>loginUsername</param-name>
+            <param-value></param-value>
+        </init-param>
+        <init-param>
+            <param-name>loginPassword</param-name>
+            <param-value></param-value>
+        </init-param>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>DruidStatView</servlet-name>
+        <url-pattern>/druid/*</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>LoginServlet</servlet-name>
+        <servlet-class>controlor.LoginServlet</servlet-class>
+        <init-param>
+            <param-name>loginJsp</param-name>
+            <param-value>/WEB-INF/jsp/login.jsp</param-value>
         </init-param>
         <init-param>
             <param-name>adminUrl</param-name>
@@ -55,7 +76,7 @@
         </init-param>
     </servlet>
     <servlet-mapping>
-        <servlet-name>IndexServlet</servlet-name>
+        <servlet-name>LoginServlet</servlet-name>
         <url-pattern></url-pattern>
     </servlet-mapping>
 

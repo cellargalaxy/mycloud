@@ -9,21 +9,21 @@ import java.io.IOException;
 /**
  * Created by cellargalaxy on 17-10-15.
  */
-public class IndexServlet extends HttpServlet {
-	private String indexJsp;
+public class LoginServlet extends HttpServlet {
+	private String loginJsp;
 	private String adminUrl;
 	private static String token;
 	
 	@Override
 	public void init() throws ServletException {
-		indexJsp = getInitParameter("indexJsp");
+		loginJsp = getInitParameter("loginJsp");
 		adminUrl = getInitParameter("adminUrl");
 		token = getInitParameter("token");
 	}
 	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		req.getRequestDispatcher(indexJsp).forward(req, resp);
+		req.getRequestDispatcher(loginJsp).forward(req, resp);
 	}
 	
 	@Override
@@ -43,6 +43,6 @@ public class IndexServlet extends HttpServlet {
 	}
 	
 	public static void setToken(String token) {
-		IndexServlet.token = token;
+		LoginServlet.token = token;
 	}
 }

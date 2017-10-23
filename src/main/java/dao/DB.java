@@ -4,6 +4,7 @@ import bean.FilePackage;
 import com.alibaba.druid.pool.DruidDataSourceFactory;
 
 import javax.sql.DataSource;
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.sql.Connection;
@@ -19,7 +20,7 @@ public abstract class DB {
 	
 	public DB(File confFile) throws Exception {
 		Properties properties = new Properties();
-		properties.load(new FileInputStream(confFile));
+		properties.load(new BufferedInputStream(new FileInputStream(confFile)));
 		dataSource = DruidDataSourceFactory.createDataSource(properties);
 		dbName = confFile.getName();
 	}
@@ -37,7 +38,7 @@ public abstract class DB {
 	
 	public abstract boolean insertFile(FilePackage filePackage);
 	
-	public abstract FilePackage[] selectAllFilePackage();
+	public abstract FilePackage[] selectAllFilePackageInfo();
 	
 	public abstract FilePackage selectFilePackageInfo(FilePackage filePackage);
 	

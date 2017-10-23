@@ -26,7 +26,7 @@ public class FileBackupThread extends Thread implements FileBackup {
 		runable = true;
 	}
 	
-	public void backupFile(FilePackage filePackage) {
+	public void backup(FilePackage filePackage) {
 		synchronized (this) {
 			backupFilePackages.add(filePackage);
 			this.notify();
@@ -46,7 +46,7 @@ public class FileBackupThread extends Thread implements FileBackup {
 	public void restore(String dbName) {
 		for (DB db : dbs) {
 			if (db.getDbName().equals(dbName)) {
-				FilePackage[] filePackages = db.selectAllFilePackage();
+				FilePackage[] filePackages = db.selectAllFilePackageInfo();
 				DBPackage dbPackage = new DBPackage(dbName, filePackages);
 				synchronized (this) {
 					restoreDBPackages.add(dbPackage);
@@ -58,11 +58,11 @@ public class FileBackupThread extends Thread implements FileBackup {
 		}
 	}
 	
-	public DBPackage findDBPackage(String dbName) {
+	public DBPackage findDB(String dbName) {
 		DBPackage dbPackage;
 		for (DB db : dbs) {
 			if (db.getDbName().equals(dbName)) {
-				FilePackage[] filePackages = db.selectAllFilePackage();
+				FilePackage[] filePackages = db.selectAllFilePackageInfo();
 				dbPackage = new DBPackage(db.getDbName(), filePackages);
 				return dbPackage;
 			}
@@ -71,10 +71,14 @@ public class FileBackupThread extends Thread implements FileBackup {
 		return dbPackage;
 	}
 	
-	public boolean deleteFilePackage(String dbName, FilePackage filePackage) {
+	public boolean deleteFile(String dbName, FilePackage filePackage) {
 		for (DB db : dbs) {
 			if (db.getDbName().equals(dbName)) {
-				return db.deleteFilePackage(filePackage);
+				if (db.deleteFilePackage(filePackage)) {
+					return filePackage.getFile().delete();
+				} else {
+					return false;
+				}
 			}
 		}
 		return true;
@@ -121,7 +125,7 @@ public class FileBackupThread extends Thread implements FileBackup {
 	private void doBackup(FilePackage backupFilePackage) {
 		System.out.println("开始备份：" + backupFilePackage.getUrl());
 		for (DB db : dbs) {
-			boolean b = true;
+			db.deleteFilePackage(backupFilePackage);
 			for (int i = 0; i < 3 && !db.insertFile(backupFilePackage); i++) ;
 		}
 		System.out.println("备份完成：" + backupFilePackage.getUrl());
@@ -160,8 +164,10 @@ public class FileBackupThread extends Thread implements FileBackup {
 						} catch (InterruptedException e) {
 							e.printStackTrace();
 						}
+					} else {
+						break;
 					}
-				} while (runable && backupFilePackage == null && restoreDBPackage == null);
+				} while (true);
 			}
 			if (backupFilePackage != null) {
 				doBackup(backupFilePackage);

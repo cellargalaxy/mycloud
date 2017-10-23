@@ -13,7 +13,7 @@ public class JDBCMethod {
 	/*
 	connection.setAutoCommit(false);
 	connection.commit();
-	try { connection.rollback(); } catch (Exception e1) { e1.printStackTrace(); }
+	connection.rollback();
 	 */
 	
 	/**
@@ -31,7 +31,6 @@ public class JDBCMethod {
 			return preparedStatement.executeUpdate();
 		} catch (Exception e) {
 			e.printStackTrace();
-			return -1;
 		} finally {
 			if (preparedStatement != null) {
 				try {
@@ -41,6 +40,7 @@ public class JDBCMethod {
 				}
 			}
 		}
+		return -1;
 	}
 	
 	/**
@@ -199,15 +199,7 @@ public class JDBCMethod {
 			return maps;
 		} catch (SQLException e) {
 			e.printStackTrace();
-			return null;
 		} finally {
-			if (preparedStatement != null) {
-				try {
-					preparedStatement.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
 			if (resultSet != null) {
 				try {
 					resultSet.close();
@@ -215,7 +207,15 @@ public class JDBCMethod {
 					e.printStackTrace();
 				}
 			}
+			if (preparedStatement != null) {
+				try {
+					preparedStatement.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
 		}
+		return null;
 	}
 	
 	/**
@@ -227,9 +227,9 @@ public class JDBCMethod {
 	 * @param value
 	 * @return
 	 */
-	public static Map<String, Object> selectRow(Connection connection, String tableName, String name, Object value) {
+	public static Map<String, Object> selectRowByPrimaryKey(Connection connection, String tableName, String name, Object value) {
 		String sql = "SELECT * FROM " + tableName + " WHERE " + name + "=?";
-		return selectRow(connection, sql, value);
+		return selectRowBySql(connection, sql, value);
 	}
 	
 	/**
@@ -240,24 +240,22 @@ public class JDBCMethod {
 	 * @param objects
 	 * @return
 	 */
-	public static Map<String, Object> selectRow(Connection connection, String sql, Object... objects) {
+	public static Map<String, Object> selectRowBySql(Connection connection, String sql, Object... objects) {
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
 		try {
 			preparedStatement = creratPreparedStatement(connection, sql, objects);
 			resultSet = preparedStatement.executeQuery();
-			while (resultSet.next()) {
-				String[] columnNames = selectColumnLabels(resultSet);
+			String[] columnNames = selectColumnLabels(resultSet);
+			if (resultSet.next()) {
 				Map<String, Object> map = new HashMap<String, Object>();
 				for (String columnName : columnNames) {
 					map.put(columnName, resultSet.getObject(columnName));
 				}
 				return map;
 			}
-			return null;
 		} catch (SQLException e) {
 			e.printStackTrace();
-			return null;
 		} finally {
 			if (preparedStatement != null) {
 				try {
@@ -274,6 +272,7 @@ public class JDBCMethod {
 				}
 			}
 		}
+		return null;
 	}
 	
 	/**
@@ -292,20 +291,10 @@ public class JDBCMethod {
 			resultSet = preparedStatement.executeQuery();
 			if (resultSet.next()) {
 				return resultSet.getObject(1);
-			} else {
-				return null;
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-			return null;
 		} finally {
-			if (preparedStatement != null) {
-				try {
-					preparedStatement.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
 			if (resultSet != null) {
 				try {
 					resultSet.close();
@@ -313,7 +302,15 @@ public class JDBCMethod {
 					e.printStackTrace();
 				}
 			}
+			if (preparedStatement != null) {
+				try {
+					preparedStatement.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
 		}
+		return null;
 	}
 	
 	/**
