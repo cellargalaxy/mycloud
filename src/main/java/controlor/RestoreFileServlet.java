@@ -31,26 +31,29 @@ public class RestoreFileServlet extends HttpServlet {
 		Writer writer = resp.getWriter();
 		JSONObject jsonObject = new JSONObject();
 		
-		String dbName = req.getParameter("dbName");
-		String fileName = req.getParameter("fileName");
-		String uploadDateString = req.getParameter("uploadDate");
-		Date date = null;
 		try {
-			date = dateFormat.parse(uploadDateString);
-		} catch (ParseException e) {
-			e.printStackTrace();
+			String dbName = req.getParameter("dbName");
+			String fileName = req.getParameter("fileName");
+			String uploadDateString = req.getParameter("uploadDate");
+			Date date = null;
+			try {
+				date = dateFormat.parse(uploadDateString);
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+			if (dbName == null || fileName == null || date == null) {
+				jsonObject.put("result", false);
+				jsonObject.put("info", "信息缺失");
+			} else {
+				FilePackage filePackage = new FilePackage(fileName, date, null);
+				FileBackupThreadListener.FILE_BACKUP_THREAD.restore(dbName, filePackage);
+				jsonObject.put("result", true);
+				jsonObject.put("info", "恢复提交成功");
+			}
+		} finally {
+			writer.write(jsonObject.toString());
+			writer.close();
 		}
-		if (dbName == null || fileName == null || date == null) {
-			jsonObject.put("result", false);
-			jsonObject.put("info", "信息缺失");
-		} else {
-			FilePackage filePackage = new FilePackage(fileName, date, null);
-			FileBackupThreadListener.FILE_BACKUP_THREAD.restore(dbName, filePackage);
-			jsonObject.put("result", true);
-			jsonObject.put("info", "恢复提交成功");
-		}
-		writer.write(jsonObject.toString());
-		writer.close();
 	}
 	
 	@Override
@@ -59,16 +62,19 @@ public class RestoreFileServlet extends HttpServlet {
 		Writer writer = resp.getWriter();
 		JSONObject jsonObject = new JSONObject();
 		
-		String dbName = req.getParameter("dbName");
-		if (dbName == null) {
-			jsonObject.put("result", false);
-			jsonObject.put("info", "信息缺失");
-		} else {
-			FileBackupThreadListener.FILE_BACKUP_THREAD.restore(dbName);
-			jsonObject.put("result", true);
-			jsonObject.put("info", "恢复提交成功");
+		try {
+			String dbName = req.getParameter("dbName");
+			if (dbName == null) {
+				jsonObject.put("result", false);
+				jsonObject.put("info", "信息缺失");
+			} else {
+				FileBackupThreadListener.FILE_BACKUP_THREAD.restore(dbName);
+				jsonObject.put("result", true);
+				jsonObject.put("info", "恢复提交成功");
+			}
+		} finally {
+			writer.write(jsonObject.toString());
+			writer.close();
 		}
-		writer.write(jsonObject.toString());
-		writer.close();
 	}
 }

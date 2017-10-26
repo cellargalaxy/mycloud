@@ -31,29 +31,32 @@ public class DeleteFileServlet extends HttpServlet {
 		Writer writer = resp.getWriter();
 		JSONObject jsonObject = new JSONObject();
 		
-		String dbName = req.getParameter("dbName");
-		String fileName = req.getParameter("fileName");
-		String uploadDateString = req.getParameter("uploadDate");
-		Date date = null;
 		try {
-			date = dateFormat.parse(uploadDateString);
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-		if (dbName == null || fileName == null || date == null) {
-			jsonObject.put("result", false);
-			jsonObject.put("info", "信息缺失");
-		} else {
-			FilePackage filePackage = new FilePackage(fileName, date, null);
-			if (FileBackupThreadListener.FILE_BACKUP_THREAD.deleteFile(dbName, filePackage)) {
-				jsonObject.put("result", true);
-				jsonObject.put("info", "删除成功");
-			} else {
-				jsonObject.put("result", false);
-				jsonObject.put("info", "删除失败");
+			String dbName = req.getParameter("dbName");
+			String fileName = req.getParameter("fileName");
+			String uploadDateString = req.getParameter("uploadDate");
+			Date date = null;
+			try {
+				date = dateFormat.parse(uploadDateString);
+			} catch (ParseException e) {
+				e.printStackTrace();
 			}
+			if (dbName == null || fileName == null || date == null) {
+				jsonObject.put("result", false);
+				jsonObject.put("info", "信息缺失");
+			} else {
+				FilePackage filePackage = new FilePackage(fileName, date, null);
+				if (FileBackupThreadListener.FILE_BACKUP_THREAD.deleteFile(dbName, filePackage)) {
+					jsonObject.put("result", true);
+					jsonObject.put("info", "删除成功");
+				} else {
+					jsonObject.put("result", false);
+					jsonObject.put("info", "删除失败");
+				}
+			}
+		} finally {
+			writer.write(jsonObject.toString());
+			writer.close();
 		}
-		writer.write(jsonObject.toString());
-		writer.close();
 	}
 }

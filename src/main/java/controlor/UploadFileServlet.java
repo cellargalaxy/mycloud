@@ -66,13 +66,23 @@ public class UploadFileServlet extends HttpServlet {
 						token = value;
 					}
 				} else {//对传入的非简单的字符串进行处理
+					if (file != null) {//只接受第一个文件
+						continue;
+					}
 					//获取路径名
 					String filename = item.getName();
-					//索引到最后一个反斜杠
-					int start = filename.lastIndexOf("\\");
-					//截取上传文件的字符串名字，加1是去掉反斜杠
-					filename = rootPath + "/" + filename.substring(start + 1);
-					file = new File(filename);
+					if (filename == null || filename.length() == 0) {
+						do {
+							filename = rootPath + "/" + (int) (Math.random() * 100000000) + ".noname";
+							file = new File(filename);
+						} while (file == null || file.exists());
+					} else {
+						//索引到最后一个反斜杠
+						int start = filename.lastIndexOf("\\");
+						//截取上传文件的字符串名字，加1是去掉反斜杠
+						filename = rootPath + "/" + filename.substring(start + 1);
+						file = new File(filename);
+					}
 					file.getParentFile().mkdirs();
 					InputStream inputStream = null;
 					OutputStream outputStream = null;
@@ -84,8 +94,6 @@ public class UploadFileServlet extends HttpServlet {
 						while ((len = inputStream.read(bytes)) != -1) {
 							outputStream.write(bytes, 0, len);
 						}
-						inputStream.close();
-						outputStream.close();
 					} catch (IOException e) {
 						e.printStackTrace();
 					} finally {
@@ -126,17 +134,13 @@ public class UploadFileServlet extends HttpServlet {
 				jsonObject.put("result", false);
 				jsonObject.put("info", "move file fail");
 			}
-		} catch (FileUploadException e) {
+		} catch (FileUploadException | UnsupportedEncodingException e) {
 			e.printStackTrace();
 			jsonObject.put("result", false);
 			jsonObject.put("info", "upload fail");
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
+		} finally {
+			writer.write(jsonObject.toString());
+			writer.close();
 		}
-		
-		writer.write(jsonObject.toString());
-		writer.close();
-		
 	}
-	
 }

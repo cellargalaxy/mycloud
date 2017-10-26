@@ -47,11 +47,11 @@
         </init-param>
         <init-param>
             <param-name>loginUsername</param-name>
-            <param-value></param-value>
+            <param-value>admin</param-value>
         </init-param>
         <init-param>
             <param-name>loginPassword</param-name>
-            <param-value></param-value>
+            <param-value>mycloud</param-value>
         </init-param>
     </servlet>
     <servlet-mapping>
@@ -72,7 +72,7 @@
         </init-param>
         <init-param>
             <param-name>token</param-name>
-            <param-value></param-value>
+            <param-value>mycloud</param-value>
         </init-param>
     </servlet>
     <servlet-mapping>
