@@ -4,6 +4,7 @@ import bean.DBPackage;
 import bean.FilePackage;
 import dao.DB;
 
+import java.util.Date;
 import java.util.LinkedList;
 
 /**
@@ -63,6 +64,20 @@ public class FileBackupThread extends Thread implements FileBackup {
 		for (DB db : dbs) {
 			if (db.getDbName().equals(dbName)) {
 				FilePackage[] filePackages = db.selectAllFilePackageInfo();
+				dbPackage = new DBPackage(db.getDbName(), filePackages);
+				return dbPackage;
+			}
+		}
+		dbPackage = new DBPackage(null, new FilePackage[0]);
+		return dbPackage;
+	}
+	
+	@Override
+	public DBPackage findDBByDate(String dbName, Date upDate) {
+		DBPackage dbPackage;
+		for (DB db : dbs) {
+			if (db.getDbName().equals(dbName)) {
+				FilePackage[] filePackages = db.selectFilePackagesInfoByDate(upDate);
 				dbPackage = new DBPackage(db.getDbName(), filePackages);
 				return dbPackage;
 			}

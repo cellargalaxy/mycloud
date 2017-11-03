@@ -63,6 +63,18 @@
             </form>
 
             <div class="page-header">
+                <h1>查询</h1>
+            </div>
+            <form role="form" action="/mycloud/admin" method="get">
+                <div class="form-group">
+                    <label for="uploadDate">上传日期</label>
+                    <input type="date" id="uploadDate" name="uploadDate">
+                    <input type="hidden" name="dbName" value="${DBPackage.dbName}">
+                </div>
+                <button type="submit" class="btn btn-default">查询</button>
+            </form>
+
+            <div class="page-header">
                 <h1>文件列表</h1>
             </div>
             <table class="table table-striped">

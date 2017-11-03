@@ -120,4 +120,13 @@
         <url-pattern>/admin/deleteFile</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>AdminJsonServlet</servlet-name>
+        <servlet-class>controlor.AdminJsonServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AdminJsonServlet</servlet-name>
+        <url-pattern>/admin/adminJson</url-pattern>
+    </servlet-mapping>
+
 </web-app>

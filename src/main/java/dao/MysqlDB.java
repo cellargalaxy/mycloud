@@ -15,6 +15,7 @@ public final class MysqlDB extends DB {
 	private static final String INSERT_SQL = "INSERT INTO FILE(FILE_NAME, UPLOAD_DATE, DESCRIPTION, FILE) VALUES(?,?,?,?)";
 	private static final String SELECT_ALL_FILE_PACKAGE_SQL = "SELECT FILE_NAME, UPLOAD_DATE, DESCRIPTION FROM FILE";
 	private static final String SELECT_FILE_PACKAGE_INFO_SQL = "SELECT DESCRIPTION FROM FILE WHERE FILE_NAME=? AND UPLOAD_DATE=?";
+	private static final String SELECT_FILE_PACKAGES_INFO_BY_DATE_SQL = "SELECT FILE_NAME, DESCRIPTION FROM FILE WHERE UPLOAD_DATE=?";
 	private static final String SELECT_FILE_PACKAGE_BLOB_SQL = "SELECT FILE FROM FILE WHERE FILE_NAME=? AND UPLOAD_DATE=?";
 	private static final String DELETE_FILE_PACKAGE_SQL = "DELETE FROM FILE WHERE FILE_NAME=? AND UPLOAD_DATE=?";
 	
@@ -136,6 +137,37 @@ public final class MysqlDB extends DB {
 			}
 		}
 		return null;
+	}
+	
+	@Override
+	public FilePackage[] selectFilePackagesInfoByDate(Date date) {
+		java.sql.Date sd = new java.sql.Date(date.getTime());
+		Connection connection;
+		List<Map<String, Object>> list;
+		connection = createConnection();
+		if (connection == null) {
+			return null;
+		}
+		try {
+			list = JDBCMethod.selectTableBySql(connection, SELECT_FILE_PACKAGES_INFO_BY_DATE_SQL, sd);
+		} finally {
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		if (list == null) {
+			return null;
+		}
+		FilePackage[] filePackages = new FilePackage[list.size()];
+		int i = 0;
+		for (Map<String, Object> map : list) {
+			FilePackage filePackage = new FilePackage(map.get("FILE_NAME").toString(), date, map.get("DESCRIPTION").toString());
+			filePackages[i] = filePackage;
+			i++;
+		}
+		return filePackages;
 	}
 	
 	public boolean selectFilePackageBlob(FilePackage filePackage) {

@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.Properties;
 
 /**
@@ -41,6 +42,8 @@ public abstract class DB {
 	public abstract FilePackage[] selectAllFilePackageInfo();
 	
 	public abstract FilePackage selectFilePackageInfo(FilePackage filePackage);
+	
+	public abstract FilePackage[] selectFilePackagesInfoByDate(Date date);
 	
 	public abstract boolean selectFilePackageBlob(FilePackage filePackage);
 	
