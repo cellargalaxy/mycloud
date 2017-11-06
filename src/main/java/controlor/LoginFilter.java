@@ -25,9 +25,12 @@ public class LoginFilter implements Filter {
 			return;
 		}
 		
-		Object token = request.getSession().getAttribute("token");
+		Object token = request.getParameter("token");
 		if (token == null) {
-			response.sendRedirect(config.getInitParameter("indexUrl"));
+			token = request.getSession().getAttribute("token");
+		}
+		if (token == null || !LoginServlet.getToken().equals(token.toString())) {
+			response.sendRedirect(config.getInitParameter("loginUrl"));
 			return;
 		}
 		filterChain.doFilter(request, response);

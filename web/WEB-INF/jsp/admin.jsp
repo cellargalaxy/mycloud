@@ -37,19 +37,24 @@
             </ul>
         </div>
         <div class="col-md-10">
+
             <div class="page-header">
                 <h1>全局概况</h1>
             </div>
             <div class="form-group">
                 <label for="description">恢复：${yetRestore}/${restoreCount} 备份：${yetBackup}/${backupCount}</label>
-                <button type="submit" class="btn btn-default" onclick="restoreDB('${DBPackage.dbName}')">恢复文件</button>
+                <button type="submit" class="btn btn-default" onclick="restoreDB('${DBPackage.dbName}')">恢复全部文件</button>
             </div>
 
 
             <div class="page-header">
                 <h1>上传文件</h1>
             </div>
-            <form role="form" action="/mycloud/upload" method="post" enctype="multipart/form-data">
+            <form role="form" action="/mycloud/admin/uploadFile" method="post" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label>上传日期</label>
+                    <input type="date" name="uploadDate">
+                </div>
                 <div class="form-group">
                     <label for="description">描述</label>
                     <textarea class="form-control" id="description" name="description"></textarea>
@@ -58,7 +63,6 @@
                     <label for="file">文件</label>
                     <input type="file" class="form-control" id="file" name="file" required>
                 </div>
-                <input type="hidden" class="form-control" name="token" value="${token}">
                 <button type="submit" class="btn btn-default">上传</button>
             </form>
 
@@ -67,12 +71,21 @@
             </div>
             <form role="form" action="/mycloud/admin" method="get">
                 <div class="form-group">
-                    <label for="uploadDate">上传日期</label>
-                    <input type="date" id="uploadDate" name="uploadDate">
+                    <label>上传日期</label>
+                    <input type="date" name="uploadDate" required>
                     <input type="hidden" name="dbName" value="${DBPackage.dbName}">
                 </div>
                 <button type="submit" class="btn btn-default">查询</button>
             </form>
+            <form role="form" action="/mycloud/admin" method="get">
+                <div class="form-group">
+                    <label>描述匹配</label>
+                    <input type="text" name="description" required>
+                    <input type="hidden" name="dbName" value="${DBPackage.dbName}">
+                </div>
+                <button type="submit" class="btn btn-default">查询</button>
+            </form>
+
 
             <div class="page-header">
                 <h1>文件列表</h1>

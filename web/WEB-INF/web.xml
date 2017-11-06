@@ -28,7 +28,7 @@
             <param-value>N</param-value>
         </init-param>
         <init-param>
-            <param-name>indexUrl</param-name>
+            <param-name>loginUrl</param-name>
             <param-value>/mycloud/</param-value>
         </init-param>
     </filter>
@@ -59,6 +59,7 @@
         <url-pattern>/druid/*</url-pattern>
     </servlet-mapping>
 
+
     <servlet>
         <servlet-name>LoginServlet</servlet-name>
         <servlet-class>controlor.LoginServlet</servlet-class>
@@ -80,6 +81,7 @@
         <url-pattern></url-pattern>
     </servlet-mapping>
 
+
     <servlet>
         <servlet-name>AdminServlet</servlet-name>
         <servlet-class>controlor.AdminServlet</servlet-class>
@@ -99,16 +101,16 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>UploadFileServlet</servlet-name>
-        <url-pattern>/upload</url-pattern>
+        <url-pattern>/admin/uploadFile</url-pattern>
     </servlet-mapping>
 
     <servlet>
-        <servlet-name>RestoreFileServlet</servlet-name>
-        <servlet-class>controlor.RestoreFileServlet</servlet-class>
+        <servlet-name>FindFileServlet</servlet-name>
+        <servlet-class>controlor.FindFileServlet</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>RestoreFileServlet</servlet-name>
-        <url-pattern>/admin/restoreFile</url-pattern>
+        <servlet-name>FindFileServlet</servlet-name>
+        <url-pattern>/admin/findFile</url-pattern>
     </servlet-mapping>
 
     <servlet>
@@ -121,12 +123,16 @@
     </servlet-mapping>
 
     <servlet>
-        <servlet-name>AdminJsonServlet</servlet-name>
-        <servlet-class>controlor.AdminJsonServlet</servlet-class>
+        <servlet-name>RestoreFileServlet</servlet-name>
+        <servlet-class>controlor.RestoreFileServlet</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>AdminJsonServlet</servlet-name>
-        <url-pattern>/admin/adminJson</url-pattern>
+        <servlet-name>RestoreFileServlet</servlet-name>
+        <url-pattern>/admin/restoreFile</url-pattern>
     </servlet-mapping>
+
+
+
+
 
 </web-app>

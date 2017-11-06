@@ -45,6 +45,8 @@ public abstract class DB {
 	
 	public abstract FilePackage[] selectFilePackagesInfoByDate(Date date);
 	
+	public abstract FilePackage[] selectFilePackagesInfoByDescription(String description);
+	
 	public abstract boolean selectFilePackageBlob(FilePackage filePackage);
 	
 	public abstract boolean deleteFilePackage(FilePackage filePackage);

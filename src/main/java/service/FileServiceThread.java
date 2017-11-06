@@ -10,7 +10,7 @@ import java.util.LinkedList;
 /**
  * Created by cellargalaxy on 17-10-15.
  */
-public class FileBackupThread extends Thread implements FileBackup {
+public class FileServiceThread extends Thread implements FileService {
 	private final LinkedList<FilePackage> backupFilePackages;
 	private final LinkedList<DBPackage> restoreDBPackages;
 	private volatile boolean runable;
@@ -20,7 +20,7 @@ public class FileBackupThread extends Thread implements FileBackup {
 	private int restoreCount;
 	private int yetRestore;
 	
-	public FileBackupThread(DB[] dbs) {
+	public FileServiceThread(DB[] dbs) {
 		this.dbs = dbs;
 		backupFilePackages = new LinkedList<FilePackage>();
 		restoreDBPackages = new LinkedList<DBPackage>();
@@ -30,18 +30,18 @@ public class FileBackupThread extends Thread implements FileBackup {
 	public void backup(FilePackage filePackage) {
 		synchronized (this) {
 			backupFilePackages.add(filePackage);
+			backupCount++;
 			this.notify();
 		}
-		backupCount++;
 	}
 	
 	public void restore(String dbName, FilePackage filePackage) {
 		DBPackage dbPackage = new DBPackage(dbName, new FilePackage[]{filePackage});
 		synchronized (this) {
 			restoreDBPackages.add(dbPackage);
+			restoreCount++;
 			this.notify();
 		}
-		restoreCount++;
 	}
 	
 	public void restore(String dbName) {
@@ -51,9 +51,9 @@ public class FileBackupThread extends Thread implements FileBackup {
 				DBPackage dbPackage = new DBPackage(dbName, filePackages);
 				synchronized (this) {
 					restoreDBPackages.add(dbPackage);
+					restoreCount += filePackages.length;
 					this.notify();
 				}
-				restoreCount += filePackages.length;
 				return;
 			}
 		}
@@ -73,11 +73,25 @@ public class FileBackupThread extends Thread implements FileBackup {
 	}
 	
 	@Override
-	public DBPackage findDBByDate(String dbName, Date upDate) {
+	public DBPackage findDBByDate(String dbName, Date uploadDate) {
 		DBPackage dbPackage;
 		for (DB db : dbs) {
 			if (db.getDbName().equals(dbName)) {
-				FilePackage[] filePackages = db.selectFilePackagesInfoByDate(upDate);
+				FilePackage[] filePackages = db.selectFilePackagesInfoByDate(uploadDate);
+				dbPackage = new DBPackage(db.getDbName(), filePackages);
+				return dbPackage;
+			}
+		}
+		dbPackage = new DBPackage(null, new FilePackage[0]);
+		return dbPackage;
+	}
+	
+	@Override
+	public DBPackage findDBByDescription(String dbName, String description) {
+		DBPackage dbPackage;
+		for (DB db : dbs) {
+			if (db.getDbName().equals(dbName)) {
+				FilePackage[] filePackages = db.selectFilePackagesInfoByDescription(description);
 				dbPackage = new DBPackage(db.getDbName(), filePackages);
 				return dbPackage;
 			}

@@ -11,8 +11,7 @@ import java.util.Date;
  */
 public class FilePackage {
 	private final static DateFormat DATE_FORMAT = new SimpleDateFormat("yyyyMMdd");
-	private final static String PROJECT_NAME = "/mycloud/drive/";
-	private final static String ROOT_PATH = new File(FilePackage.class.getResource("").getPath()).getParentFile().getParentFile().getParentFile() + "/drive/";
+	private final static File ROOT_FOLDER = new File(new File(FilePackage.class.getResource("").getPath()).getParentFile().getParentFile().getParentFile().getAbsolutePath() + File.separator + "drive");
 	
 	private String fileName;
 	private Date uploadDate;
@@ -27,11 +26,11 @@ public class FilePackage {
 	}
 	
 	public static final File createFile(String fileName, Date uploadDate) {
-		return new File(ROOT_PATH + DATE_FORMAT.format(uploadDate) + "/" + fileName);
+		return new File(ROOT_FOLDER.getAbsolutePath() + File.separator + DATE_FORMAT.format(uploadDate) + File.separator + fileName);
 	}
 	
 	public static final String createUrl(String fileName, Date uploadDate) {
-		return PROJECT_NAME + DATE_FORMAT.format(uploadDate) + "/" + fileName;
+		return ROOT_FOLDER.getName() + File.separator + DATE_FORMAT.format(uploadDate) + File.separator + fileName;
 	}
 	
 	public String getFileName() {

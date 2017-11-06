@@ -6,13 +6,16 @@ import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.json.JSONObject;
-import service.FileBackup;
+import service.FileService;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -21,17 +24,19 @@ import java.util.List;
  */
 public class UploadFileServlet extends HttpServlet {
 	private String rootPath;
-	private FileBackup fileBackup;
+	private FileService fileService;
 	private DiskFileItemFactory factory;
+	private DateFormat dateFormat;
 	
 	@Override
 	public void init() throws ServletException {
-		fileBackup = FileBackupThreadListener.FILE_BACKUP_THREAD;
+		fileService = FileBackupThreadListener.FILE_BACKUP_THREAD;
+		dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		
 		//获得磁盘文件条目工厂
 		factory = new DiskFileItemFactory();
 		//获取文件需要上传到的路径
-		rootPath = getServletContext().getRealPath("/upload");
+		rootPath = getServletContext().getRealPath("/");
 		File repository = new File(rootPath);
 		repository.mkdirs();
 		//设置存储室
@@ -42,11 +47,12 @@ public class UploadFileServlet extends HttpServlet {
 	
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-		resp.setContentType("application/json;charset=utf-8");
+		resp.setContentType("application/json; charset=" + CodingFilter.getCoding());
 		Writer writer = resp.getWriter();
 		JSONObject jsonObject = new JSONObject();
-		
-		String token = null;
+
+//		String token = null;
+		String uploadDateString = null;
 		String description = null;
 		
 		//文件上传处理
@@ -62,8 +68,10 @@ public class UploadFileServlet extends HttpServlet {
 					String value = item.getString(CodingFilter.getCoding());
 					if (name.equals("description")) {
 						description = value;
+					} else if (name.equals("uploadDate")) {
+						uploadDateString = value;
 					} else if (name.equals("token")) {
-						token = value;
+//						token = value;
 					}
 				} else {//对传入的非简单的字符串进行处理
 					if (file != null) {//只接受第一个文件
@@ -73,7 +81,7 @@ public class UploadFileServlet extends HttpServlet {
 					String filename = item.getName();
 					if (filename == null || filename.length() == 0) {
 						do {
-							filename = rootPath + "/" + (int) (Math.random() * 100000000) + ".noname";
+							filename = rootPath + File.separator + "upload" + File.separator + (int) (Math.random() * 100000000) + ".noname";
 							file = new File(filename);
 						} while (file == null || file.exists());
 					} else {
@@ -117,27 +125,38 @@ public class UploadFileServlet extends HttpServlet {
 			
 			if (file == null) {
 				jsonObject.put("result", false);
-				jsonObject.put("info", "not find file");
+				jsonObject.put("info", "没有文件");
 			}
-			Date date = new Date();
+			Date date = null;
+			if (uploadDateString != null && uploadDateString.length() > 0) {
+				try {
+					date = dateFormat.parse(uploadDateString);
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
+			}
+			if (date == null) {
+				date = new Date();
+			}
 			FilePackage filePackage = new FilePackage(file.getName(), date, description);
 			File reFile = filePackage.getFile();
-			if (token == null || !token.equals(LoginServlet.getToken())) {
+			/*if (token == null || !token.equals(LoginServlet.getToken())) {
 				file.delete();
 				jsonObject.put("result", false);
-				jsonObject.put("info", "unauthorized access");
-			} else if ((reFile.getParentFile().exists() || reFile.getParentFile().mkdirs()) && file.renameTo(reFile)) {
-				fileBackup.backup(filePackage);
+				jsonObject.put("info", "未授权访问");
+			} else*/
+			if ((reFile.getParentFile().exists() || reFile.getParentFile().mkdirs()) && file.renameTo(reFile)) {
+				fileService.backup(filePackage);
 				jsonObject.put("result", true);
 				jsonObject.put("info", filePackage.getUrl());
 			} else {
 				jsonObject.put("result", false);
-				jsonObject.put("info", "move file fail");
+				jsonObject.put("info", "文件移动失败");
 			}
 		} catch (FileUploadException | UnsupportedEncodingException e) {
 			e.printStackTrace();
 			jsonObject.put("result", false);
-			jsonObject.put("info", "upload fail");
+			jsonObject.put("info", "上传失败");
 		} finally {
 			writer.write(jsonObject.toString());
 			writer.close();

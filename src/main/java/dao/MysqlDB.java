@@ -16,6 +16,7 @@ public final class MysqlDB extends DB {
 	private static final String SELECT_ALL_FILE_PACKAGE_SQL = "SELECT FILE_NAME, UPLOAD_DATE, DESCRIPTION FROM FILE";
 	private static final String SELECT_FILE_PACKAGE_INFO_SQL = "SELECT DESCRIPTION FROM FILE WHERE FILE_NAME=? AND UPLOAD_DATE=?";
 	private static final String SELECT_FILE_PACKAGES_INFO_BY_DATE_SQL = "SELECT FILE_NAME, DESCRIPTION FROM FILE WHERE UPLOAD_DATE=?";
+	private static final String SELECT_FILE_PACKAGES_INFO_BY_DESCRIPTION_SQL = "SELECT FILE_NAME, UPLOAD_DATE, DESCRIPTION FROM FILE WHERE DESCRIPTION LIKE ?";
 	private static final String SELECT_FILE_PACKAGE_BLOB_SQL = "SELECT FILE FROM FILE WHERE FILE_NAME=? AND UPLOAD_DATE=?";
 	private static final String DELETE_FILE_PACKAGE_SQL = "DELETE FROM FILE WHERE FILE_NAME=? AND UPLOAD_DATE=?";
 	
@@ -25,11 +26,11 @@ public final class MysqlDB extends DB {
 	}
 	
 	public boolean insertFile(FilePackage filePackage) {
-		java.sql.Date sd = new java.sql.Date(filePackage.getUploadDate().getTime());
 		Connection connection = createConnection();
 		if (connection == null) {
 			return false;
 		}
+		java.sql.Date sd = new java.sql.Date(filePackage.getUploadDate().getTime());
 		PreparedStatement preparedStatement = null;
 		try {
 			connection.setAutoCommit(false);
@@ -44,14 +45,7 @@ public final class MysqlDB extends DB {
 			} else {
 				connection.rollback();
 			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-			try {
-				connection.rollback();
-			} catch (SQLException e1) {
-				e1.printStackTrace();
-			}
-		} catch (FileNotFoundException e) {
+		} catch (SQLException | FileNotFoundException e) {
 			e.printStackTrace();
 			try {
 				connection.rollback();
@@ -76,12 +70,11 @@ public final class MysqlDB extends DB {
 	}
 	
 	public FilePackage[] selectAllFilePackageInfo() {
-		Connection connection;
-		List<Map<String, Object>> list;
-		connection = createConnection();
+		Connection connection = createConnection();
 		if (connection == null) {
 			return null;
 		}
+		List<Map<String, Object>> list;
 		try {
 			list = JDBCMethod.selectTableBySql(connection, SELECT_ALL_FILE_PACKAGE_SQL);
 		} finally {
@@ -97,7 +90,13 @@ public final class MysqlDB extends DB {
 		FilePackage[] filePackages = new FilePackage[list.size()];
 		int i = 0;
 		for (Map<String, Object> map : list) {
-			FilePackage filePackage = new FilePackage(map.get("FILE_NAME").toString(), (Date) map.get("UPLOAD_DATE"), map.get("DESCRIPTION").toString());
+			FilePackage filePackage;
+			Object descriptionObject = map.get("DESCRIPTION");
+			if (descriptionObject != null) {
+				filePackage = new FilePackage(map.get("FILE_NAME").toString(), (Date) map.get("UPLOAD_DATE"), descriptionObject.toString());
+			} else {
+				filePackage = new FilePackage(map.get("FILE_NAME").toString(), (Date) map.get("UPLOAD_DATE"), null);
+			}
 			filePackages[i] = filePackage;
 			i++;
 		}
@@ -105,11 +104,11 @@ public final class MysqlDB extends DB {
 	}
 	
 	public FilePackage selectFilePackageInfo(FilePackage filePackage) {
-		java.sql.Date sd = new java.sql.Date(filePackage.getUploadDate().getTime());
 		Connection connection = createConnection();
 		if (connection == null) {
 			return null;
 		}
+		java.sql.Date sd = new java.sql.Date(filePackage.getUploadDate().getTime());
 		PreparedStatement preparedStatement = null;
 		try {
 			preparedStatement = connection.prepareStatement(SELECT_FILE_PACKAGE_INFO_SQL);
@@ -141,13 +140,12 @@ public final class MysqlDB extends DB {
 	
 	@Override
 	public FilePackage[] selectFilePackagesInfoByDate(Date date) {
-		java.sql.Date sd = new java.sql.Date(date.getTime());
-		Connection connection;
-		List<Map<String, Object>> list;
-		connection = createConnection();
+		Connection connection = createConnection();
 		if (connection == null) {
 			return null;
 		}
+		java.sql.Date sd = new java.sql.Date(date.getTime());
+		List<Map<String, Object>> list;
 		try {
 			list = JDBCMethod.selectTableBySql(connection, SELECT_FILE_PACKAGES_INFO_BY_DATE_SQL, sd);
 		} finally {
@@ -163,7 +161,48 @@ public final class MysqlDB extends DB {
 		FilePackage[] filePackages = new FilePackage[list.size()];
 		int i = 0;
 		for (Map<String, Object> map : list) {
-			FilePackage filePackage = new FilePackage(map.get("FILE_NAME").toString(), date, map.get("DESCRIPTION").toString());
+			FilePackage filePackage;
+			Object descriptionObject = map.get("DESCRIPTION");
+			if (descriptionObject != null) {
+				filePackage = new FilePackage(map.get("FILE_NAME").toString(), date, descriptionObject.toString());
+			} else {
+				filePackage = new FilePackage(map.get("FILE_NAME").toString(), date, null);
+			}
+			filePackages[i] = filePackage;
+			i++;
+		}
+		return filePackages;
+	}
+	
+	@Override
+	public FilePackage[] selectFilePackagesInfoByDescription(String description) {
+		Connection connection = createConnection();
+		if (connection == null) {
+			return null;
+		}
+		List<Map<String, Object>> list;
+		try {
+			list = JDBCMethod.selectTableBySql(connection, SELECT_FILE_PACKAGES_INFO_BY_DESCRIPTION_SQL, "%" + description + "%");
+		} finally {
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		if (list == null) {
+			return null;
+		}
+		FilePackage[] filePackages = new FilePackage[list.size()];
+		int i = 0;
+		for (Map<String, Object> map : list) {
+			FilePackage filePackage;
+			Object descriptionObject = map.get("DESCRIPTION");
+			if (descriptionObject != null) {
+				filePackage = new FilePackage(map.get("FILE_NAME").toString(), (Date) map.get("UPLOAD_DATE"), descriptionObject.toString());
+			} else {
+				filePackage = new FilePackage(map.get("FILE_NAME").toString(), (Date) map.get("UPLOAD_DATE"), null);
+			}
 			filePackages[i] = filePackage;
 			i++;
 		}
@@ -171,11 +210,11 @@ public final class MysqlDB extends DB {
 	}
 	
 	public boolean selectFilePackageBlob(FilePackage filePackage) {
-		java.sql.Date sd = new java.sql.Date(filePackage.getUploadDate().getTime());
 		Connection connection = createConnection();
 		if (connection == null) {
 			return false;
 		}
+		java.sql.Date sd = new java.sql.Date(filePackage.getUploadDate().getTime());
 		PreparedStatement preparedStatement = null;
 		InputStream inputStream = null;
 		OutputStream outputStream = null;
@@ -196,11 +235,7 @@ public final class MysqlDB extends DB {
 				}
 				return true;
 			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
+		} catch (SQLException | IOException e) {
 			e.printStackTrace();
 		} finally {
 			if (inputStream != null) {
@@ -234,11 +269,11 @@ public final class MysqlDB extends DB {
 	}
 	
 	public boolean deleteFilePackage(FilePackage filePackage) {
-		java.sql.Date sd = new java.sql.Date(filePackage.getUploadDate().getTime());
 		Connection connection = createConnection();
 		if (connection == null) {
 			return false;
 		}
+		java.sql.Date sd = new java.sql.Date(filePackage.getUploadDate().getTime());
 		PreparedStatement preparedStatement = null;
 		try {
 			connection.setAutoCommit(false);

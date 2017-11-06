@@ -9,7 +9,7 @@ import java.util.Date;
 /**
  * Created by cellargalaxy on 17-10-15.
  */
-public interface FileBackup {
+public interface FileService {
 	void backup(FilePackage filePackage);
 	
 	void restore(String dbName, FilePackage filePackage);
@@ -18,7 +18,9 @@ public interface FileBackup {
 	
 	DBPackage findDB(String dbName);
 	
-	DBPackage findDBByDate(String dbName, Date date);
+	DBPackage findDBByDate(String dbName, Date uploadDate);
+	
+	DBPackage findDBByDescription(String dbName, String description);
 	
 	boolean deleteFile(String dbName, FilePackage filePackage);
 	

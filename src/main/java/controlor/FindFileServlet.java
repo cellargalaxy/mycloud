@@ -4,7 +4,7 @@ import bean.DBPackage;
 import bean.FilePackage;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import service.FileBackupThread;
+import service.FileService;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -20,7 +20,7 @@ import java.util.Date;
 /**
  * Created by cellargalaxy on 17-11-3.
  */
-public class AdminJsonServlet extends HttpServlet {
+public class FindFileServlet extends HttpServlet {
 	private DateFormat dateFormat;
 	
 	@Override
@@ -30,28 +30,33 @@ public class AdminJsonServlet extends HttpServlet {
 	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		resp.setContentType("application/json;charset=utf-8");
+		resp.setContentType("application/json;charset="+CodingFilter.getCoding());
 		Writer writer = resp.getWriter();
 		JSONArray jsonArray=new JSONArray();
 		
 		try {
 			String dbName = req.getParameter("dbName");
-			String uploadDateString=req.getParameter("uploadDate");
-			Date uploadDate=null;
-			try{
-				if (uploadDateString!=null) {
-					uploadDate=dateFormat.parse(uploadDateString);
+			String uploadDateString = req.getParameter("uploadDate");
+			String description = req.getParameter("description");
+			Date uploadDate = null;
+			if (uploadDateString != null && uploadDateString.length()>0) {
+				try {
+					uploadDate = dateFormat.parse(uploadDateString);
+				} catch (ParseException e) {
+					e.printStackTrace();
 				}
-			}catch (Exception e){
-				e.printStackTrace();
 			}
-			FileBackupThread fileBackupThread = FileBackupThreadListener.FILE_BACKUP_THREAD;
+			
+			FileService fileService = FileBackupThreadListener.FILE_BACKUP_THREAD;
 			DBPackage dbPackage;
-			if (uploadDate==null) {
-				dbPackage=fileBackupThread.findDB(dbName);
-			}else {
-				dbPackage=fileBackupThread.findDBByDate(dbName,uploadDate);
+			if (dbName != null && uploadDate != null) {
+				dbPackage = fileService.findDBByDate(dbName, uploadDate);
+			} else if (dbName != null && description != null) {
+				dbPackage = fileService.findDBByDescription(dbName, description);
+			} else {
+				dbPackage = new DBPackage(dbName, new FilePackage[0]);
 			}
+			
 			for (FilePackage filePackage : dbPackage.getFilePackages()) {
 				JSONObject jsonObject=new JSONObject();
 				jsonObject.put("fileName",filePackage.getFileName());

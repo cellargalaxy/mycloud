@@ -1,7 +1,7 @@
 package controlor;
 
 import dao.DBFactory;
-import service.FileBackupThread;
+import service.FileServiceThread;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
@@ -10,7 +10,7 @@ import javax.servlet.ServletContextListener;
  * Created by cellargalaxy on 17-10-15.
  */
 public class FileBackupThreadListener implements ServletContextListener {
-	public static final FileBackupThread FILE_BACKUP_THREAD = new FileBackupThread(DBFactory.getDbs());
+	public static final FileServiceThread FILE_BACKUP_THREAD = new FileServiceThread(DBFactory.getDbs());
 	
 	public void contextInitialized(ServletContextEvent servletContextEvent) {
 		FILE_BACKUP_THREAD.start();
