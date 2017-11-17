@@ -5,6 +5,7 @@ import bean.FilePackage;
 import dao.DB;
 
 import java.util.Date;
+import java.util.LinkedList;
 
 /**
  * Created by cellargalaxy on 17-10-15.
@@ -32,5 +33,5 @@ public interface FileService {
 	
 	int getYetRestore();
 	
-	DB[] getDbs();
+	LinkedList<DB> getDbs();
 }

@@ -2,8 +2,8 @@ package controlor;
 
 import bean.DBPackage;
 import bean.FilePackage;
+import configuration.Configuration;
 import org.json.JSONArray;
-import org.json.JSONObject;
 import service.FileService;
 
 import javax.servlet.ServletException;
@@ -14,7 +14,6 @@ import java.io.IOException;
 import java.io.Writer;
 import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -25,21 +24,21 @@ public class FindFileServlet extends HttpServlet {
 	
 	@Override
 	public void init() throws ServletException {
-		dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		dateFormat = Configuration.getRequestDateFormat();
 	}
 	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		resp.setContentType("application/json;charset="+CodingFilter.getCoding());
+		resp.setContentType("application/json;charset=" + CodingFilter.getCoding());
 		Writer writer = resp.getWriter();
-		JSONArray jsonArray=new JSONArray();
+		JSONArray jsonArray = new JSONArray();
 		
 		try {
 			String dbName = req.getParameter("dbName");
 			String uploadDateString = req.getParameter("uploadDate");
 			String description = req.getParameter("description");
 			Date uploadDate = null;
-			if (uploadDateString != null && uploadDateString.length()>0) {
+			if (uploadDateString != null && uploadDateString.length() > 0) {
 				try {
 					uploadDate = dateFormat.parse(uploadDateString);
 				} catch (ParseException e) {
@@ -58,12 +57,7 @@ public class FindFileServlet extends HttpServlet {
 			}
 			
 			for (FilePackage filePackage : dbPackage.getFilePackages()) {
-				JSONObject jsonObject=new JSONObject();
-				jsonObject.put("fileName",filePackage.getFileName());
-				jsonObject.put("uploadDate",dateFormat.format(filePackage.getUploadDate()));
-				jsonObject.put("description",filePackage.getDescription());
-				jsonObject.put("url",filePackage.getUrl());
-				jsonArray.put(jsonObject);
+				jsonArray.put(filePackage.toJSONObject());
 			}
 		} finally {
 			writer.write(jsonArray.toString());

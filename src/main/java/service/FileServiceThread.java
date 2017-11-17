@@ -14,13 +14,13 @@ public class FileServiceThread extends Thread implements FileService {
 	private final LinkedList<FilePackage> backupFilePackages;
 	private final LinkedList<DBPackage> restoreDBPackages;
 	private volatile boolean runable;
-	private final DB[] dbs;
+	private final LinkedList<DB> dbs;
 	private int backupCount;
 	private int yetBackup;
 	private int restoreCount;
 	private int yetRestore;
 	
-	public FileServiceThread(DB[] dbs) {
+	public FileServiceThread(LinkedList<DB> dbs) {
 		this.dbs = dbs;
 		backupFilePackages = new LinkedList<FilePackage>();
 		restoreDBPackages = new LinkedList<DBPackage>();
@@ -152,12 +152,16 @@ public class FileServiceThread extends Thread implements FileService {
 	}
 	
 	private void doBackup(FilePackage backupFilePackage) {
-		System.out.println("开始备份：" + backupFilePackage.getUrl());
+		Print.print("开始备份：" + backupFilePackage.getUrl());
 		for (DB db : dbs) {
 			db.deleteFilePackage(backupFilePackage);
-			for (int i = 0; i < 3 && !db.insertFile(backupFilePackage); i++) ;
+			for (int i = 0; i < 3; i++){
+				if (db.insertFile(backupFilePackage)) {
+					break;
+				}
+			}
 		}
-		System.out.println("备份完成：" + backupFilePackage.getUrl());
+		Print.print("备份完成：" + backupFilePackage.getUrl());
 		yetBackup++;
 	}
 	
@@ -165,11 +169,11 @@ public class FileServiceThread extends Thread implements FileService {
 		for (DB db : dbs) {
 			if (db.getDbName().equals(restoreDBPackage.getDbName())) {
 				for (FilePackage filePackage : restoreDBPackage.getFilePackages()) {
-					System.out.println("开始恢复：" + filePackage.getUrl());
+					Print.print("开始恢复：" + filePackage.getUrl());
 					if (db.selectFilePackageBlob(filePackage)) {
-						System.out.println("恢复成功：" + filePackage.getUrl());
+						Print.print("恢复成功：" + filePackage.getUrl());
 					} else {
-						System.out.println("恢复失败：" + filePackage.getUrl());
+						Print.print("恢复失败：" + filePackage.getUrl());
 					}
 					yetRestore++;
 				}
@@ -207,7 +211,8 @@ public class FileServiceThread extends Thread implements FileService {
 		}
 	}
 	
-	public DB[] getDbs() {
+	@Override
+	public LinkedList<DB> getDbs() {
 		return dbs;
 	}
 }

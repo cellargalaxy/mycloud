@@ -1,6 +1,7 @@
 package controlor;
 
 import bean.FilePackage;
+import configuration.Configuration;
 import org.json.JSONObject;
 
 import javax.servlet.ServletException;
@@ -11,7 +12,6 @@ import java.io.IOException;
 import java.io.Writer;
 import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -22,12 +22,12 @@ public class RestoreFileServlet extends HttpServlet {
 	
 	@Override
 	public void init() throws ServletException {
-		dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		dateFormat = Configuration.getRequestDateFormat();
 	}
 	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		resp.setContentType("application/json;charset=utf-8");
+		resp.setContentType("application/json;charset=" + CodingFilter.getCoding());
 		Writer writer = resp.getWriter();
 		JSONObject jsonObject = new JSONObject();
 		
@@ -60,7 +60,7 @@ public class RestoreFileServlet extends HttpServlet {
 	
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		resp.setContentType("application/json;charset=utf-8");
+		resp.setContentType("application/json;charset=" + CodingFilter.getCoding());
 		Writer writer = resp.getWriter();
 		JSONObject jsonObject = new JSONObject();
 		

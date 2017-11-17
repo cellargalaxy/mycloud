@@ -1,17 +1,19 @@
 package bean;
 
+import configuration.Configuration;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
  * Created by cellargalaxy on 17-10-15.
  */
 public class FilePackage {
-	private final static DateFormat DATE_FORMAT = new SimpleDateFormat("yyyyMMdd");
-	private final static File ROOT_FOLDER = new File(new File(FilePackage.class.getResource("").getPath()).getParentFile().getParentFile().getParentFile().getAbsolutePath() + File.separator + "drive");
+	private final static DateFormat DRIVE_PATH_DATE_FORMAT = Configuration.getDrivePathDateFormat();
+	private final static File DRIVE_ROOT_FILE = Configuration.getDriveRootFile();
+	private final static String DRIVE_URL = Configuration.getDriveUrl();
 	
 	private String fileName;
 	private Date uploadDate;
@@ -25,12 +27,12 @@ public class FilePackage {
 		this.description = description;
 	}
 	
-	public static final File createFile(String fileName, Date uploadDate) {
-		return new File(ROOT_FOLDER.getAbsolutePath() + File.separator + DATE_FORMAT.format(uploadDate) + File.separator + fileName);
+	public static final File createFile(Date uploadDate, String fileName) {
+		return new File(DRIVE_ROOT_FILE.getAbsolutePath() + File.separator + DRIVE_PATH_DATE_FORMAT.format(uploadDate) + File.separator + fileName);
 	}
 	
-	public static final String createUrl(String fileName, Date uploadDate) {
-		return ROOT_FOLDER.getName() + File.separator + DATE_FORMAT.format(uploadDate) + File.separator + fileName;
+	public static final String createUrl(Date uploadDate, String fileName) {
+		return DRIVE_URL + File.separator + DRIVE_PATH_DATE_FORMAT.format(uploadDate) + File.separator + fileName;
 	}
 	
 	public String getFileName() {
@@ -59,14 +61,14 @@ public class FilePackage {
 	
 	public File getFile() {
 		if (file == null) {
-			file = FilePackage.createFile(fileName, uploadDate);
+			file = FilePackage.createFile(uploadDate, fileName);
 		}
 		return file;
 	}
 	
 	public String getUrl() {
 		if (url == null) {
-			url = FilePackage.createUrl(fileName, uploadDate);
+			url = FilePackage.createUrl(uploadDate, fileName);
 		}
 		return url;
 	}
@@ -77,6 +79,15 @@ public class FilePackage {
 	
 	public void setUrl(String url) {
 		this.url = url;
+	}
+	
+	public JSONObject toJSONObject(){
+		JSONObject jsonObject=new JSONObject();
+		jsonObject.put("fileName", fileName);
+		jsonObject.put("uploadDate", uploadDate);
+		jsonObject.put("description", description);
+		jsonObject.put("url", url);
+		return jsonObject;
 	}
 	
 	@Override

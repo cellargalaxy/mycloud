@@ -1,6 +1,7 @@
 package controlor;
 
 import bean.FilePackage;
+import configuration.Configuration;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
@@ -24,14 +25,14 @@ import java.util.List;
  */
 public class UploadFileServlet extends HttpServlet {
 	private String rootPath;
-	private FileService fileService;
 	private DiskFileItemFactory factory;
 	private DateFormat dateFormat;
+	private long maxUploadFileLength;
 	
 	@Override
 	public void init() throws ServletException {
-		fileService = FileBackupThreadListener.FILE_BACKUP_THREAD;
-		dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		dateFormat = Configuration.getRequestDateFormat();
+		maxUploadFileLength = Configuration.getMaxUploadFileLength();
 		
 		//获得磁盘文件条目工厂
 		factory = new DiskFileItemFactory();
@@ -50,8 +51,7 @@ public class UploadFileServlet extends HttpServlet {
 		resp.setContentType("application/json; charset=" + CodingFilter.getCoding());
 		Writer writer = resp.getWriter();
 		JSONObject jsonObject = new JSONObject();
-
-//		String token = null;
+		
 		String uploadDateString = null;
 		String description = null;
 		
@@ -70,8 +70,6 @@ public class UploadFileServlet extends HttpServlet {
 						description = value;
 					} else if (name.equals("uploadDate")) {
 						uploadDateString = value;
-					} else if (name.equals("token")) {
-//						token = value;
 					}
 				} else {//对传入的非简单的字符串进行处理
 					if (file != null) {//只接受第一个文件
@@ -140,13 +138,11 @@ public class UploadFileServlet extends HttpServlet {
 			}
 			FilePackage filePackage = new FilePackage(file.getName(), date, description);
 			File reFile = filePackage.getFile();
-			/*if (token == null || !token.equals(LoginServlet.getToken())) {
-				file.delete();
-				jsonObject.put("result", false);
-				jsonObject.put("info", "未授权访问");
-			} else*/
 			if ((reFile.getParentFile().exists() || reFile.getParentFile().mkdirs()) && file.renameTo(reFile)) {
-				fileService.backup(filePackage);
+				if (reFile.length() <= maxUploadFileLength) {
+					FileService fileService = FileBackupThreadListener.FILE_BACKUP_THREAD;
+					fileService.backup(filePackage);
+				}
 				jsonObject.put("result", true);
 				jsonObject.put("info", filePackage.getUrl());
 			} else {

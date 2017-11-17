@@ -2,6 +2,7 @@ package controlor;
 
 import bean.DBPackage;
 import bean.FilePackage;
+import configuration.Configuration;
 import service.FileService;
 import service.FileServiceThread;
 
@@ -24,7 +25,7 @@ public class AdminServlet extends HttpServlet {
 	
 	@Override
 	public void init() throws ServletException {
-		dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		dateFormat = Configuration.getRequestDateFormat();
 		adminJsp = getInitParameter("adminJsp");
 	}
 	
@@ -34,7 +35,7 @@ public class AdminServlet extends HttpServlet {
 		String uploadDateString = req.getParameter("uploadDate");
 		String description = req.getParameter("description");
 		Date uploadDate = null;
-		if (uploadDateString != null && uploadDateString.length()>0) {
+		if (uploadDateString != null && uploadDateString.length() > 0) {
 			try {
 				uploadDate = dateFormat.parse(uploadDateString);
 			} catch (ParseException e) {
@@ -49,7 +50,7 @@ public class AdminServlet extends HttpServlet {
 		} else if (dbName != null && description != null) {
 			dbPackage = fileService.findDBByDescription(dbName, description);
 		} else {
-			dbPackage = fileService.findDB(dbName);
+			dbPackage = new DBPackage(dbName, new FilePackage[0]);
 		}
 		
 		FileServiceThread fileServiceThread = FileBackupThreadListener.FILE_BACKUP_THREAD;

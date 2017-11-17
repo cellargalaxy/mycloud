@@ -4,9 +4,7 @@ import bean.FilePackage;
 import com.alibaba.druid.pool.DruidDataSourceFactory;
 
 import javax.sql.DataSource;
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
+import java.io.*;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Date;

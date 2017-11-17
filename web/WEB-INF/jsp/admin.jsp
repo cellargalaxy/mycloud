@@ -53,7 +53,7 @@
             <form role="form" action="/mycloud/admin/uploadFile" method="post" enctype="multipart/form-data">
                 <div class="form-group">
                     <label>上传日期</label>
-                    <input type="date" name="uploadDate">
+                    <input class="form-control" type="date" name="uploadDate">
                 </div>
                 <div class="form-group">
                     <label for="description">描述</label>
@@ -72,7 +72,7 @@
             <form role="form" action="/mycloud/admin" method="get">
                 <div class="form-group">
                     <label>上传日期</label>
-                    <input type="date" name="uploadDate" required>
+                    <input class="form-control" type="date" name="uploadDate" required>
                     <input type="hidden" name="dbName" value="${DBPackage.dbName}">
                 </div>
                 <button type="submit" class="btn btn-default">查询</button>
@@ -80,7 +80,7 @@
             <form role="form" action="/mycloud/admin" method="get">
                 <div class="form-group">
                     <label>描述匹配</label>
-                    <input type="text" name="description" required>
+                    <input class="form-control" type="text" name="description" required>
                     <input type="hidden" name="dbName" value="${DBPackage.dbName}">
                 </div>
                 <button type="submit" class="btn btn-default">查询</button>
