@@ -16,9 +16,13 @@
 就可以通过`ip:port/drive`访问到根目录了
 
 3.配置mycloud的`application.properties`文件，需要进行配置的有
+
 （1）数据库的url，账号和密码
+
 （2）设置一个口令`token`作为登录的使用api的密码啥的
+
 （3）设置`fileDriveRootPath`，即tomcat服务器配置的`/root/drive`
+
 （4）设置`fileServerRootPath`，即tomcat服务器配置的`/drive`
 
 其余的可以不进行配置
