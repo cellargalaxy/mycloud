@@ -1,0 +1,11 @@
+create database mycloud character set utf8;
+
+create table file(
+filename char(255),
+date date,
+description char(255),
+filebytes mediumBlob not null,
+primary key(filename, date)
+);
+
+

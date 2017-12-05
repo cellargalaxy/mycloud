@@ -1,4 +1,9 @@
 # 我的文件服务器 mycloud
-主要用来做图床，以及做文件服务器。
 
-![演示图片](http://mycloud.cellargalaxy.top/mycloud/drive/20171016/%E9%80%89%E5%8C%BA_001.png)
+## 关于mycloud
+自用，主要用来做图床，以及做文件服务器。
+
+其实文件服务器部分的功能是由tomcat自带的文件服务功能实现的。mycloud的作用只是负责文件的上传、备份和恢复。
+
+## 如何使用
+1.首先配置一个tomcat文件服务
