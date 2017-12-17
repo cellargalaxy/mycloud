@@ -13,4 +13,6 @@ public interface FilePackageRestore {
 	int getWaitRestoreCount();
 	
 	boolean restoreFilePackage(FilePackage filePackage);
+	
+	boolean restoreFilePackages(FilePackage[] filePackages);
 }

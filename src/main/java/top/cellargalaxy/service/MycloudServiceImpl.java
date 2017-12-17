@@ -10,7 +10,6 @@ import top.cellargalaxy.dao.FilePackageMapper;
 
 import java.io.File;
 import java.util.Date;
-import java.util.List;
 
 
 /**
@@ -200,11 +199,7 @@ public class MycloudServiceImpl implements MycloudService {
 	@Override
 	public boolean backupAllFilePackage() {
 		try {
-			List<FilePackage> filePackages = filePackageService.getAllFilePackageFromDrive();
-			for (FilePackage filePackage : filePackages) {
-				filePackageBackup.backupFilePackage(filePackage);
-			}
-			return true;
+			return filePackageBackup.backupFilePackages(filePackageService.getAllFilePackageFromDrive());
 		} catch (Exception e) {
 			dealException(e);
 		}
@@ -214,11 +209,7 @@ public class MycloudServiceImpl implements MycloudService {
 	@Override
 	public boolean restoreAllFilePackage() {
 		try {
-			FilePackage[] filePackages = filePackageMapper.selectAllFilePackage();
-			for (FilePackage filePackage : filePackages) {
-				filePackageRestore.restoreFilePackage(filePackage);
-			}
-			return true;
+			return filePackageRestore.restoreFilePackages(filePackageMapper.selectAllFilePackage());
 		} catch (Exception e) {
 			dealException(e);
 		}

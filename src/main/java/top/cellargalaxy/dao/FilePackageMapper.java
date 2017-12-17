@@ -46,7 +46,7 @@ public interface FilePackageMapper {
 	@Select("select count(*) from file")
 	int selectFilePackageCount();
 	
-	@Select("select filename, date, description, filebytes from file where filename=#{filename} and #{date,jdbcType=DATE} limit 1")
+	@Select("select filename, date, description, filebytes from file where filename=#{filename} and date=#{date,jdbcType=DATE} limit 1")
 	FilePackage selectFilePackageByte(@Param("filename") String filename, @Param("date") Date date);
 	
 	@Update("update file set description=#{description}, filebytes=#{filebytes} where filename=#{filename} and date=#{date,jdbcType=DATE} limit 1")

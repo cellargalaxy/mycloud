@@ -3,6 +3,7 @@ package top.cellargalaxy.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import top.cellargalaxy.bean.FilePackage;
 import top.cellargalaxy.dao.FilePackageMapper;
 
@@ -43,15 +44,34 @@ public class FilePackageRestoreThread extends Thread implements FilePackageResto
 	}
 	
 	@Override
-	public int getWaitRestoreCount() {
+	public synchronized int getWaitRestoreCount() {
 		return restoreFilePackages.size();
 	}
 	
 	@Override
 	public synchronized boolean restoreFilePackage(FilePackage filePackage) {
-		restoreFilePackages.add(filePackage);
-		notify();
-		return true;
+		try {
+			restoreFilePackages.add(filePackage);
+			notify();
+			return true;
+		} catch (Exception e) {
+			dealException(e);
+		}
+		return false;
+	}
+	
+	@Override
+	public synchronized boolean restoreFilePackages(FilePackage[] filePackages) {
+		try {
+			for (FilePackage filePackage : filePackages) {
+				restoreFilePackages.add(filePackage);
+			}
+			notify();
+			return true;
+		} catch (Exception e) {
+			dealException(e);
+		}
+		return false;
 	}
 	
 	@Override
@@ -63,17 +83,10 @@ public class FilePackageRestoreThread extends Thread implements FilePackageResto
 	@Override
 	public void run() {
 		while (runable) {
+			FilePackage filePackage;
 			synchronized (this) {
-				FilePackage filePackage = restoreFilePackages.poll();
-				if (filePackage != null) {
-					filePackage = filePackageMapper.selectFilePackageByte(filePackage.getFilename(), filePackage.getDate());
-					filePackageService.fillingAttributes(filePackage);
-					if (filePackage == null || !filePackageService.writeFileBytes(filePackage)) {
-						failRestoreCount++;
-					} else {
-						successRestoreCount++;
-					}
-				} else {
+				filePackage = restoreFilePackages.poll();
+				if (filePackage == null) {
 					try {
 						wait();
 					} catch (InterruptedException e) {
@@ -81,6 +94,20 @@ public class FilePackageRestoreThread extends Thread implements FilePackageResto
 					}
 				}
 			}
+			if (filePackage != null) {
+				filePackage = filePackageMapper.selectFilePackageByte(filePackage.getFilename(), filePackage.getDate());
+				filePackageService.fillingAttributes(filePackage);
+				if (filePackage == null || !filePackageService.writeFileBytes(filePackage)) {
+					failRestoreCount++;
+				} else {
+					successRestoreCount++;
+				}
+			}
 		}
+	}
+	
+	private void dealException(Exception e) {
+		e.printStackTrace();
+		TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
 	}
 }

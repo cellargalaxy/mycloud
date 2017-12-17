@@ -9,6 +9,7 @@ import top.cellargalaxy.configuration.MycloudConfiguration;
 import top.cellargalaxy.dao.FilePackageMapper;
 
 import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Created by cellargalaxy on 17-12-5.
@@ -47,15 +48,34 @@ public class FilePackageBackupThread extends Thread implements FilePackageBackup
 	}
 	
 	@Override
-	public int getWaitBackupCount() {
+	public synchronized int getWaitBackupCount() {
 		return backupFilePackages.size();
 	}
 	
 	@Override
 	public synchronized boolean backupFilePackage(FilePackage filePackage) {
-		backupFilePackages.add(filePackage);
-		notify();
-		return true;
+		try {
+			backupFilePackages.add(filePackage);
+			notify();
+			return true;
+		} catch (Exception e) {
+			dealException(e);
+		}
+		return false;
+	}
+	
+	@Override
+	public synchronized boolean backupFilePackages(List<FilePackage> filePackages) {
+		try {
+			for (FilePackage filePackage : filePackages) {
+				backupFilePackages.add(filePackage);
+			}
+			notify();
+			return true;
+		} catch (Exception e) {
+			dealException(e);
+		}
+		return false;
 	}
 	
 	@Override
@@ -67,29 +87,31 @@ public class FilePackageBackupThread extends Thread implements FilePackageBackup
 	@Override
 	public void run() {
 		while (runable) {
+			FilePackage filePackage;
 			synchronized (this) {
-				FilePackage filePackage = backupFilePackages.poll();
-				if (filePackage != null && filePackage.getFile() != null && filePackage.getFile().length() <= configuration.getBlobMaxLength()) {
-					if (!filePackageService.readFileBytes(filePackage)) {
-						failBackupCount++;
-					} else if (existFilePackage(filePackage)) {
-						if (updateFilePackage(filePackage)) {
-							successBackupCount++;
-						} else {
-							failBackupCount++;
-						}
-					} else {
-						if (insertFilePackage(filePackage)) {
-							successBackupCount++;
-						} else {
-							failBackupCount++;
-						}
-					}
-				} else {
+				filePackage = backupFilePackages.poll();
+				if (filePackage == null) {
 					try {
 						wait();
 					} catch (InterruptedException e) {
 						e.printStackTrace();
+					}
+				}
+			}
+			if (filePackage != null && filePackage.getFile() != null && filePackage.getFile().length() <= configuration.getBlobMaxLength()) {
+				if (!filePackageService.readFileBytes(filePackage)) {
+					failBackupCount++;
+				} else if (existFilePackage(filePackage)) {
+					if (updateFilePackage(filePackage)) {
+						successBackupCount++;
+					} else {
+						failBackupCount++;
+					}
+				} else {
+					if (insertFilePackage(filePackage)) {
+						successBackupCount++;
+					} else {
+						failBackupCount++;
 					}
 				}
 			}

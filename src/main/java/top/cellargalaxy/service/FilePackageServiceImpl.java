@@ -50,6 +50,9 @@ public class FilePackageServiceImpl implements FilePackageService {
 	
 	@Override
 	public void fillingAttributes(FilePackage filePackage) {
+		if (filePackage == null) {
+			return;
+		}
 		if (filePackage.getFile() != null) {
 			filePackage.setFilename(filePackage.getFile().getName());
 			filePackage.setDate(analysisDate(filePackage.getFile()));
