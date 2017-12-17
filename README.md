@@ -83,9 +83,9 @@ get，url `api/inquireByDate`
 [
     {
         "date": "Tue Dec 05 00:00:00 CST 2017", 
-        "filename": "FireShot Capture 12 - mycloud后台管理 - http___119.29.171.44_mycloud_admin_1.png", 
+        "filename": "mycloud后台管理_admin_1.png", 
         "description": "", 
-        "url": "/drive/201712/05/FireShot Capture 12 - mycloud后台管理 - http___119.29.171.44_mycloud_admin_1.png"
+        "url": "/drive/201712/05/mycloud后台管理_admin_1.png"
     }, 
     {
         "date": "Tue Dec 05 00:00:00 CST 2017", 
