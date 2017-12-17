@@ -52,6 +52,8 @@ post，url: `api/uploadFile`
 
 ***应当知道，由于数据库是以文件名和上传日期为主码，所以当多次上传同样的文件名和日期的文件时，磁盘文件和数据库备份都是使后文件覆盖前文件。鉴于是自己使用，文件量不多，也是没毛病的。***
 
+***还有，文件上传大小默认限制为1000MB以内。但是由于数据库的blob大小最大为16MB，所以虽然大于16MB的文件可以上传，但是就算在上传时`stauts`设置为`1`也好，文件也不会备份到数据库。***
+
 #### 上传文件接口响应
 ```json
 {"result":false,"data":"no authorization"}
@@ -82,19 +84,20 @@ get，url `api/inquireByDate`
 ```json
 [
     {
-        "date": "Tue Dec 05 00:00:00 CST 2017", 
-        "filename": "mycloud后台管理_admin_1.png", 
-        "description": "", 
+        "date": "Tue Dec 05 00:00:00 CST 2017",
+        "filename": "mycloud后台管理_admin_1.png",
+        "description": "",
         "url": "/drive/201712/05/mycloud后台管理_admin_1.png"
-    }, 
+    },
     {
-        "date": "Tue Dec 05 00:00:00 CST 2017", 
-        "filename": "选区_001.png", 
-        "description": "", 
+        "date": "Tue Dec 05 00:00:00 CST 2017",
+        "filename": "选区_001.png",
+        "description": "",
         "url": "/drive/201712/05/选区_001.png"
     }
 ]
 ```
+
 
 ## 效果
 [![](http://119.23.235.95/drive/201712/05/%E9%80%89%E5%8C%BA_001.png)](http://119.23.235.95/drive/201712/05/%E9%80%89%E5%8C%BA_001.png)
