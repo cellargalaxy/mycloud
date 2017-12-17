@@ -22,6 +22,7 @@ import java.util.Date;
 @Controller
 @RequestMapping("/api")
 public class ApiControlor {
+	private static final int uploadFileBackupStatus = 1;
 	@Autowired
 	private MycloudService service;
 	
@@ -29,7 +30,8 @@ public class ApiControlor {
 	@PostMapping("/uploadFile")
 	public String uploadFile(@RequestParam("file") MultipartFile multipartFile,
 	                         @RequestParam(value = "date", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date date,
-	                         @RequestParam(value = "description", required = false) String description) {
+	                         @RequestParam(value = "description", required = false) String description,
+	                         @RequestParam(value = "status", required = false) Integer status) {
 		File file = saveFile(multipartFile);
 		if (file == null) {
 			return createJSONObject(false, "空文件或者文件保存失败").toString();
@@ -41,7 +43,7 @@ public class ApiControlor {
 		if (filePackage == null) {
 			return createJSONObject(false, "文件移动失败").toString();
 		}
-		if (!service.backupFilePackage(filePackage)) {
+		if (status != null && status.equals(uploadFileBackupStatus) && !service.backupFilePackage(filePackage)) {
 			return createJSONObject(false, "文件失败添加到备份队列").toString();
 		}
 		return createJSONObject(true, filePackage.getUrl()).toString();
@@ -49,10 +51,10 @@ public class ApiControlor {
 	
 	@ResponseBody
 	@GetMapping("/inquireByDate")
-	public String inquireByDate(@DateTimeFormat(pattern = "yyyy-MM-dd") Date date){
-		JSONArray jsonArray=new JSONArray();
-		FilePackage[] filePackages=service.getFilePackageByDate(date);
-		if (filePackages!=null) {
+	public String inquireByDate(@DateTimeFormat(pattern = "yyyy-MM-dd") Date date) {
+		JSONArray jsonArray = new JSONArray();
+		FilePackage[] filePackages = service.getFilePackageByDate(date);
+		if (filePackages != null) {
 			for (FilePackage filePackage : filePackages) {
 				jsonArray.put(filePackage.toJSONObject());
 			}

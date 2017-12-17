@@ -31,6 +31,70 @@
 请看[sql.txt](https://github.com/cellargalaxy/mycloud/blob/master/src/main/resources/sql.txt "sql.txt")
 
 
+## api
+
+目前只暴露了两个接口，一个是上传文件的接口，一个是按日期来查询文件的接口
+
+#### 上传文件接口请求
+post，url: `api/uploadFile`
+
+参数：
+
+`token`token口令，必选("mycloud")
+
+`file`需要上传的文件，必选(file)
+
+`date`文件的上传日期，可选，不设置则是默认当日("2017-7-7")
+
+`description`对文件的描述，可选("smoe description")
+
+`status`是否把文件备份到数据库，可选，值为1是表示备份到数据库，为空或者其余数值表示不备份到数据库(1)
+
+***应当知道，由于数据库是以文件名和上传日期为主码，所以当多次上传同样的文件名和日期的文件时，磁盘文件和数据库备份都是使后文件覆盖前文件。鉴于是自己使用，文件量不多，也是没毛病的。***
+
+#### 上传文件接口响应
+```json
+{"result":false,"data":"no authorization"}
+```
+```json
+{"result":false,"data":"空文件或者文件保存失败"}
+```
+```json
+{"result":false,"data":"文件移动失败"}
+```
+```json
+{"result":false,"data":"文件失败添加到备份队列"}
+```
+```json
+{"result":true,"data":访问文件的url}
+```
+
+#### 按日期来查询文件接口请求
+get，url `api/inquireByDate`
+
+参数：
+
+`token`token口令，必选("mycloud")
+
+`date`所查询的文件上传日期，必选("2017-7-7")
+
+#### 按日期来查询文件接口响应
+```json
+[
+    {
+        "date": "Tue Dec 05 00:00:00 CST 2017", 
+        "filename": "FireShot Capture 12 - mycloud后台管理 - http___119.29.171.44_mycloud_admin_1.png", 
+        "description": "", 
+        "url": "/drive/201712/05/FireShot Capture 12 - mycloud后台管理 - http___119.29.171.44_mycloud_admin_1.png"
+    }, 
+    {
+        "date": "Tue Dec 05 00:00:00 CST 2017", 
+        "filename": "选区_001.png", 
+        "description": "", 
+        "url": "/drive/201712/05/选区_001.png"
+    }
+]
+```
 
 ## 效果
 [![](http://119.29.171.44/drive/201712/05/%E9%80%89%E5%8C%BA_001.png)](http://119.29.171.44/drive/201712/05/%E9%80%89%E5%8C%BA_001.png)
