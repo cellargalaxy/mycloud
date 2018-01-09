@@ -14,6 +14,8 @@ public class MycloudConfiguration {
 	private String token;
 	@Value("${listFileLength:10}")
 	private int listFileLength;
+	@Value("${pagesLength:6}")
+	private int pagesLength;
 	@Value("${fileDriveRootPath:src/main/resources/static/drive}")
 	private String fileDriveRootPath;
 	@Value("${fileServerRootPath:/drive}")
@@ -43,6 +45,14 @@ public class MycloudConfiguration {
 	
 	public void setListFileLength(int listFileLength) {
 		this.listFileLength = listFileLength;
+	}
+	
+	public int getPagesLength() {
+		return pagesLength;
+	}
+	
+	public void setPagesLength(int pagesLength) {
+		this.pagesLength = pagesLength;
 	}
 	
 	public String getFileDriveRootPath() {

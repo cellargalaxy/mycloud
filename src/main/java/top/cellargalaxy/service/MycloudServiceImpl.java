@@ -100,11 +100,11 @@ public class MycloudServiceImpl implements MycloudService {
 	}
 	
 	@Override
-	public String[] createPages() {
+	public String[] createPages(int page) {
 		try {
 			int count = filePackageMapper.selectFilePackageCount();
 			int len = configuration.getListFileLength();
-			return createPages(count, len);
+			return createPages(page, count, len);
 		} catch (Exception e) {
 			dealException(e);
 		}
@@ -223,15 +223,27 @@ public class MycloudServiceImpl implements MycloudService {
 		return filePackages;
 	}
 	
-	private String[] createPages(int count, int len) {
-		String[] pages;
+	private String[] createPages(int page, int count, int len) {
+		int pageCount;
 		if (count % len == 0) {
-			pages = new String[count / len];
+			pageCount = count / len;
 		} else {
-			pages = new String[count / len + 1];
+			pageCount = (count / len) + 1;
 		}
-		for (int i = 0; i < pages.length; i++) {
-			pages[i] = (i + 1) + "";
+		int pagesLength = configuration.getPagesLength();
+		int start = page - (pagesLength / 2);
+		int end = page + (pagesLength / 2);
+		if (start < 1) {
+			start = 1;
+		}
+		if (end > pageCount) {
+			end = pageCount;
+		}
+		String[] pages = new String[end - start + 3];
+		pages[0] = "1";
+		pages[pages.length - 1] = pageCount + "";
+		for (int i = 1; i < pages.length - 1; i++) {
+			pages[i] = (start + i - 1) + "";
 		}
 		return pages;
 	}

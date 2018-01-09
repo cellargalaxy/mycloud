@@ -53,7 +53,7 @@ public class AdminControlor {
 	public String admin(Model model, HttpSession session, @PathVariable("page") int page) {
 		return admin(model, service.getFailBackupCount(), service.getSuccessBackupCount(), service.getWaitBackupCount(),
 				service.getFailRestoreCount(), service.getSuccessRestoreCount(), service.getWaitRestoreCount(),
-				session.getAttribute("token"), service.getFilePackages(page), service.createPages());
+				session.getAttribute("token"), service.getFilePackages(page), service.createPages(page));
 	}
 	
 	@ResponseBody

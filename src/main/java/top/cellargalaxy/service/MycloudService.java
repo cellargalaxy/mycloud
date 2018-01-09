@@ -24,7 +24,7 @@ public interface MycloudService {
 	
 	int getWaitRestoreCount();
 	
-	String[] createPages();
+	String[] createPages(int page);
 	
 	FilePackage[] getFilePackages(int page);
 	

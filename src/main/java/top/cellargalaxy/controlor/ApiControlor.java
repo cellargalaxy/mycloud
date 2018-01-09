@@ -23,6 +23,8 @@ import java.util.Date;
 @RequestMapping("/api")
 public class ApiControlor {
 	private static final int uploadFileBackupStatus = 1;
+	private static final int uploadFileSuccess = 1;
+	private static final int uploadFileFail = 0;
 	@Autowired
 	private MycloudService service;
 	
@@ -34,19 +36,19 @@ public class ApiControlor {
 	                         @RequestParam(value = "status", required = false) Integer status) {
 		File file = saveFile(multipartFile);
 		if (file == null) {
-			return createJSONObject(false, "空文件或者文件保存失败").toString();
+			return createUploadFileJSONObject(uploadFileFail, "空文件或者文件保存失败", null).toString();
 		}
 		if (date == null) {
 			date = new Date();
 		}
 		FilePackage filePackage = service.createFilePackage(file, date, description);
 		if (filePackage == null) {
-			return createJSONObject(false, "文件移动失败").toString();
+			return createUploadFileJSONObject(uploadFileFail, "文件移动失败", null).toString();
 		}
 		if (status != null && status.equals(uploadFileBackupStatus) && !service.backupFilePackage(filePackage)) {
-			return createJSONObject(false, "文件失败添加到备份队列").toString();
+			return createUploadFileJSONObject(uploadFileFail, "文件失败添加到备份队列", null).toString();
 		}
-		return createJSONObject(true, filePackage.getUrl()).toString();
+		return createUploadFileJSONObject(uploadFileSuccess, "成功上传" + file.getName(), filePackage.getUrl()).toString();
 	}
 	
 	@ResponseBody
@@ -88,10 +90,11 @@ public class ApiControlor {
 		return null;
 	}
 	
-	private JSONObject createJSONObject(boolean result, String data) {
+	private JSONObject createUploadFileJSONObject(int success, String message, String url) {
 		JSONObject jsonObject = new JSONObject();
-		jsonObject.put("result", result);
-		jsonObject.put("data", data);
+		jsonObject.put("success", success);
+		jsonObject.put("message", message);
+		jsonObject.put("url", url);
 		return jsonObject;
 	}
 }
