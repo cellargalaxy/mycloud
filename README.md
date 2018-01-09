@@ -56,19 +56,11 @@ post，url: `api/uploadFile`
 
 #### 上传文件接口响应
 ```json
-{"result":false,"data":"no authorization"}
-```
-```json
-{"result":false,"data":"空文件或者文件保存失败"}
-```
-```json
-{"result":false,"data":"文件移动失败"}
-```
-```json
-{"result":false,"data":"文件失败添加到备份队列"}
-```
-```json
-{"result":true,"data":访问文件的url}
+{
+    success : 0 | 1, //0表示上传失败;1表示上传成功
+    message : "提示的信息",
+    url     : "图片地址" //上传成功时才返回
+}
 ```
 
 #### 按日期来查询文件接口请求

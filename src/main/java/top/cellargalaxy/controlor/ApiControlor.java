@@ -94,7 +94,9 @@ public class ApiControlor {
 		JSONObject jsonObject = new JSONObject();
 		jsonObject.put("success", success);
 		jsonObject.put("message", message);
-		jsonObject.put("url", url);
+		if (success == uploadFileSuccess) {
+			jsonObject.put("url", url);
+		}
 		return jsonObject;
 	}
 }
