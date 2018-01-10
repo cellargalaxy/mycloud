@@ -1,7 +1,7 @@
 package top.cellargalaxy.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import top.cellargalaxy.bean.FilePackage;
 import top.cellargalaxy.configuration.MycloudConfiguration;
 
@@ -16,7 +16,7 @@ import java.util.List;
 /**
  * Created by cellargalaxy on 17-12-5.
  */
-@Service
+@Component
 public class FilePackageServiceImpl implements FilePackageService {
 	@Autowired
 	private MycloudConfiguration configuration;
@@ -187,6 +187,7 @@ public class FilePackageServiceImpl implements FilePackageService {
 	public File getFileDriveFolder() {
 		if (fileDriveFolder == null) {
 			fileDriveFolder = new File(configuration.getFileDriveRootPath());
+			fileDriveFolder.mkdirs();
 		}
 		return fileDriveFolder;
 	}

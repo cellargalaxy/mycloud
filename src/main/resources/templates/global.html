@@ -33,18 +33,17 @@
         <div class="page-header">
             <h3>上传文件</h3>
         </div>
-        <form th:action="@{/api/uploadFile}" method="post" class="form-horizontal" role="form" enctype="multipart/form-data">
-            <input th:value="${token}" name="token" type="hidden" required="required"/>
+        <form th:action="@{/api/uploadFile}" method="post" class="form-horizontal" role="form" enctype="multipart/form-data" onsubmit="return false" id="uploadFileForm">
             <div class="form-group">
-                <label class="col-sm-2 control-label">上传日期</label>
+                <label class="col-sm-2 control-label">上传文件</label>
                 <div class="col-sm-10">
-                    <input type="file" name="file" class="form-control" required="required"/>
+                    <input type="file" name="file" id="uploadFileFormFile" class="form-control" required="required"/>
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-sm-2 control-label">上传日期</label>
                 <div class="col-sm-10">
-                    <input th:value="${#dates.format(new java.util.Date(),'yyyy-MM-dd')}" type="date" name="date" class="form-control"/>
+                    <input th:value="${#dates.format(new java.util.Date(),'yyyy-MM-dd')}" type="date" name="date" id="uploadFileFormDate" class="form-control"/>
                 </div>
             </div>
             <div class="form-group">
@@ -61,13 +60,13 @@
             <div class="form-group">
                 <label class="col-sm-2 control-label">描述</label>
                 <div class="col-sm-10">
-                    <textarea name="description" maxlength="255" class="form-control"></textarea>
+                    <textarea name="description" id="uploadFileFormDescription" maxlength="255" class="form-control"></textarea>
                 </div>
             </div>
             <div class="form-group">
                 <div class="col-sm-10"></div>
                 <div class="col-sm-2">
-                    <button type="submit" class="btn btn-default">上传</button>
+                    <button type="submit" class="btn btn-default" onclick="uploadFile()">上传</button>
                 </div>
             </div>
         </form>
@@ -198,11 +197,15 @@
 
 </div>
 
-<div th:fragment="globalJs">
+<div th:fragment="publicJs">
     <script th:src="@{/js/jquery-3.2.1.min.js}" type="text/javascript" src="/mycloud/static/js/jquery-3.2.1.min.js"></script>
     <script th:src="@{/js/bootstrap.min.js}" src="/mycloud/static/js/bootstrap.min.js"
             integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-    <script th:src="@{/js/global.js}" src="/mycloud/static/js/global.js"></script>
+    <script th:src="@{/js/public.js}" src="/mycloud/static/js/public.js"></script>
+</div>
+<div th:fragment="privateJs">
+    <script th:src="@{/js/private.js}" src="/mycloud/static/js/private.js"></script>
+    <input th:value="${token}" id="token" type="hidden"/>
 </div>
 </body>
 </html>

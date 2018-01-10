@@ -95,3 +95,9 @@ get，url `api/inquireByDate`
 [![](http://119.23.235.95/drive/201712/05/%E9%80%89%E5%8C%BA_001.png)](http://119.23.235.95/drive/201712/05/%E9%80%89%E5%8C%BA_001.png)
 
 [![](http://119.23.235.95/drive/201712/05/FireShot%20Capture%2012%20-%20mycloud%E5%90%8E%E5%8F%B0%E7%AE%A1%E7%90%86%20-%20http___119.29.171.44_mycloud_admin_1.png)](http://119.23.235.95/drive/201712/05/FireShot%20Capture%2012%20-%20mycloud%E5%90%8E%E5%8F%B0%E7%AE%A1%E7%90%86%20-%20http___119.29.171.44_mycloud_admin_1.png)
+
+## 更新日志
+
+2018-1-10
+
+添加文件自动任务，每隔一个小时跟数据库同步一次

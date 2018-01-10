@@ -11,7 +11,6 @@ import top.cellargalaxy.dao.FilePackageMapper;
 import java.io.File;
 import java.util.Date;
 
-
 /**
  * Created by cellargalaxy on 17-12-2.
  */
@@ -147,6 +146,16 @@ public class MycloudServiceImpl implements MycloudService {
 	public FilePackage[] getFilePackageByDescription(String description) {
 		try {
 			return createUrl(filePackageMapper.selectFilePackageByDescription(description));
+		} catch (Exception e) {
+			dealException(e);
+		}
+		return new FilePackage[0];
+	}
+	
+	@Override
+	public FilePackage[] getAllFilePackage() {
+		try {
+			return filePackageMapper.selectAllFilePackage();
 		} catch (Exception e) {
 			dealException(e);
 		}

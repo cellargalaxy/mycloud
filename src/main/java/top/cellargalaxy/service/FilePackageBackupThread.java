@@ -1,5 +1,7 @@
 package top.cellargalaxy.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,6 +19,7 @@ import java.util.List;
 @Service
 @Transactional
 public class FilePackageBackupThread extends Thread implements FilePackageBackup {
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	@Autowired
 	private FilePackageMapper filePackageMapper;
 	@Autowired
@@ -101,17 +104,22 @@ public class FilePackageBackupThread extends Thread implements FilePackageBackup
 			if (filePackage != null && filePackage.getFile() != null && filePackage.getFile().length() <= configuration.getBlobMaxLength()) {
 				if (!filePackageService.readFileBytes(filePackage)) {
 					failBackupCount++;
+					logger.info("读取备份文件失败:" + filePackage);
 				} else if (existFilePackage(filePackage)) {
 					if (updateFilePackage(filePackage)) {
 						successBackupCount++;
+						logger.info("更新备份文件成功:" + filePackage);
 					} else {
 						failBackupCount++;
+						logger.info("更新备份文件失败:" + filePackage);
 					}
 				} else {
 					if (insertFilePackage(filePackage)) {
 						successBackupCount++;
+						logger.info("备份备份文件成功:" + filePackage);
 					} else {
 						failBackupCount++;
+						logger.info("备份备份文件失败:" + filePackage);
 					}
 				}
 			}

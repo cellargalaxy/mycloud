@@ -1,6 +1,8 @@
 package top.cellargalaxy.controlor;
 
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
@@ -23,6 +25,7 @@ import java.util.Date;
 @Controller
 @RequestMapping("/admin")
 public class AdminControlor {
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	@Autowired
 	private MycloudService service;
 	
@@ -61,11 +64,14 @@ public class AdminControlor {
 	public String backup(String filename, @DateTimeFormat(pattern = "yyyy-MM-dd") Date date) {
 		FilePackage filePackage = service.createFilePackage(filename, date, null);
 		if (filePackage == null) {
+			logger.info("备份文件对象创建失败");
 			return createJSONObject(false, "备份文件对象创建失败").toString();
 		}
 		if (!service.backupFilePackage(filePackage)) {
+			logger.info("文件失败添加到备份队列" + filePackage);
 			return createJSONObject(false, "文件失败添加到备份队列").toString();
 		}
+		logger.info("文件已添加到备份队列" + filePackage);
 		return createJSONObject(true, "文件已添加到备份队列").toString();
 	}
 	
@@ -74,11 +80,14 @@ public class AdminControlor {
 	public String restore(String filename, @DateTimeFormat(pattern = "yyyy-MM-dd") Date date) {
 		FilePackage filePackage = service.createFilePackage(filename, date, null);
 		if (filePackage == null) {
+			logger.info("恢复文件对象创建失败");
 			return createJSONObject(false, "恢复文件对象创建失败").toString();
 		}
 		if (!service.restoreFilePackage(filePackage)) {
+			logger.info("文件失败添加到恢复队列" + filePackage);
 			return createJSONObject(false, "文件失败添加到恢复队列").toString();
 		}
+		logger.info("文件已添加到恢复队列" + filePackage);
 		return createJSONObject(true, "文件已添加到恢复队列").toString();
 	}
 	
@@ -87,11 +96,14 @@ public class AdminControlor {
 	public String remove(String filename, @DateTimeFormat(pattern = "yyyy-MM-dd") Date date) {
 		FilePackage filePackage = service.createFilePackage(filename, date, null);
 		if (filePackage == null) {
+			logger.info("删除文件对象创建失败");
 			return createJSONObject(false, "删除文件对象创建失败").toString();
 		}
 		if (!service.removeFilePackage(filePackage)) {
+			logger.info("文件删除失败" + filePackage);
 			return createJSONObject(false, "文件删除失败").toString();
 		}
+		logger.info("文件删除成功" + filePackage);
 		return createJSONObject(true, "文件删除成功").toString();
 	}
 	
@@ -99,8 +111,10 @@ public class AdminControlor {
 	@PostMapping("/backupAll")
 	public String backupAll() {
 		if (!service.backupAllFilePackage()) {
+			logger.info("全部文件失败添加到备份队列");
 			return createJSONObject(false, "全部文件失败添加到备份队列").toString();
 		}
+		logger.info("全部文件已添加到备份队列");
 		return createJSONObject(true, "全部文件已添加到备份队列").toString();
 	}
 	
@@ -108,8 +122,10 @@ public class AdminControlor {
 	@PostMapping("/restoreAll")
 	public String restoreAll() {
 		if (!service.restoreAllFilePackage()) {
+			logger.info("全部文件失败添加到备份队列");
 			return createJSONObject(false, "全部文件失败添加到备份队列").toString();
 		}
+		logger.info("全部文件已添加到备份队列");
 		return createJSONObject(true, "全部文件已添加到备份队列").toString();
 	}
 	

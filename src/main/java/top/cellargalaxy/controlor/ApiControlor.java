@@ -2,6 +2,8 @@ package top.cellargalaxy.controlor;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
@@ -22,9 +24,10 @@ import java.util.Date;
 @Controller
 @RequestMapping("/api")
 public class ApiControlor {
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	private static final int uploadFileBackupStatus = 1;
-	private static final int uploadFileSuccess = 1;
-	private static final int uploadFileFail = 0;
+	public static final int UPLOAD_FILE_SUCCESS = 1;
+	public static final int UPLOAD_FILE_FAIL = 0;
 	@Autowired
 	private MycloudService service;
 	
@@ -36,19 +39,23 @@ public class ApiControlor {
 	                         @RequestParam(value = "status", required = false) Integer status) {
 		File file = saveFile(multipartFile);
 		if (file == null) {
-			return createUploadFileJSONObject(uploadFileFail, "空文件或者文件保存失败", null).toString();
+			logger.info("空文件或者文件保存失败");
+			return createJSONObject(UPLOAD_FILE_FAIL, "空文件或者文件保存失败", null).toString();
 		}
 		if (date == null) {
 			date = new Date();
 		}
 		FilePackage filePackage = service.createFilePackage(file, date, description);
 		if (filePackage == null) {
-			return createUploadFileJSONObject(uploadFileFail, "文件移动失败", null).toString();
+			logger.info("文件移动失败 "+file);
+			return createJSONObject(UPLOAD_FILE_FAIL, "文件移动失败", null).toString();
 		}
 		if (status != null && status.equals(uploadFileBackupStatus) && !service.backupFilePackage(filePackage)) {
-			return createUploadFileJSONObject(uploadFileFail, "文件失败添加到备份队列", null).toString();
+			logger.info("文件失败添加到备份队列 "+filePackage);
+			return createJSONObject(UPLOAD_FILE_FAIL, "文件失败添加到备份队列", null).toString();
 		}
-		return createUploadFileJSONObject(uploadFileSuccess, "成功上传" + file.getName(), filePackage.getUrl()).toString();
+		logger.info("成功上传 "+filePackage);
+		return createJSONObject(UPLOAD_FILE_SUCCESS, "成功上传" + file.getName(), filePackage.getUrl()).toString();
 	}
 	
 	@ResponseBody
@@ -90,11 +97,11 @@ public class ApiControlor {
 		return null;
 	}
 	
-	private JSONObject createUploadFileJSONObject(int success, String message, String url) {
+	public static final JSONObject createJSONObject(int success, String message, String url) {
 		JSONObject jsonObject = new JSONObject();
 		jsonObject.put("success", success);
 		jsonObject.put("message", message);
-		if (success == uploadFileSuccess) {
+		if (success == UPLOAD_FILE_SUCCESS) {
 			jsonObject.put("url", url);
 		}
 		return jsonObject;

@@ -24,7 +24,7 @@ public class FilePackage {
 		this.date = date;
 		this.description = description;
 		this.url = url;
-		filename=file.getName();
+		filename = file.getName();
 	}
 	
 	public File getFile() {
@@ -75,12 +75,12 @@ public class FilePackage {
 		this.url = url;
 	}
 	
-	public JSONObject toJSONObject(){
-		JSONObject jsonObject=new JSONObject();
-		jsonObject.put("filename",filename);
-		jsonObject.put("date",date);
-		jsonObject.put("description",description);
-		jsonObject.put("url",url);
+	public JSONObject toJSONObject() {
+		JSONObject jsonObject = new JSONObject();
+		jsonObject.put("filename", filename);
+		jsonObject.put("date", date);
+		jsonObject.put("description", description);
+		jsonObject.put("url", url);
 		return jsonObject;
 	}
 	

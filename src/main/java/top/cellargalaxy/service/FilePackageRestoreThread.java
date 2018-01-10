@@ -1,5 +1,7 @@
 package top.cellargalaxy.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,6 +17,7 @@ import java.util.LinkedList;
 @Service
 @Transactional
 public class FilePackageRestoreThread extends Thread implements FilePackageRestore {
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	@Autowired
 	private FilePackageMapper filePackageMapper;
 	@Autowired
@@ -99,8 +102,10 @@ public class FilePackageRestoreThread extends Thread implements FilePackageResto
 				filePackageService.fillingAttributes(filePackage);
 				if (filePackage == null || !filePackageService.writeFileBytes(filePackage)) {
 					failRestoreCount++;
+					logger.info("下载恢复文件失败:"+filePackage);
 				} else {
 					successRestoreCount++;
+					logger.info("下载恢复文件成功:"+filePackage);
 				}
 			}
 		}

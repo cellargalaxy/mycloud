@@ -34,6 +34,8 @@ public interface MycloudService {
 	
 	FilePackage[] getFilePackageByDescription(String description);
 	
+	FilePackage[] getAllFilePackage();
+	
 	FilePackage createFilePackage(File file, Date date, String description);
 	
 	FilePackage createFilePackage(String filename, Date date, String description);
