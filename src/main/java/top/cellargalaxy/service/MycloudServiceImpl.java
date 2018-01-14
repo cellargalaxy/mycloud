@@ -250,7 +250,7 @@ public class MycloudServiceImpl implements MycloudService {
 		}
 		String[] pages = new String[end - start + 3];
 		pages[0] = "1";
-		pages[pages.length - 1] = end + "";
+		pages[pages.length - 1] = pageCount + "";
 		for (int i = 1; i < pages.length - 1; i++) {
 			pages[i] = (start + i - 1) + "";
 		}
