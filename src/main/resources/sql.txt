@@ -7,5 +7,3 @@ description char(255),
 filebytes mediumBlob not null,
 primary key(filename, date)
 );
-
-

@@ -8,23 +8,19 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import top.cellargalaxy.bean.FilePackage;
 import top.cellargalaxy.service.MycloudService;
 
 import javax.servlet.http.HttpSession;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.Date;
 
 /**
  * Created by cellargalaxy on 17-12-2.
  */
 @Controller
-@RequestMapping("/admin")
+@RequestMapping(AdminControlor.ADMIN_CONTROLOR_URL)
 public class AdminControlor {
+	public static final String ADMIN_CONTROLOR_URL = "/admin";
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	@Autowired
 	private MycloudService service;

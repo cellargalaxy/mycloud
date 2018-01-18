@@ -16,9 +16,9 @@ public class MycloudConfiguration {
 	private int listFileLength;
 	@Value("${pagesLength:6}")
 	private int pagesLength;
-	@Value("${fileDriveRootPath:src/main/resources/static/drive}")
+	@Value("${fileDriveRootPath}")
 	private String fileDriveRootPath;
-	@Value("${fileServerRootPath:/drive}")
+	@Value("${fileServerRootPath}")
 	private String fileServerRootPath;
 	@Value("${dataFormat:yyyyMM/dd}")
 	private String dataFormat;

@@ -22,8 +22,9 @@ import java.util.Date;
  * Created by cellargalaxy on 17-12-2.
  */
 @Controller
-@RequestMapping("/api")
+@RequestMapping(ApiControlor.API_CONTROLOR_URL)
 public class ApiControlor {
+	public static final String API_CONTROLOR_URL = "/api";
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	private static final int uploadFileBackupStatus = 1;
 	public static final int UPLOAD_FILE_SUCCESS = 1;
@@ -47,14 +48,14 @@ public class ApiControlor {
 		}
 		FilePackage filePackage = service.createFilePackage(file, date, description);
 		if (filePackage == null) {
-			logger.info("文件移动失败 "+file);
+			logger.info("文件移动失败 " + file);
 			return createJSONObject(UPLOAD_FILE_FAIL, "文件移动失败", null).toString();
 		}
 		if (status != null && status.equals(uploadFileBackupStatus) && !service.backupFilePackage(filePackage)) {
-			logger.info("文件失败添加到备份队列 "+filePackage);
+			logger.info("文件失败添加到备份队列 " + filePackage);
 			return createJSONObject(UPLOAD_FILE_FAIL, "文件失败添加到备份队列", null).toString();
 		}
-		logger.info("成功上传 "+filePackage);
+		logger.info("成功上传 " + filePackage);
 		return createJSONObject(UPLOAD_FILE_SUCCESS, "成功上传" + file.getName(), filePackage.getUrl()).toString();
 	}
 	

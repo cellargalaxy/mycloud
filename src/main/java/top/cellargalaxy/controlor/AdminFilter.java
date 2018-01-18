@@ -11,13 +11,13 @@ import java.io.IOException;
 /**
  * Created by cellargalaxy on 17-12-5.
  */
-@WebFilter(filterName = "adminFilter", urlPatterns = "/admin/*")
+@WebFilter(filterName = "adminFilter", urlPatterns = AdminControlor.ADMIN_CONTROLOR_URL + "/*")
 public class AdminFilter implements Filter {
 	private FilterConfig filterConfig;
 	
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
-		this.filterConfig=filterConfig;
+		this.filterConfig = filterConfig;
 	}
 	
 	@Override
@@ -30,7 +30,7 @@ public class AdminFilter implements Filter {
 		Object object = httpServletRequest.getSession().getAttribute("token");
 		if (object == null) {
 			httpServletRequest.getSession().setAttribute("info", "请登录");
-			httpServletRequest.getRequestDispatcher("/").forward(httpServletRequest, httpServletResponse);
+			httpServletRequest.getRequestDispatcher(httpServletRequest.getContextPath() + "/").forward(httpServletRequest, httpServletResponse);
 			return;
 		}
 		filterChain.doFilter(httpServletRequest, httpServletResponse);

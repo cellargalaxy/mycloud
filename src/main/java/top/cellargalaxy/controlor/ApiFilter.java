@@ -14,7 +14,7 @@ import java.io.IOException;
 /**
  * Created by cellargalaxy on 17-12-5.
  */
-@WebFilter(filterName = "apiFilter", urlPatterns = "/api/*")
+@WebFilter(filterName = "apiFilter", urlPatterns = ApiControlor.API_CONTROLOR_URL + "/*")
 public class ApiFilter implements Filter {
 	@Autowired
 	private MycloudService mycloudService;
@@ -23,7 +23,7 @@ public class ApiFilter implements Filter {
 	
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
-		this.filterConfig=filterConfig;
+		this.filterConfig = filterConfig;
 	}
 	
 	@Override
@@ -35,7 +35,7 @@ public class ApiFilter implements Filter {
 		
 		String token = httpServletRequest.getParameter("token");
 		if (!mycloudService.checkToken(token)) {
-			JSONObject jsonObject = ApiControlor.createJSONObject(ApiControlor.UPLOAD_FILE_FAIL,"no authorization",null);
+			JSONObject jsonObject = ApiControlor.createJSONObject(ApiControlor.UPLOAD_FILE_FAIL, "no authorization", null);
 			httpServletResponse.getWriter().write(jsonObject.toString());
 			return;
 		}
