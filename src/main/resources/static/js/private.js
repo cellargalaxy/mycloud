@@ -152,8 +152,8 @@ function uploadFile() {
     var uploadFileFormDescription = $("#uploadFileFormDescription");
 
     var files = uploadFileFormFile.prop('files');
-    var date = uploadFileFormDate.attr("value");
-    var status = $("input[name='status'][checked]").val();
+    var date = uploadFileFormDate.val();
+    var status = $("input[name='status']:checked").val();
     var description = uploadFileFormDescription.val();
     if (files == null || files == '' || files.length == 0 || files[0] == null || files[0] == '') {
         alert('请选择文件');

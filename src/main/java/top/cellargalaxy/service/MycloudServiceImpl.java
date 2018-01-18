@@ -196,8 +196,10 @@ public class MycloudServiceImpl implements MycloudService {
 	public boolean removeFilePackage(FilePackage filePackage) {
 		try {
 			if (filePackage != null) {
-				return filePackage.getFile() != null && (!filePackage.getFile().exists() || filePackage.getFile().delete()) &&
-						filePackageMapper.deleteFilePackage(filePackage.getFilename(), filePackage.getDate()) >= 0;
+				return filePackage.getFile() != null &&
+						/*不使用短路与，确保本地文件和数据库都删一遍*/
+						((!filePackage.getFile().exists() || filePackage.getFile().delete()) &
+								filePackageMapper.deleteFilePackage(filePackage.getFilename(), filePackage.getDate()) >= 0);
 			}
 		} catch (Exception e) {
 			dealException(e);
