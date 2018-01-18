@@ -94,7 +94,7 @@ get，url `api/inquireByDate`
 ## 效果
 [![](http://drive.cellargalaxy.top/201712/05/选区_001.png)](http://drive.cellargalaxy.top/201712/05/选区_001.png)
 
-[![](http://drive.cellargalaxy.top/201712/05/FireShot%20Capture%2012%20-%20mycloud%E5%90%8E%E5%8F%B0%E7%AE%A1%E7%90%86%20-%20http___119.29.171.44_mycloud_admin_1.png)](http://drive.cellargalaxy.top/201712/05/FireShot%20Capture%2012%20-%20mycloud%E5%90%8E%E5%8F%B0%E7%AE%A1%E7%90%86%20-%20http___119.29.171.44_mycloud_admin_1.png)
+[![](http://drive.cellargalaxy.top/201712/05/mycloud后台管理.png)](http://drive.cellargalaxy.top/201712/05/mycloud后台管理.png)
 
 ## 更新日志
 
