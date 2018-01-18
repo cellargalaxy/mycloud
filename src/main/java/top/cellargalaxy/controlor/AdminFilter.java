@@ -27,12 +27,12 @@ public class AdminFilter implements Filter {
 		HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
 		HttpServletResponse httpServletResponse = (HttpServletResponse) servletResponse;
 		
-//		Object object = httpServletRequest.getSession().getAttribute("token");
-//		if (object == null) {
-//			httpServletRequest.getSession().setAttribute("info", "请登录");
-//			httpServletRequest.getRequestDispatcher(httpServletRequest.getContextPath() + "/").forward(httpServletRequest, httpServletResponse);
-//			return;
-//		}
+		Object object = httpServletRequest.getSession().getAttribute("token");
+		if (object == null) {
+			httpServletRequest.getSession().setAttribute("info", "请登录");
+			httpServletRequest.getRequestDispatcher(httpServletRequest.getContextPath() + "/").forward(httpServletRequest, httpServletResponse);
+			return;
+		}
 		filterChain.doFilter(httpServletRequest, httpServletResponse);
 	}
 	
