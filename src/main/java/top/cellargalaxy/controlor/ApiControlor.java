@@ -78,7 +78,7 @@ public class ApiControlor {
 			if (multipartFile == null || multipartFile.isEmpty()) {
 				return null;
 			}
-			File file = new File("src/main/resources/static/file/" + multipartFile.getOriginalFilename());
+			File file = new File("./mycloudTmp/" + multipartFile.getOriginalFilename());
 			file.getParentFile().mkdirs();
 			bufferedOutputStream = new BufferedOutputStream(new FileOutputStream(file));
 			bufferedOutputStream.write(multipartFile.getBytes());

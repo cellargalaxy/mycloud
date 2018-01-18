@@ -30,7 +30,7 @@ public class FilePackageServiceImpl implements FilePackageService {
 		if (moveFile == null) {
 			return null;
 		}
-		return new FilePackage(moveFile, date, description, createUrl(date, moveFile.getName()));
+		return new FilePackage(moveFile, date, description, createUrl(date, moveFile.getName()), createFileSizeString(moveFile.length()));
 	}
 	
 	@Override
@@ -45,7 +45,7 @@ public class FilePackageServiceImpl implements FilePackageService {
 		if (date == null) {
 			return null;
 		}
-		return new FilePackage(moveFile, date, description, createUrl(date, moveFile.getName()));
+		return new FilePackage(moveFile, date, description, createUrl(date, moveFile.getName()), createFileSizeString(moveFile.length()));
 	}
 	
 	@Override
@@ -60,6 +60,7 @@ public class FilePackageServiceImpl implements FilePackageService {
 			filePackage.setFile(new File(createMoveFilePath(filePackage.getDate(), filePackage.getFilename())));
 		}
 		filePackage.setUrl(createUrl(filePackage.getDate(), filePackage.getFilename()));
+		filePackage.setFileSize(createFileSizeString(filePackage.getFile().length()));
 	}
 	
 	@Override
@@ -182,6 +183,23 @@ public class FilePackageServiceImpl implements FilePackageService {
 	
 	private String createDateFilePath(Date date, String filename) {
 		return getDataFormat().format(date) + File.separator + filename;
+	}
+	
+	private String createFileSizeString(long size) {
+		float f = size;
+		if (f < 1024) {
+			return String.format("%.2f B", f);
+		}
+		f = f / 1024;
+		if (f < 1024) {
+			return String.format("%.2f KB", f);
+		}
+		f = f / 1024;
+		if (f < 1024) {
+			return String.format("%.2f MB", f);
+		}
+		f = f / 1024;
+		return String.format("%.2f GB", f);
 	}
 	
 	public File getFileDriveFolder() {

@@ -104,4 +104,4 @@ get，url `api/inquireByDate`
 
 2018-1-18
 
-整理了一下,修理了个js上传的bug
+整理了一下,修理了个js上传的bug,添加了显示文件大小

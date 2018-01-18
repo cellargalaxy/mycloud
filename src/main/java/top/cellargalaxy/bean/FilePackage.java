@@ -15,15 +15,17 @@ public class FilePackage {
 	private Date date;
 	private String description;
 	private String url;
+	private String fileSize;
 	
 	public FilePackage() {
 	}
 	
-	public FilePackage(File file, Date date, String description, String url) {
+	public FilePackage(File file, Date date, String description, String url, String fileSize) {
 		this.file = file;
 		this.date = date;
 		this.description = description;
 		this.url = url;
+		this.fileSize = fileSize;
 		filename = file.getName();
 	}
 	
@@ -75,12 +77,21 @@ public class FilePackage {
 		this.url = url;
 	}
 	
+	public String getFileSize() {
+		return fileSize;
+	}
+	
+	public void setFileSize(String fileSize) {
+		this.fileSize = fileSize;
+	}
+	
 	public JSONObject toJSONObject() {
 		JSONObject jsonObject = new JSONObject();
 		jsonObject.put("filename", filename);
 		jsonObject.put("date", date);
 		jsonObject.put("description", description);
 		jsonObject.put("url", url);
+		jsonObject.put("fileSize", fileSize);
 		return jsonObject;
 	}
 	
@@ -92,6 +103,7 @@ public class FilePackage {
 				", date=" + date +
 				", description='" + description + '\'' +
 				", url='" + url + '\'' +
+				", fileSize='" + fileSize + '\'' +
 				'}';
 	}
 }
