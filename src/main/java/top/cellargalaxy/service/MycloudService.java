@@ -1,9 +1,11 @@
 package top.cellargalaxy.service;
 
-import top.cellargalaxy.bean.FilePackage;
+import top.cellargalaxy.bean.controlorBean.Page;
+import top.cellargalaxy.bean.daoBean.FilePackage;
 
 import java.io.File;
 import java.util.Date;
+import java.util.LinkedList;
 
 /**
  * Created by cellargalaxy on 17-12-2.
@@ -23,19 +25,21 @@ public interface MycloudService {
 	
 	int getWaitRestoreCount();
 	
-	String[] createPages(int page);
+	Page[] createPages(int page);
 	
-	FilePackage[] getFilePackages(int page);
+	FilePackage findFilePackageByFileSha256(String fileSha256);
 	
-	FilePackage[] getFilePackageByDate(Date date);
+	FilePackage[] findFilePackagesByFilename(String filename);
 	
-	FilePackage[] getFilePackageByFilename(String filename);
+	FilePackage[] findFilePackagesByDate(Date date);
 	
-	FilePackage[] getFilePackageByDescription(String description);
+	FilePackage[] findFilePackagesByDescription(String description);
 	
-	FilePackage[] getAllFilePackage();
+	FilePackage[] findFilePackages(int page);
 	
-	FilePackage createFilePackage(File file, Date date, String description);
+	LinkedList<FilePackage> findAllFilePackage();
+	
+	FilePackage moveFileAndcreateFilePackage(File file, Date date, String description);
 	
 	FilePackage createFilePackage(String filename, Date date, String description);
 	

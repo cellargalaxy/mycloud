@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
-import top.cellargalaxy.bean.FilePackage;
+import top.cellargalaxy.bean.daoBean.FilePackage;
 import top.cellargalaxy.configuration.MycloudConfiguration;
 import top.cellargalaxy.dao.FilePackageMapper;
 
@@ -58,6 +58,9 @@ public class FilePackageBackupThread extends Thread implements FilePackageBackup
 	@Override
 	public synchronized boolean backupFilePackage(FilePackage filePackage) {
 		try {
+			if (filePackage == null) {
+				return false;
+			}
 			backupFilePackages.add(filePackage);
 			notify();
 			return true;
@@ -70,6 +73,9 @@ public class FilePackageBackupThread extends Thread implements FilePackageBackup
 	@Override
 	public synchronized boolean backupFilePackages(List<FilePackage> filePackages) {
 		try {
+			if (filePackages == null) {
+				return false;
+			}
 			for (FilePackage filePackage : filePackages) {
 				backupFilePackages.add(filePackage);
 			}
@@ -101,8 +107,10 @@ public class FilePackageBackupThread extends Thread implements FilePackageBackup
 					}
 				}
 			}
-			if (filePackage != null && filePackage.getFile() != null && filePackage.getFile().length() <= configuration.getBlobMaxLength()) {
-				if (!filePackageService.readFileBytes(filePackage)) {
+			filePackage = filePackageService.fillingFilePackageInfoAttributes(filePackage);
+			if (filePackage != null && filePackage.getFileLength() <= configuration.getBlobMaxLength()) {
+				filePackage = filePackageService.fillingFilePackageAllAttributes(filePackage);
+				if (filePackage == null) {
 					failBackupCount++;
 					logger.info("读取备份文件失败:" + filePackage);
 				} else if (existFilePackage(filePackage)) {
@@ -126,7 +134,7 @@ public class FilePackageBackupThread extends Thread implements FilePackageBackup
 		}
 	}
 	
-	private boolean existFilePackage(FilePackage filePackage) {
+	private final boolean existFilePackage(FilePackage filePackage) {
 		try {
 			return filePackageMapper.selectFilePackageCountByFilenameAndDate(filePackage.getFilename(), filePackage.getDate()) > 0;
 		} catch (Exception e) {
@@ -135,7 +143,7 @@ public class FilePackageBackupThread extends Thread implements FilePackageBackup
 		return false;
 	}
 	
-	private boolean insertFilePackage(FilePackage filePackage) {
+	private final boolean insertFilePackage(FilePackage filePackage) {
 		try {
 			return filePackageMapper.insertFilePackage(filePackage) > 0;
 		} catch (Exception e) {
@@ -144,7 +152,7 @@ public class FilePackageBackupThread extends Thread implements FilePackageBackup
 		return false;
 	}
 	
-	private boolean updateFilePackage(FilePackage filePackage) {
+	private final boolean updateFilePackage(FilePackage filePackage) {
 		try {
 			return filePackageMapper.updateFilePackage(filePackage) > 0;
 		} catch (Exception e) {
@@ -153,7 +161,7 @@ public class FilePackageBackupThread extends Thread implements FilePackageBackup
 		return false;
 	}
 	
-	private void dealException(Exception e) {
+	private final void dealException(Exception e) {
 		e.printStackTrace();
 		TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
 	}

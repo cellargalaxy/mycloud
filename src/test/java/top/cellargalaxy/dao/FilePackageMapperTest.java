@@ -5,12 +5,8 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import top.cellargalaxy.bean.FilePackage;
 
-import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Date;
 
 /**
  * Created by cellargalaxy on 17-12-2.

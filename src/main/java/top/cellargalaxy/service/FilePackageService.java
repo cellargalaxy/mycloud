@@ -1,26 +1,22 @@
 package top.cellargalaxy.service;
 
-import top.cellargalaxy.bean.FilePackage;
+import top.cellargalaxy.bean.daoBean.FilePackage;
 
 import java.io.File;
 import java.util.Date;
-import java.util.List;
+import java.util.LinkedList;
 
 /**
  * Created by cellargalaxy on 17-12-5.
  */
 public interface FilePackageService {
-	FilePackage createFilePackage(File file, Date date, String description);
+	File moveFileToDrive(File tmpFile, Date date);
 	
-	FilePackage createFilePackage(String filename, Date date, String description);
+	FilePackage fillingFilePackageInfoAttributes(FilePackage filePackage);
 	
-	FilePackage createFilePackage(File moveFile, String description);
-	
-	void fillingAttributes(FilePackage filePackage);
-	
-	List<FilePackage> getAllFilePackageFromDrive();
-	
-	boolean readFileBytes(FilePackage filePackage);
+	FilePackage fillingFilePackageAllAttributes(FilePackage filePackage);
 	
 	boolean writeFileBytes(FilePackage filePackage);
+	
+	LinkedList<FilePackage> getAllFilePackageFromDrive();
 }

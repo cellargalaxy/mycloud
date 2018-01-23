@@ -1,6 +1,6 @@
 package top.cellargalaxy.service;
 
-import top.cellargalaxy.bean.FilePackage;
+import top.cellargalaxy.bean.daoBean.FilePackage;
 
 import java.util.List;
 

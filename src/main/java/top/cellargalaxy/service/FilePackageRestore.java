@@ -1,6 +1,8 @@
 package top.cellargalaxy.service;
 
-import top.cellargalaxy.bean.FilePackage;
+import top.cellargalaxy.bean.daoBean.FilePackage;
+
+import java.util.LinkedList;
 
 /**
  * Created by cellargalaxy on 17-12-5.
@@ -14,5 +16,5 @@ public interface FilePackageRestore {
 	
 	boolean restoreFilePackage(FilePackage filePackage);
 	
-	boolean restoreFilePackages(FilePackage[] filePackages);
+	boolean restoreFilePackages(LinkedList<FilePackage> filePackages);
 }

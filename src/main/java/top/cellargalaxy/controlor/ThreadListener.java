@@ -28,6 +28,7 @@ public class ThreadListener implements ServletContextListener {
 	
 	@Override
 	public void contextDestroyed(ServletContextEvent servletContextEvent) {
-		System.out.println("监听器摧毁");
+		((Thread) filePackageBackup).interrupt();
+		((Thread) filePackageRestore).interrupt();
 	}
 }

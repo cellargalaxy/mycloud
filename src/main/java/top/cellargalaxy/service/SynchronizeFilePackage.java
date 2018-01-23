@@ -5,10 +5,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-import top.cellargalaxy.bean.FilePackage;
+import top.cellargalaxy.bean.daoBean.FilePackage;
 
-import java.util.Calendar;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by cellargalaxy on 18-1-10.
@@ -21,39 +20,48 @@ public class SynchronizeFilePackage {
 	@Autowired
 	private FilePackageService filePackageService;
 	
-	@Scheduled(fixedDelay = 1000 * 60 * 60)
+	@Scheduled(initialDelay = 1000 * 60 * 10, fixedDelay = 1000 * 60 * 60 * 3)
 	public void synchronizeFilePackage() {
-		FilePackage[] dbFilePackages = mycloudService.getAllFilePackage();
-		List<FilePackage> driveFilePackages = filePackageService.getAllFilePackageFromDrive();
-		main:
-		for (FilePackage dbFilePackage : dbFilePackages) {
-			for (FilePackage driveFilePackage : driveFilePackages) {
-				if (equalsFilePackage(dbFilePackage, driveFilePackage)) {
-					continue main;
-				}
-			}
-			mycloudService.restoreFilePackage(dbFilePackage);
+		LinkedList<FilePackage> dbFilePackages = mycloudService.findAllFilePackage();
+		LinkedList<FilePackage> driveFilePackages = filePackageService.getAllFilePackageFromDrive();
+		if (dbFilePackages == null || driveFilePackages == null) {
+			return;
 		}
+		Iterator<FilePackage> dbIterator = dbFilePackages.iterator();
+		Iterator<FilePackage> driveIterator = driveFilePackages.iterator();
 		main:
-		for (FilePackage driveFilePackage : driveFilePackages) {
-			for (FilePackage dbFilePackage : dbFilePackages) {
-				if (equalsFilePackage(dbFilePackage, driveFilePackage)) {
-					continue main;
+		while (driveIterator.hasNext()) {
+			FilePackage driveFilePackage = driveIterator.next();
+			driveFilePackage = filePackageService.fillingFilePackageInfoAttributes(driveFilePackage);
+			while (dbIterator.hasNext()) {
+				FilePackage dbFilePackage = dbIterator.next();
+				if (dbFilePackage.getFilename().equals(driveFilePackage.getFilename()) && equalsDate(dbFilePackage.getDate(), driveFilePackage.getDate())) {
+					driveFilePackage = filePackageService.fillingFilePackageAllAttributes(driveFilePackage);
+					if (dbFilePackage.getFileSha256().equals(driveFilePackage.getFileSha256())) {
+						dbIterator.remove();
+						driveIterator.remove();
+						continue main;
+					}
 				}
 			}
-			mycloudService.backupFilePackage(driveFilePackage);
+		}
+		while (driveIterator.hasNext()) {
+			driveIterator.next().getFile().delete();
+		}
+		while (dbIterator.hasNext()) {
+			mycloudService.restoreFilePackage(dbIterator.next());
 		}
 		logger.info("完成一次文件同步");
 	}
 	
-	private boolean equalsFilePackage(FilePackage filePackage1, FilePackage filePackage2) {
+	private final boolean equalsDate(Date date1, Date date2) {
 		Calendar calendar1 = Calendar.getInstance();
 		Calendar calendar2 = Calendar.getInstance();
-		calendar1.setTime(filePackage1.getDate());
-		calendar2.setTime(filePackage2.getDate());
+		calendar1.setTime(date1);
+		calendar2.setTime(date2);
 		return calendar1.get(Calendar.YEAR) == calendar2.get(Calendar.YEAR) &&
 				calendar1.get(Calendar.MONTH) == calendar2.get(Calendar.MONTH) &&
-				calendar1.get(Calendar.DAY_OF_MONTH) == calendar2.get(Calendar.DAY_OF_MONTH) &&
-				filePackage1.getFilename().equals(filePackage2.getFilename());
+				calendar1.get(Calendar.DAY_OF_MONTH) == calendar2.get(Calendar.DAY_OF_MONTH);
 	}
+	
 }

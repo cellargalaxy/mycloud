@@ -190,8 +190,7 @@ function uploadFile() {
                 alert(data.message);
             } else {
                 alert('信息:' + data.message + '\nurl:' + data.url);
-                uploadFileFormFile.attr('value', '');
-                uploadFileFormDescription.val('');
+                location.reload();
             }
         }
     });

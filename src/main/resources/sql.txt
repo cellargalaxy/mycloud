@@ -4,6 +4,10 @@ create table file(
 filename char(255),
 date date,
 description char(255),
-filebytes mediumBlob not null,
-primary key(filename, date)
+fileLength bigint not null,
+fileSha256 char(64),
+fileBytes mediumBlob not null,
+primary key(filename, date),
+index (description),
+index (fileSha256)
 );

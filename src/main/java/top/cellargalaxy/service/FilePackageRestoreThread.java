@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
-import top.cellargalaxy.bean.FilePackage;
+import top.cellargalaxy.bean.daoBean.FilePackage;
 import top.cellargalaxy.dao.FilePackageMapper;
 
 import java.util.LinkedList;
@@ -54,6 +54,9 @@ public class FilePackageRestoreThread extends Thread implements FilePackageResto
 	@Override
 	public synchronized boolean restoreFilePackage(FilePackage filePackage) {
 		try {
+			if (filePackage == null) {
+				return false;
+			}
 			restoreFilePackages.add(filePackage);
 			notify();
 			return true;
@@ -64,8 +67,11 @@ public class FilePackageRestoreThread extends Thread implements FilePackageResto
 	}
 	
 	@Override
-	public synchronized boolean restoreFilePackages(FilePackage[] filePackages) {
+	public synchronized boolean restoreFilePackages(LinkedList<FilePackage> filePackages) {
 		try {
+			if (filePackages == null) {
+				return false;
+			}
 			for (FilePackage filePackage : filePackages) {
 				restoreFilePackages.add(filePackage);
 			}
@@ -97,21 +103,22 @@ public class FilePackageRestoreThread extends Thread implements FilePackageResto
 					}
 				}
 			}
+			filePackage = filePackageService.fillingFilePackageInfoAttributes(filePackage);
 			if (filePackage != null) {
-				filePackage = filePackageMapper.selectFilePackageByte(filePackage.getFilename(), filePackage.getDate());
-				filePackageService.fillingAttributes(filePackage);
+				filePackage = filePackageMapper.selectFilePackageByteByFilenameAndDate(filePackage.getFilename(), filePackage.getDate());
+				filePackage = filePackageService.fillingFilePackageInfoAttributes(filePackage);
 				if (filePackage == null || !filePackageService.writeFileBytes(filePackage)) {
 					failRestoreCount++;
-					logger.info("下载恢复文件失败:"+filePackage);
+					logger.info("下载恢复文件失败:" + filePackage);
 				} else {
 					successRestoreCount++;
-					logger.info("下载恢复文件成功:"+filePackage);
+					logger.info("下载恢复文件成功:" + filePackage);
 				}
 			}
 		}
 	}
 	
-	private void dealException(Exception e) {
+	private final void dealException(Exception e) {
 		e.printStackTrace();
 		TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
 	}

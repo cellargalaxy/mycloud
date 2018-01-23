@@ -1,6 +1,5 @@
 package top.cellargalaxy.controlor;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,7 +8,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import top.cellargalaxy.bean.FilePackage;
+import top.cellargalaxy.bean.controlorBean.ReturnBean;
+import top.cellargalaxy.bean.daoBean.FilePackage;
 import top.cellargalaxy.service.MycloudService;
 
 import java.io.BufferedOutputStream;
@@ -30,7 +30,7 @@ public class ApiControlor {
 	public static final int UPLOAD_FILE_SUCCESS = 1;
 	public static final int UPLOAD_FILE_FAIL = 0;
 	@Autowired
-	private MycloudService service;
+	private MycloudService mycloudService;
 	
 	@ResponseBody
 	@PostMapping("/uploadFile")
@@ -41,38 +41,36 @@ public class ApiControlor {
 		File file = saveFile(multipartFile);
 		if (file == null) {
 			logger.info("空文件或者文件保存失败");
-			return createJSONObject(UPLOAD_FILE_FAIL, "空文件或者文件保存失败", null).toString();
+			return createUploadFileJSONObject(UPLOAD_FILE_FAIL, "空文件或者文件保存失败", null).toString();
 		}
 		if (date == null) {
 			date = new Date();
 		}
-		FilePackage filePackage = service.createFilePackage(file, date, description);
+		FilePackage filePackage = mycloudService.moveFileAndcreateFilePackage(file, date, description);
 		if (filePackage == null) {
 			logger.info("文件移动失败 " + file);
-			return createJSONObject(UPLOAD_FILE_FAIL, "文件移动失败", null).toString();
+			return createUploadFileJSONObject(UPLOAD_FILE_FAIL, "文件移动失败", null).toString();
 		}
-		if (status != null && status.equals(uploadFileBackupStatus) && !service.backupFilePackage(filePackage)) {
+		if ((status == null || status.equals(uploadFileBackupStatus)) && !mycloudService.backupFilePackage(filePackage)) {
 			logger.info("文件失败添加到备份队列 " + filePackage);
-			return createJSONObject(UPLOAD_FILE_FAIL, "文件失败添加到备份队列", null).toString();
+			return createUploadFileJSONObject(UPLOAD_FILE_FAIL, "文件失败添加到备份队列", null).toString();
 		}
 		logger.info("成功上传 " + filePackage);
-		return createJSONObject(UPLOAD_FILE_SUCCESS, "成功上传" + file.getName(), filePackage.getUrl()).toString();
+		return createUploadFileJSONObject(UPLOAD_FILE_SUCCESS, "成功上传" + filePackage.getFilename(), filePackage.getUrl()).toString();
 	}
 	
 	@ResponseBody
 	@GetMapping("/inquireByDate")
-	public String inquireByDate(@DateTimeFormat(pattern = "yyyy-MM-dd") Date date) {
-		JSONArray jsonArray = new JSONArray();
-		FilePackage[] filePackages = service.getFilePackageByDate(date);
+	public ReturnBean inquireByDate(@DateTimeFormat(pattern = "yyyy-MM-dd") Date date) {
+		FilePackage[] filePackages = mycloudService.findFilePackagesByDate(date);
 		if (filePackages != null) {
-			for (FilePackage filePackage : filePackages) {
-				jsonArray.put(filePackage.toJSONObject());
-			}
+			return new ReturnBean(true, filePackages);
+		} else {
+			return new ReturnBean(false, null);
 		}
-		return jsonArray.toString();
 	}
 	
-	private File saveFile(MultipartFile multipartFile) {
+	private final File saveFile(MultipartFile multipartFile) {
 		BufferedOutputStream bufferedOutputStream = null;
 		try {
 			if (multipartFile == null || multipartFile.isEmpty()) {
@@ -98,7 +96,7 @@ public class ApiControlor {
 		return null;
 	}
 	
-	public static final JSONObject createJSONObject(int success, String message, String url) {
+	public static final JSONObject createUploadFileJSONObject(int success, String message, String url) {
 		JSONObject jsonObject = new JSONObject();
 		jsonObject.put("success", success);
 		jsonObject.put("message", message);

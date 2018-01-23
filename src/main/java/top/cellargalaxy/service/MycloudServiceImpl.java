@@ -4,12 +4,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
-import top.cellargalaxy.bean.FilePackage;
+import top.cellargalaxy.bean.controlorBean.Page;
+import top.cellargalaxy.bean.daoBean.FilePackage;
 import top.cellargalaxy.configuration.MycloudConfiguration;
 import top.cellargalaxy.dao.FilePackageMapper;
 
 import java.io.File;
 import java.util.Date;
+import java.util.LinkedList;
 
 /**
  * Created by cellargalaxy on 17-12-2.
@@ -99,7 +101,7 @@ public class MycloudServiceImpl implements MycloudService {
 	}
 	
 	@Override
-	public String[] createPages(int page) {
+	public Page[] createPages(int page) {
 		try {
 			int count = filePackageMapper.selectFilePackageCount();
 			int len = configuration.getListFileLength();
@@ -107,15 +109,25 @@ public class MycloudServiceImpl implements MycloudService {
 		} catch (Exception e) {
 			dealException(e);
 		}
-		return new String[0];
+		return new Page[0];
 	}
 	
 	@Override
-	public FilePackage[] getFilePackages(int page) {
+	public FilePackage findFilePackageByFileSha256(String fileSha256) {
+		try {
+			return filePackageService.fillingFilePackageInfoAttributes(filePackageMapper.selectFilePackageByFileSha256(fileSha256));
+		} catch (Exception e) {
+			dealException(e);
+		}
+		return null;
+	}
+	
+	@Override
+	public FilePackage[] findFilePackages(int page) {
 		try {
 			int len = configuration.getListFileLength();
 			int off = (page - 1) * len;
-			return createUrl(filePackageMapper.selectFilePackages(off, len));
+			return fillingFilePackagesInfoAttributes(filePackageMapper.selectFilePackages(off, len));
 		} catch (Exception e) {
 			dealException(e);
 		}
@@ -123,9 +135,9 @@ public class MycloudServiceImpl implements MycloudService {
 	}
 	
 	@Override
-	public FilePackage[] getFilePackageByDate(Date date) {
+	public FilePackage[] findFilePackagesByDate(Date date) {
 		try {
-			return createUrl(filePackageMapper.selectFilePackageByDate(date));
+			return fillingFilePackagesInfoAttributes(filePackageMapper.selectFilePackagesByDate(date));
 		} catch (Exception e) {
 			dealException(e);
 		}
@@ -133,9 +145,9 @@ public class MycloudServiceImpl implements MycloudService {
 	}
 	
 	@Override
-	public FilePackage[] getFilePackageByFilename(String filename) {
+	public FilePackage[] findFilePackagesByFilename(String filename) {
 		try {
-			return createUrl(filePackageMapper.selectFilePackageByFilename(filename));
+			return fillingFilePackagesInfoAttributes(filePackageMapper.selectFilePackagesByFilename(filename));
 		} catch (Exception e) {
 			dealException(e);
 		}
@@ -143,9 +155,9 @@ public class MycloudServiceImpl implements MycloudService {
 	}
 	
 	@Override
-	public FilePackage[] getFilePackageByDescription(String description) {
+	public FilePackage[] findFilePackagesByDescription(String description) {
 		try {
-			return createUrl(filePackageMapper.selectFilePackageByDescription(description));
+			return fillingFilePackagesInfoAttributes(filePackageMapper.selectFilePackagesByDescription(description));
 		} catch (Exception e) {
 			dealException(e);
 		}
@@ -153,23 +165,41 @@ public class MycloudServiceImpl implements MycloudService {
 	}
 	
 	@Override
-	public FilePackage[] getAllFilePackage() {
+	public LinkedList<FilePackage> findAllFilePackage() {
 		try {
-			return filePackageMapper.selectAllFilePackage();
+			return fillingFilePackagesInfoAttributes(filePackageMapper.selectAllFilePackage());
 		} catch (Exception e) {
 			dealException(e);
 		}
-		return new FilePackage[0];
+		return null;
 	}
 	
 	@Override
-	public FilePackage createFilePackage(File file, Date date, String description) {
-		return filePackageService.createFilePackage(file, date, description);
+	public FilePackage moveFileAndcreateFilePackage(File tmpFile, Date date, String description) {
+		if (tmpFile == null || date == null) {
+			return null;
+		}
+		File driveFile = filePackageService.moveFileToDrive(tmpFile, date);
+		if (driveFile == null) {
+			return null;
+		}
+		FilePackage filePackage = new FilePackage();
+		filePackage.setFile(driveFile);
+		filePackage.setDate(date);
+		filePackage.setDescription(description);
+		return filePackageService.fillingFilePackageInfoAttributes(filePackage);
 	}
 	
 	@Override
 	public FilePackage createFilePackage(String filename, Date date, String description) {
-		return filePackageService.createFilePackage(filename, date, description);
+		if (filename == null || date == null) {
+			return null;
+		}
+		FilePackage filePackage = new FilePackage();
+		filePackage.setFilename(filename);
+		filePackage.setDate(date);
+		filePackage.setDescription(description);
+		return filePackageService.fillingFilePackageInfoAttributes(filePackage);
 	}
 	
 	@Override
@@ -195,12 +225,14 @@ public class MycloudServiceImpl implements MycloudService {
 	@Override
 	public boolean removeFilePackage(FilePackage filePackage) {
 		try {
-			if (filePackage != null) {
-				return filePackage.getFile() != null &&
-						/*不使用短路与，确保本地文件和数据库都删一遍*/
-						((!filePackage.getFile().exists() || filePackage.getFile().delete()) &
-								filePackageMapper.deleteFilePackage(filePackage.getFilename(), filePackage.getDate()) >= 0);
+			if (filePackage == null) {
+				return false;
 			}
+			File file = filePackage.getFile();
+			boolean drive = file != null && (!file.exists() || file.delete());
+			boolean db = filePackageMapper.deleteFilePackageByFilenameAndDate(filePackage.getFilename(), filePackage.getDate()) > 0 ||
+					filePackageMapper.deleteFilePackageByFileSha256(filePackage.getFileSha256()) > 0;
+			return drive && db;
 		} catch (Exception e) {
 			dealException(e);
 		}
@@ -227,14 +259,27 @@ public class MycloudServiceImpl implements MycloudService {
 		return false;
 	}
 	
-	private FilePackage[] createUrl(FilePackage[] filePackages) {
+	private final FilePackage[] fillingFilePackagesInfoAttributes(FilePackage[] filePackages) {
+		if (filePackages == null) {
+			return null;
+		}
 		for (FilePackage filePackage : filePackages) {
-			filePackageService.fillingAttributes(filePackage);
+			filePackageService.fillingFilePackageInfoAttributes(filePackage);
 		}
 		return filePackages;
 	}
 	
-	private String[] createPages(int page, int count, int len) {
+	private final LinkedList<FilePackage> fillingFilePackagesInfoAttributes(LinkedList<FilePackage> filePackages) {
+		if (filePackages == null) {
+			return null;
+		}
+		for (FilePackage filePackage : filePackages) {
+			filePackageService.fillingFilePackageInfoAttributes(filePackage);
+		}
+		return filePackages;
+	}
+	
+	private final Page[] createPages(int page, int count, int len) {
 		int pageCount;
 		if (count % len == 0) {
 			pageCount = count / len;
@@ -247,19 +292,22 @@ public class MycloudServiceImpl implements MycloudService {
 		if (start < 1) {
 			start = 1;
 		}
+		if (pageCount < 1) {
+			pageCount = 1;
+		}
 		if (end > pageCount) {
 			end = pageCount;
 		}
-		String[] pages = new String[end - start + 3];
-		pages[0] = "1";
-		pages[pages.length - 1] = pageCount + "";
+		Page[] pages = new Page[end - start + 3];
+		pages[0] = new Page("首页", "1", page == 1);
+		pages[pages.length - 1] = new Page("尾页", pageCount + "", page == pageCount);
 		for (int i = 1; i < pages.length - 1; i++) {
-			pages[i] = (start + i - 1) + "";
+			pages[i] = new Page((start + i - 1) + "", (start + i - 1) + "", page == (start + i - 1));
 		}
 		return pages;
 	}
 	
-	private void dealException(Exception e) {
+	private final void dealException(Exception e) {
 		e.printStackTrace();
 		TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
 	}

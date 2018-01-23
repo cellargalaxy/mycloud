@@ -16,8 +16,9 @@ import javax.servlet.http.HttpSession;
  * Created by cellargalaxy on 17-12-2.
  */
 @Controller
-@RequestMapping("/")
+@RequestMapping(RootControlor.ROOT_CONTROLOR_URL)
 public class RootControlor {
+	public static final String ROOT_CONTROLOR_URL = "";
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	@Autowired
 	private MycloudService service;

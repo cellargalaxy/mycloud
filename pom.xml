@@ -5,7 +5,7 @@
 
 	<groupId>top.cellargalaxy</groupId>
 	<artifactId>mycloud</artifactId>
-	<version>1.1</version>
+	<version>my</version>
 	<packaging>jar</packaging>
 
 	<name>mycloud</name>
@@ -69,6 +69,12 @@
 			<version>20160810</version>
 		</dependency>
 
+		<!-- https://mvnrepository.com/artifact/commons-codec/commons-codec -->
+		<dependency>
+			<groupId>commons-codec</groupId>
+			<artifactId>commons-codec</artifactId>
+			<version>1.10</version>
+		</dependency>
 	</dependencies>
 
 	<build>

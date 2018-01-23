@@ -1,20 +1,25 @@
 package top.cellargalaxy.dao;
 
 import org.apache.ibatis.annotations.*;
-import top.cellargalaxy.bean.FilePackage;
+import top.cellargalaxy.bean.daoBean.FilePackage;
 
 import java.util.Date;
+import java.util.LinkedList;
 
 /**
  * Created by cellargalaxy on 17-12-2.
  */
 @Mapper
 public interface FilePackageMapper {
-	@Insert("insert into file(filename, date, description, filebytes) values(#{filename}, #{date,jdbcType=DATE}, #{description}, #{filebytes})")
+	@Insert("insert into file(filename, date, description, fileLength, fileSha256, fileBytes) " +
+			"values(#{filename}, #{date,jdbcType=DATE}, #{description}, #{fileLength}, #{fileSha256}, #{fileBytes})")
 	int insertFilePackage(FilePackage filePackage);
 	
 	@Delete("delete from file where filename=#{filename} and date=#{date,jdbcType=DATE} limit 1")
-	int deleteFilePackage(@Param("filename") String filename, @Param("date") Date date);
+	int deleteFilePackageByFilenameAndDate(@Param("filename") String filename, @Param("date") Date date);
+	
+	@Delete("delete from file where fileSha256=#{fileSha256} limit 1")
+	int deleteFilePackageByFileSha256(@Param("fileSha256") String fileSha256);
 	
 	/*
 	这里好坑，where后面的#{date,jdbcType=DATE}，jdbcType=DATE一定要加。
@@ -22,33 +27,39 @@ public interface FilePackageMapper {
 	DATE是jdbcType的一个枚举对象，请不要小写。
 	参考资料：http://www.mybatis.org/mybatis-3/zh/sqlmap-xml.html
 	 */
-	@Select("select description from file where filename=#{filename} and #{date,jdbcType=DATE} limit 1")
-	String selectDescriptionByFilenameAndDate(@Param("filename") String filename, @Param("date") Date date);
+	@Select("select filename, date, description, fileLength, fileSha256 from file where filename=#{filename} and date=#{date,jdbcType=DATE} limit 1")
+	FilePackage selectFilePackageByFilenameAndDate(@Param("filename") String filename, @Param("date") Date date);
 	
-	@Select("select filename, date, description from file where filename like concat('%',#{filename},'%') order by date desc")
-	FilePackage[] selectFilePackageByFilename(@Param("filename") String filename);
+	@Select("select filename, date, description, fileLength, fileSha256 from file where fileSha256=#{fileSha256} limit 1")
+	FilePackage selectFilePackageByFileSha256(@Param("fileSha256") String fileSha256);
 	
-	@Select("select filename, date, description from file where date=#{date,jdbcType=DATE}")
-	FilePackage[] selectFilePackageByDate(@Param("date") Date date);
+	@Select("select filename, date, description, fileLength, fileSha256 from file where filename like concat('%',#{filename},'%') order by date desc")
+	FilePackage[] selectFilePackagesByFilename(@Param("filename") String filename);
 	
-	@Select("select filename, date, description from file where description like concat('%',#{description},'%') order by date desc")
-	FilePackage[] selectFilePackageByDescription(@Param("description") String description);
+	@Select("select filename, date, description, fileLength, fileSha256 from file where date=#{date,jdbcType=DATE}")
+	FilePackage[] selectFilePackagesByDate(@Param("date") Date date);
 	
-	@Select("select filename, date, description from file order by date desc limit #{off},#{len}")
+	@Select("select filename, date, description, fileLength, fileSha256 from file where description like concat('%',#{description},'%') order by date desc")
+	FilePackage[] selectFilePackagesByDescription(@Param("description") String description);
+	
+	@Select("select filename, date, description, fileLength, fileSha256 from file order by date desc limit #{off},#{len}")
 	FilePackage[] selectFilePackages(@Param("off") int off, @Param("len") int len);
 	
-	@Select("select filename, date, description from file order by date desc")
-	FilePackage[] selectAllFilePackage();
+	@Select("select filename, date, description, fileLength, fileSha256 from file")
+	LinkedList<FilePackage> selectAllFilePackage();
 	
-	@Select("select count(*) from (select * from file where filename=#{filename} and date=#{date,jdbcType=DATE} limit 1) as a")
+	@Select("select count(*) from (select fileSha256 from file where filename=#{filename} and date=#{date,jdbcType=DATE} limit 1) as a")
 	int selectFilePackageCountByFilenameAndDate(@Param("filename") String filename, @Param("date") Date date);
 	
 	@Select("select count(*) from file")
 	int selectFilePackageCount();
 	
-	@Select("select filename, date, description, filebytes from file where filename=#{filename} and date=#{date,jdbcType=DATE} limit 1")
-	FilePackage selectFilePackageByte(@Param("filename") String filename, @Param("date") Date date);
+	@Select("select filename, date, description, fileLength, fileSha256, fileBytes from file where filename=#{filename} and date=#{date,jdbcType=DATE} limit 1")
+	FilePackage selectFilePackageByteByFilenameAndDate(@Param("filename") String filename, @Param("date") Date date);
 	
-	@Update("update file set description=#{description}, filebytes=#{filebytes} where filename=#{filename} and date=#{date,jdbcType=DATE} limit 1")
+	@Select("select filename, date, description, fileLength, fileSha256, fileBytes from file where fileSha256=#{fileSha256} limit 1")
+	FilePackage selectFilePackageByteByFileSha256(@Param("fileSha256") String fileSha256);
+	
+	@Update("update file set description=#{description}, fileLength=#{fileLength}, fileSha256=#{fileSha256}, fileBytes=#{fileBytes} where filename=#{filename} and date=#{date,jdbcType=DATE} limit 1")
 	int updateFilePackage(FilePackage filePackage);
 }

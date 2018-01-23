@@ -35,7 +35,7 @@ public class ApiFilter implements Filter {
 		
 		String token = httpServletRequest.getParameter("token");
 		if (!mycloudService.checkToken(token)) {
-			JSONObject jsonObject = ApiControlor.createJSONObject(ApiControlor.UPLOAD_FILE_FAIL, "no authorization", null);
+			JSONObject jsonObject = ApiControlor.createUploadFileJSONObject(ApiControlor.UPLOAD_FILE_FAIL, "no authorization", null);
 			httpServletResponse.getWriter().write(jsonObject.toString());
 			return;
 		}

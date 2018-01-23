@@ -11,9 +11,9 @@
 2.假设你的配置是这样子的
 ```xml
 <?xml version='1.0' encoding='utf-8'?>
-<Context docBase="/root/drive" path="/drive" ></Context>
+<Context docBase="/root/drive" path="/drive"></Context>
 ```
-就可以通过`ip:port/drive`访问到根目录了
+当然，由于这是起文件服务器的作用，用其他例如nginx来代替也是可以的
 
 3.配置mycloud的`application.properties`文件，需要进行配置的有
 
@@ -74,20 +74,27 @@ get，url `api/inquireByDate`
 
 #### 按日期来查询文件接口响应
 ```json
-[
-    {
-        "date": "Tue Dec 05 00:00:00 CST 2017",
-        "filename": "mycloud后台管理_admin_1.png",
-        "description": "",
-        "url": "/drive/201712/05/mycloud后台管理_admin_1.png"
-    },
-    {
-        "date": "Tue Dec 05 00:00:00 CST 2017",
-        "filename": "选区_001.png",
-        "description": "",
-        "url": "/drive/201712/05/选区_001.png"
-    }
-]
+{
+    "result": true, 
+    "data": [
+        {
+            "filename": "xxx1.jpg", 
+            "date": "2012-02-02", 
+            "description": "description", 
+            "fileLength": 123456, 
+            "fileSha256": "SHA256", 
+            "url": "http://url"
+        }, 
+        {
+            "filename": "xxx2.jpg", 
+            "date": "2012-02-02", 
+            "description": "description", 
+            "fileLength": 123456, 
+            "fileSha256": "SHA256", 
+            "url": "http://url"
+        }
+    ]
+}
 ```
 
 
@@ -105,3 +112,11 @@ get，url `api/inquireByDate`
 2018-1-18
 
 整理了一下,修理了个js上传的bug,添加了显示文件大小
+
+2018-1-22
+
+数据库加了文件长度和文件的SHA256两个属性
+
+自动同步修改为启动延时十分钟，然后隔3个小时同步一次
+
+修复自动同步的逻辑bug

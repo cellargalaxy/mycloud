@@ -84,6 +84,14 @@
         </div>
         <form th:action="@{/admin}" method="get" class="form-inline" role="form">
             <div class="form-group">
+                <label>sha256</label>
+                <input name="fileSha256" type="text" class="form-control" required="required"/>
+            </div>
+            <button type="submit" class="btn btn-default">查询</button>
+        </form>
+        <br/>
+        <form th:action="@{/admin}" method="get" class="form-inline" role="form">
+            <div class="form-group">
                 <label>上传日期</label>
                 <input th:value="${#dates.format(new java.util.Date(),'yyyy-MM-dd')}" name="date" type="date" class="form-control" required="required"/>
             </div>
@@ -124,20 +132,24 @@
                     <table class="table table-hover" style="background-color: rgba(0, 0, 0, 0);">
                         <tbody>
                         <tr>
-                            <td>上传日期</td>
-                            <td><code th:text="${#dates.format(file.date,'yyyy-MM-dd')}">2017-12-12</code></td>
-                        </tr>
-                        <tr>
                             <td>文件名</td>
                             <td><code th:text="${file.filename}">xxx.jpg</code></td>
                         </tr>
                         <tr>
-                            <td>文件大小</td>
-                            <td><code th:text="${file.fileSize}">10KB</code></td>
+                            <td>上传日期</td>
+                            <td><code th:text="${#dates.format(file.date,'yyyy-MM-dd')}">2017-12-12</code></td>
                         </tr>
                         <tr>
                             <td>描述</td>
                             <td><code th:text="${file.description}">不可描述</code></td>
+                        </tr>
+                        <tr>
+                            <td>文件大小</td>
+                            <td><code th:text="${file.fileLength}">1000000</code></td>
+                        </tr>
+                        <tr>
+                            <td>SHA256</td>
+                            <td><code th:text="${file.fileSha256}">abcde</code></td>
                         </tr>
                         <tr>
                             <td>链接</td>
@@ -162,7 +174,7 @@
 
     <div class="row" th:fragment="pages(pages)" style="text-align: center">
         <ul class="pagination">
-            <li th:each="page : ${pages}"><a th:href="${page}" th:text="${page}">1</a></li>
+            <li th:each="page : ${pages}" th:class="page.current?'active':''"><a th:href="${page.url}" th:text="${page.name}">1</a></li>
         </ul>
     </div>
 
@@ -224,7 +236,7 @@
     <div class="row" th:fragment="tail">
         <div style="text-align: center;padding: 2%;margin-top: 2%;background-color: #2aabd2;">
             <p>我的文件服务器 mycloud</p>
-            <p>2018-1-18版本</p>
+            <p>2018-1-22版本</p>
         </div>
     </div>
 
