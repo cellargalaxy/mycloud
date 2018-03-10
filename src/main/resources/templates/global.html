@@ -174,7 +174,7 @@
 
     <div class="row" th:fragment="pages(pages)" style="text-align: center">
         <ul class="pagination">
-            <li th:each="page : ${pages}" th:class="page.current?'active':''"><a th:href="${page.url}" th:text="${page.name}">1</a></li>
+            <li th:each="page : ${pages}" th:class="${page.current?'active':''}"><a th:href="${page.url}" th:text="${page.name}">1</a></li>
         </ul>
     </div>
 
@@ -236,7 +236,7 @@
     <div class="row" th:fragment="tail">
         <div style="text-align: center;padding: 2%;margin-top: 2%;background-color: #2aabd2;">
             <p>我的文件服务器 mycloud</p>
-            <p>2018-1-22版本</p>
+            <p>2018-02-11版本</p>
         </div>
     </div>
 
