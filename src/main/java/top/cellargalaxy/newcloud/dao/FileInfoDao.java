@@ -7,12 +7,11 @@ import top.cellargalaxy.newcloud.util.SqlUtil;
 import top.cellargalaxy.newcloud.util.StringUtil;
 
 import java.util.Date;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-import static org.apache.ibatis.type.JdbcType.DATE;
 import static org.apache.ibatis.type.JdbcType.BIGINT;
+import static org.apache.ibatis.type.JdbcType.DATE;
 
 /**
  * @author cellargalaxy
@@ -125,13 +124,13 @@ public interface FileInfoDao {
 			if (fileInfoQuery.getFileId() > 0) {
 				wheres.add("file_id=#{fileId}");
 			}
-			if (fileInfoQuery.getFileName() != null && fileInfoQuery.getFileName().length() > 0 && fileInfoQuery.getCreateTime() != null) {
+			if (!StringUtil.isEmpty(fileInfoQuery.getFileName()) && fileInfoQuery.getCreateTime() != null) {
 				wheres.add("file_name=#{fileName} and create_time=#{createTime,jdbcType=DATE}");
 			}
-			if (fileInfoQuery.getContentType() != null && fileInfoQuery.getContentType().length() > 0) {
+			if (!StringUtil.isEmpty(fileInfoQuery.getContentType())) {
 				wheres.add("content_type=#{contentType}");
 			}
-			if (fileInfoQuery.getSort() != null && fileInfoQuery.getSort().length() > 0) {
+			if (!StringUtil.isEmpty(fileInfoQuery.getSort())) {
 				wheres.add("sort=#{sort}");
 			}
 			if (fileInfoQuery.getUploadTime() != null) {
@@ -156,27 +155,31 @@ public interface FileInfoDao {
 			fileInfoPo.setUploadTime(new Date());
 			if (checkUplate(fileInfoPo) != null) {
 				return "update " + TABLE_NAME + " set file_id=#{fileId} where false";
-			} else {
-				StringBuilder sql = new StringBuilder("update " + TABLE_NAME + " set");
-				if (fileInfoPo.getMd5() != null && fileInfoPo.getMd5().length() == 32) {
-					sql.append(" md5=#{md5},");
-				}
-				if (fileInfoPo.getFileLength() > 0) {
-					sql.append(" file_length=#{fileLength},");
-				}
-				if (fileInfoPo.getContentType() != null && fileInfoPo.getContentType().length() > 0) {
-					sql.append(" content_type=#{contentType},");
-				}
-				if (fileInfoPo.getSort() != null && fileInfoPo.getSort().length() > 0) {
-					sql.append(" sort=#{sort},");
-				}
-				if (fileInfoPo.getDescription() != null && fileInfoPo.getDescription().length() > 0) {
-					sql.append(" description=#{description},");
-				}
-				sql.append(" upload_time=#{uploadTime,jdbcType=DATE} where");
-				sql = whereMainKey(fileInfoPo, sql);
-				return removeEndsWith(sql.toString(), "and") + " limit 1";
 			}
+			List<String> sets = new LinkedList<>();
+			if (fileInfoPo.getMd5() != null && fileInfoPo.getMd5().length() == 32) {
+				sets.add("md5=#{md5}");
+			}
+			if (fileInfoPo.getFileLength() > 0) {
+				sets.add("file_length=#{fileLength}");
+			}
+			if (fileInfoPo.getContentType() != null && fileInfoPo.getContentType().length() > 0) {
+				sets.add("content_type=#{contentType}");
+			}
+			if (fileInfoPo.getSort() != null && fileInfoPo.getSort().length() > 0) {
+				sets.add("sort=#{sort}");
+			}
+			if (fileInfoPo.getDescription() != null && fileInfoPo.getDescription().length() > 0) {
+				sets.add("description=#{description}");
+			}
+
+			List<String> wheres = new LinkedList<>();
+			if (fileInfoPo.getFileId() > 0) {
+				wheres.add("file_id=#{fileId}");
+			} else if (!StringUtil.isEmpty(fileInfoPo.getFileName()) && fileInfoPo.getCreateTime() != null) {
+				wheres.add("file_name=#{fileName} and create_time=#{createTime,jdbcType=DATE}");
+			}
+			return SqlUtil.createUpdateSql(TABLE_NAME, sets, wheres).append(" limit 1").toString();
 		}
 	}
 }

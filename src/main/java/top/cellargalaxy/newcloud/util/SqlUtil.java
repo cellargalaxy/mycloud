@@ -33,6 +33,21 @@ public class SqlUtil {
 		return sql;
 	}
 
+	public static final StringBuilder createUpdateSql(String tableName, List<String> sets, List<String> wheres) {
+		StringBuilder sql = new StringBuilder("update " + tableName + " set");
+		if (sets.size() > 0) {
+			Iterator<String> iterator = sets.iterator();
+			if (iterator.hasNext()) {
+				sql.append(" " + iterator.next());
+			}
+			while (iterator.hasNext()) {
+				sql.append(", " + iterator.next());
+			}
+		}
+		addWhere(sql, wheres);
+		return sql;
+	}
+
 	private static final void addWhere(StringBuilder sql, List<String> wheres) {
 		if (wheres.size() == 0) {
 			sql.append(" false");
