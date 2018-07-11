@@ -10,6 +10,8 @@ import top.cellargalaxy.newcloud.model.po.FileInfoPo;
 public class FileInfoQuery extends FileInfoPo {
 	private int pageSize;
 	private int page;
+	private int off;
+	private int len;
 
 	public int getPageSize() {
 		return pageSize;
@@ -27,12 +29,30 @@ public class FileInfoQuery extends FileInfoPo {
 		this.page = page;
 	}
 
+	public int getOff() {
+		return off;
+	}
+
+	public void setOff(int off) {
+		this.off = off;
+	}
+
+	public int getLen() {
+		return len;
+	}
+
+	public void setLen(int len) {
+		this.len = len;
+	}
+
 	@Override
 	public String toString() {
 		return "FileInfoQuery{" +
 				"super=" + super.toString() +
 				", pageSize=" + pageSize +
 				", page=" + page +
+				", off=" + off +
+				", len=" + len +
 				'}';
 	}
 }

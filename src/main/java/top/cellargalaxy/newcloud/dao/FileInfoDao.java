@@ -1,6 +1,8 @@
 package top.cellargalaxy.newcloud.dao;
 
 import org.apache.ibatis.annotations.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import top.cellargalaxy.newcloud.model.po.FileInfoPo;
 import top.cellargalaxy.newcloud.model.query.FileInfoQuery;
 import top.cellargalaxy.newcloud.util.SqlUtil;
@@ -55,10 +57,10 @@ public interface FileInfoDao {
 
 
 	static String checkInsert(FileInfoPo fileInfoPo) {
-		if (StringUtil.isEmpty(fileInfoPo.getFileName())) {
+		if (StringUtil.isBlank(fileInfoPo.getFileName())) {
 			return "文件名不得为空";
 		}
-		if (StringUtil.isEmpty(fileInfoPo.getMd5())) {
+		if (StringUtil.isBlank(fileInfoPo.getMd5())) {
 			return "MD5不得为空";
 		}
 		if (fileInfoPo.getMd5().length() != 32) {
@@ -67,10 +69,10 @@ public interface FileInfoDao {
 		if (fileInfoPo.getFileLength() < 1) {
 			return "文件长度不得为空";
 		}
-		if (StringUtil.isEmpty(fileInfoPo.getContentType())) {
+		if (StringUtil.isBlank(fileInfoPo.getContentType())) {
 			return "文件类型不得为空";
 		}
-		if (StringUtil.isEmpty(fileInfoPo.getSort())) {
+		if (StringUtil.isBlank(fileInfoPo.getSort())) {
 			return "文件类别不得为空";
 		}
 		return null;
@@ -88,59 +90,57 @@ public interface FileInfoDao {
 
 	class FileInfoDaoProvider {
 		public static final String TABLE_NAME = "file_info";
+		private Logger logger = LoggerFactory.getLogger(this.getClass());
+		private String fileId = "file_id=#{fileId}";
+		private String fileNameAndCreateTime = "file_name=#{fileName} and create_time=#{createTime,jdbcType=DATE}";
+		private String md5 = "md5=#{md5}";
+		private String fileLength = "file_length=#{fileLength}";
+		private String contentType = "content_type=#{contentType}";
+		private String userId = "user_id=#{userId}";
+		private String sort = "sort=#{sort}";
+		private String description = "description like CONCAT(CONCAT('%', #{description}),'%')";
+		private String uploadTime = "upload_time=#{uploadTime,jdbcType=DATE}";
 
 		public String insert(FileInfoPo fileInfoPo) {
 			Date date = new Date();
 			fileInfoPo.setCreateTime(date);
 			fileInfoPo.setUploadTime(date);
-			return "insert into " + TABLE_NAME + "(file_name,create_time,md5,file_length,content_type,sort,description,upload_time) " +
-					"values(#{fileName},#{createTime,jdbcType=DATE},#{md5},#{fileLength},#{contentType},#{sort},#{description},#{uploadTime,jdbcType=DATE})";
+			String string = "insert into " + TABLE_NAME + "(file_name,create_time,md5,file_length,content_type,user_id,sort,description,upload_time) " +
+					"values(#{fileName},#{createTime,jdbcType=DATE},#{md5},#{fileLength},#{contentType},#{userId},#{sort},#{description},#{uploadTime,jdbcType=DATE})";
+			logger.debug("insert:{}, sql:{}", fileInfoPo, string);
+			return string;
 		}
 
 		public String delete(FileInfoQuery fileInfoQuery) {
 			List<String> wheres = new LinkedList<>();
-			if (fileInfoQuery.getFileId() > 0) {
-				wheres.add("file_id=#{fileId}");
-			} else if (!StringUtil.isEmpty(fileInfoQuery.getFileName()) && fileInfoQuery.getCreateTime() != null) {
-				wheres.add("file_name=#{fileName} and create_time=#{createTime,jdbcType=DATE}");
-			}
+			wheresAll(fileInfoQuery, wheres);
 			StringBuilder sql = SqlUtil.createDeleteSql(TABLE_NAME, wheres);
-			return sql.append(" limit 1").toString();
+			String string = sql.append(" limit 1").toString();
+			logger.debug("delete:{}, sql:{}", fileInfoQuery, string);
+			return string;
 		}
 
 		public String selectOne(FileInfoQuery fileInfoQuery) {
 			List<String> wheres = new LinkedList<>();
-			if (fileInfoQuery.getFileId() > 0) {
-				wheres.add("file_id=#{fileId}");
-			} else if (!StringUtil.isEmpty(fileInfoQuery.getFileName()) && fileInfoQuery.getCreateTime() != null) {
-				wheres.add("file_name=#{fileName} and create_time=#{createTime,jdbcType=DATE}");
-			}
+			wheresKey(fileInfoQuery, wheres);
 			StringBuilder sql = SqlUtil.createSelectSql(null, TABLE_NAME, wheres);
-			return sql.append(" limit 1").toString();
+			String string = sql.append(" limit 1").toString();
+			logger.debug("selectOne:{}, sql:{}", fileInfoQuery, string);
+			return string;
 		}
 
 		public String selectSome(FileInfoQuery fileInfoQuery) {
 			List<String> wheres = new LinkedList<>();
-			if (fileInfoQuery.getFileId() > 0) {
-				wheres.add("file_id=#{fileId}");
-			}
-			if (!StringUtil.isEmpty(fileInfoQuery.getFileName()) && fileInfoQuery.getCreateTime() != null) {
-				wheres.add("file_name=#{fileName} and create_time=#{createTime,jdbcType=DATE}");
-			}
-			if (!StringUtil.isEmpty(fileInfoQuery.getContentType())) {
-				wheres.add("content_type=#{contentType}");
-			}
-			if (!StringUtil.isEmpty(fileInfoQuery.getSort())) {
-				wheres.add("sort=#{sort}");
-			}
-			if (fileInfoQuery.getUploadTime() != null) {
-				wheres.add("upload_time=#{uploadTime,jdbcType=DATE}");
-			}
+			wheresAll(fileInfoQuery, wheres);
 			StringBuilder sql = SqlUtil.createSelectSql(null, TABLE_NAME, wheres);
+			fileInfoQuery.setLen(fileInfoQuery.getPageSize());
+			fileInfoQuery.setOff((fileInfoQuery.getPage() - 1) * fileInfoQuery.getPageSize());
 			if (fileInfoQuery.getPageSize() > 0 && fileInfoQuery.getPage() > 0) {
-				sql.append(" limit 1");//////////
+				sql.append(" limit #{off},#{len}");
 			}
-			return sql.toString();
+			String string = sql.toString();
+			logger.debug("selectSome:{}, sql:{}", fileInfoQuery, string);
+			return string;
 		}
 
 		public String selectContentType() {
@@ -157,29 +157,50 @@ public interface FileInfoDao {
 				return "update " + TABLE_NAME + " set file_id=#{fileId} where false";
 			}
 			List<String> sets = new LinkedList<>();
-			if (fileInfoPo.getMd5() != null && fileInfoPo.getMd5().length() == 32) {
-				sets.add("md5=#{md5}");
+			wheresAll(fileInfoPo, sets);
+			List<String> wheres = new LinkedList<>();
+			wheresKey(fileInfoPo, wheres);
+			String string = SqlUtil.createUpdateSql(TABLE_NAME, sets, wheres).append(" limit 1").toString();
+			logger.debug("selectSome:{}, sql:{}", fileInfoPo, string);
+			return string;
+		}
+
+		private void wheresAll(FileInfoPo fileInfoPo, List<String> wheres) {
+			if (fileInfoPo.getFileId() > 0) {
+				wheres.add(fileId);
+			}
+			if (!StringUtil.isEmpty(fileInfoPo.getFileName()) && fileInfoPo.getCreateTime() != null) {
+				wheres.add(fileNameAndCreateTime);
+			}
+			if (!StringUtil.isEmpty(fileInfoPo.getMd5())) {
+				wheres.add(md5);
 			}
 			if (fileInfoPo.getFileLength() > 0) {
-				sets.add("file_length=#{fileLength}");
+				wheres.add(fileLength);
 			}
-			if (fileInfoPo.getContentType() != null && fileInfoPo.getContentType().length() > 0) {
-				sets.add("content_type=#{contentType}");
+			if (!StringUtil.isEmpty(fileInfoPo.getContentType())) {
+				wheres.add(contentType);
 			}
-			if (fileInfoPo.getSort() != null && fileInfoPo.getSort().length() > 0) {
-				sets.add("sort=#{sort}");
+			if (fileInfoPo.getUserId() > 0) {
+				wheres.add(userId);
 			}
-			if (fileInfoPo.getDescription() != null && fileInfoPo.getDescription().length() > 0) {
-				sets.add("description=#{description}");
+			if (!StringUtil.isEmpty(fileInfoPo.getSort())) {
+				wheres.add(sort);
 			}
+			if (fileInfoPo.getUploadTime() != null) {
+				wheres.add(uploadTime);
+			}
+			if (!StringUtil.isEmpty(fileInfoPo.getDescription())) {
+				wheres.add(description);
+			}
+		}
 
-			List<String> wheres = new LinkedList<>();
+		private void wheresKey(FileInfoPo fileInfoPo, List<String> wheres) {
 			if (fileInfoPo.getFileId() > 0) {
-				wheres.add("file_id=#{fileId}");
-			} else if (!StringUtil.isEmpty(fileInfoPo.getFileName()) && fileInfoPo.getCreateTime() != null) {
-				wheres.add("file_name=#{fileName} and create_time=#{createTime,jdbcType=DATE}");
+				wheres.add(fileId);
+			} else if (!StringUtil.isBlank(fileInfoPo.getFileName()) && fileInfoPo.getCreateTime() != null) {
+				wheres.add(fileNameAndCreateTime);
 			}
-			return SqlUtil.createUpdateSql(TABLE_NAME, sets, wheres).append(" limit 1").toString();
 		}
 	}
 }

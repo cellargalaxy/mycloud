@@ -12,6 +12,10 @@ public class StringUtil {
 		return string == null || string.length() == 0;
 	}
 
+	public static final boolean isBlank(String string) {
+		return string == null || string.trim().length() == 0;
+	}
+
 	public static final void appendList(StringBuilder stringBuilder, List<String> strings, String elseString, String separator) {
 		if (strings == null) {
 			return;
