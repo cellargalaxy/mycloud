@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import top.cellargalaxy.newcloud.model.po.FileInfoPo;
+import top.cellargalaxy.newcloud.model.query.FileInfoQuery;
 
 import static org.junit.Assert.*;
 
@@ -28,26 +29,26 @@ public class FileInfoDaoTest {
 
 	@Test
 	public void delete() {
-		FileInfoPo fileInfoPo=new FileInfoPo();
-		fileInfoPo.setFileId(1);
-		assertEquals(1, fileInfoDao.delete(fileInfoPo));
+		FileInfoQuery fileInfoQuery=new FileInfoQuery();
+		fileInfoQuery.setFileId(1);
+		assertEquals(1, fileInfoDao.delete(fileInfoQuery));
 	}
 
 	@Test
 	public void selectOne() {
-		FileInfoPo fileInfoPo=new FileInfoPo();
-		fileInfoPo.setFileId(2);
+		FileInfoQuery fileInfoQuery=new FileInfoQuery();
+		fileInfoQuery.setFileId(2);
 		System.out.println();
-		System.out.println(fileInfoDao.selectOne(fileInfoPo));
+		System.out.println(fileInfoDao.selectOne(fileInfoQuery));
 		System.out.println();
 	}
 
 	@Test
 	public void selectSome() {
-		FileInfoPo fileInfoPo=new FileInfoPo();
-		fileInfoPo.setSort("图片");
+		FileInfoQuery fileInfoQuery=new FileInfoQuery();
+		fileInfoQuery.setSort("图片");
 		System.out.println();
-		for (FileInfoPo infoPo: fileInfoDao.selectSome(fileInfoPo)) {
+		for (FileInfoPo infoPo: fileInfoDao.selectSome(fileInfoQuery)) {
 			System.out.println(infoPo);
 		}
 		System.out.println();

@@ -37,7 +37,7 @@ public interface FileInfoDao {
 			@Result(property = "userId", column = "user_id"),
 			@Result(property = "sort", column = "sort"),
 			@Result(property = "description", column = "description"),
-			@Result(property = "uploadTime", column = "upload_time", javaType = Date.class, jdbcType = DATE)
+			@Result(property = "updateTime", column = "update_time", javaType = Date.class, jdbcType = DATE)
 	})
 	@SelectProvider(type = FileInfoDaoProvider.class, method = "selectOne")
 	FileInfoPo selectOne(FileInfoQuery fileInfoQuery);
@@ -59,21 +59,23 @@ public interface FileInfoDao {
 		public static final String TABLE_NAME = "file_info";
 		private static final Logger logger = LoggerFactory.getLogger(FileInfoDaoProvider.class);
 		private static final String fileId = "file_id=#{fileId}";
-		private static final String fileNameAndCreateTime = "file_name=#{fileName} and create_time=#{createTime,jdbcType=DATE}";
+		private static final String fileName = "file_name=#{fileName}";
+		private static final String createTime = "create_time=#{createTime,jdbcType=DATE}";
 		private static final String md5 = "md5=#{md5}";
 		private static final String fileLength = "file_length=#{fileLength}";
 		private static final String contentType = "content_type=#{contentType}";
 		private static final String userId = "user_id=#{userId}";
 		private static final String sort = "sort=#{sort}";
 		private static final String description = "description like CONCAT(CONCAT('%', #{description}),'%')";
-		private static final String uploadTime = "upload_time=#{uploadTime,jdbcType=DATE}";
+		private static final String descriptionSet = "description=#{description}";
+		private static final String updateTime = "update_time=#{updateTime,jdbcType=DATE}";
 
 		public static final String insert(FileInfoPo fileInfoPo) {
 			Date date = new Date();
 			fileInfoPo.setCreateTime(date);
-			fileInfoPo.setUploadTime(date);
-			String string = "insert into " + TABLE_NAME + "(file_name,create_time,md5,file_length,content_type,user_id,sort,description,upload_time) " +
-					"values(#{fileName},#{createTime,jdbcType=DATE},#{md5},#{fileLength},#{contentType},#{userId},#{sort},#{description},#{uploadTime,jdbcType=DATE})";
+			fileInfoPo.setUpdateTime(date);
+			String string = "insert into " + TABLE_NAME + "(file_name,create_time,md5,file_length,content_type,user_id,sort,description,update_time) " +
+					"values(#{fileName},#{createTime,jdbcType=DATE},#{md5},#{fileLength},#{contentType},#{userId},#{sort},#{description},#{updateTime,jdbcType=DATE})";
 			logger.debug("insert:{}, sql:{}", fileInfoPo, string);
 			return string;
 		}
@@ -82,7 +84,7 @@ public interface FileInfoDao {
 			List<String> wheres = new LinkedList<>();
 			wheresAll(fileInfoQuery, wheres);
 			StringBuilder sql = SqlUtil.createDeleteSql(TABLE_NAME, wheres);
-			String string = sql.append(" limit 1").toString();
+			String string = sql.toString();
 			logger.debug("delete:{}, sql:{}", fileInfoQuery, string);
 			return string;
 		}
@@ -100,8 +102,7 @@ public interface FileInfoDao {
 			List<String> wheres = new LinkedList<>();
 			wheresAll(fileInfoQuery, wheres);
 			StringBuilder sql = SqlUtil.createSelectSql(null, TABLE_NAME, wheres);
-			fileInfoQuery.setLen(fileInfoQuery.getPageSize());
-			fileInfoQuery.setOff((fileInfoQuery.getPage() - 1) * fileInfoQuery.getPageSize());
+			SqlUtil.initPageQuery(fileInfoQuery);
 			if (fileInfoQuery.getPageSize() > 0 && fileInfoQuery.getPage() > 0) {
 				sql.append(" limit #{off},#{len}");
 			}
@@ -119,8 +120,9 @@ public interface FileInfoDao {
 		}
 
 		public static final String update(FileInfoPo fileInfoPo) {
-			fileInfoPo.setUploadTime(new Date());
-			if (checkUplate(fileInfoPo) != null) {
+			fileInfoPo.setCreateTime(null);
+			fileInfoPo.setUpdateTime(new Date());
+			if (checkUpload(fileInfoPo) != null) {
 				return "update " + TABLE_NAME + " set file_id=#{fileId} where false";
 			}
 			List<String> sets = new LinkedList<>();
@@ -128,8 +130,39 @@ public interface FileInfoDao {
 			List<String> wheres = new LinkedList<>();
 			wheresKey(fileInfoPo, wheres);
 			String string = SqlUtil.createUpdateSql(TABLE_NAME, sets, wheres).append(" limit 1").toString();
-			logger.debug("selectSome:{}, sql:{}", fileInfoPo, string);
+			logger.debug("update:{}, sql:{}", fileInfoPo, string);
 			return string;
+		}
+
+		private static final void setsAll(FileInfoPo fileInfoPo, List<String> sets) {
+			if (fileInfoPo.getFileId() > 0) {
+				sets.add(fileId);
+			}
+			if (!StringUtil.isBlank(fileInfoPo.getFileName()) && fileInfoPo.getCreateTime() != null) {
+				sets.add(fileName);
+				sets.add(createTime);
+			}
+			if (!StringUtil.isBlank(fileInfoPo.getMd5())) {
+				sets.add(md5);
+			}
+			if (fileInfoPo.getFileLength() > 0) {
+				sets.add(fileLength);
+			}
+			if (!StringUtil.isBlank(fileInfoPo.getContentType())) {
+				sets.add(contentType);
+			}
+			if (fileInfoPo.getUserId() > 0) {
+				sets.add(userId);
+			}
+			if (!StringUtil.isBlank(fileInfoPo.getSort())) {
+				sets.add(sort);
+			}
+			if (fileInfoPo.getUpdateTime() != null) {
+				sets.add(updateTime);
+			}
+			if (!StringUtil.isBlank(fileInfoPo.getDescription())) {
+				sets.add(descriptionSet);
+			}
 		}
 
 		private static final void wheresAll(FileInfoPo fileInfoPo, List<String> wheres) {
@@ -137,7 +170,8 @@ public interface FileInfoDao {
 				wheres.add(fileId);
 			}
 			if (!StringUtil.isBlank(fileInfoPo.getFileName()) && fileInfoPo.getCreateTime() != null) {
-				wheres.add(fileNameAndCreateTime);
+				wheres.add(fileName);
+				wheres.add(createTime);
 			}
 			if (!StringUtil.isBlank(fileInfoPo.getMd5())) {
 				wheres.add(md5);
@@ -154,8 +188,8 @@ public interface FileInfoDao {
 			if (!StringUtil.isBlank(fileInfoPo.getSort())) {
 				wheres.add(sort);
 			}
-			if (fileInfoPo.getUploadTime() != null) {
-				wheres.add(uploadTime);
+			if (fileInfoPo.getUpdateTime() != null) {
+				wheres.add(updateTime);
 			}
 			if (!StringUtil.isBlank(fileInfoPo.getDescription())) {
 				wheres.add(description);
@@ -166,7 +200,8 @@ public interface FileInfoDao {
 			if (fileInfoPo.getFileId() > 0) {
 				wheres.add(fileId);
 			} else if (!StringUtil.isBlank(fileInfoPo.getFileName()) && fileInfoPo.getCreateTime() != null) {
-				wheres.add(fileNameAndCreateTime);
+				wheres.add(fileName);
+				wheres.add(createTime);
 			}
 		}
 
@@ -192,7 +227,7 @@ public interface FileInfoDao {
 			return null;
 		}
 
-		public static final String checkUplate(FileInfoPo fileInfoPo) {
+		public static final String checkUpload(FileInfoPo fileInfoPo) {
 			if (fileInfoPo.getFileId() < 1) {
 				return "文件编号不得为空";
 			}

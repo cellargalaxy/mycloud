@@ -1,5 +1,7 @@
 package top.cellargalaxy.newcloud.util;
 
+import top.cellargalaxy.newcloud.model.query.PageQuery;
+
 import java.util.Iterator;
 import java.util.List;
 
@@ -8,6 +10,11 @@ import java.util.List;
  * @time 2018/7/9
  */
 public class SqlUtil {
+	public static final void initPageQuery(PageQuery pageQuery) {
+		pageQuery.setLen(pageQuery.getPageSize());
+		pageQuery.setOff((pageQuery.getPage() - 1) * pageQuery.getPageSize());
+	}
+
 	public static final StringBuilder createDeleteSql(String tableName, List<String> wheres) {
 		StringBuilder sql = new StringBuilder("delete from " + tableName + " where");
 		addWhere(sql, wheres);
@@ -44,6 +51,7 @@ public class SqlUtil {
 				sql.append(", " + iterator.next());
 			}
 		}
+		sql.append(" where");
 		addWhere(sql, wheres);
 		return sql;
 	}

@@ -18,7 +18,7 @@ public class FileInfoPo implements Serializable {
 	private int userId;
 	private String sort;
 	private String description;
-	private Date uploadTime;
+	private Date updateTime;
 
 	public int getFileId() {
 		return fileId;
@@ -92,12 +92,12 @@ public class FileInfoPo implements Serializable {
 		this.description = description;
 	}
 
-	public Date getUploadTime() {
-		return uploadTime;
+	public Date getUpdateTime() {
+		return updateTime;
 	}
 
-	public void setUploadTime(Date uploadTime) {
-		this.uploadTime = uploadTime;
+	public void setUpdateTime(Date updateTime) {
+		this.updateTime = updateTime;
 	}
 
 	@Override
@@ -112,7 +112,7 @@ public class FileInfoPo implements Serializable {
 				", userId=" + userId +
 				", sort='" + sort + '\'' +
 				", description='" + description + '\'' +
-				", uploadTime=" + uploadTime +
+				", updateTime=" + updateTime +
 				'}';
 	}
 }

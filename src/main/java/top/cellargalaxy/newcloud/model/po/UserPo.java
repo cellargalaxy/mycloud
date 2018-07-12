@@ -1,6 +1,7 @@
 package top.cellargalaxy.newcloud.model.po;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * @author cellargalaxy
@@ -11,6 +12,8 @@ public class UserPo implements Serializable {
 	private int userId;
 	private String userName;
 	private String userPassword;
+	private Date createTime;
+	private Date updateTime;
 
 	public int getUserId() {
 		return userId;
@@ -36,12 +39,30 @@ public class UserPo implements Serializable {
 		this.userPassword = userPassword;
 	}
 
+	public Date getCreateTime() {
+		return createTime;
+	}
+
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
+	}
+
+	public Date getUpdateTime() {
+		return updateTime;
+	}
+
+	public void setUpdateTime(Date updateTime) {
+		this.updateTime = updateTime;
+	}
+
 	@Override
 	public String toString() {
 		return "UserPo{" +
 				"userId=" + userId +
 				", userName='" + userName + '\'' +
 				", userPassword='" + userPassword + '\'' +
+				", createTime=" + createTime +
+				", updateTime=" + updateTime +
 				'}';
 	}
 }

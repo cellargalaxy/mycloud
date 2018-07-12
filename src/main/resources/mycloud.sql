@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 8.0.11, for Win64 (x86_64)
 --
--- Host: localhost    Database: newcloud
+-- Host: localhost    Database: mycloud
 -- ------------------------------------------------------
 -- Server version	8.0.11
 
@@ -26,7 +26,11 @@ CREATE TABLE `authorization` (
   `authorization_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '授权id',
   `user_id` int(11) NOT NULL COMMENT '用户id',
   `permission_id` int(11) NOT NULL COMMENT '权限id',
-  PRIMARY KEY (`authorization_id`)
+  `create_time` datetime NOT NULL COMMENT '授权创建时间',
+  `update_time` datetime NOT NULL COMMENT '授权更新时间',
+  PRIMARY KEY (`authorization_id`),
+  KEY `idx_user_id` (`user_id`),
+  KEY `idx_permission_id` (`permission_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -79,13 +83,13 @@ CREATE TABLE `file_info` (
   `user_id` int(11) NOT NULL COMMENT '所有者id',
   `sort` varchar(16) NOT NULL COMMENT '文件分类',
   `description` varchar(256) DEFAULT NULL COMMENT '文件描述',
-  `upload_time` datetime NOT NULL COMMENT '文件最新上传时间',
+  `update_time` datetime NOT NULL COMMENT '文件更新时间',
   PRIMARY KEY (`file_id`),
   KEY `idx_content_type` (`content_type`),
   KEY `idx_sort` (`sort`),
   KEY `idx_file_name_create_time` (`file_name`,`create_time`) USING BTREE,
-  KEY `idx_upload_time` (`upload_time`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
+  KEY `idx_update_time` (`update_time`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -105,8 +109,10 @@ DROP TABLE IF EXISTS `permission`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
  SET character_set_client = utf8mb4 ;
 CREATE TABLE `permission` (
-  `permission_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '权限id',
+  `permission_id` int(11) NOT NULL COMMENT '权限id',
   `permission_mark` varchar(256) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '权限备注',
+  `create_time` datetime NOT NULL COMMENT '权限创建时间',
+  `update_time` datetime NOT NULL COMMENT '权限更新时间',
   PRIMARY KEY (`permission_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -130,8 +136,11 @@ DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user` (
   `user_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '用户id',
   `user_name` char(32) NOT NULL COMMENT '用户名',
-  `user_password` char(32) NOT NULL COMMENT '用户密码的MD5',
-  PRIMARY KEY (`user_id`)
+  `user_password` char(32) NOT NULL COMMENT '用户密码',
+  `create_time` datetime NOT NULL COMMENT '用户创建时间',
+  `update_time` datetime NOT NULL COMMENT '更新时间',
+  PRIMARY KEY (`user_id`),
+  UNIQUE KEY `uk_user_name` (`user_name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -153,4 +162,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-07-11 23:34:51
+-- Dump completed on 2018-07-12  9:55:48

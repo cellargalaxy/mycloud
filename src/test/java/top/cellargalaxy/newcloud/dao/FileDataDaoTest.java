@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import top.cellargalaxy.newcloud.model.po.FileDataPo;
+import top.cellargalaxy.newcloud.model.query.FileDataQuery;
 
 import java.util.Arrays;
 
@@ -27,12 +28,16 @@ public class FileDataDaoTest {
 
 	@Test
 	public void delete() {
-		assertEquals(1, dataDao.delete(2));
+		FileDataQuery fileDataQuery = new FileDataQuery();
+		fileDataQuery.setFileId(2);
+		assertEquals(1, dataDao.delete(fileDataQuery));
 	}
 
 	@Test
 	public void select() {
-		FileDataPo fileDataPo = dataDao.select(2);
+		FileDataQuery fileDataQuery = new FileDataQuery();
+		fileDataQuery.setFileId(2);
+		FileDataPo fileDataPo = dataDao.select(fileDataQuery);
 		System.out.println();
 		System.out.println(fileDataPo + " ; " + (fileDataPo != null ? (Arrays.toString(fileDataPo.getFileData())) : "null"));
 		System.out.println();
