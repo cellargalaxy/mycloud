@@ -2,32 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c2ef05b8-2b63-4160-a53e-9bf9d968257d" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_boot_spring_boot_starter_redis_unknown.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/top/cellargalaxy/newcloud/dao/AuthorizationDao.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/top/cellargalaxy/newcloud/dao/PermissionDao.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/top/cellargalaxy/newcloud/model/query/PageQuery.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/top/cellargalaxy/newcloud/dao/AuthorizationDaoTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/top/cellargalaxy/newcloud/dao/PermissionDaoTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/top/cellargalaxy/newcloud/dao/UserDaoTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/newcloud.iml" beforeDir="false" afterPath="$PROJECT_DIR$/newcloud.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/top/cellargalaxy/newcloud/dao/FileInfoDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/top/cellargalaxy/newcloud/dao/FileInfoDao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/top/cellargalaxy/newcloud/dao/UserDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/top/cellargalaxy/newcloud/dao/UserDao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/top/cellargalaxy/newcloud/model/po/AuthorizationPo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/top/cellargalaxy/newcloud/model/po/AuthorizationPo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/top/cellargalaxy/newcloud/model/po/FileInfoPo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/top/cellargalaxy/newcloud/model/po/FileInfoPo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/top/cellargalaxy/newcloud/model/po/PermissionPo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/top/cellargalaxy/newcloud/model/po/PermissionPo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/top/cellargalaxy/newcloud/model/po/UserPo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/top/cellargalaxy/newcloud/model/po/UserPo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/top/cellargalaxy/newcloud/model/query/AuthorizationQuery.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/top/cellargalaxy/newcloud/model/query/AuthorizationQuery.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/top/cellargalaxy/newcloud/model/query/FileInfoQuery.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/top/cellargalaxy/newcloud/model/query/FileInfoQuery.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/top/cellargalaxy/newcloud/model/query/PermissionQuery.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/top/cellargalaxy/newcloud/model/query/PermissionQuery.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/top/cellargalaxy/newcloud/model/query/UserQuery.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/top/cellargalaxy/newcloud/model/query/UserQuery.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/top/cellargalaxy/newcloud/util/SqlUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/top/cellargalaxy/newcloud/util/SqlUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/mycloud.sql" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/mycloud.sql" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/top/cellargalaxy/newcloud/NewcloudApplicationTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/top/cellargalaxy/newcloud/NewcloudApplicationTests.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/top/cellargalaxy/newcloud/dao/FileDataDaoTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/top/cellargalaxy/newcloud/dao/FileDataDaoTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/top/cellargalaxy/newcloud/dao/FileInfoDaoTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/top/cellargalaxy/newcloud/dao/FileInfoDaoTest.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -112,32 +88,34 @@
     <session id="178857532">
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="java" value="91" />
-          <entry key="properties" value="3" />
+          <entry key="class" value="5" />
+          <entry key="java" value="102" />
+          <entry key="properties" value="5" />
           <entry key="sql" value="3" />
           <entry key="user" value="1" />
-          <entry key="xml" value="2" />
+          <entry key="xml" value="3" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
+          <entry key="CLASS" value="5" />
           <entry key="Database Element" value="1" />
-          <entry key="JAVA" value="91" />
-          <entry key="Properties" value="3" />
+          <entry key="JAVA" value="102" />
+          <entry key="Properties" value="5" />
           <entry key="SQL" value="3" />
-          <entry key="XML" value="2" />
+          <entry key="XML" value="3" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="JAVA" value="2867" />
+          <entry key="JAVA" value="3175" />
           <entry key="Properties" value="1" />
           <entry key="XML" value="1" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="java" value="2867" />
+          <entry key="java" value="3175" />
           <entry key="properties" value="1" />
           <entry key="xml" value="1" />
         </counts>
@@ -149,8 +127,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/test/java/top/cellargalaxy/newcloud/NewcloudApplicationTests.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="266">
-              <caret line="14" column="27" selection-start-line="14" selection-start-column="27" selection-end-line="14" selection-end-column="27" />
+            <state relative-caret-position="304">
+              <caret line="17" column="10" lean-forward="true" selection-start-line="17" selection-start-column="10" selection-end-line="17" selection-end-column="10" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -158,11 +136,20 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/pom.xml">
+      <file pinned="false" current-in-tab="false">
+        <entry file="jar://$MAVEN_REPOSITORY$/org/springframework/spring-context/5.0.7.RELEASE/spring-context-5.0.7.RELEASE.jar!/org/springframework/cache/annotation/Cacheable.class">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="385">
-              <caret line="67" lean-forward="true" selection-start-line="67" selection-end-line="67" />
+            <state relative-caret-position="190">
+              <caret line="22" lean-forward="true" selection-start-line="22" selection-end-line="22" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/resources/application.properties">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="505">
+              <caret line="62" column="23" lean-forward="true" selection-start-line="62" selection-start-column="23" selection-end-line="62" selection-end-column="23" />
             </state>
           </provider>
         </entry>
@@ -172,9 +159,9 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Class" />
         <option value="Interface" />
         <option value="JUnit4 Test Class" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -221,16 +208,24 @@
         <option value="$PROJECT_DIR$/src/main/java/top/cellargalaxy/newcloud/model/query/PermissionQuery.java" />
         <option value="$PROJECT_DIR$/src/main/java/top/cellargalaxy/newcloud/model/query/UserQuery.java" />
         <option value="$PROJECT_DIR$/src/test/java/top/cellargalaxy/newcloud/dao/AuthorizationDaoTest.java" />
-        <option value="$PROJECT_DIR$/src/main/java/top/cellargalaxy/newcloud/dao/AuthorizationDao.java" />
         <option value="$PROJECT_DIR$/src/main/java/top/cellargalaxy/newcloud/dao/FileInfoDao.java" />
         <option value="$PROJECT_DIR$/src/test/java/top/cellargalaxy/newcloud/dao/PermissionDaoTest.java" />
         <option value="$PROJECT_DIR$/src/main/resources/mycloud.sql" />
         <option value="$PROJECT_DIR$/src/main/java/top/cellargalaxy/newcloud/dao/PermissionDao.java" />
         <option value="$PROJECT_DIR$/src/test/java/top/cellargalaxy/newcloud/dao/UserDaoTest.java" />
         <option value="$PROJECT_DIR$/src/main/java/top/cellargalaxy/newcloud/dao/UserDao.java" />
-        <option value="$PROJECT_DIR$/src/main/resources/application.properties" />
-        <option value="$PROJECT_DIR$/src/test/java/top/cellargalaxy/newcloud/NewcloudApplicationTests.java" />
         <option value="$PROJECT_DIR$/pom.xml" />
+        <option value="$PROJECT_DIR$/src/main/resources/application.properties" />
+        <option value="$PROJECT_DIR$/src/main/java/top/cellargalaxy/newcloud/learn/RedisObjectSerializer.java" />
+        <option value="$PROJECT_DIR$/src/main/java/top/cellargalaxy/newcloud/learn/RedisObjectTemplate.java" />
+        <option value="$PROJECT_DIR$/src/main/java/top/cellargalaxy/newcloud/learn/RedisConfig.java" />
+        <option value="$PROJECT_DIR$/src/main/java/top/cellargalaxy/newcloud/learn/AbstractBaseRedisDao.java" />
+        <option value="$PROJECT_DIR$/src/main/java/top/cellargalaxy/newcloud/learn/IUserDao.java" />
+        <option value="$PROJECT_DIR$/src/test/java/top/cellargalaxy/newcloud/learn/UserDaoImplTest.java" />
+        <option value="$PROJECT_DIR$/src/main/java/top/cellargalaxy/newcloud/learn/UserDaoImpl.java" />
+        <option value="$PROJECT_DIR$/src/main/java/top/cellargalaxy/newcloud/learn/ObjectRedisTemplate.java" />
+        <option value="$PROJECT_DIR$/src/main/java/top/cellargalaxy/newcloud/dao/AuthorizationDao.java" />
+        <option value="$PROJECT_DIR$/src/test/java/top/cellargalaxy/newcloud/NewcloudApplicationTests.java" />
       </list>
     </option>
   </component>
@@ -282,7 +277,7 @@
         <observation name="false" value="51.0" />
       </dailyData>
       <dailyData date="12-7-2018">
-        <observation name="false" value="574.0" />
+        <observation name="false" value="638.0" />
       </dailyData>
     </factor>
     <factor id="binaryFeature:liftShorterClasses">
@@ -310,8 +305,8 @@
         <observation name="false" value="44.0" />
       </dailyData>
       <dailyData date="12-7-2018">
-        <observation name="UNDEFINED" value="122.0" />
-        <observation name="false" value="452.0" />
+        <observation name="UNDEFINED" value="136.0" />
+        <observation name="false" value="502.0" />
       </dailyData>
     </factor>
     <factor id="binaryFeature:middleMatching">
@@ -335,7 +330,7 @@
         <observation name="true" value="1.0" />
       </dailyData>
       <dailyData date="12-7-2018">
-        <observation name="false" value="568.0" />
+        <observation name="false" value="632.0" />
         <observation name="true" value="6.0" />
       </dailyData>
     </factor>
@@ -365,8 +360,8 @@
         <observation name="UNDEFINED" value="27.0" />
       </dailyData>
       <dailyData date="12-7-2018">
-        <observation name="0" value="148.0" />
-        <observation name="UNDEFINED" value="426.0" />
+        <observation name="0" value="171.0" />
+        <observation name="UNDEFINED" value="467.0" />
       </dailyData>
     </factor>
     <factor id="binaryFeature:prox_inResolveScope">
@@ -400,9 +395,9 @@
         <observation name="true" value="37.0" />
       </dailyData>
       <dailyData date="12-7-2018">
-        <observation name="UNDEFINED" value="93.0" />
-        <observation name="false" value="142.0" />
-        <observation name="true" value="339.0" />
+        <observation name="UNDEFINED" value="106.0" />
+        <observation name="false" value="151.0" />
+        <observation name="true" value="381.0" />
       </dailyData>
     </factor>
     <factor id="binaryFeature:prox_openedInEditor">
@@ -436,9 +431,9 @@
         <observation name="true" value="30.0" />
       </dailyData>
       <dailyData date="12-7-2018">
-        <observation name="UNDEFINED" value="93.0" />
-        <observation name="false" value="316.0" />
-        <observation name="true" value="165.0" />
+        <observation name="UNDEFINED" value="106.0" />
+        <observation name="false" value="360.0" />
+        <observation name="true" value="172.0" />
       </dailyData>
     </factor>
     <factor id="binaryFeature:prox_sameDirectory">
@@ -472,9 +467,9 @@
         <observation name="true" value="16.0" />
       </dailyData>
       <dailyData date="12-7-2018">
-        <observation name="UNDEFINED" value="93.0" />
-        <observation name="false" value="349.0" />
-        <observation name="true" value="132.0" />
+        <observation name="UNDEFINED" value="106.0" />
+        <observation name="false" value="393.0" />
+        <observation name="true" value="139.0" />
       </dailyData>
     </factor>
     <factor id="binaryFeature:prox_sameLogicalRoot">
@@ -508,9 +503,9 @@
         <observation name="true" value="30.0" />
       </dailyData>
       <dailyData date="12-7-2018">
-        <observation name="UNDEFINED" value="93.0" />
-        <observation name="false" value="283.0" />
-        <observation name="true" value="198.0" />
+        <observation name="UNDEFINED" value="106.0" />
+        <observation name="false" value="317.0" />
+        <observation name="true" value="215.0" />
       </dailyData>
     </factor>
     <factor id="binaryFeature:prox_sdkOrLibrary">
@@ -544,9 +539,9 @@
         <observation name="true" value="6.0" />
       </dailyData>
       <dailyData date="12-7-2018">
-        <observation name="UNDEFINED" value="93.0" />
-        <observation name="false" value="426.0" />
-        <observation name="true" value="55.0" />
+        <observation name="UNDEFINED" value="106.0" />
+        <observation name="false" value="473.0" />
+        <observation name="true" value="59.0" />
       </dailyData>
     </factor>
     <factor id="binaryFeature:templates">
@@ -573,8 +568,8 @@
         <observation name="false" value="51.0" />
       </dailyData>
       <dailyData date="12-7-2018">
-        <observation name="false" value="529.0" />
-        <observation name="true" value="45.0" />
+        <observation name="false" value="584.0" />
+        <observation name="true" value="54.0" />
       </dailyData>
     </factor>
     <factor id="categoricalFeature:accessible">
@@ -602,8 +597,8 @@
         <observation name="UNDEFINED" value="7.0" />
       </dailyData>
       <dailyData date="12-7-2018">
-        <observation name="NORMAL" value="481.0" />
-        <observation name="UNDEFINED" value="93.0" />
+        <observation name="NORMAL" value="533.0" />
+        <observation name="UNDEFINED" value="105.0" />
       </dailyData>
     </factor>
     <factor id="categoricalFeature:expectedType">
@@ -645,10 +640,10 @@
         <observation name="ofDefaultType" value="1.0" />
       </dailyData>
       <dailyData date="12-7-2018">
-        <observation name="UNDEFINED" value="93.0" />
-        <observation name="expected" value="86.0" />
-        <observation name="maybeExpected" value="47.0" />
-        <observation name="normal" value="344.0" />
+        <observation name="UNDEFINED" value="105.0" />
+        <observation name="expected" value="101.0" />
+        <observation name="maybeExpected" value="52.0" />
+        <observation name="normal" value="376.0" />
         <observation name="ofDefaultType" value="4.0" />
       </dailyData>
     </factor>
@@ -703,14 +698,15 @@
         <observation name="variable" value="9.0" />
       </dailyData>
       <dailyData date="12-7-2018">
-        <observation name="UNDEFINED" value="93.0" />
+        <observation name="UNDEFINED" value="105.0" />
         <observation name="annoMethod" value="4.0" />
-        <observation name="classNameOrGlobalStatic" value="108.0" />
-        <observation name="expectedTypeVariable" value="23.0" />
-        <observation name="normal" value="229.0" />
-        <observation name="probableKeyword" value="18.0" />
-        <observation name="suitableClass" value="19.0" />
-        <observation name="variable" value="80.0" />
+        <observation name="classNameOrGlobalStatic" value="120.0" />
+        <observation name="expectedTypeArgument" value="1.0" />
+        <observation name="expectedTypeVariable" value="24.0" />
+        <observation name="normal" value="254.0" />
+        <observation name="probableKeyword" value="21.0" />
+        <observation name="suitableClass" value="22.0" />
+        <observation name="variable" value="87.0" />
       </dailyData>
     </factor>
     <factor id="categoricalFeature:prox_groovyReferenceListWeigher">
@@ -738,8 +734,8 @@
         <observation name="unknown" value="44.0" />
       </dailyData>
       <dailyData date="12-7-2018">
-        <observation name="UNDEFINED" value="93.0" />
-        <observation name="unknown" value="481.0" />
+        <observation name="UNDEFINED" value="106.0" />
+        <observation name="unknown" value="532.0" />
       </dailyData>
     </factor>
     <factor id="categoricalFeature:prox_javaInheritance">
@@ -774,9 +770,9 @@
         <observation name="null" value="37.0" />
       </dailyData>
       <dailyData date="12-7-2018">
-        <observation name="UNDEFINED" value="93.0" />
-        <observation name="false" value="124.0" />
-        <observation name="null" value="354.0" />
+        <observation name="UNDEFINED" value="106.0" />
+        <observation name="false" value="140.0" />
+        <observation name="null" value="389.0" />
         <observation name="true" value="3.0" />
       </dailyData>
     </factor>
@@ -808,9 +804,9 @@
         <observation name="unknown" value="44.0" />
       </dailyData>
       <dailyData date="12-7-2018">
-        <observation name="UNDEFINED" value="93.0" />
+        <observation name="UNDEFINED" value="106.0" />
         <observation name="applicableByKind" value="1.0" />
-        <observation name="unknown" value="480.0" />
+        <observation name="unknown" value="531.0" />
       </dailyData>
     </factor>
     <factor id="categoricalFeature:recursion">
@@ -841,9 +837,9 @@
         <observation name="normal" value="39.0" />
       </dailyData>
       <dailyData date="12-7-2018">
-        <observation name="UNDEFINED" value="260.0" />
+        <observation name="UNDEFINED" value="287.0" />
         <observation name="delegation" value="3.0" />
-        <observation name="normal" value="311.0" />
+        <observation name="normal" value="348.0" />
       </dailyData>
     </factor>
     <factor id="completionFinishedType">
@@ -877,9 +873,9 @@
         <observation name="typedSelect" value="3.0" />
       </dailyData>
       <dailyData date="12-7-2018">
-        <observation name="cancelled" value="449.0" />
-        <observation name="explicitSelect" value="525.0" />
-        <observation name="typedSelect" value="53.0" />
+        <observation name="cancelled" value="506.0" />
+        <observation name="explicitSelect" value="587.0" />
+        <observation name="typedSelect" value="56.0" />
       </dailyData>
     </factor>
     <factor id="completionType">
@@ -902,7 +898,7 @@
         <observation name="BASIC" value="53.0" />
       </dailyData>
       <dailyData date="12-7-2018">
-        <observation name="BASIC" value="615.0" />
+        <observation name="BASIC" value="696.0" />
       </dailyData>
     </factor>
     <factor id="completionUsage">
@@ -925,7 +921,7 @@
         <observation name="count" value="83.0" />
       </dailyData>
       <dailyData date="12-7-2018">
-        <observation name="count" value="1027.0" />
+        <observation name="count" value="1149.0" />
       </dailyData>
     </factor>
     <factor id="doubleFeature:explicitProximity">
@@ -972,11 +968,11 @@
         <observation name="variance" value="0.095107" />
       </dailyData>
       <dailyData date="12-7-2018">
-        <observation name="average" value="0.139494" />
-        <observation name="count" value="1147.0" />
+        <observation name="average" value="0.150588" />
+        <observation name="count" value="1275.0" />
         <observation name="max" value="1.0" />
         <observation name="min" value="0.0" />
-        <observation name="variance" value="0.117639" />
+        <observation name="variance" value="0.12179" />
       </dailyData>
     </factor>
     <factor id="doubleFeature:grouping">
@@ -1024,7 +1020,7 @@
       </dailyData>
       <dailyData date="12-7-2018">
         <observation name="average" value="0.0" />
-        <observation name="count" value="1147.0" />
+        <observation name="count" value="1275.0" />
         <observation name="max" value="0.0" />
         <observation name="min" value="0.0" />
         <observation name="variance" value="0.0" />
@@ -1080,12 +1076,12 @@
         <observation name="variance" value="434.949707" />
       </dailyData>
       <dailyData date="12-7-2018">
-        <observation name="UNDEFINED" value="392.0" />
-        <observation name="average" value="-13.512397" />
-        <observation name="count" value="363.0" />
+        <observation name="UNDEFINED" value="429.0" />
+        <observation name="average" value="-14.995204" />
+        <observation name="count" value="417.0" />
         <observation name="max" value="0.0" />
-        <observation name="min" value="-122.0" />
-        <observation name="variance" value="745.468201" />
+        <observation name="min" value="-187.0" />
+        <observation name="variance" value="847.345437" />
       </dailyData>
     </factor>
     <factor id="doubleFeature:nameEnd">
@@ -1137,12 +1133,12 @@
         <observation name="variance" value="0.012608" />
       </dailyData>
       <dailyData date="12-7-2018">
-        <observation name="UNDEFINED" value="93.0" />
-        <observation name="average" value="-0.081165" />
-        <observation name="count" value="961.0" />
+        <observation name="UNDEFINED" value="105.0" />
+        <observation name="average" value="-0.073239" />
+        <observation name="count" value="1065.0" />
         <observation name="max" value="0.0" />
         <observation name="min" value="-2.0" />
-        <observation name="variance" value="0.113716" />
+        <observation name="variance" value="0.108322" />
       </dailyData>
     </factor>
     <factor id="doubleFeature:position">
@@ -1189,11 +1185,11 @@
         <observation name="variance" value="0.248299" />
       </dailyData>
       <dailyData date="12-7-2018">
-        <observation name="average" value="0.390584" />
-        <observation name="count" value="1147.0" />
-        <observation name="max" value="8.0" />
+        <observation name="average" value="0.407843" />
+        <observation name="count" value="1275.0" />
+        <observation name="max" value="14.0" />
         <observation name="min" value="0.0" />
-        <observation name="variance" value="1.058486" />
+        <observation name="variance" value="1.199882" />
       </dailyData>
     </factor>
     <factor id="doubleFeature:prefix">
@@ -1240,11 +1236,11 @@
         <observation name="variance" value="19480.979405" />
       </dailyData>
       <dailyData date="12-7-2018">
-        <observation name="average" value="-1099.401918" />
-        <observation name="count" value="1147.0" />
+        <observation name="average" value="-1099.297255" />
+        <observation name="count" value="1275.0" />
         <observation name="max" value="0.0" />
         <observation name="min" value="-1203.0" />
-        <observation name="variance" value="31463.575864" />
+        <observation name="variance" value="31932.286908" />
       </dailyData>
     </factor>
     <factor id="doubleFeature:priority">
@@ -1291,11 +1287,11 @@
         <observation name="variance" value="0.0" />
       </dailyData>
       <dailyData date="12-7-2018">
-        <observation name="average" value="-0.001744" />
-        <observation name="count" value="1147.0" />
+        <observation name="average" value="-0.001569" />
+        <observation name="count" value="1275.0" />
         <observation name="max" value="0.0" />
         <observation name="min" value="-1.0" />
-        <observation name="variance" value="0.001059" />
+        <observation name="variance" value="0.001004" />
       </dailyData>
     </factor>
     <factor id="doubleFeature:prox_explicitlyImported">
@@ -1347,12 +1343,12 @@
         <observation name="variance" value="14552.632456" />
       </dailyData>
       <dailyData date="12-7-2018">
-        <observation name="UNDEFINED" value="93.0" />
-        <observation name="average" value="105.202914" />
-        <observation name="count" value="961.0" />
+        <observation name="UNDEFINED" value="106.0" />
+        <observation name="average" value="100.56444" />
+        <observation name="count" value="1063.0" />
         <observation name="max" value="300.0" />
         <observation name="min" value="0.0" />
-        <observation name="variance" value="15245.227461" />
+        <observation name="variance" value="15126.573306" />
       </dailyData>
     </factor>
     <factor id="doubleFeature:prox_knownElement">
@@ -1404,12 +1400,12 @@
         <observation name="variance" value="6.779227" />
       </dailyData>
       <dailyData date="12-7-2018">
-        <observation name="UNDEFINED" value="93.0" />
-        <observation name="average" value="0.780437" />
-        <observation name="count" value="961.0" />
+        <observation name="UNDEFINED" value="106.0" />
+        <observation name="average" value="0.739417" />
+        <observation name="count" value="1063.0" />
         <observation name="max" value="8.0" />
         <observation name="min" value="0.0" />
-        <observation name="variance" value="5.54982" />
+        <observation name="variance" value="5.404571" />
       </dailyData>
     </factor>
     <factor id="doubleFeature:prox_sameModule">
@@ -1461,12 +1457,12 @@
         <observation name="variance" value="0.726568" />
       </dailyData>
       <dailyData date="12-7-2018">
-        <observation name="UNDEFINED" value="93.0" />
-        <observation name="average" value="1.086368" />
-        <observation name="count" value="961.0" />
+        <observation name="UNDEFINED" value="106.0" />
+        <observation name="average" value="1.083725" />
+        <observation name="count" value="1063.0" />
         <observation name="max" value="2.0" />
         <observation name="min" value="0.0" />
-        <observation name="variance" value="0.916735" />
+        <observation name="variance" value="0.920631" />
       </dailyData>
     </factor>
     <factor id="doubleFeature:prox_samePsiMember">
@@ -1518,12 +1514,12 @@
         <observation name="variance" value="0.684934" />
       </dailyData>
       <dailyData date="12-7-2018">
-        <observation name="UNDEFINED" value="93.0" />
-        <observation name="average" value="0.476587" />
-        <observation name="count" value="961.0" />
+        <observation name="UNDEFINED" value="106.0" />
+        <observation name="average" value="0.453434" />
+        <observation name="count" value="1063.0" />
         <observation name="max" value="2.0" />
         <observation name="min" value="0.0" />
-        <observation name="variance" value="0.600334" />
+        <observation name="variance" value="0.592036" />
       </dailyData>
     </factor>
     <factor id="doubleFeature:query_length">
@@ -1571,7 +1567,7 @@
       </dailyData>
       <dailyData date="12-7-2018">
         <observation name="average" value="0.0" />
-        <observation name="count" value="1147.0" />
+        <observation name="count" value="1275.0" />
         <observation name="max" value="0.0" />
         <observation name="min" value="0.0" />
         <observation name="variance" value="0.0" />
@@ -1621,11 +1617,11 @@
         <observation name="variance" value="9.520215" />
       </dailyData>
       <dailyData date="12-7-2018">
-        <observation name="average" value="8.457716" />
-        <observation name="count" value="1147.0" />
-        <observation name="max" value="21.0" />
-        <observation name="min" value="2.0" />
-        <observation name="variance" value="16.514861" />
+        <observation name="average" value="8.347451" />
+        <observation name="count" value="1275.0" />
+        <observation name="max" value="22.0" />
+        <observation name="min" value="1.0" />
+        <observation name="variance" value="16.488518" />
       </dailyData>
     </factor>
     <factor id="doubleFeature:sameWords">
@@ -1677,12 +1673,12 @@
         <observation name="variance" value="0.062576" />
       </dailyData>
       <dailyData date="12-7-2018">
-        <observation name="UNDEFINED" value="93.0" />
-        <observation name="average" value="-0.066597" />
-        <observation name="count" value="961.0" />
+        <observation name="UNDEFINED" value="105.0" />
+        <observation name="average" value="-0.060094" />
+        <observation name="count" value="1065.0" />
         <observation name="max" value="0.0" />
         <observation name="min" value="-2.0" />
-        <observation name="variance" value="0.099913" />
+        <observation name="variance" value="0.095112" />
       </dailyData>
     </factor>
     <factor id="doubleFeature:shorter">
@@ -1734,12 +1730,12 @@
         <observation name="variance" value="12582.819735" />
       </dailyData>
       <dailyData date="12-7-2018">
-        <observation name="UNDEFINED" value="93.0" />
-        <observation name="average" value="-58.151925" />
-        <observation name="count" value="961.0" />
+        <observation name="UNDEFINED" value="105.0" />
+        <observation name="average" value="-52.473239" />
+        <observation name="count" value="1065.0" />
         <observation name="max" value="0.0" />
         <observation name="min" value="-999.0" />
-        <observation name="variance" value="58755.756848" />
+        <observation name="variance" value="55967.393582" />
       </dailyData>
     </factor>
     <factor id="doubleFeature:simple">
@@ -1791,12 +1787,12 @@
         <observation name="variance" value="0.0" />
       </dailyData>
       <dailyData date="12-7-2018">
-        <observation name="UNDEFINED" value="93.0" />
-        <observation name="average" value="0.0" />
-        <observation name="count" value="961.0" />
-        <observation name="max" value="0.0" />
+        <observation name="UNDEFINED" value="105.0" />
+        <observation name="average" value="0.018779" />
+        <observation name="count" value="1065.0" />
+        <observation name="max" value="10.0" />
         <observation name="min" value="0.0" />
-        <observation name="variance" value="0.0" />
+        <observation name="variance" value="0.096865" />
       </dailyData>
     </factor>
     <factor id="doubleFeature:sorter">
@@ -1844,7 +1840,7 @@
       </dailyData>
       <dailyData date="12-7-2018">
         <observation name="average" value="1.0" />
-        <observation name="count" value="1147.0" />
+        <observation name="count" value="1275.0" />
         <observation name="max" value="1.0" />
         <observation name="min" value="1.0" />
         <observation name="variance" value="0.0" />
@@ -1900,12 +1896,12 @@
         <observation name="variance" value="0.313606" />
       </dailyData>
       <dailyData date="12-7-2018">
-        <observation name="UNDEFINED" value="396.0" />
-        <observation name="average" value="-3.112676" />
-        <observation name="count" value="355.0" />
-        <observation name="max" value="-3.0" />
+        <observation name="UNDEFINED" value="445.0" />
+        <observation name="average" value="-3.088312" />
+        <observation name="count" value="385.0" />
+        <observation name="max" value="0.0" />
         <observation name="min" value="-5.0" />
-        <observation name="variance" value="0.265633" />
+        <observation name="variance" value="0.281242" />
       </dailyData>
     </factor>
     <factor id="doubleFeature:stats">
@@ -1952,11 +1948,11 @@
         <observation name="variance" value="16441222.614661" />
       </dailyData>
       <dailyData date="12-7-2018">
-        <observation name="average" value="3795.384481" />
-        <observation name="count" value="1147.0" />
+        <observation name="average" value="3821.281569" />
+        <observation name="count" value="1275.0" />
         <observation name="max" value="10000.0" />
         <observation name="min" value="0.0" />
-        <observation name="variance" value="21718442.524433" />
+        <observation name="variance" value="21838217.98949" />
       </dailyData>
     </factor>
     <factor id="itemPosition">
@@ -2003,12 +1999,13 @@
         <observation name="3" value="1.0" />
       </dailyData>
       <dailyData date="12-7-2018">
-        <observation name="0" value="429.0" />
-        <observation name="1" value="48.0" />
-        <observation name="2" value="16.0" />
-        <observation name="3" value="13.0" />
-        <observation name="4" value="6.0" />
-        <observation name="5" value="3.0" />
+        <observation name="0" value="481.0" />
+        <observation name="1" value="50.0" />
+        <observation name="14" value="1.0" />
+        <observation name="2" value="20.0" />
+        <observation name="3" value="14.0" />
+        <observation name="4" value="7.0" />
+        <observation name="5" value="4.0" />
         <observation name="6" value="5.0" />
         <observation name="7" value="4.0" />
         <observation name="8" value="1.0" />
@@ -2040,7 +2037,7 @@
         <observation name="withMnemonics" value="0.0" />
       </dailyData>
       <dailyData date="12-7-2018">
-        <observation name="total" value="246.0" />
+        <observation name="total" value="284.0" />
         <observation name="withMnemonics" value="2.0" />
       </dailyData>
     </factor>
@@ -2093,16 +2090,16 @@
         <observation name="4" value="10.0" />
       </dailyData>
       <dailyData date="12-7-2018">
-        <observation name="0" value="19.0" />
-        <observation name="1" value="260.0" />
+        <observation name="0" value="22.0" />
+        <observation name="1" value="281.0" />
         <observation name="11" value="1.0" />
         <observation name="14" value="3.0" />
         <observation name="15" value="1.0" />
-        <observation name="2" value="98.0" />
-        <observation name="3" value="95.0" />
-        <observation name="4" value="42.0" />
+        <observation name="2" value="105.0" />
+        <observation name="3" value="110.0" />
+        <observation name="4" value="53.0" />
         <observation name="5" value="2.0" />
-        <observation name="6" value="4.0" />
+        <observation name="6" value="9.0" />
       </dailyData>
     </factor>
     <factor id="timeBetweenTyping">
@@ -2131,8 +2128,8 @@
         <observation name="count" value="38.0" />
       </dailyData>
       <dailyData date="12-7-2018">
-        <observation name="average" value="247.722222" />
-        <observation name="count" value="306.0" />
+        <observation name="average" value="304.228883" />
+        <observation name="count" value="367.0" />
       </dailyData>
     </factor>
   </component>
@@ -2182,6 +2179,15 @@
               <item name="mycloud" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="newcloud" type="462c0819:PsiDirectoryNode" />
+              <item name="dao" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="mycloud" type="b2602c69:ProjectViewProjectNode" />
+              <item name="mycloud" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="resources" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -2214,7 +2220,7 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1531384242200" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1531390433292" />
     <property name="com.intellij.database.dataSource.DataSourceTemplate" value="MySQL" />
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary" value="JUnit4" />
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit4" value="" />
@@ -2226,6 +2232,7 @@
   </component>
   <component name="RecentsManager">
     <key name="CreateTestDialog.RecentsKey">
+      <recent name="top.cellargalaxy.newcloud.learn" />
       <recent name="top.cellargalaxy.newcloud.dao" />
     </key>
     <key name="CreateTestDialog.Recents.Supers">
@@ -2261,17 +2268,17 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="UserDaoTest.insert" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="UserDaoImplTest.addUser" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="newcloud" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="top.cellargalaxy.newcloud.dao.*" />
+          <option name="PATTERN" value="top.cellargalaxy.newcloud.learn.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="top.cellargalaxy.newcloud.dao" />
-      <option name="MAIN_CLASS_NAME" value="top.cellargalaxy.newcloud.dao.UserDaoTest" />
-      <option name="METHOD_NAME" value="insert" />
+      <option name="PACKAGE_NAME" value="top.cellargalaxy.newcloud.learn" />
+      <option name="MAIN_CLASS_NAME" value="top.cellargalaxy.newcloud.learn.UserDaoImplTest" />
+      <option name="METHOD_NAME" value="addUser" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -2334,19 +2341,19 @@
     </configuration>
     <list>
       <item itemvalue="Spring Boot.NewcloudApplication" />
-      <item itemvalue="JUnit.UserDaoTest.insert" />
       <item itemvalue="JUnit.UserDaoTest.selectOne" />
       <item itemvalue="JUnit.UserDaoTest.selectSome" />
       <item itemvalue="JUnit.UserDaoTest.update" />
       <item itemvalue="JUnit.NewcloudApplicationTests.test" />
+      <item itemvalue="JUnit.UserDaoImplTest.addUser" />
     </list>
     <recent_temporary>
       <list>
         <item itemvalue="JUnit.NewcloudApplicationTests.test" />
+        <item itemvalue="JUnit.UserDaoImplTest.addUser" />
         <item itemvalue="JUnit.UserDaoTest.update" />
         <item itemvalue="JUnit.UserDaoTest.selectSome" />
         <item itemvalue="JUnit.UserDaoTest.selectOne" />
-        <item itemvalue="JUnit.UserDaoTest.insert" />
       </list>
     </recent_temporary>
   </component>
@@ -2361,44 +2368,44 @@
       <option name="presentableId" value="Default" />
       <updated>1530588182454</updated>
       <workItem from="1530588186174" duration="28464000" />
-      <workItem from="1531151797145" duration="20969000" />
+      <workItem from="1531151797145" duration="26993000" />
     </task>
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="UserDaoTest_selectOne - 2018.07.12 at 16h 07m 38s.xml">
-      <configuration name="UserDaoTest.selectOne" configurationId="JUnit" />
+    <history-entry file="NewcloudApplicationTests_test - 2018.07.12 at 17h 52m 30s.xml">
+      <configuration name="NewcloudApplicationTests.test" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="UserDaoTest_selectSome - 2018.07.12 at 16h 07m 44s.xml">
-      <configuration name="UserDaoTest.selectSome" configurationId="JUnit" />
+    <history-entry file="NewcloudApplicationTests_test - 2018.07.12 at 17h 53m 00s.xml">
+      <configuration name="NewcloudApplicationTests.test" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="UserDaoTest_update - 2018.07.12 at 16h 07m 51s.xml">
-      <configuration name="UserDaoTest.update" configurationId="JUnit" />
+    <history-entry file="NewcloudApplicationTests_test - 2018.07.12 at 17h 53m 33s.xml">
+      <configuration name="NewcloudApplicationTests.test" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="UserDaoTest_update - 2018.07.12 at 16h 08m 22s.xml">
-      <configuration name="UserDaoTest.update" configurationId="JUnit" />
+    <history-entry file="NewcloudApplicationTests_test - 2018.07.12 at 17h 53m 54s.xml">
+      <configuration name="NewcloudApplicationTests.test" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="UserDaoTest_update - 2018.07.12 at 16h 08m 45s.xml">
-      <configuration name="UserDaoTest.update" configurationId="JUnit" />
+    <history-entry file="NewcloudApplicationTests_test - 2018.07.12 at 17h 54m 23s.xml">
+      <configuration name="NewcloudApplicationTests.test" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="UserDaoTest_update - 2018.07.12 at 16h 09m 27s.xml">
-      <configuration name="UserDaoTest.update" configurationId="JUnit" />
+    <history-entry file="NewcloudApplicationTests_test - 2018.07.12 at 17h 54m 48s.xml">
+      <configuration name="NewcloudApplicationTests.test" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="UserDaoTest_update - 2018.07.12 at 16h 11m 33s.xml">
-      <configuration name="UserDaoTest.update" configurationId="JUnit" />
+    <history-entry file="NewcloudApplicationTests_test - 2018.07.12 at 17h 55m 24s.xml">
+      <configuration name="NewcloudApplicationTests.test" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="UserDaoTest_update - 2018.07.12 at 16h 11m 51s.xml">
-      <configuration name="UserDaoTest.update" configurationId="JUnit" />
+    <history-entry file="NewcloudApplicationTests_test - 2018.07.12 at 17h 55m 54s.xml">
+      <configuration name="NewcloudApplicationTests.test" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="UserDaoTest_update - 2018.07.12 at 16h 12m 08s.xml">
-      <configuration name="UserDaoTest.update" configurationId="JUnit" />
+    <history-entry file="NewcloudApplicationTests_test - 2018.07.12 at 17h 56m 38s.xml">
+      <configuration name="NewcloudApplicationTests.test" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="UserDaoTest_update - 2018.07.12 at 16h 12m 31s.xml">
-      <configuration name="UserDaoTest.update" configurationId="JUnit" />
+    <history-entry file="NewcloudApplicationTests_test - 2018.07.12 at 17h 56m 59s.xml">
+      <configuration name="NewcloudApplicationTests.test" configurationId="JUnit" />
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="49433000" />
+    <option name="totallyTimeSpent" value="55457000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
@@ -2415,7 +2422,7 @@
       <window_info anchor="bottom" id="Database Console" weight="0.32899022" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32899022" />
-      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.3213898" />
+      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.2844734" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.26275787" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -2446,35 +2453,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/main/java/top/cellargalaxy/newcloud/dao/TestDao.java" />
-    <entry file="file://$PROJECT_DIR$/src/main/java/top/cellargalaxy/newcloud/NewcloudApplication.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="114">
-          <caret line="7" selection-start-line="7" selection-end-line="7" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/org/mybatis/mybatis/3.4.5/mybatis-3.4.5.jar!/org/apache/ibatis/annotations/SelectProvider.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="209">
-          <caret line="18" lean-forward="true" selection-start-line="18" selection-end-line="18" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/org/mybatis/mybatis/3.4.5/mybatis-3.4.5.jar!/org/apache/ibatis/annotations/Result.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="342">
-          <caret line="27" column="13" selection-start-line="27" selection-start-column="13" selection-end-line="27" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/org/mybatis/mybatis/3.4.5/mybatis-3.4.5.jar!/org/apache/ibatis/type/JdbcType.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="332">
-          <caret line="33" column="8" selection-start-line="33" selection-start-column="4" selection-end-line="33" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/top/cellargalaxy/newcloud/model/po/FileDataPo.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="152">
@@ -2786,16 +2764,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/top/cellargalaxy/newcloud/dao/AuthorizationDao.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="176">
-          <caret line="73" column="40" selection-start-line="73" selection-start-column="40" selection-end-line="73" selection-end-column="40" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/test/java/top/cellargalaxy/newcloud/dao/FileDataDaoTest.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="384">
@@ -2872,27 +2840,146 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/resources/application.properties">
+    <entry file="file://$PROJECT_DIR$/pom.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1159">
-          <caret line="61" column="12" lean-forward="true" selection-start-line="61" selection-start-column="12" selection-end-line="61" selection-end-column="12" />
+        <state relative-caret-position="385">
+          <caret line="67" selection-start-line="67" selection-end-line="67" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/top/cellargalaxy/newcloud/NewcloudApplicationTests.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/top/cellargalaxy/newcloud/learn/RedisConfig.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="266">
-          <caret line="14" column="27" selection-start-line="14" selection-start-column="27" selection-end-line="14" selection-end-column="27" />
+        <state relative-caret-position="532">
+          <caret line="28" column="5" lean-forward="true" selection-start-line="21" selection-start-column="9" selection-end-line="28" selection-end-column="5" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pom.xml">
+    <entry file="file://$PROJECT_DIR$/src/main/java/top/cellargalaxy/newcloud/learn/RedisObjectTemplate.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="385">
-          <caret line="67" lean-forward="true" selection-start-line="67" selection-end-line="67" />
+        <state relative-caret-position="171">
+          <caret line="9" column="70" selection-start-line="9" selection-start-column="41" selection-end-line="9" selection-end-column="70" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/top/cellargalaxy/newcloud/learn/RedisObjectSerializer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="212">
+          <caret line="16" lean-forward="true" selection-start-line="16" selection-end-line="16" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#982#983#0" expanded="true" />
+            <element signature="e#1030#1031#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/top/cellargalaxy/newcloud/learn/UserDaoImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="174">
+          <caret line="18" column="13" selection-start-line="18" selection-start-column="13" selection-end-line="18" selection-end-column="13" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#1143#1151#0" expanded="true" />
+            <element signature="e#1242#1243#0" expanded="true" />
+            <element signature="e#1275#1276#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/top/cellargalaxy/newcloud/learn/IUserDao.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="190">
+          <caret line="10" column="17" selection-start-line="10" selection-start-column="17" selection-end-line="10" selection-end-column="17" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/org/springframework/data/spring-data-redis/2.0.8.RELEASE/spring-data-redis-2.0.8.RELEASE.jar!/org/springframework/data/redis/core/RedisTemplate.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="304">
+          <caret line="127" lean-forward="true" selection-start-line="127" selection-end-line="127" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/top/cellargalaxy/newcloud/learn/AbstractBaseRedisDao.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="399">
+          <caret line="21" column="60" selection-start-line="21" selection-start-column="60" selection-end-line="21" selection-end-column="60" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#240#241#0" expanded="true" />
+            <element signature="e#267#268#0" expanded="true" />
+            <element signature="e#597#598#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/top/cellargalaxy/newcloud/learn/UserDaoImplTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="304">
+          <caret line="29" lean-forward="true" selection-start-line="29" selection-end-line="29" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/org/springframework/data/spring-data-redis/2.0.8.RELEASE/spring-data-redis-2.0.8.RELEASE.jar!/org/springframework/data/redis/core/StringRedisTemplate.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="57">
+          <caret line="13" column="32" selection-start-line="13" selection-start-column="13" selection-end-line="13" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/top/cellargalaxy/newcloud/learn/ObjectRedisTemplate.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="144">
+          <caret line="16" column="34" lean-forward="true" selection-start-line="16" selection-start-column="34" selection-end-line="16" selection-end-column="34" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/top/cellargalaxy/newcloud/dao/AuthorizationDao.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="62">
+          <caret line="43" lean-forward="true" selection-start-line="43" selection-end-line="43" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/top/cellargalaxy/newcloud/NewcloudApplicationTests.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="304">
+          <caret line="17" column="10" lean-forward="true" selection-start-line="17" selection-start-column="10" selection-end-line="17" selection-end-column="10" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/org/springframework/spring-context/5.0.7.RELEASE/spring-context-5.0.7.RELEASE.jar!/org/springframework/cache/annotation/Cacheable.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="190">
+          <caret line="22" lean-forward="true" selection-start-line="22" selection-end-line="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/application.properties">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="505">
+          <caret line="62" column="23" lean-forward="true" selection-start-line="62" selection-start-column="23" selection-end-line="62" selection-end-column="23" />
         </state>
       </provider>
     </entry>
