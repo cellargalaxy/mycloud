@@ -85,9 +85,10 @@ CREATE TABLE `file_info` (
   `description` varchar(256) DEFAULT NULL COMMENT '文件描述',
   `update_time` datetime NOT NULL COMMENT '文件更新时间',
   PRIMARY KEY (`file_id`),
+  KEY `idx_file_name_create_time` (`file_name`,`create_time`) USING BTREE,
+  KEY `idx_md5` (`md5`),
   KEY `idx_content_type` (`content_type`),
   KEY `idx_sort` (`sort`),
-  KEY `idx_file_name_create_time` (`file_name`,`create_time`) USING BTREE,
   KEY `idx_update_time` (`update_time`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;

@@ -8,7 +8,7 @@ import java.util.Date;
  */
 public class AuthorizationPo implements Serializable {
 	private static final long serialVersionUID = 1523109653163477354L;
-	private int authorizationId;
+	public int authorizationId;
 	private int userId;
 	private int permissionId;
 	private Date createTime;

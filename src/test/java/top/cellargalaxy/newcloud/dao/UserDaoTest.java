@@ -9,14 +9,16 @@ import top.cellargalaxy.newcloud.model.po.UserPo;
 import top.cellargalaxy.newcloud.model.query.UserQuery;
 
 import static org.junit.Assert.*;
+
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class UserDaoTest {
-@Autowired
-private UserDao userDao;
+	@Autowired
+	private UserDao userDao;
+
 	@Test
 	public void insert() {
-		UserPo userPo=new UserPo();
+		UserPo userPo = new UserPo();
 		userPo.setUserName("huaji2");
 		userPo.setUserPassword("qqq");
 		assertEquals(1, userDao.insert(userPo));
@@ -24,15 +26,17 @@ private UserDao userDao;
 
 	@Test
 	public void delete() {
-		UserQuery userQuery=new UserQuery();
+		UserQuery userQuery = new UserQuery();
 		userQuery.setUserId(1);
 		assertEquals(1, userDao.delete(userQuery));
 	}
 
 	@Test
 	public void selectOne() {
-		UserQuery userQuery=new UserQuery();
+		UserQuery userQuery = new UserQuery();
 		userQuery.setUserName("huaji");
+		System.out.println();
+		System.out.println(userDao.selectOne(userQuery));
 		System.out.println();
 		System.out.println(userDao.selectOne(userQuery));
 		System.out.println();
@@ -40,7 +44,7 @@ private UserDao userDao;
 
 	@Test
 	public void selectSome() {
-		UserQuery userQuery=new UserQuery();
+		UserQuery userQuery = new UserQuery();
 		userQuery.setUserName("huaji2");
 		System.out.println();
 		for (UserPo userPo: userDao.selectSome(userQuery)) {
@@ -51,7 +55,7 @@ private UserDao userDao;
 
 	@Test
 	public void update() {
-		UserPo userPo=new UserPo();
+		UserPo userPo = new UserPo();
 		userPo.setUserName("huaji");
 		userPo.setUserPassword("zzz");
 		assertEquals(1, userDao.update(userPo));

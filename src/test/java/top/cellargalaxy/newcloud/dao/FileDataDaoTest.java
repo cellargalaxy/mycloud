@@ -16,28 +16,28 @@ import static org.junit.Assert.*;
 @SpringBootTest
 public class FileDataDaoTest {
 	@Autowired
-	private FileDataDao dataDao;
+	private FileDataDao fileDataDao;
 
 	@Test
 	public void insert() {
 		FileDataPo fileDataPo = new FileDataPo();
 		fileDataPo.setFileId(2);
 		fileDataPo.setFileData(new byte[]{0, 1, 2, 3, 4});
-		assertEquals(1, dataDao.insert(fileDataPo));
+		assertEquals(1, fileDataDao.insert(fileDataPo));
 	}
 
 	@Test
 	public void delete() {
 		FileDataQuery fileDataQuery = new FileDataQuery();
 		fileDataQuery.setFileId(2);
-		assertEquals(1, dataDao.delete(fileDataQuery));
+		assertEquals(1, fileDataDao.delete(fileDataQuery));
 	}
 
 	@Test
 	public void select() {
 		FileDataQuery fileDataQuery = new FileDataQuery();
 		fileDataQuery.setFileId(2);
-		FileDataPo fileDataPo = dataDao.select(fileDataQuery);
+		FileDataPo fileDataPo = fileDataDao.select(fileDataQuery);
 		System.out.println();
 		System.out.println(fileDataPo + " ; " + (fileDataPo != null ? (Arrays.toString(fileDataPo.getFileData())) : "null"));
 		System.out.println();
@@ -48,6 +48,6 @@ public class FileDataDaoTest {
 		FileDataPo fileDataPo = new FileDataPo();
 		fileDataPo.setFileId(2);
 		fileDataPo.setFileData(new byte[]{5, 6, 7, 8, 9});
-		assertEquals(1, dataDao.update(fileDataPo));
+		assertEquals(1, fileDataDao.update(fileDataPo));
 	}
 }

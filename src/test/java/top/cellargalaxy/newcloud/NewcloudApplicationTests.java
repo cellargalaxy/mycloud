@@ -18,6 +18,7 @@ public class NewcloudApplicationTests {
 	@Cacheable
 	@Test
 	public void test() throws Exception {
+
 		UserPo userPo = new UserPo();
 		userPo.setUserId(1);
 		userPo.setUserName("aaa");
