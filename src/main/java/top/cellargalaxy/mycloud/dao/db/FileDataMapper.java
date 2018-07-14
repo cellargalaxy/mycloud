@@ -12,7 +12,7 @@ import static org.apache.ibatis.type.JdbcType.BLOB;
  */
 @Mapper
 public interface FileDataMapper {
-	@InsertProvider(type = FileDataDaoProvider.class, method = "insert")
+	@InsertProvider(type = FileDataDaoProvider.class, method = "addFile")
 	int insert(FileDataPo fileDataPo);
 
 	@DeleteProvider(type = FileDataDaoProvider.class, method = "delete")
@@ -32,7 +32,7 @@ public interface FileDataMapper {
 		public static final String TABLE_NAME = "file_data";
 
 		public static final String insert(FileDataPo fileDataPo) {
-			return "insert into " + TABLE_NAME + "(file_id,file_data) values(#{fileId},#{fileData,jdbcType=BLOB})";
+			return "addFile into " + TABLE_NAME + "(file_id,file_data) values(#{fileId},#{fileData,jdbcType=BLOB})";
 		}
 
 		public static final String delete(FileDataQuery fileDataQuery) {

@@ -19,7 +19,7 @@ import static org.apache.ibatis.type.JdbcType.DATE;
  */
 @Mapper
 public interface UserMapper {
-	@InsertProvider(type = UserDaoProvider.class, method = "insert")
+	@InsertProvider(type = UserDaoProvider.class, method = "addFile")
 	int insert(UserPo userPo);
 
 	@DeleteProvider(type = UserDaoProvider.class, method = "delete")
@@ -55,9 +55,9 @@ public interface UserMapper {
 			Date date = new Date();
 			userPo.setCreateTime(date);
 			userPo.setUpdateTime(date);
-			String string = "insert into " + TABLE_NAME + "(user_name,user_password,create_time,update_time) " +
+			String string = "addFile into " + TABLE_NAME + "(user_name,user_password,create_time,update_time) " +
 					"values(#{userName},#{userPassword},#{createTime,jdbcType=DATE},#{updateTime,jdbcType=DATE})";
-			logger.debug("insert:{}, sql:{}", userPo, string);
+			logger.debug("addFile:{}, sql:{}", userPo, string);
 			return string;
 		}
 

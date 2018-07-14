@@ -19,7 +19,7 @@ import static org.apache.ibatis.type.JdbcType.DATE;
  */
 @Mapper
 public interface AuthorizationMapper {
-	@InsertProvider(type = AuthorizationProvider.class, method = "insert")
+	@InsertProvider(type = AuthorizationProvider.class, method = "addFile")
 	int insert(AuthorizationPo authorizationPo);
 
 	@DeleteProvider(type = AuthorizationProvider.class, method = "delete")
@@ -55,9 +55,9 @@ public interface AuthorizationMapper {
 			Date date = new Date();
 			authorizationPo.setCreateTime(date);
 			authorizationPo.setUpdateTime(date);
-			String string = "insert into " + TABLE_NAME + "(user_id,permission_id,create_time,update_time) " +
+			String string = "addFile into " + TABLE_NAME + "(user_id,permission_id,create_time,update_time) " +
 					"values(#{userId},#{permissionId},#{createTime,jdbcType=DATE},#{updateTime,jdbcType=DATE})";
-			logger.debug("insert:{}, sql:{}", authorizationPo, string);
+			logger.debug("addFile:{}, sql:{}", authorizationPo, string);
 			return string;
 		}
 

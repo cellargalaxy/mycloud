@@ -21,7 +21,6 @@ public class SqlUtil {
 		return sql;
 	}
 
-	//select * from table where xxx=1
 	public static final StringBuilder createSelectSql(List<String> selects, String tableName, List<String> wheres) {
 		StringBuilder sql = new StringBuilder("select");
 		if (selects == null || selects.size() == 0) {

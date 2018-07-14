@@ -6,9 +6,9 @@ import org.springframework.cache.annotation.EnableCaching;
 
 @EnableCaching // 启动缓存
 @SpringBootApplication
-public class NewcloudApplication {
+public class MycloudApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(NewcloudApplication.class, args);
+		SpringApplication.run(MycloudApplication.class, args);
 	}
 }

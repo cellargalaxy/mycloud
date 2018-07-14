@@ -20,7 +20,7 @@ import static org.apache.ibatis.type.JdbcType.DATE;
  */
 @Mapper
 public interface PermissionMapper {
-	@InsertProvider(type = PermissionDaoProvider.class, method = "insert")
+	@InsertProvider(type = PermissionDaoProvider.class, method = "addFile")
 	int insert(PermissionPo permissionPo);
 
 	@DeleteProvider(type = PermissionDaoProvider.class, method = "delete")
@@ -55,9 +55,9 @@ public interface PermissionMapper {
 			Date date = new Date();
 			permissionPo.setCreateTime(date);
 			permissionPo.setUpdateTime(date);
-			String string = "insert into " + TABLE_NAME + "(permission_id,permission_mark,create_time,update_time) " +
+			String string = "addFile into " + TABLE_NAME + "(permission_id,permission_mark,create_time,update_time) " +
 					"values(#{permissionId},#{permissionMark},#{createTime,jdbcType=DATE},#{updateTime,jdbcType=DATE})";
-			logger.debug("insert:{}, sql:{}", permissionPo, string);
+			logger.debug("addFile:{}, sql:{}", permissionPo, string);
 			return string;
 		}
 

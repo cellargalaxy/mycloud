@@ -11,6 +11,7 @@ import top.cellargalaxy.mycloud.dao.db.FileInfoMapper;
 import top.cellargalaxy.mycloud.model.po.FileInfoPo;
 import top.cellargalaxy.mycloud.model.query.FileInfoQuery;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -25,6 +26,7 @@ public class FileInfoCache implements FileInfoDao {
 
 	@Caching(evict = {
 			@CacheEvict(key = "#p0.fileId"),
+			@CacheEvict(key = "'selectCreateTime'"),
 			@CacheEvict(key = "'selectContentType'"),
 			@CacheEvict(key = "'selectSort'")})
 	public int insert(FileInfoPo fileInfoPo) {
@@ -33,6 +35,7 @@ public class FileInfoCache implements FileInfoDao {
 
 	@Caching(evict = {
 			@CacheEvict(key = "#p0.fileId"),
+			@CacheEvict(key = "'selectCreateTime'"),
 			@CacheEvict(key = "'selectContentType'"),
 			@CacheEvict(key = "'selectSort'")})
 	public int delete(FileInfoQuery fileInfoQuery) {
@@ -48,6 +51,11 @@ public class FileInfoCache implements FileInfoDao {
 		return fileInfoMapper.selectSome(fileInfoQuery);
 	}
 
+	@Cacheable(key = "'selectCreateTime'")
+	public List<Date> selectCreateTime() {
+		return fileInfoMapper.selectCreateTime();
+	}
+
 	@Cacheable(key = "'selectContentType'")
 	public List<String> selectContentType() {
 		return fileInfoMapper.selectContentType();
@@ -60,6 +68,7 @@ public class FileInfoCache implements FileInfoDao {
 
 	@Caching(evict = {
 			@CacheEvict(key = "#p0.fileId"),
+			@CacheEvict(key = "'selectCreateTime'"),
 			@CacheEvict(key = "'selectContentType'"),
 			@CacheEvict(key = "'selectSort'")})
 	public int update(FileInfoPo fileInfoPo) {

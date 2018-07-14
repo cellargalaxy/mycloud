@@ -3,6 +3,7 @@ package top.cellargalaxy.mycloud.dao;
 import top.cellargalaxy.mycloud.model.po.FileInfoPo;
 import top.cellargalaxy.mycloud.model.query.FileInfoQuery;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -17,6 +18,8 @@ public interface FileInfoDao {
 	FileInfoPo selectOne(FileInfoQuery fileInfoQuery);
 
 	List<FileInfoPo> selectSome(FileInfoQuery fileInfoQuery);
+
+	List<Date> selectCreateTime();
 
 	List<String> selectContentType();
 

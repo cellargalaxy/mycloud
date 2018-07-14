@@ -21,7 +21,7 @@ import static org.apache.ibatis.type.JdbcType.DATE;
  */
 @Mapper
 public interface FileInfoMapper {
-	@InsertProvider(type = FileInfoDaoProvider.class, method = "insert")
+	@InsertProvider(type = FileInfoDaoProvider.class, method = "addFile")
 	int insert(FileInfoPo fileInfoPo);
 
 	@DeleteProvider(type = FileInfoDaoProvider.class, method = "delete")
@@ -45,6 +45,9 @@ public interface FileInfoMapper {
 	@ResultMap(value = "fileInfoResult")
 	@SelectProvider(type = FileInfoDaoProvider.class, method = "selectSome")
 	List<FileInfoPo> selectSome(FileInfoQuery fileInfoQuery);
+
+	@SelectProvider(type = FileInfoDaoProvider.class, method = "selectCreateTime")
+	List<Date> selectCreateTime();
 
 	@SelectProvider(type = FileInfoDaoProvider.class, method = "selectContentType")
 	List<String> selectContentType();
@@ -74,9 +77,9 @@ public interface FileInfoMapper {
 			Date date = new Date();
 			fileInfoPo.setCreateTime(date);
 			fileInfoPo.setUpdateTime(date);
-			String string = "insert into " + TABLE_NAME + "(file_name,create_time,md5,file_length,content_type,user_id,sort,description,update_time) " +
+			String string = "addFile into " + TABLE_NAME + "(file_name,create_time,md5,file_length,content_type,user_id,sort,description,update_time) " +
 					"values(#{fileName},#{createTime,jdbcType=DATE},#{md5},#{fileLength},#{contentType},#{userId},#{sort},#{description},#{updateTime,jdbcType=DATE})";
-			logger.debug("insert:{}, sql:{}", fileInfoPo, string);
+			logger.debug("addFile:{}, sql:{}", fileInfoPo, string);
 			return string;
 		}
 
@@ -109,6 +112,10 @@ public interface FileInfoMapper {
 			String string = sql.toString();
 			logger.debug("selectSome:{}, sql:{}", fileInfoQuery, string);
 			return string;
+		}
+
+		public static final String selectCreateTime(){
+			return "select distinct create_time from " + TABLE_NAME;
 		}
 
 		public static final String selectContentType() {
