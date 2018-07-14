@@ -6,11 +6,11 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="newcloud" />
+        <module name="mycloud" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="newcloud" target="8" />
+      <module name="mycloud" target="8" />
     </bytecodeTargetLevel>
   </component>
 </project>
