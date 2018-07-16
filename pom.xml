@@ -4,11 +4,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>top.cellargalaxy</groupId>
-    <artifactId>mycloud</artifactId>
+    <artifactId>newcloud</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>mycloud</name>
+    <name>newcloud</name>
     <description>Demo project for Spring Boot</description>
 
     <parent>
