@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/4.0.0/css/bootstrap.min.css"/>
+    <title>templates</title>
+</head>
+<body>
+<div class="container">
+
+    <div class="row">
+        <div class="col-sm">
+            <nav class="navbar navbar-expand-lg navbar-light bg-light" role="navigation">
+                <a class="navbar-brand" href="#">mycloud</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapse"
+                        aria-controls="navbar-collapse" aria-expanded="false">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbar-collapse">
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item active">
+                            <a class="nav-link" href="#">文件管理</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">用户管理</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">权限与授权</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">日志查看</a>
+                        </li>
+                    </ul>
+                    <ul class="navbar-nav navbar-right">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">登录</a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm">
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th>用户id</th>
+                    <th>用户名</th>
+                    <th>密码</th>
+                    <th>创建时间</th>
+                    <th>更新时间</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>#</td>
+                    <td>
+                        <input type="text" class="form-control" placeholder="用户名"/>
+                    </td>
+                    <td>
+                        <input type="password" class="form-control" placeholder="密码"/>
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td>
+                        <button type="button" class="btn btn-success">增添</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>
+                        <input type="text" class="form-control" placeholder="用户名" value="cellargalaxy"/>
+                    </td>
+                    <td>
+                        <input type="password" class="form-control" placeholder="密码" value="123456"/>
+                    </td>
+                    <td>2018-11-11 22:22:22</td>
+                    <td>2018-11-11 22:22:22</td>
+                    <td>
+                        <button type="button" class="btn btn-warning">修改</button>
+                        <button type="button" class="btn btn-danger">删除</button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm">
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th>权限id</th>
+                    <th>权限备注</th>
+                    <th>创建时间</th>
+                    <th>更新时间</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>
+                        <input type="number" class="form-control" placeholder="权限id"/>
+                    </td>
+                    <td>
+                        <input type="text" class="form-control" placeholder="权限备注"/>
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td>
+                        <button type="button" class="btn btn-success">增添</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>管理员</td>
+                    <td>2018-11-11 22:22:22</td>
+                    <td>2018-11-11 22:22:22</td>
+                    <td>
+                        <button type="button" class="btn btn-danger">删除</button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm">
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th>id</th>
+                    <th>用户</th>
+                    <th>权限</th>
+                    <th>创建时间</th>
+                    <th>更新时间</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>#</td>
+                    <td>
+                        <select class="form-control">
+                            <option value="1">cellargalaxy</option>
+                        </select>
+                    </td>
+                    <td>
+                        <select class="form-control">
+                            <option value="1">管理员</option>
+                        </select>
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td>
+                        <button type="button" class="btn btn-success">增添</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>cellargalaxy</td>
+                    <td>管理员</td>
+                    <td>2018-11-11 22:22:22</td>
+                    <td>2018-11-11 22:22:22</td>
+                    <td>
+                        <button type="button" class="btn btn-danger">删除</button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm">
+            <form>
+                <div class="form-group">
+                    <input type="file" class="form-control-file"/>
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-6">
+                        <select class="form-control" placeholder="自定义文件分类">
+                            <option>图片</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control" placeholder="自定义文件分类"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <textarea class="form-control" rows="3" placeholder="描述"></textarea>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-6 col-md-6">
+            <div class="thumbnail">
+                <img src="https://i.loli.net/2018/04/10/5accdcbcb1738.jpg" class="img-thumbnail"/>
+                <div class="caption">
+                    <table class="table table-hover">
+                        <tbody>
+                        <tr>
+                            <td colspan="1">名字</td>
+                            <td colspan="11"><code>5accdcbcb1738.jpg</code></td>
+                        </tr>
+                        <tr>
+                            <td colspan="1">url</td>
+                            <td colspan="11"><code>https://i.loli.net/2018/04/10/5accdcbcb1738.jpg</code></td>
+                        </tr>
+                        <tr>
+                            <td colspan="1">MD5</td>
+                            <td colspan="11"><code>2b9b46fc176195a9d80ea0c205e2915e</code></td>
+                        </tr>
+                        <tr>
+                            <td colspan="1">所有者</td>
+                            <td colspan="5"><code>root</code></td>
+                            <td colspan="1">分类</td>
+                            <td colspan="5"><code>图片</code></td>
+                        </tr>
+                        <tr>
+                            <td colspan="1">创建时间</td>
+                            <td colspan="5"><code>2018-04-08 23:04:44</code></td>
+                            <td colspan="1">更新时间</td>
+                            <td colspan="5"><code>2018-04-08 23:04:44</code></td>
+                        </tr>
+                        <tr>
+                            <td colspan="1">id</td>
+                            <td colspan="3"><code>1</code></td>
+                            <td colspan="1">类型</td>
+                            <td colspan="3"><code>image/jpeg</code></td>
+                            <td colspan="1">长度</td>
+                            <td colspan="3"><code>293388 B</code></td>
+                        </tr>
+                        <tr>
+                            <td colspan="1">描述</td>
+                            <td colspan="11">
+                                <pre><code>少女终末旅行</code></pre>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm">
+            <nav class="navbar sticky-top navbar-light bg-light" role="navigation">
+                <span class="navbar-text">
+                    我的文件床 mycloud
+                </span>
+            </nav>
+        </div>
+    </div>
+
+</div>
+</body>
+<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.slim.js"></script>
+<script src="https://cdn.bootcss.com/popper.js/1.12.9/umd/popper.js"></script>
+<script src="https://cdn.bootcss.com/bootstrap/4.0.0/js/bootstrap.js"></script>
+</html>
