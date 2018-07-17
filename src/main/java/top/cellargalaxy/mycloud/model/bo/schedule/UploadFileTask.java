@@ -1,6 +1,7 @@
 package top.cellargalaxy.mycloud.model.bo.schedule;
 
 import top.cellargalaxy.mycloud.model.po.OwnPo;
+import top.cellargalaxy.mycloud.model.po.UserPo;
 
 import java.io.File;
 
@@ -13,7 +14,8 @@ public class UploadFileTask extends Task {
 	private final String contentType;
 	private final OwnPo ownPo;
 
-	public UploadFileTask(File file, String contentType, OwnPo ownPo) {
+	public UploadFileTask(UserPo userPo, File file, String contentType, OwnPo ownPo) {
+		super(userPo);
 		this.file = file;
 		this.contentType = contentType;
 		this.ownPo = ownPo;

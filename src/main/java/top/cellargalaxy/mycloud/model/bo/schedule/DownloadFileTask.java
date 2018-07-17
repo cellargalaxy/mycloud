@@ -1,5 +1,6 @@
 package top.cellargalaxy.mycloud.model.bo.schedule;
 
+import top.cellargalaxy.mycloud.model.po.UserPo;
 import top.cellargalaxy.mycloud.model.query.FileInfoQuery;
 
 import java.io.File;
@@ -12,7 +13,8 @@ public class DownloadFileTask extends Task {
 	private final FileInfoQuery fileInfoQuery;
 	private final File file;
 
-	public DownloadFileTask(FileInfoQuery fileInfoQuery, File file) {
+	public DownloadFileTask(UserPo userPo, FileInfoQuery fileInfoQuery, File file) {
+		super(userPo);
 		this.fileInfoQuery = fileInfoQuery;
 		this.file = file;
 	}

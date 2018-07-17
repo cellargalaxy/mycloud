@@ -1,5 +1,7 @@
 package top.cellargalaxy.mycloud.model.bo.schedule;
 
+import top.cellargalaxy.mycloud.model.po.UserPo;
+
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.Serializable;
@@ -12,16 +14,22 @@ import java.util.UUID;
  */
 public class Task implements Serializable, Closeable {
 	private static final long serialVersionUID = 7062287537522505438L;
+	private final UserPo userPo;
 	private final String taskId;
 	private final Date createTime;
 	private int status;
 	private String massage;
 	private Date finishTime;
 
-	public Task() {
+	public Task(UserPo userPo) {
+		this.userPo = userPo;
 		taskId = UUID.randomUUID().toString();
 		createTime = new Date();
 		status = -1;
+	}
+
+	public UserPo getUserPo() {
+		return userPo;
 	}
 
 	public String getTaskId() {
@@ -55,7 +63,8 @@ public class Task implements Serializable, Closeable {
 	@Override
 	public String toString() {
 		return "Task{" +
-				"taskId='" + taskId + '\'' +
+				"userPo=" + userPo +
+				", taskId='" + taskId + '\'' +
 				", createTime=" + createTime +
 				", status=" + status +
 				", massage='" + massage + '\'' +

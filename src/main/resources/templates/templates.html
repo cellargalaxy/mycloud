@@ -45,136 +45,269 @@
 
     <div class="row">
         <div class="col-sm">
-            <table class="table table-hover">
-                <thead>
-                <tr>
-                    <th>用户id</th>
-                    <th>用户名</th>
-                    <th>密码</th>
-                    <th>创建时间</th>
-                    <th>更新时间</th>
-                    <th>操作</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td>#</td>
-                    <td>
-                        <input type="text" class="form-control" placeholder="用户名"/>
-                    </td>
-                    <td>
-                        <input type="password" class="form-control" placeholder="密码"/>
-                    </td>
-                    <td></td>
-                    <td></td>
-                    <td>
-                        <button type="button" class="btn btn-success">增添</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>1</td>
-                    <td>
-                        <input type="text" class="form-control" placeholder="用户名" value="cellargalaxy"/>
-                    </td>
-                    <td>
-                        <input type="password" class="form-control" placeholder="密码" value="123456"/>
-                    </td>
-                    <td>2018-11-11 22:22:22</td>
-                    <td>2018-11-11 22:22:22</td>
-                    <td>
-                        <button type="button" class="btn btn-warning">修改</button>
-                        <button type="button" class="btn btn-danger">删除</button>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
+            <div class="text-center">
+                <form class="form-signin">
+                    <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+                    <input type="text" class="form-control" placeholder="用户名" required="required"/>
+                    <input type="password" class="form-control" placeholder="密码" required="required"/>
+                    <button class="btn btn-lg btn-primary btn-block" type="submit">登录</button>
+                    <p>我的文件床 mycloud &copy; 2017-2018</p>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-sm">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th colspan="2">其他信息</th>
+                        <th>异常栈</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>状态</td>
+                        <td>0</td>
+                        <td rowspan="3"><pre><code>java.lang.Exception: 出问题啦！
+    at TestPrintStackTrace.f(TestPrintStackTrace.java:3)
+    at TestPrintStackTrace.g(TestPrintStackTrace.java:6)
+    at TestPrintStackTrace.main(TestPrintStackTrace.java:10)
+TestPrintStackTrace.f(TestPrintStackTrace.java:3)
+TestPrintStackTrace.g(TestPrintStackTrace.java:6)
+TestPrintStackTrace.main(TestPrintStackTrace.java:10)</code></pre>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>信息</td>
+                        <td>massage</td>
+                    </tr>
+                    <tr>
+                        <td>时间</td>
+                        <td>2018-11-11 22:22:22</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 
     <div class="row">
         <div class="col-sm">
-            <table class="table table-hover">
-                <thead>
-                <tr>
-                    <th>权限id</th>
-                    <th>权限备注</th>
-                    <th>创建时间</th>
-                    <th>更新时间</th>
-                    <th>操作</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td>
-                        <input type="number" class="form-control" placeholder="权限id"/>
-                    </td>
-                    <td>
-                        <input type="text" class="form-control" placeholder="权限备注"/>
-                    </td>
-                    <td></td>
-                    <td></td>
-                    <td>
-                        <button type="button" class="btn btn-success">增添</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>1</td>
-                    <td>管理员</td>
-                    <td>2018-11-11 22:22:22</td>
-                    <td>2018-11-11 22:22:22</td>
-                    <td>
-                        <button type="button" class="btn btn-danger">删除</button>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th>提交者</th>
+                        <th>文件</th>
+                        <th>文件类型</th>
+                        <th>文件名</th>
+                        <th>分类</th>
+                        <th>描述</th>
+                        <th>信息</th>
+                        <th>创建时间</th>
+                        <th>完成时间</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr class="table-warning">
+                        <td>cellargalaxy</td>
+                        <td><code>/xxx/bbb。jpg</code></td>
+                        <td><code>jpg</code></td>
+                        <td><code>bbb。jpg</code></td>
+                        <td>图片</td>
+                        <td>没有描述</td>
+                        <td>null</td>
+                        <td>2018-11-11 22:22:22</td>
+                        <td>2018-11-11 22:22:22</td>
+                        <td>
+                            <button type="button" class="btn btn-warning">结束</button>
+                        </td>
+                    </tr>
+                    <tr class="table-info">
+                        <td>cellargalaxy</td>
+                        <td>/xxx/bbb。jpg</td>
+                        <td>jpg</td>
+                        <td>bbb。jpg</td>
+                        <td>图片</td>
+                        <td>没有描述</td>
+                        <td>null</td>
+                        <td>2018-11-11 22:22:22</td>
+                        <td>2018-11-11 22:22:22</td>
+                        <td>
+                            <button type="button" class="btn btn-danger">删除</button>
+                        </td>
+                    </tr>
+                    <tr class="table-danger">
+                        <td>cellargalaxy</td>
+                        <td>/xxx/bbb。jpg</td>
+                        <td>jpg</td>
+                        <td>bbb。jpg</td>
+                        <td>图片</td>
+                        <td>没有描述</td>
+                        <td>null</td>
+                        <td>2018-11-11 22:22:22</td>
+                        <td>2018-11-11 22:22:22</td>
+                        <td>
+                            <button type="button" class="btn btn-primary">重做</button>
+                        </td>
+                    </tr>
+                    <tr class="table-secondary">
+                        <td>cellargalaxy</td>
+                        <td>/xxx/bbb。jpg</td>
+                        <td>jpg</td>
+                        <td>bbb。jpg</td>
+                        <td>图片</td>
+                        <td>没有描述</td>
+                        <td>null</td>
+                        <td>2018-11-11 22:22:22</td>
+                        <td>2018-11-11 22:22:22</td>
+                        <td>
+                            <button type="button" class="btn btn-primary">重做</button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 
     <div class="row">
         <div class="col-sm">
-            <table class="table table-hover">
-                <thead>
-                <tr>
-                    <th>id</th>
-                    <th>用户</th>
-                    <th>权限</th>
-                    <th>创建时间</th>
-                    <th>更新时间</th>
-                    <th>操作</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td>#</td>
-                    <td>
-                        <select class="form-control">
-                            <option value="1">cellargalaxy</option>
-                        </select>
-                    </td>
-                    <td>
-                        <select class="form-control">
-                            <option value="1">管理员</option>
-                        </select>
-                    </td>
-                    <td></td>
-                    <td></td>
-                    <td>
-                        <button type="button" class="btn btn-success">增添</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>1</td>
-                    <td>cellargalaxy</td>
-                    <td>管理员</td>
-                    <td>2018-11-11 22:22:22</td>
-                    <td>2018-11-11 22:22:22</td>
-                    <td>
-                        <button type="button" class="btn btn-danger">删除</button>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th>用户名</th>
+                        <th>密码</th>
+                        <th>创建时间</th>
+                        <th>更新时间</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>
+                            <input type="text" class="form-control" placeholder="用户名"/>
+                        </td>
+                        <td>
+                            <input type="password" class="form-control" placeholder="密码"/>
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td>
+                            <button type="button" class="btn btn-success">增添</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input type="text" class="form-control" placeholder="用户名" value="cellargalaxy"/>
+                        </td>
+                        <td>
+                            <input type="password" class="form-control" placeholder="密码" value="123456"/>
+                        </td>
+                        <td>2018-11-11 22:22:22</td>
+                        <td>2018-11-11 22:22:22</td>
+                        <td>
+                            <button type="button" class="btn btn-warning">修改</button>
+                            <button type="button" class="btn btn-danger">删除</button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th>权限id</th>
+                        <th>权限备注</th>
+                        <th>创建时间</th>
+                        <th>更新时间</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>
+                            <input type="number" class="form-control" placeholder="权限id"/>
+                        </td>
+                        <td>
+                            <input type="text" class="form-control" placeholder="权限备注"/>
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td>
+                            <button type="button" class="btn btn-success">增添</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>管理员</td>
+                        <td>2018-11-11 22:22:22</td>
+                        <td>2018-11-11 22:22:22</td>
+                        <td>
+                            <button type="button" class="btn btn-danger">删除</button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th>用户</th>
+                        <th>权限</th>
+                        <th>创建时间</th>
+                        <th>更新时间</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>
+                            <select class="form-control">
+                                <option value="1">cellargalaxy</option>
+                            </select>
+                        </td>
+                        <td>
+                            <select class="form-control">
+                                <option value="1">管理员</option>
+                            </select>
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td>
+                            <button type="button" class="btn btn-success">增添</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>cellargalaxy</td>
+                        <td>管理员</td>
+                        <td>2018-11-11 22:22:22</td>
+                        <td>2018-11-11 22:22:22</td>
+                        <td>
+                            <button type="button" class="btn btn-danger">删除</button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 
@@ -187,7 +320,7 @@
                 <div class="form-group row">
                     <div class="col-sm-6">
                         <select class="form-control" placeholder="自定义文件分类">
-                            <option>图片</option>
+                            <option value="图片">图片</option>
                         </select>
                     </div>
                     <div class="col-sm-6">
@@ -204,7 +337,8 @@
     <div class="row">
         <div class="col-sm-6 col-md-6">
             <div class="thumbnail">
-                <img src="https://i.loli.net/2018/04/10/5accdcbcb1738.jpg" class="img-thumbnail"/>
+                <a href="#" target="_blank"><img src="https://i.loli.net/2018/04/10/5accdcbcb1738.jpg"
+                                                 class="img-thumbnail"/></a>
                 <div class="caption">
                     <table class="table table-hover">
                         <tbody>
@@ -254,10 +388,10 @@
     </div>
 
     <div class="row">
-        <div class="col-sm">
+        <div class="col-sm text-center">
             <nav class="navbar sticky-top navbar-light bg-light" role="navigation">
                 <span class="navbar-text">
-                    我的文件床 mycloud
+                    我的文件床 mycloud &copy; 2017-2018
                 </span>
             </nav>
         </div>
