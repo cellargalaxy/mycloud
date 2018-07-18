@@ -335,53 +335,158 @@ TestPrintStackTrace.main(TestPrintStackTrace.java:10)</code></pre>
     </div>
 
     <div class="row">
-        <div class="col-sm-6 col-md-6">
+        <div class="col-sm-4 col-md-4">
             <div class="thumbnail">
-                <a href="#" target="_blank"><img src="https://i.loli.net/2018/04/10/5accdcbcb1738.jpg"
-                                                 class="img-thumbnail"/></a>
+                <a href="https://i.loli.net/2018/04/10/5accdcbcb1738.jpg" target="_blank">
+                    <img src="https://i.loli.net/2018/04/10/5accdcbcb1738.jpg" class="img-thumbnail"/>
+                </a>
                 <div class="caption">
                     <table class="table table-hover">
                         <tbody>
                         <tr>
-                            <td colspan="1">名字</td>
-                            <td colspan="11"><code>5accdcbcb1738.jpg</code></td>
+                            <td>md5</td>
+                            <td><code>01234567890123456789012345678901</code></td>
                         </tr>
                         <tr>
-                            <td colspan="1">url</td>
-                            <td colspan="11"><code>https://i.loli.net/2018/04/10/5accdcbcb1738.jpg</code></td>
+                            <td>url</td>
+                            <td><code>https://i.loli.net/2018/04/10/5accdcbcb1738.jpg</code></td>
                         </tr>
                         <tr>
-                            <td colspan="1">MD5</td>
-                            <td colspan="11"><code>2b9b46fc176195a9d80ea0c205e2915e</code></td>
+                            <td>大小</td>
+                            <td><code>293388 B</code></td>
                         </tr>
                         <tr>
-                            <td colspan="1">所有者</td>
-                            <td colspan="5"><code>root</code></td>
-                            <td colspan="1">分类</td>
-                            <td colspan="5"><code>图片</code></td>
+                            <td>类型</td>
+                            <td><code>image/jpeg</code></td>
                         </tr>
                         <tr>
-                            <td colspan="1">创建时间</td>
-                            <td colspan="5"><code>2018-04-08 23:04:44</code></td>
-                            <td colspan="1">更新时间</td>
-                            <td colspan="5"><code>2018-04-08 23:04:44</code></td>
+                            <td>创建时间</td>
+                            <td><code>2018-04-08 23:04:44</code></td>
                         </tr>
                         <tr>
-                            <td colspan="1">id</td>
-                            <td colspan="3"><code>1</code></td>
-                            <td colspan="1">类型</td>
-                            <td colspan="3"><code>image/jpeg</code></td>
-                            <td colspan="1">长度</td>
-                            <td colspan="3"><code>293388 B</code></td>
-                        </tr>
-                        <tr>
-                            <td colspan="1">描述</td>
-                            <td colspan="11">
-                                <pre><code>少女终末旅行</code></pre>
+                            <td>所属人</td>
+                            <td>
+                                <span class="badge badge-light">cellargalaxy</span>
                             </td>
                         </tr>
                         </tbody>
                     </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-4 col-md-4">
+            <div class="thumbnail">
+                <a href="https://i.loli.net/2018/04/10/5accdcbcb1738.jpg" target="_blank">
+                    <img src="https://i.loli.net/2018/04/10/5accdcbcb1738.jpg" class="img-thumbnail"/>
+                </a>
+                <div class="caption">
+                    <table class="table table-hover">
+                        <tbody>
+                        <tr>
+                            <td>md5</td>
+                            <td><code>01234567890123456789012345678901</code></td>
+                        </tr>
+                        <tr>
+                            <td>url</td>
+                            <td><code>https://i.loli.net/2018/04/10/5accdcbcb1738.jpg</code></td>
+                        </tr>
+                        <tr>
+                            <td>文件名</td>
+                            <td><code>5accdcbcb1738.jpg</code></td>
+                        </tr>
+                        <tr>
+                            <td>分类</td>
+                            <td><code>图片</code></td>
+                        </tr>
+                        <tr>
+                            <td>描述</td>
+                            <td><pre><code>描述</code></pre></td>
+                        </tr>
+                        <tr>
+                            <td>大小</td>
+                            <td><code>293388 B</code></td>
+                        </tr>
+                        <tr>
+                            <td>类型</td>
+                            <td><code>image/jpeg</code></td>
+                        </tr>
+                        <tr>
+                            <td>创建时间</td>
+                            <td><code>2018-04-08 23:04:44</code></td>
+                        </tr>
+                        <tr>
+                            <td>更新时间</td>
+                            <td><code>2018-04-08 23:04:44</code></td>
+                        </tr>
+                        <tr>
+                            <td>操作</td>
+                            <td>
+                                <button type="button" class="btn btn-warning">修改</button>
+                                <button type="button" class="btn btn-danger">删除</button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#own-modal">所属模态框</button>
+
+    <div class="modal fade" id="own-modal" tabindex="-1" role="dialog" aria-labelledby="own-modal" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="own-modal-title">所属</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>MD5</label>
+                        <input type="text" class="form-control" readonly="readonly" value="01234567890123456789012345678901"/>
+                    </div>
+                    <div class="form-group">
+                        <label>所属人</label>
+                        <input type="text" class="form-control" readonly="readonly" value="cellargalaxy"/>
+                    </div>
+                    <div class="form-group">
+                        <label>文件名</label>
+                        <input type="text" class="form-control" value="aaa。jpg"/>
+                    </div>
+                    <div class="form-group">
+                        <label>分类</label>
+                        <input type="text" class="form-control" value="图片"/>
+                    </div>
+                    <div class="form-group">
+                        <textarea class="form-control" rows="3">描述</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>所属日期</label>
+                        <input type="date" class="form-control" value="2018-07-07"/>
+                    </div>
+                    <div class="form-group">
+                        <label>更新日期</label>
+                        <input type="date" class="form-control" value="2018-07-07"/>
+                    </div>
+                    <div class="form-group">
+                        <label>文件大小</label>
+                        <input type="number" class="form-control" readonly="readonly" value="654"/>
+                    </div>
+                    <div class="form-group">
+                        <label>文件类型</label>
+                        <input type="text" class="form-control" readonly="readonly" value="jpg"/>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger">删除</button>
+                    <button type="button" class="btn btn-warning">修改</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
                 </div>
             </div>
         </div>
