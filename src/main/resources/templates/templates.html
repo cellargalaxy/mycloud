@@ -11,7 +11,7 @@
 
     <div class="row">
         <div class="col-sm">
-            <nav class="navbar navbar-expand-lg navbar-light bg-light" role="navigation">
+            <nav class="navbar navbar-expand-lg navbar-light bg-light" role="navigation" id="navbar">
                 <a class="navbar-brand" href="#">mycloud</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapse"
                         aria-controls="navbar-collapse" aria-expanded="false">
@@ -43,6 +43,8 @@
         </div>
     </div>
 
+    <div id="test" v-html="html"></div>
+
     <div class="row">
         <div class="col-sm">
             <div class="text-center">
@@ -56,7 +58,6 @@
             </div>
         </div>
     </div>
-
 
     <div class="row">
         <div class="col-sm">
@@ -403,7 +404,7 @@ TestPrintStackTrace.main(TestPrintStackTrace.java:10)</code></pre>
                         </tr>
                         <tr>
                             <td>描述</td>
-                            <td><pre><code>描述</code></pre></td>
+                            <td>描述</td>
                         </tr>
                         <tr>
                             <td>大小</td>
@@ -435,7 +436,11 @@ TestPrintStackTrace.main(TestPrintStackTrace.java:10)</code></pre>
         </div>
     </div>
 
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#own-modal">所属模态框</button>
+
+
+    <div class="modal fade" id="own-modal-button" tabindex="-1" role="dialog" aria-labelledby="own-modal" aria-hidden="true">
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#own-modal">所属模态框</button>
+    </div>
 
     <div class="modal fade" id="own-modal" tabindex="-1" role="dialog" aria-labelledby="own-modal" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
@@ -507,4 +512,18 @@ TestPrintStackTrace.main(TestPrintStackTrace.java:10)</code></pre>
 <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.slim.js"></script>
 <script src="https://cdn.bootcss.com/popper.js/1.12.9/umd/popper.js"></script>
 <script src="https://cdn.bootcss.com/bootstrap/4.0.0/js/bootstrap.js"></script>
+<script src="https://cdn.bootcss.com/vue/2.5.16/vue.js"></script>
+<script>
+    createNavbarVue()
+    function createNavbarVue() {
+        var vue = new Vue({
+            el: '#test',
+            data: {
+                html: $('#own-modal-button').html()
+            }
+        });
+        return vue;
+    }
+    // console.log()
+</script>
 </html>
