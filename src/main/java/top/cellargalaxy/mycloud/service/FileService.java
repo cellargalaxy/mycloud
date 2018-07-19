@@ -3,7 +3,8 @@ package top.cellargalaxy.mycloud.service;
 import top.cellargalaxy.mycloud.model.bo.schedule.DownloadFileTask;
 import top.cellargalaxy.mycloud.model.bo.schedule.UploadFileTask;
 import top.cellargalaxy.mycloud.model.po.OwnPo;
-import top.cellargalaxy.mycloud.model.query.*;
+import top.cellargalaxy.mycloud.model.query.FileInfoQuery;
+import top.cellargalaxy.mycloud.model.vo.FileInfoOwnVo;
 
 import java.io.File;
 import java.io.IOException;
@@ -16,6 +17,12 @@ import java.util.concurrent.BlockingQueue;
  * @time 2018/7/17
  */
 public interface FileService {
+	FileInfoOwnVo getFileInfoOwn(FileInfoQuery fileInfoQuery);
+
+	List<FileInfoOwnVo> listFileInfoOwn(FileInfoQuery fileInfoQuery);
+
+	////
+
 	void addUploadFileTask(File file, String contentType, OwnPo ownPo);
 
 	UploadFileTask removeUploadFileTask(String taskId);

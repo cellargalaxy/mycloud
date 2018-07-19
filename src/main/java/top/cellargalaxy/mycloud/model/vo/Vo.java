@@ -1,0 +1,52 @@
+package top.cellargalaxy.mycloud.model.vo;
+
+import top.cellargalaxy.mycloud.util.ExceptionUtil;
+
+import java.io.Serializable;
+
+/**
+ * Created by cellargalaxy on 18-7-19.
+ */
+public class Vo implements Serializable {
+	public static final int FAIL_STATUS = 0;
+	public static final int SUCCESS_STATUS = 1;
+	private static final long serialVersionUID = -838272283919215475L;
+	private final int status;
+	private final String massage;
+	private final Object data;
+
+	public Vo(String massage, Object data) {
+		this(SUCCESS_STATUS, massage, data);
+	}
+
+	public Vo(Exception e, String massage) {
+		this(FAIL_STATUS, massage, ExceptionUtil.printException(e));
+	}
+
+	public Vo(int status, String massage, Object data) {
+		this.status = status;
+		this.massage = massage;
+		this.data = data;
+	}
+
+	public int getStatus() {
+		return status;
+	}
+
+	public String getMassage() {
+		return massage;
+	}
+
+	public Object getData() {
+		return data;
+	}
+
+	@Override
+	public String toString() {
+		return "Vo{" +
+				"status=" + status +
+				", massage='" + massage + '\'' +
+				", data=" + data +
+				'}';
+	}
+}

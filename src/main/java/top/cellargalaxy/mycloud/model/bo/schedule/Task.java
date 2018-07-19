@@ -13,6 +13,11 @@ import java.util.UUID;
  * @time 2018/7/17
  */
 public class Task implements Serializable, Closeable {
+	public static final int CANCEL_STATUS = -3;
+	public static final int WAIT_STATUS = -2;
+	public static final int EXECUTION_STATUS = -1;
+	public static final int FAIL_STATUS = 0;
+	public static final int SUCCESS_STATUS = 1;
 	private static final long serialVersionUID = 7062287537522505438L;
 	private final UserPo userPo;
 	private final String taskId;
@@ -25,7 +30,7 @@ public class Task implements Serializable, Closeable {
 		this.userPo = userPo;
 		taskId = UUID.randomUUID().toString();
 		createTime = new Date();
-		status = -1;
+		status = WAIT_STATUS;
 	}
 
 	public UserPo getUserPo() {

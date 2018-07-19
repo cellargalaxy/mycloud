@@ -30,7 +30,8 @@ public class DownloadFileTask extends Task {
 	@Override
 	public String toString() {
 		return "DownloadFileTask{" +
-				"fileInfoQuery=" + fileInfoQuery +
+				"super=" + super.toString() +
+				", fileInfoQuery=" + fileInfoQuery +
 				", file=" + file +
 				'}';
 	}

@@ -9,6 +9,7 @@ import top.cellargalaxy.mycloud.dao.FileBlockDao;
 import top.cellargalaxy.mycloud.dao.FileInfoDao;
 import top.cellargalaxy.mycloud.dao.OwnDao;
 import top.cellargalaxy.mycloud.exception.GlobalException;
+import top.cellargalaxy.mycloud.model.bo.schedule.Task;
 import top.cellargalaxy.mycloud.model.bo.schedule.UploadFileTask;
 import top.cellargalaxy.mycloud.model.po.BlockPo;
 import top.cellargalaxy.mycloud.model.po.FileBlockPo;
@@ -19,18 +20,13 @@ import top.cellargalaxy.mycloud.util.StreamUtil;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedTransferQueue;
 
 /**
  * @author cellargalaxy
  * @time 2018/7/17
  */
 @Component
-public class UploadFileSchedule extends Schedule<UploadFileTask> {
+public class UploadFileSchedule extends AbstractSchedule<UploadFileTask> {
 	@Autowired
 	private FileInfoDao fileInfoDao;
 	@Autowired
@@ -45,12 +41,17 @@ public class UploadFileSchedule extends Schedule<UploadFileTask> {
 	@Scheduled(fixedDelay = 1000 * 5)
 	public void uploadFileSchedule() {
 		while (true) {
+			UploadFileTask task = null;
 			try (UploadFileTask uploadFileTask = getWaitTask()) {
-				uploadFileSchedule(uploadFileTask);
-				addFinishTask(uploadFileTask);
+				task = uploadFileTask;
+				uploadFileSchedule(task);
+				addFinishTask(task, Task.SUCCESS_STATUS);
 			} catch (Exception e) {
 				e.printStackTrace();
 				GlobalException.add(e, 0, "未知异常");
+				if (task != null) {
+					addFinishTask(task, Task.FAIL_STATUS);
+				}
 			}
 		}
 	}

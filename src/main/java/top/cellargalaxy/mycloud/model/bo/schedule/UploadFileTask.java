@@ -10,15 +10,19 @@ import java.io.File;
  * @time 2018/7/17
  */
 public class UploadFileTask extends Task {
+	private final OwnPo ownPo;
 	private final File file;
 	private final String contentType;
-	private final OwnPo ownPo;
 
-	public UploadFileTask(UserPo userPo, File file, String contentType, OwnPo ownPo) {
+	public UploadFileTask(UserPo userPo, OwnPo ownPo, File file, String contentType) {
 		super(userPo);
+		this.ownPo = ownPo;
 		this.file = file;
 		this.contentType = contentType;
-		this.ownPo = ownPo;
+	}
+
+	public OwnPo getOwnPo() {
+		return ownPo;
 	}
 
 	public File getFile() {
@@ -29,17 +33,13 @@ public class UploadFileTask extends Task {
 		return contentType;
 	}
 
-	public OwnPo getOwnPo() {
-		return ownPo;
-	}
-
 	@Override
 	public String toString() {
 		return "UploadFileTask{" +
 				"super=" + super.toString() +
+				", ownPo=" + ownPo +
 				", file=" + file +
 				", contentType='" + contentType + '\'' +
-				", ownPo=" + ownPo +
 				'}';
 	}
 }

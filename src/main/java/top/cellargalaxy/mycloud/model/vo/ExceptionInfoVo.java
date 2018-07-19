@@ -1,5 +1,7 @@
 package top.cellargalaxy.mycloud.model.vo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -7,15 +9,16 @@ import java.util.Date;
  * @author cellargalaxy
  * @time 2018/7/17
  */
-public class ExceptionInfo implements Serializable {
+public class ExceptionInfoVo implements Serializable {
 	private static final long serialVersionUID = -3096389445125376855L;
+	@JsonIgnore
 	private final Exception exception;
 	private final String exceptionString;
 	private final int status;
 	private final String massage;
 	private final Date date;
 
-	public ExceptionInfo(Exception exception, String exceptionString, int status, String massage, Date date) {
+	public ExceptionInfoVo(Exception exception, String exceptionString, int status, String massage, Date date) {
 		this.exception = exception;
 		this.exceptionString = exceptionString;
 		this.status = status;
@@ -45,7 +48,7 @@ public class ExceptionInfo implements Serializable {
 
 	@Override
 	public String toString() {
-		return "ExceptionInfo{" +
+		return "ExceptionInfoVo{" +
 				"exception=" + exception +
 				", exceptionString='" + exceptionString + '\'' +
 				", status=" + status +

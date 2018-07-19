@@ -59,21 +59,21 @@
                         <th>异常栈</th>
                     </tr>
                     </thead>
-                    <tbody v-for="exceptionInfo in exceptionInfos">
+                    <tbody v-for="exceptionInfoVo in exceptionInfos">
                     <tr>
                         <td>状态</td>
-                        <td v-text="exceptionInfo.status"></td>
+                        <td v-text="exceptionInfoVo.status"></td>
                         <td rowspan="3">
-                            <pre><code v-text="exceptionInfo.exceptionString"></code></pre>
+                            <pre><code v-text="exceptionInfoVo.exceptionString"></code></pre>
                         </td>
                     </tr>
                     <tr>
                         <td>信息</td>
-                        <td v-text="exceptionInfo.massage"></td>
+                        <td v-text="exceptionInfoVo.massage"></td>
                     </tr>
                     <tr>
                         <td>时间</td>
-                        <td v-text="exceptionInfo.date"></td>
+                        <td v-text="exceptionInfoVo.date"></td>
                     </tr>
                     </tbody>
                 </table>
