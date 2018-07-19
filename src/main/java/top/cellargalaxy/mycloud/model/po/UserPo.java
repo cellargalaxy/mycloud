@@ -1,5 +1,7 @@
 package top.cellargalaxy.mycloud.model.po;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -10,7 +12,8 @@ import java.util.Date;
 public class UserPo implements Serializable {
 	private static final long serialVersionUID = -8175567370336139965L;
 	private int userId;
-	private String userName;
+	private String username;
+	@JsonIgnore
 	private String userPassword;
 	private Date createTime;
 	private Date updateTime;
@@ -23,12 +26,12 @@ public class UserPo implements Serializable {
 		this.userId = userId;
 	}
 
-	public String getUserName() {
-		return userName;
+	public String getUsername() {
+		return username;
 	}
 
-	public void setUserName(String userName) {
-		this.userName = userName;
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 	public String getUserPassword() {
@@ -59,7 +62,7 @@ public class UserPo implements Serializable {
 	public String toString() {
 		return "UserPo{" +
 				"userId=" + userId +
-				", userName='" + userName + '\'' +
+				", username='" + username + '\'' +
 				", userPassword='" + userPassword + '\'' +
 				", createTime=" + createTime +
 				", updateTime=" + updateTime +

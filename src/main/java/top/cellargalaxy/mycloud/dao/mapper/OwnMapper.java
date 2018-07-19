@@ -40,7 +40,7 @@ public interface OwnMapper {
 			@Result(property = "description", column = "description"),
 			@Result(property = "createTime", column = "create_time", javaType = Date.class, jdbcType = TIMESTAMP),
 			@Result(property = "updateTime", column = "update_time", javaType = Date.class, jdbcType = TIMESTAMP),
-			@Result(property = "userName", column = "user_name"),
+			@Result(property = "username", column = "username"),
 			@Result(property = "md5", column = "md5"),
 			@Result(property = "fileLength", column = "file_length"),
 			@Result(property = "contentType", column = "content_type")
@@ -100,7 +100,7 @@ public interface OwnMapper {
 			selects.add(TABLE_NAME + ".description");
 			selects.add(TABLE_NAME + ".create_time");
 			selects.add(TABLE_NAME + ".update_time");
-			selects.add(UserDao.TABLE_NAME + ".user_name");
+			selects.add(UserDao.TABLE_NAME + ".username");
 			selects.add(FileInfoDao.TABLE_NAME + ".md5");
 			selects.add(FileInfoDao.TABLE_NAME + ".file_length");
 			selects.add(FileInfoDao.TABLE_NAME + ".content_type");
@@ -122,7 +122,7 @@ public interface OwnMapper {
 			selects.add(TABLE_NAME + ".description");
 			selects.add(TABLE_NAME + ".create_time");
 			selects.add(TABLE_NAME + ".update_time");
-			selects.add(UserDao.TABLE_NAME + ".user_name");
+			selects.add(UserDao.TABLE_NAME + ".username");
 			selects.add(FileInfoDao.TABLE_NAME + ".md5");
 			selects.add(FileInfoDao.TABLE_NAME + ".file_length");
 			selects.add(FileInfoDao.TABLE_NAME + ".content_type");

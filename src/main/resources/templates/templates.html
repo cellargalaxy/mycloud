@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:v-bind="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/4.0.0/css/bootstrap.min.css"/>
+    <link href="https://cdn.bootcss.com/bootstrap-fileinput/4.4.8/css/fileinput.css" rel="stylesheet"/>
     <title>templates</title>
 </head>
 <body>
@@ -12,7 +13,7 @@
     <div class="row">
         <div class="col-sm">
             <nav class="navbar navbar-expand-lg navbar-light bg-light" role="navigation" id="navbar">
-                <a class="navbar-brand" href="#">mycloud</a>
+                <a class="navbar-brand" :href="brand.url" v-text="brand.text"></a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapse"
                         aria-controls="navbar-collapse" aria-expanded="false">
                     <span class="navbar-toggler-icon"></span>
@@ -20,48 +21,37 @@
 
                 <div class="collapse navbar-collapse" id="navbar-collapse">
                     <ul class="navbar-nav mr-auto">
-                        <li class="nav-item active">
-                            <a class="nav-link" href="#">文件管理</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">用户管理</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">权限与授权</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">日志查看</a>
+                        <li v-for="left in lefts" :class="'nav-item'+ left.active?'active':''">
+                            <a class="nav-link" :href="left.url" v-text="left.text"></a>
                         </li>
                     </ul>
                     <ul class="navbar-nav navbar-right">
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">登录</a>
+                        <li v-for="right in rights" :class="'nav-item'+ right.active?'active':''">
+                            <a class="nav-link" :href="right.url" v-text="right.text"></a>
                         </li>
                     </ul>
                 </div>
             </nav>
         </div>
     </div>
-
-    <div id="test" v-html="html"></div>
-
+    <hr/>
     <div class="row">
         <div class="col-sm">
-            <div class="text-center">
-                <form class="form-signin">
-                    <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-                    <input type="text" class="form-control" placeholder="用户名" required="required"/>
-                    <input type="password" class="form-control" placeholder="密码" required="required"/>
-                    <button class="btn btn-lg btn-primary btn-block" type="submit">登录</button>
-                    <p>我的文件床 mycloud &copy; 2017-2018</p>
-                </form>
-            </div>
+            <form class="form-signin text-center" id="login-form" onsubmit="return false">
+                <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+                <input type="text" class="form-control" placeholder="用户名" required="required" v-model="username"/>
+                <input type="password" class="form-control" placeholder="密码" required="required"
+                       v-model="userPassword"/>
+                <button class="btn btn-lg btn-primary btn-block" type="submit" @click="login">登录</button>
+                <p>我的文件床 mycloud</p>
+                <p>&copy; 2017-2018</p>
+            </form>
         </div>
     </div>
-
+    <hr/>
     <div class="row">
         <div class="col-sm">
-            <div class="table-responsive">
+            <div class="table-responsive" id="exception-table">
                 <table class="table table-hover">
                     <thead>
                     <tr>
@@ -69,117 +59,31 @@
                         <th>异常栈</th>
                     </tr>
                     </thead>
-                    <tbody>
+                    <tbody v-for="exceptionInfo in exceptionInfos">
                     <tr>
                         <td>状态</td>
-                        <td>0</td>
-                        <td rowspan="3"><pre><code>java.lang.Exception: 出问题啦！
-    at TestPrintStackTrace.f(TestPrintStackTrace.java:3)
-    at TestPrintStackTrace.g(TestPrintStackTrace.java:6)
-    at TestPrintStackTrace.main(TestPrintStackTrace.java:10)
-TestPrintStackTrace.f(TestPrintStackTrace.java:3)
-TestPrintStackTrace.g(TestPrintStackTrace.java:6)
-TestPrintStackTrace.main(TestPrintStackTrace.java:10)</code></pre>
+                        <td v-text="exceptionInfo.status"></td>
+                        <td rowspan="3">
+                            <pre><code v-text="exceptionInfo.exceptionString"></code></pre>
                         </td>
                     </tr>
                     <tr>
                         <td>信息</td>
-                        <td>massage</td>
+                        <td v-text="exceptionInfo.massage"></td>
                     </tr>
                     <tr>
                         <td>时间</td>
-                        <td>2018-11-11 22:22:22</td>
+                        <td v-text="exceptionInfo.date"></td>
                     </tr>
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
-
+    <hr/>
     <div class="row">
         <div class="col-sm">
-            <div class="table-responsive">
-                <table class="table table-hover">
-                    <thead>
-                    <tr>
-                        <th>提交者</th>
-                        <th>文件</th>
-                        <th>文件类型</th>
-                        <th>文件名</th>
-                        <th>分类</th>
-                        <th>描述</th>
-                        <th>信息</th>
-                        <th>创建时间</th>
-                        <th>完成时间</th>
-                        <th>操作</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr class="table-warning">
-                        <td>cellargalaxy</td>
-                        <td><code>/xxx/bbb。jpg</code></td>
-                        <td><code>jpg</code></td>
-                        <td><code>bbb。jpg</code></td>
-                        <td>图片</td>
-                        <td>没有描述</td>
-                        <td>null</td>
-                        <td>2018-11-11 22:22:22</td>
-                        <td>2018-11-11 22:22:22</td>
-                        <td>
-                            <button type="button" class="btn btn-warning">结束</button>
-                        </td>
-                    </tr>
-                    <tr class="table-info">
-                        <td>cellargalaxy</td>
-                        <td>/xxx/bbb。jpg</td>
-                        <td>jpg</td>
-                        <td>bbb。jpg</td>
-                        <td>图片</td>
-                        <td>没有描述</td>
-                        <td>null</td>
-                        <td>2018-11-11 22:22:22</td>
-                        <td>2018-11-11 22:22:22</td>
-                        <td>
-                            <button type="button" class="btn btn-danger">删除</button>
-                        </td>
-                    </tr>
-                    <tr class="table-danger">
-                        <td>cellargalaxy</td>
-                        <td>/xxx/bbb。jpg</td>
-                        <td>jpg</td>
-                        <td>bbb。jpg</td>
-                        <td>图片</td>
-                        <td>没有描述</td>
-                        <td>null</td>
-                        <td>2018-11-11 22:22:22</td>
-                        <td>2018-11-11 22:22:22</td>
-                        <td>
-                            <button type="button" class="btn btn-primary">重做</button>
-                        </td>
-                    </tr>
-                    <tr class="table-secondary">
-                        <td>cellargalaxy</td>
-                        <td>/xxx/bbb。jpg</td>
-                        <td>jpg</td>
-                        <td>bbb。jpg</td>
-                        <td>图片</td>
-                        <td>没有描述</td>
-                        <td>null</td>
-                        <td>2018-11-11 22:22:22</td>
-                        <td>2018-11-11 22:22:22</td>
-                        <td>
-                            <button type="button" class="btn btn-primary">重做</button>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-sm">
-            <div class="table-responsive">
+            <div class="table-responsive" id="user-table">
                 <table class="table table-hover">
                     <thead>
                     <tr>
@@ -193,29 +97,31 @@ TestPrintStackTrace.main(TestPrintStackTrace.java:10)</code></pre>
                     <tbody>
                     <tr>
                         <td>
-                            <input type="text" class="form-control" placeholder="用户名"/>
+                            <input type="text" class="form-control" placeholder="用户名" v-model="user.username"/>
                         </td>
                         <td>
-                            <input type="password" class="form-control" placeholder="密码"/>
+                            <input type="password" class="form-control" placeholder="密码" v-model="user.userPassword"/>
                         </td>
                         <td></td>
                         <td></td>
                         <td>
-                            <button type="button" class="btn btn-success">增添</button>
+                            <button type="button" class="btn btn-success" @click="addUser">增添</button>
                         </td>
                     </tr>
-                    <tr>
+                    <tr v-for="(user, i) in users">
                         <td>
-                            <input type="text" class="form-control" placeholder="用户名" value="cellargalaxy"/>
+                            <input type="text" class="form-control" placeholder="用户名"
+                                   v-bind:v-bind:value="user.username" v-model="users[i].username"/>
                         </td>
                         <td>
-                            <input type="password" class="form-control" placeholder="密码" value="123456"/>
+                            <input type="password" class="form-control" placeholder="密码"
+                                   v-bind:v-bind:value="user.userPassword" v-model="users[i].userPassword"/>
                         </td>
-                        <td>2018-11-11 22:22:22</td>
-                        <td>2018-11-11 22:22:22</td>
+                        <td v-text="user.createTime">2018-11-11 22:22:22</td>
+                        <td v-text="user.updateTime">2018-11-11 22:22:22</td>
                         <td>
-                            <button type="button" class="btn btn-warning">修改</button>
-                            <button type="button" class="btn btn-danger">删除</button>
+                            <button type="button" class="btn btn-warning" @click="changeUser(i)">修改</button>
+                            <button type="button" class="btn btn-danger" @click="deleteUser(i)">删除</button>
                         </td>
                     </tr>
                     </tbody>
@@ -223,10 +129,10 @@ TestPrintStackTrace.main(TestPrintStackTrace.java:10)</code></pre>
             </div>
         </div>
     </div>
-
+    <hr/>
     <div class="row">
         <div class="col-sm">
-            <div class="table-responsive">
+            <div class="table-responsive" id="permission-table">
                 <table class="table table-hover">
                     <thead>
                     <tr>
@@ -240,24 +146,31 @@ TestPrintStackTrace.main(TestPrintStackTrace.java:10)</code></pre>
                     <tbody>
                     <tr>
                         <td>
-                            <input type="number" class="form-control" placeholder="权限id"/>
+                            <input type="number" class="form-control" placeholder="权限id"
+                                   v-model="permission.permissionId"/>
                         </td>
                         <td>
-                            <input type="text" class="form-control" placeholder="权限备注"/>
+                            <input type="text" class="form-control" placeholder="权限备注"
+                                   v-model="permission.permissionMark"/>
                         </td>
                         <td></td>
                         <td></td>
                         <td>
-                            <button type="button" class="btn btn-success">增添</button>
+                            <button type="button" class="btn btn-success" @click="addPermission">增添</button>
                         </td>
                     </tr>
-                    <tr>
-                        <td>1</td>
-                        <td>管理员</td>
-                        <td>2018-11-11 22:22:22</td>
-                        <td>2018-11-11 22:22:22</td>
+                    <tr v-for="(permission, i) in permissions">
+                        <td v-text="permission.permissionId">1</td>
                         <td>
-                            <button type="button" class="btn btn-danger">删除</button>
+                            <input type="text" class="form-control" placeholder="权限备注"
+                                   v-bind:v-bind:value="permission.permissionMark"
+                                   v-model="permissions[i].permissionMark"/>
+                        </td>
+                        <td v-text="permission.createTime">2018-11-11 22:22:22</td>
+                        <td v-text="permission.updateTime">2018-11-11 22:22:22</td>
+                        <td>
+                            <button type="button" class="btn btn-warning" @click="changePermission(i)">修改</button>
+                            <button type="button" class="btn btn-danger" @click="deletePermission(i)">删除</button>
                         </td>
                     </tr>
                     </tbody>
@@ -265,240 +178,245 @@ TestPrintStackTrace.main(TestPrintStackTrace.java:10)</code></pre>
             </div>
         </div>
     </div>
-
+    <hr/>
     <div class="row">
         <div class="col-sm">
-            <div class="table-responsive">
+            <div class="table-responsive" id="authorization-table">
                 <table class="table table-hover">
                     <thead>
                     <tr>
                         <th>用户</th>
                         <th>权限</th>
-                        <th>创建时间</th>
-                        <th>更新时间</th>
                         <th>操作</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
+                    <tr v-for="(user, userIndex) in users">
+                        <td v-text="user.username"></td>
                         <td>
-                            <select class="form-control">
-                                <option value="1">cellargalaxy</option>
-                            </select>
+                            <span class="badge badge-light" v-for="(permission, permissionIndex) in user.permissions"
+                                  v-text="permission.permissionMark"
+                                  @click="showModal(userIndex,permissionIndex)"></span>
                         </td>
                         <td>
-                            <select class="form-control">
-                                <option value="1">管理员</option>
-                            </select>
-                        </td>
-                        <td></td>
-                        <td></td>
-                        <td>
-                            <button type="button" class="btn btn-success">增添</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>cellargalaxy</td>
-                        <td>管理员</td>
-                        <td>2018-11-11 22:22:22</td>
-                        <td>2018-11-11 22:22:22</td>
-                        <td>
-                            <button type="button" class="btn btn-danger">删除</button>
+                            <form class="form-inline">
+                                <select class="form-control" v-model="users[userIndex].permissionId">
+                                    <option v-for="permission in permissions"
+                                            v-bind:v-bind:value="permission.permissionId"
+                                            v-text="permission.permissionMark"></option>
+                                </select>
+                                <button type="button" class="btn btn-success" @click="addAuthorization(userIndex)">增添
+                                </button>
+                            </form>
                         </td>
                     </tr>
                     </tbody>
                 </table>
+
+                <div class="modal fade" id="authorization-table-modal" tabindex="-1" role="dialog"
+                     aria-labelledby="authorization-table-modal-title" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="authorization-table-modal-title">授权</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="form-group">
+                                    <label>用户</label>
+                                    <input type="text" class="form-control" readonly="readonly"
+                                           :value="authorization.username"/>
+                                </div>
+                                <div class="form-group">
+                                    <label>权限</label>
+                                    <input type="text" class="form-control" readonly="readonly"
+                                           :value="authorization.permissionMark"/>
+                                </div>
+                                <div class="form-group">
+                                    <label>创建日期</label>
+                                    <input type="text" class="form-control" readonly="readonly"
+                                           :value="authorization.createTime"/>
+                                </div>
+                                <div class="form-group">
+                                    <label>更新日期</label>
+                                    <input type="text" class="form-control" readonly="readonly"
+                                           :value="authorization.updateTime"/>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-danger" @click="deleteAuthorization">删除</button>
+                                <button type="button" class="btn btn-secondary" @click="hideModal">关闭</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-
+    <hr/>
     <div class="row">
         <div class="col-sm">
-            <form>
+            <form id="upload-file-form" onsubmit="return false">
                 <div class="form-group">
-                    <input type="file" class="form-control-file"/>
-                </div>
-                <div class="form-group row">
-                    <div class="col-sm-6">
-                        <select class="form-control" placeholder="自定义文件分类">
-                            <option value="图片">图片</option>
-                        </select>
-                    </div>
-                    <div class="col-sm-6">
-                        <input type="text" class="form-control" placeholder="自定义文件分类"/>
-                    </div>
+                    <input type="file" class="form-control-file file" data-show-upload="false" required="required"
+                           @change="choiceFile"/>
                 </div>
                 <div class="form-group">
-                    <textarea class="form-control" rows="3" placeholder="描述"></textarea>
+                    <input type="text" class="form-control" placeholder="分类" required="required" v-model="sort"/>
                 </div>
+                <div class="form-group">
+                    <textarea class="form-control" rows="3" placeholder="描述" v-model="description"></textarea>
+                </div>
+                <button class="btn btn-lg btn-primary btn-block" type="submit" @click="uploadFile">上传</button>
             </form>
         </div>
     </div>
+    <hr/>
+    <div>
+        <div class="row" id="own-list">
+            <div class="col-sm-4 col-md-4" v-for="(fileInfo, fileInfoIndex) in fileInfos">
+                <div class="thumbnail">
+                    <a :href="fileInfo.url" target="_blank">
+                        <img :src="fileInfo.url" class="img-thumbnail img-fluid"/>
+                    </a>
+                    <div class="caption">
+                        <table class="table table-hover">
+                            <tbody>
+                            <tr>
+                                <td>md5</td>
+                                <td><code v-text="fileInfo.md5"></code></td>
+                            </tr>
+                            <tr>
+                                <td>url</td>
+                                <td><code v-text="fileInfo.url"></code>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>大小</td>
+                                <td><code v-text="fileInfo.fileLength"></code></td>
+                            </tr>
+                            <tr>
+                                <td>类型</td>
+                                <td><code v-text="fileInfo.contentType"></code></td>
+                            </tr>
+                            <tr>
+                                <td>创建时间</td>
+                                <td><code v-text="fileInfo.createTime"></code></td>
+                            </tr>
+                            <tr>
+                                <td>所属人</td>
+                                <td>
+                                    <span class="badge badge-light" v-for="(own, ownIndex) in fileInfo.owns"
+                                          v-text="own.username" @click="showModal(fileInfoIndex, ownIndex)"></span>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
 
-    <div class="row">
-        <div class="col-sm-4 col-md-4">
-            <div class="thumbnail">
-                <a href="https://i.loli.net/2018/04/10/5accdcbcb1738.jpg" target="_blank">
-                    <img src="https://i.loli.net/2018/04/10/5accdcbcb1738.jpg" class="img-thumbnail"/>
-                </a>
-                <div class="caption">
-                    <table class="table table-hover">
-                        <tbody>
-                        <tr>
-                            <td>md5</td>
-                            <td><code>01234567890123456789012345678901</code></td>
-                        </tr>
-                        <tr>
-                            <td>url</td>
-                            <td><code>https://i.loli.net/2018/04/10/5accdcbcb1738.jpg</code></td>
-                        </tr>
-                        <tr>
-                            <td>大小</td>
-                            <td><code>293388 B</code></td>
-                        </tr>
-                        <tr>
-                            <td>类型</td>
-                            <td><code>image/jpeg</code></td>
-                        </tr>
-                        <tr>
-                            <td>创建时间</td>
-                            <td><code>2018-04-08 23:04:44</code></td>
-                        </tr>
-                        <tr>
-                            <td>所属人</td>
-                            <td>
-                                <span class="badge badge-light">cellargalaxy</span>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
+            <div class="modal fade" id="own-list-modal" tabindex="-1" role="dialog" aria-labelledby="own-list-modal"
+                 aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">所属</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label>MD5</label>
+                                <input type="text" class="form-control" readonly="readonly" :value="own.md5"/>
+                            </div>
+                            <div class="form-group">
+                                <label>所属人</label>
+                                <input type="text" class="form-control" readonly="readonly" :value="own.username"/>
+                            </div>
+                            <div class="form-group">
+                                <label>文件名</label>
+                                <input type="text" class="form-control" :value="own.fileName"/>
+                            </div>
+                            <div class="form-group">
+                                <label>分类</label>
+                                <input type="text" class="form-control" :value="own.sort"/>
+                            </div>
+                            <div class="form-group">
+                                <textarea class="form-control" rows="3" v-text="own.description"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>所属日期</label>
+                                <input type="text" class="form-control" readonly="readonly" :value="own.createTime"/>
+                            </div>
+                            <div class="form-group">
+                                <label>更新日期</label>
+                                <input type="text" class="form-control" readonly="readonly" :value="own.updateTime"/>
+                            </div>
+                            <div class="form-group">
+                                <label>文件大小</label>
+                                <input type="text" class="form-control" readonly="readonly" :value="own.fileLength"/>
+                            </div>
+                            <div class="form-group">
+                                <label>文件类型</label>
+                                <input type="text" class="form-control" readonly="readonly" :value="own.contentType"/>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" @click="deleteOwn">删除</button>
+                            <button type="button" class="btn btn-warning" @click="changeOwn">修改</button>
+                            <button type="button" class="btn btn-secondary" @click="hideModal">关闭</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-
+    <hr/>
     <div class="row">
-        <div class="col-sm-4 col-md-4">
-            <div class="thumbnail">
-                <a href="https://i.loli.net/2018/04/10/5accdcbcb1738.jpg" target="_blank">
-                    <img src="https://i.loli.net/2018/04/10/5accdcbcb1738.jpg" class="img-thumbnail"/>
-                </a>
-                <div class="caption">
-                    <table class="table table-hover">
-                        <tbody>
-                        <tr>
-                            <td>md5</td>
-                            <td><code>01234567890123456789012345678901</code></td>
-                        </tr>
-                        <tr>
-                            <td>url</td>
-                            <td><code>https://i.loli.net/2018/04/10/5accdcbcb1738.jpg</code></td>
-                        </tr>
-                        <tr>
-                            <td>文件名</td>
-                            <td><code>5accdcbcb1738.jpg</code></td>
-                        </tr>
-                        <tr>
-                            <td>分类</td>
-                            <td><code>图片</code></td>
-                        </tr>
-                        <tr>
-                            <td>描述</td>
-                            <td>描述</td>
-                        </tr>
-                        <tr>
-                            <td>大小</td>
-                            <td><code>293388 B</code></td>
-                        </tr>
-                        <tr>
-                            <td>类型</td>
-                            <td><code>image/jpeg</code></td>
-                        </tr>
-                        <tr>
-                            <td>创建时间</td>
-                            <td><code>2018-04-08 23:04:44</code></td>
-                        </tr>
-                        <tr>
-                            <td>更新时间</td>
-                            <td><code>2018-04-08 23:04:44</code></td>
-                        </tr>
-                        <tr>
-                            <td>操作</td>
-                            <td>
-                                <button type="button" class="btn btn-warning">修改</button>
-                                <button type="button" class="btn btn-danger">删除</button>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+        <div class="col-sm">
+            <table class="table table-hover table-responsive" id="task-table">
+                <thead>
+                <tr>
+                    <th>提交者</th>
+                    <th>文件</th>
+                    <th>文件类型</th>
+                    <th>文件名</th>
+                    <th>分类</th>
+                    <th>描述</th>
+                    <th>信息</th>
+                    <th>创建时间</th>
+                    <th>完成时间</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr v-for="" class="table-warning">
+                    <td>cellargalaxy</td>
+                    <td><code>/xxx/bbb。jpg</code></td>
+                    <td><code>jpg</code></td>
+                    <td><code>bbb。jpg</code></td>
+                    <td>图片</td>
+                    <td>没有描述</td>
+                    <td>null</td>
+                    <td>2018-11-11 22:22:22</td>
+                    <td>2018-11-11 22:22:22</td>
+                    <td>
+                        <button type="button" class="btn btn-warning">结束</button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
         </div>
     </div>
+    <hr/>
 
-
-
-    <div class="modal fade" id="own-modal-button" tabindex="-1" role="dialog" aria-labelledby="own-modal" aria-hidden="true">
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#own-modal">所属模态框</button>
-    </div>
-
-    <div class="modal fade" id="own-modal" tabindex="-1" role="dialog" aria-labelledby="own-modal" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="own-modal-title">所属</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label>MD5</label>
-                        <input type="text" class="form-control" readonly="readonly" value="01234567890123456789012345678901"/>
-                    </div>
-                    <div class="form-group">
-                        <label>所属人</label>
-                        <input type="text" class="form-control" readonly="readonly" value="cellargalaxy"/>
-                    </div>
-                    <div class="form-group">
-                        <label>文件名</label>
-                        <input type="text" class="form-control" value="aaa。jpg"/>
-                    </div>
-                    <div class="form-group">
-                        <label>分类</label>
-                        <input type="text" class="form-control" value="图片"/>
-                    </div>
-                    <div class="form-group">
-                        <textarea class="form-control" rows="3">描述</textarea>
-                    </div>
-                    <div class="form-group">
-                        <label>所属日期</label>
-                        <input type="date" class="form-control" value="2018-07-07"/>
-                    </div>
-                    <div class="form-group">
-                        <label>更新日期</label>
-                        <input type="date" class="form-control" value="2018-07-07"/>
-                    </div>
-                    <div class="form-group">
-                        <label>文件大小</label>
-                        <input type="number" class="form-control" readonly="readonly" value="654"/>
-                    </div>
-                    <div class="form-group">
-                        <label>文件类型</label>
-                        <input type="text" class="form-control" readonly="readonly" value="jpg"/>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-danger">删除</button>
-                    <button type="button" class="btn btn-warning">修改</button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <div class="row">
-        <div class="col-sm text-center">
+        <div class="col-sm">
             <nav class="navbar sticky-top navbar-light bg-light" role="navigation">
                 <span class="navbar-text">
                     我的文件床 mycloud &copy; 2017-2018
@@ -509,21 +427,461 @@ TestPrintStackTrace.main(TestPrintStackTrace.java:10)</code></pre>
 
 </div>
 </body>
-<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.slim.js"></script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
 <script src="https://cdn.bootcss.com/popper.js/1.12.9/umd/popper.js"></script>
 <script src="https://cdn.bootcss.com/bootstrap/4.0.0/js/bootstrap.js"></script>
 <script src="https://cdn.bootcss.com/vue/2.5.16/vue.js"></script>
+<script src="https://cdn.bootcss.com/bootstrap-fileinput/4.4.8/js/fileinput.js"></script>
+<script src="https://cdn.bootcss.com/bootstrap-fileinput/4.4.8/js/locales/zh.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/spark-md5/3.0.0/spark-md5.js"></script>
 <script>
-    createNavbarVue()
-    function createNavbarVue() {
+    createOwnListVue().fileInfos = [
+        {
+            url: 'https://i.loli.net/2018/04/10/5accdcbcb1738.jpg',
+            md5: '01234567890123456789012345678901',
+            fileLength: '293388 B',
+            contentType: 'image/jpeg',
+            createTime: '2018-04-08 23:04:44',
+            owns: [
+                {
+                    username: 'cellargalaxy',
+                    md5: '01234567890123456789012345678901',
+                    fileName: '5accdcbcb1738.jpg',
+                    sort: '图片',
+                    description: 'description',
+                    createTime: '2018-12-12 12:12:12',
+                    updateTime: '2018-12-12 12:12:12',
+                    fileLength: '2154 B',
+                    contentType: 'jpg'
+                },
+                {
+                    username: 'cellargalaxy',
+                    md5: '01234567890123456789012345678901',
+                    fileName: '5accdcbcb1738.jpg',
+                    sort: '图片',
+                    description: 'description',
+                    createTime: '2018-12-12 12:12:12',
+                    updateTime: '2018-12-12 12:12:12',
+                    fileLength: '2154 B',
+                    contentType: 'jpg'
+                },
+            ]
+        },
+        {
+            url: 'https://i.loli.net/2018/04/10/5accdcbcb1738.jpg',
+            md5: '01234567890123456789012345678901',
+            fileLength: '293388 B',
+            contentType: 'image/jpeg',
+            createTime: '2018-04-08 23:04:44',
+            owns: [
+                {
+                    username: 'cellargalaxy',
+                    md5: '01234567890123456789012345678901',
+                    fileName: '5accdcbcb1738.jpg',
+                    sort: '图片',
+                    description: 'description',
+                    createTime: '2018-12-12 12:12:12',
+                    updateTime: '2018-12-12 12:12:12',
+                    fileLength: '2154 B',
+                    contentType: 'jpg'
+                },
+                {
+                    username: 'cellargalaxy',
+                    md5: '01234567890123456789012345678901',
+                    fileName: '5accdcbcb1738.jpg',
+                    sort: '图片',
+                    description: 'description',
+                    createTime: '2018-12-12 12:12:12',
+                    updateTime: '2018-12-12 12:12:12',
+                    fileLength: '2154 B',
+                    contentType: 'jpg'
+                },
+            ]
+        },
+    ]
+
+    function createOwnListVue() {
         var vue = new Vue({
-            el: '#test',
+            el: '#own-list',
             data: {
-                html: $('#own-modal-button').html()
+                fileInfos: [],
+                own: {
+                    username: null,
+                    md5: null,
+                    fileName: null,
+                    sort: null,
+                    description: null,
+                    createTime: null,
+                    updateTime: null,
+                    fileLength: null,
+                    contentType: null,
+                }
+            },
+            methods: {
+                deleteOwn: function () {
+                    console.log('deleteOwn')
+                },
+                changeOwn: function () {
+                    console.log('changeOwn')
+                },
+                showModal: function (fileInfoIndex, ownIndex) {
+                    this.own = this.fileInfos[fileInfoIndex].owns[ownIndex];
+                    $('#own-list-modal').modal('show');
+                },
+                hideModal: function () {
+                    $('#own-list-modal').modal('hide');
+                    this.own = {
+                        username: null,
+                        md5: null,
+                        fileName: null,
+                        sort: null,
+                        description: null,
+                        createTime: null,
+                        updateTime: null,
+                        fileLength: null,
+                        contentType: null,
+                    };
+                }
             }
         });
         return vue;
     }
-    // console.log()
+
+    createFileUploadFormVue()
+
+    function createFileUploadFormVue() {
+        var vue = new Vue({
+            el: '#upload-file-form',
+            data: {
+                file: null,
+                sort: null,
+                description: null
+            },
+            methods: {
+                choiceFile: function (event) {
+                    this.file = event.target.files[0];
+                },
+                uploadFile: function () {
+                    console.log('uploadFile, file:' + this.file + ', sort: ' + this.sort + ', description: ' + this.description)
+                }
+            }
+        });
+        return vue;
+    }
+
+
+    function md5(file, callBack) {
+        var fileReader = new FileReader(),
+            blobSlice = File.prototype.mozSlice || File.prototype.webkitSlice || File.prototype.slice,
+            chunkSize = 2097152,
+            // read in chunks of 2MB
+            chunks = Math.ceil(file.size / chunkSize),
+            currentChunk = 0,
+            spark = new SparkMD5();
+
+        fileReader.onload = function (e) {
+            spark.appendBinary(e.target.result); // append binary string
+            currentChunk++;
+
+            if (currentChunk < chunks) {
+                loadNext();
+            }
+            else {
+                callBack(spark.end());
+            }
+        };
+
+        function loadNext() {
+            var start = currentChunk * chunkSize,
+                end = start + chunkSize >= file.size ? file.size : start + chunkSize;
+
+            fileReader.readAsBinaryString(blobSlice.call(file, start, end));
+        };
+
+        loadNext();
+    }
+
+
+    var authorizationTableVue = createAuthorizationTableVue()
+    authorizationTableVue.permissions = [
+        {permissionId: 1, permissionMark: '管理员', createTime: '2017-7-7 11:11:11', updateTime: '2017-7-7 11:11:11'},
+        {permissionId: 2, permissionMark: '用户', createTime: '2017-7-7 11:11:11', updateTime: '2017-7-7 11:11:11'},
+    ]
+    authorizationTableVue.users = [
+        {
+            userId: 1, username: 'cellargalaxy', permissionId: -1, permissions: [
+                {
+                    permissionId: 1,
+                    permissionMark: '管理员',
+                    createTime: '2017-7-7 11:11:11',
+                    updateTime: '2017-7-7 11:11:11'
+                },
+                {
+                    permissionId: 2,
+                    permissionMark: '用户',
+                    createTime: '2017-7-7 11:11:11',
+                    updateTime: '2017-7-7 11:11:11'
+                },
+            ]
+        },
+        {
+            userId: 1, username: 'cellargalaxy', permissionId: -1, permissions: [
+                {
+                    permissionId: 1,
+                    permissionMark: '管理员',
+                    createTime: '2017-7-7 11:11:11',
+                    updateTime: '2017-7-7 11:11:11'
+                },
+                {
+                    permissionId: 2,
+                    permissionMark: '用户',
+                    createTime: '2017-7-7 11:11:11',
+                    updateTime: '2017-7-7 11:11:11'
+                },
+            ]
+        },
+    ]
+
+
+    function createAuthorizationTableVue() {
+        var vue = new Vue({
+            el: '#authorization-table',
+            data: {
+                permissions: [],
+                users: [],
+                authorization: {
+                    authorizationId: -1,
+                    createTime: null,
+                    updateTime: null,
+                    username: null,
+                    permissionMark: null
+
+                }
+            },
+            methods: {
+                addAuthorization: function (userIndex) {
+                    console.log('addAuthorization：' + userIndex);
+                },
+                deleteAuthorization: function () {
+                    console.log('deleteAuthorization');
+                },
+                loadData: function (data) {
+                    console.log('loadData')
+                },
+                getAuthorizations: function () {
+                    console.log('getAuthorizations')
+                },
+                showModal: function (userIndex, permissionIndex) {
+                    this.authorization.authorizationId = this.users[userIndex].permissions[permissionIndex].authorization;
+                    this.authorization.createTime = this.users[userIndex].permissions[permissionIndex].createTime;
+                    this.authorization.updateTime = this.users[userIndex].permissions[permissionIndex].updateTime;
+                    this.authorization.username = this.users[userIndex].username;
+                    this.authorization.permissionMark = this.users[userIndex].permissions[permissionIndex].permissionMark;
+                    $('#authorization-table-modal').modal('show');
+                },
+                hideModal: function () {
+                    $('#authorization-table-modal').modal('hide');
+                    this.authorization = {
+                        authorizationId: -1,
+                        createTime: null,
+                        updateTime: null,
+                        username: null,
+                        permissionMark: null
+
+                    }
+                }
+            }
+        });
+        return vue;
+    }
+
+    createPermissionTableVue().permissions = [
+        {permissionId: 1, permissionMark: '管理员', createTime: '2017-7-7 11:11:11', updateTime: '2017-7-7 11:11:11'},
+        {permissionId: 2, permissionMark: '用户', createTime: '2017-7-7 11:11:11', updateTime: '2017-7-7 11:11:11'},
+    ]
+
+    function createPermissionTableVue() {
+        var vue = new Vue({
+            el: '#permission-table',
+            data: {
+                permission: {
+                    permissionId: null,
+                    permissionMark: null,
+                },
+                permissions: []
+            },
+            methods: {
+                addPermission: function () {
+                    console.log('addPermission,' + this.permission.permissionId + ',' + this.permission.permissionMark)
+                },
+                changePermission: function (i) {
+                    console.log('修改：' + i);
+                },
+                deletePermission: function (i) {
+                    console.log('删除' + i);
+                },
+                loadData: function (data) {
+                    console.log('loadData')
+                },
+                getPermissions: function () {
+                    console.log('getPermissions')
+                }
+            }
+        });
+        return vue;
+    }
+
+    createUserTableVue().users = [
+        {
+            userId: 1,
+            username: 'cellargalaxy',
+            userPassword: null,
+            createTime: '2017-7-7 11:11:11',
+            updateTime: '2017-7-7 11:11:11'
+        },
+        {
+            userId: 1,
+            username: 'cellargalaxy',
+            userPassword: null,
+            createTime: '2017-7-7 11:11:11',
+            updateTime: '2017-7-7 11:11:11'
+        },
+    ]
+
+    function createUserTableVue() {
+        var vue = new Vue({
+            el: '#user-table',
+            data: {
+                user: {
+                    username: null,
+                    userPassword: null,
+                },
+                users: []
+            },
+            methods: {
+                addUser: function () {
+                    console.log('addUser,' + this.user.username + ',' + this.user.userPassword)
+                },
+                changeUser: function (i) {
+                    console.log('修改：' + i);
+                },
+                deleteUser: function (i) {
+                    console.log('删除' + i);
+                },
+                loadData: function (data) {
+                    console.log('loadData')
+                },
+                getUsers: function () {
+                    console.log('getUsers')
+                }
+            }
+        });
+        return vue;
+    }
+
+    createExceptionTableVue().exceptionInfos = [
+        {
+            exceptionString: 'java.lang.Exception: 出问题啦！\n' +
+                '    at TestPrintStackTrace.f(TestPrintStackTrace.java:3)\n' +
+                '    at TestPrintStackTrace.g(TestPrintStackTrace.java:6)\n' +
+                '    at TestPrintStackTrace.main(TestPrintStackTrace.java:10)\n' +
+                'TestPrintStackTrace.f(TestPrintStackTrace.java:3)\n' +
+                'TestPrintStackTrace.g(TestPrintStackTrace.java:6)\n' +
+                'TestPrintStackTrace.main(TestPrintStackTrace.java:10)',
+            status: 0,
+            massage: 'massage',
+            date: '2017-07-07 11:11:11'
+        },
+        {
+            exceptionString: 'java.lang.Exception: 出问题啦！\n' +
+                '    at TestPrintStackTrace.f(TestPrintStackTrace.java:3)\n' +
+                '    at TestPrintStackTrace.g(TestPrintStackTrace.java:6)\n' +
+                '    at TestPrintStackTrace.main(TestPrintStackTrace.java:10)\n' +
+                'TestPrintStackTrace.f(TestPrintStackTrace.java:3)\n' +
+                'TestPrintStackTrace.g(TestPrintStackTrace.java:6)\n' +
+                'TestPrintStackTrace.main(TestPrintStackTrace.java:10)',
+            status: 0,
+            massage: 'massage',
+            date: '2017-07-07 11:11:11'
+        }
+    ]
+
+    function createExceptionTableVue() {
+        var vue = new Vue({
+            el: '#exception-table',
+            data: {
+                exceptionInfos: []
+            },
+            methods: {
+                loadData: function (data) {
+                    console.log('loadData')
+                },
+                getExceptionInfos: function () {
+                    console.log('getExceptionInfos')
+                }
+            }
+        });
+        return vue;
+    }
+
+    createLoginFormVue();
+
+    function createLoginFormVue() {
+        var vue = new Vue({
+            el: '#login-form',
+            data: {
+                username: null,
+                userPassword: null
+            },
+            methods: {
+                login: function () {
+                    console.log('登录，账号：' + this.username + ', 密码：' + this.userPassword);
+                }
+            }
+        });
+        return vue;
+    }
+
+
+    var navbarVue = createNavbarVue();
+    navbarVue.brand = {text: 'mycloud', url: '#'};
+    navbarVue.lefts = [
+        {text: '文件管理', url: '#', active: true},
+        {text: '用户管理', url: '#', active: false},
+        {text: '执行日志', url: '#', active: false},
+        {text: '异常日志', url: '#', active: false},
+        {text: '权限授权', url: '#', active: false},
+    ];
+    navbarVue.rights = [
+        {text: '登录', url: '#', active: false},
+    ]
+
+    function createNavbarVue() {
+        var vue = new Vue({
+            el: '#navbar',
+            data: {
+                brand: {text: null, url: null},
+                lefts: [],
+                rights: []
+            },
+            methods: {
+                loadData: function (data) {
+                    console.log('loadData')
+                },
+                getNavbar: function () {
+                    console.log('getNavbar')
+                }
+            }
+        });
+        return vue;
+    }
+
+    function fileSize(bytes) {
+        var i = Math.floor(Math.log(bytes) / Math.log(1024)),
+            sizes = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+        return (bytes / Math.pow(1024, i)).toFixed(2) * 1 + ' ' + sizes[i];
+    }
+
+    // setTimeout('location.reload()', 1000 * 30);
 </script>
 </html>

@@ -25,11 +25,7 @@ import java.util.concurrent.LinkedTransferQueue;
  * @author cellargalaxy
  * @time 2018/7/17
  */
-public class DownloadFileSchedule {
-	private final BlockingQueue<DownloadFileTask> waitDownloadFileTasks = new LinkedTransferQueue<>();
-	private DownloadFileTask currentDownloadFileTask;
-	private final List<DownloadFileTask> finishDownloadFileTasks = new LinkedList<>();
-
+public class DownloadFileSchedule extends Schedule<DownloadFileTask> {
 	@Autowired
 	private FileInfoDao fileInfoDao;
 	@Autowired
@@ -40,11 +36,9 @@ public class DownloadFileSchedule {
 	@Scheduled(fixedDelay = 1000 * 5)
 	public void downloadFileSchedule() {
 		while (true) {
-			try (DownloadFileTask downloadFileTask = waitDownloadFileTasks.take()) {
-				currentDownloadFileTask = downloadFileTask;
+			try (DownloadFileTask downloadFileTask = getWaitTask()) {
 				downloadFile(downloadFileTask);
-				finishDownloadFileTasks.add(currentDownloadFileTask);
-				currentDownloadFileTask = null;
+				addFinishTask(downloadFileTask);
 			} catch (Exception e) {
 				e.printStackTrace();
 				GlobalException.add(e, 0, "未知异常");
@@ -73,7 +67,7 @@ public class DownloadFileSchedule {
 		fileBlockQuery.setFileId(fileInfoQuery.getFileId());
 		List<FileBlockBo> fileBlockBos = fileBlockDao.selectSome(fileBlockQuery);
 
-		for (FileBlockBo fileBlockBo: fileBlockBos) {
+		for (FileBlockBo fileBlockBo : fileBlockBos) {
 			BlockQuery blockQuery = new BlockQuery();
 			blockQuery.setBlockId(fileBlockBo.getBlockId());
 			BlockBo blockBo = blockDao.selectOne(blockQuery);
@@ -81,34 +75,4 @@ public class DownloadFileSchedule {
 		}
 	}
 
-	public void add(DownloadFileTask downloadFileTask) {
-		waitDownloadFileTasks.add(downloadFileTask);
-	}
-
-	public DownloadFileTask remove(String taskId) {
-		if (taskId == null) {
-			return null;
-		}
-		Iterator<DownloadFileTask> iterator = waitDownloadFileTasks.iterator();
-		while (iterator.hasNext()) {
-			DownloadFileTask task = iterator.next();
-			if (task.equals(taskId)) {
-				iterator.remove();
-				return task;
-			}
-		}
-		return null;
-	}
-
-	public BlockingQueue<DownloadFileTask> getWaitDownloadFileTasks() {
-		return waitDownloadFileTasks;
-	}
-
-	public DownloadFileTask getCurrentDownloadFileTask() {
-		return currentDownloadFileTask;
-	}
-
-	public List<DownloadFileTask> getFinishDownloadFileTasks() {
-		return finishDownloadFileTasks;
-	}
 }

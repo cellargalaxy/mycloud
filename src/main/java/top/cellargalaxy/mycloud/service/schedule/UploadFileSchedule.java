@@ -30,11 +30,7 @@ import java.util.concurrent.LinkedTransferQueue;
  * @time 2018/7/17
  */
 @Component
-public class UploadFileSchedule {
-	private final BlockingQueue<UploadFileTask> waitUploadFileTasks = new LinkedTransferQueue<>();
-	private UploadFileTask currentUploadFileTask;
-	private final List<UploadFileTask> finishUploadFileTasks = new LinkedList<>();
-
+public class UploadFileSchedule extends Schedule<UploadFileTask> {
 	@Autowired
 	private FileInfoDao fileInfoDao;
 	@Autowired
@@ -49,11 +45,9 @@ public class UploadFileSchedule {
 	@Scheduled(fixedDelay = 1000 * 5)
 	public void uploadFileSchedule() {
 		while (true) {
-			try (UploadFileTask uploadFileTask = waitUploadFileTasks.take()) {
-				currentUploadFileTask = uploadFileTask;
+			try (UploadFileTask uploadFileTask = getWaitTask()) {
 				uploadFileSchedule(uploadFileTask);
-				finishUploadFileTasks.add(currentUploadFileTask);
-				currentUploadFileTask = null;
+				addFinishTask(uploadFileTask);
 			} catch (Exception e) {
 				e.printStackTrace();
 				GlobalException.add(e, 0, "未知异常");
@@ -89,7 +83,7 @@ public class UploadFileSchedule {
 		fileInfoDao.insert(fileInfoPo);
 
 		//添加文件信息与数据块对应数据
-		for (int blockId: blockIds) {
+		for (int blockId : blockIds) {
 			FileBlockPo fileBlockPo = new FileBlockPo();
 			fileBlockPo.setFileId(fileInfoPo.getFileId());
 			fileBlockPo.setBlockId(blockId);
@@ -101,36 +95,5 @@ public class UploadFileSchedule {
 		ownDao.insert(ownPo);
 
 		uploadFileTask.setStatus(1);
-	}
-
-	public void add(UploadFileTask uploadFileTask) {
-		waitUploadFileTasks.add(uploadFileTask);
-	}
-
-	public UploadFileTask remove(String taskId) {
-		if (taskId == null) {
-			return null;
-		}
-		Iterator<UploadFileTask> iterator = waitUploadFileTasks.iterator();
-		while (iterator.hasNext()) {
-			UploadFileTask task = iterator.next();
-			if (task.equals(taskId)) {
-				iterator.remove();
-				return task;
-			}
-		}
-		return null;
-	}
-
-	public BlockingQueue<UploadFileTask> getWaitUploadFileTasks() {
-		return waitUploadFileTasks;
-	}
-
-	public UploadFileTask getCurrentUploadFileTask() {
-		return currentUploadFileTask;
-	}
-
-	public List<UploadFileTask> getFinishUploadFileTasks() {
-		return finishUploadFileTasks;
 	}
 }

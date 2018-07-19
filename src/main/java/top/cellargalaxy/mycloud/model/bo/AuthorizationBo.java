@@ -7,15 +7,15 @@ import top.cellargalaxy.mycloud.model.po.AuthorizationPo;
  * @time 2018/7/16
  */
 public class AuthorizationBo extends AuthorizationPo {
-	private String userName;
+	private String username;
 	private String permissionMark;
 
-	public String getUserName() {
-		return userName;
+	public String getUsername() {
+		return username;
 	}
 
-	public void setUserName(String userName) {
-		this.userName = userName;
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 	public String getPermissionMark() {
@@ -30,7 +30,7 @@ public class AuthorizationBo extends AuthorizationPo {
 	public String toString() {
 		return "AuthorizationBo{" +
 				"super=" + super.toString() +
-				", userName='" + userName + '\'' +
+				", username='" + username + '\'' +
 				", permissionMark='" + permissionMark + '\'' +
 				'}';
 	}

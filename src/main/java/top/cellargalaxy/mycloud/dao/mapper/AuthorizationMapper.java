@@ -36,7 +36,7 @@ public interface AuthorizationMapper {
 			@Result(property = "permissionId", column = "permission_id"),
 			@Result(property = "createTime", column = "create_time", javaType = Date.class, jdbcType = TIMESTAMP),
 			@Result(property = "updateTime", column = "update_time", javaType = Date.class, jdbcType = TIMESTAMP),
-			@Result(property = "userName", column = "user_name"),
+			@Result(property = "username", column = "username"),
 			@Result(property = "permissionMark", column = "permission_mark")
 	})
 	@SelectProvider(type = AuthorizationProvider.class, method = "selectOne")
@@ -84,7 +84,7 @@ public interface AuthorizationMapper {
 			selects.add(TABLE_NAME + ".permission_id");
 			selects.add(TABLE_NAME + ".create_time");
 			selects.add(TABLE_NAME + ".update_time");
-			selects.add(UserDao.TABLE_NAME + ".user_name");
+			selects.add(UserDao.TABLE_NAME + ".username");
 			selects.add(PermissionDao.TABLE_NAME + ".permission_mark");
 			List<String> wheres = new LinkedList<>();
 			wheresKey(authorizationQuery, wheres);
@@ -101,7 +101,7 @@ public interface AuthorizationMapper {
 			selects.add(TABLE_NAME + ".permission_id");
 			selects.add(TABLE_NAME + ".create_time");
 			selects.add(TABLE_NAME + ".update_time");
-			selects.add(UserDao.TABLE_NAME + ".user_name");
+			selects.add(UserDao.TABLE_NAME + ".username");
 			selects.add(PermissionDao.TABLE_NAME + ".permission_mark");
 			List<String> wheres = new LinkedList<>();
 			wheresAll(authorizationQuery, wheres);

@@ -7,17 +7,17 @@ import top.cellargalaxy.mycloud.model.po.OwnPo;
  * @time 2018/7/16
  */
 public class OwnBo extends OwnPo {
-	private String userName;
+	private String username;
 	private String md5;
 	private long fileLength;
 	private String contentType;
 
-	public String getUserName() {
-		return userName;
+	public String getUsername() {
+		return username;
 	}
 
-	public void setUserName(String userName) {
-		this.userName = userName;
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 	public String getMd5() {
@@ -48,7 +48,7 @@ public class OwnBo extends OwnPo {
 	public String toString() {
 		return "OwnBo{" +
 				"super=" + super.toString() +
-				", userName='" + userName + '\'' +
+				", username='" + username + '\'' +
 				", md5='" + md5 + '\'' +
 				", fileLength=" + fileLength +
 				", contentType='" + contentType + '\'' +

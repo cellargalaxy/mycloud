@@ -24,7 +24,7 @@ public interface UserDao {
 	int update(UserPo userPo);
 
 	static String checkInsert(UserPo userPo) {
-		if (StringUtil.isBlank(userPo.getUserName())) {
+		if (StringUtil.isBlank(userPo.getUsername())) {
 			return "用户名不得为空";
 		}
 		if (StringUtil.isBlank(userPo.getUserPassword())) {

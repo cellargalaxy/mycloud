@@ -33,33 +33,33 @@ public class FileServiceImpl implements FileService {
 	@Override
 	public void addUploadFileTask(File file, String contentType, OwnPo ownPo) {
 		UploadFileTask uploadFileTask = new UploadFileTask(file, contentType, ownPo);
-		uploadFileSchedule.add(uploadFileTask);
+		uploadFileSchedule.addTask(uploadFileTask);
 	}
 
 	@Override
 	public UploadFileTask removeUploadFileTask(String taskId) {
-		return uploadFileSchedule.remove(taskId);
+		return uploadFileSchedule.removeTask(taskId);
 	}
 
 	@Override
 	public BlockingQueue<UploadFileTask> getWaitUploadFileTasks() {
-		return uploadFileSchedule.getWaitUploadFileTasks();
+		return uploadFileSchedule.getWaitTasks();
 	}
 
 	@Override
 	public UploadFileTask getCurrentUploadFileTask() {
-		return uploadFileSchedule.getCurrentUploadFileTask();
+		return uploadFileSchedule.getCurrentTask();
 	}
 
 	@Override
 	public List<UploadFileTask> getFinishUploadFileTasks() {
-		return uploadFileSchedule.getFinishUploadFileTasks();
+		return uploadFileSchedule.getFinishTasks();
 	}
 
 	@Override
 	public void addDownloadFileTask(FileInfoQuery fileInfoQuery, File file) {
 		DownloadFileTask downloadFileTask = new DownloadFileTask(fileInfoQuery, file);
-		downloadFileSchedule.add(downloadFileTask);
+		downloadFileSchedule.addTask(downloadFileTask);
 	}
 
 	@Override
@@ -69,22 +69,22 @@ public class FileServiceImpl implements FileService {
 
 	@Override
 	public DownloadFileTask removeDownloadFileTask(String taskId) {
-		return downloadFileSchedule.remove(taskId);
+		return downloadFileSchedule.removeTask(taskId);
 	}
 
 	@Override
 	public BlockingQueue<DownloadFileTask> getWaitDownloadFileTasks() {
-		return downloadFileSchedule.getWaitDownloadFileTasks();
+		return downloadFileSchedule.getWaitTasks();
 	}
 
 	@Override
 	public DownloadFileTask getCurrentDownloadFileTask() {
-		return downloadFileSchedule.getCurrentDownloadFileTask();
+		return downloadFileSchedule.getCurrentTask();
 	}
 
 	@Override
 	public List<DownloadFileTask> getFinishDownloadFileTasks() {
-		return downloadFileSchedule.getFinishDownloadFileTasks();
+		return downloadFileSchedule.getFinishTasks();
 	}
 
 	@Override

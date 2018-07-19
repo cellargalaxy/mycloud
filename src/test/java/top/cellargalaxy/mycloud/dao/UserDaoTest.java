@@ -15,7 +15,7 @@ public class UserDaoTest {
 	@Test
 	public void insert() {
 		UserPo userPo = new UserPo();
-		userPo.setUserName("nickname");
+		userPo.setUsername("nickname");
 		userPo.setUserPassword("654321");
 		assertEquals(1, userDao.insert(userPo));
 	}

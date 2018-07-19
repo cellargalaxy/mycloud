@@ -30,7 +30,7 @@ public interface UserMapper {
 
 	@Results(id = "userResult", value = {
 			@Result(property = "userId", column = "user_id", id = true),
-			@Result(property = "userName", column = "user_name"),
+			@Result(property = "username", column = "username"),
 			@Result(property = "userPassword", column = "user_password"),
 			@Result(property = "createTime", column = "create_time", javaType = Date.class, jdbcType = TIMESTAMP),
 			@Result(property = "updateTime", column = "update_time", javaType = Date.class, jdbcType = TIMESTAMP)
@@ -49,7 +49,7 @@ public interface UserMapper {
 		private static final Logger logger = LoggerFactory.getLogger(UserProvider.class);
 		private static final String TABLE_NAME = UserDao.TABLE_NAME;
 		private static final String userId = TABLE_NAME + ".user_id=#{userId}";
-		private static final String userName = TABLE_NAME + ".user_name=#{userName}";
+		private static final String username = TABLE_NAME + ".username=#{username}";
 		private static final String userPassword = TABLE_NAME + ".user_password=#{userPassword}";
 		private static final String createTime = TABLE_NAME + ".create_time=#{createTime,jdbcType=TIMESTAMP}";
 		private static final String updateTime = TABLE_NAME + ".update_time=#{updateTime,jdbcType=TIMESTAMP}";
@@ -58,8 +58,8 @@ public interface UserMapper {
 			Date date = new Date();
 			userPo.setCreateTime(date);
 			userPo.setUpdateTime(date);
-			String string = "insert into " + TABLE_NAME + "(user_name,user_password,create_time,update_time) " +
-					"values(#{userName},#{userPassword},#{createTime,jdbcType=TIMESTAMP},#{updateTime,jdbcType=TIMESTAMP})";
+			String string = "insert into " + TABLE_NAME + "(username,user_password,create_time,update_time) " +
+					"values(#{username},#{userPassword},#{createTime,jdbcType=TIMESTAMP},#{updateTime,jdbcType=TIMESTAMP})";
 			logger.debug("insert:{}, sql:{}", userPo, string);
 			return string;
 		}
@@ -114,8 +114,8 @@ public interface UserMapper {
 			if (userQuery.getUserId() > 0) {
 				wheres.add(userId);
 			}
-			if (!StringUtil.isBlank(userQuery.getUserName())) {
-				wheres.add(userName);
+			if (!StringUtil.isBlank(userQuery.getUsername())) {
+				wheres.add(username);
 			}
 			if (!StringUtil.isBlank(userQuery.getUserPassword())) {
 				wheres.add(userPassword);
@@ -135,8 +135,8 @@ public interface UserMapper {
 		}
 
 		private static final void sets(UserPo userPo, List<String> sets) {
-			if (!StringUtil.isBlank(userPo.getUserName())) {
-				sets.add(userName);
+			if (!StringUtil.isBlank(userPo.getUsername())) {
+				sets.add(username);
 			}
 			if (!StringUtil.isBlank(userPo.getUserPassword())) {
 				sets.add(userPassword);
