@@ -11,8 +11,10 @@ import java.util.List;
  */
 public class SqlUtil {
 	public static final void initPageQuery(PageQuery pageQuery) {
-		pageQuery.setLen(pageQuery.getPageSize());
-		pageQuery.setOff((pageQuery.getPage() - 1) * pageQuery.getPageSize());
+		int off=(pageQuery.getPage() - 1) * pageQuery.getPageSize();
+		int len=pageQuery.getPageSize();
+		pageQuery.setOff(off);
+		pageQuery.setLen(len);
 	}
 
 	public static final StringBuilder createDeleteSql(String tableName, List<String> wheres) {

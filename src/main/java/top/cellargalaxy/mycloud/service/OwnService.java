@@ -11,17 +11,17 @@ import java.util.List;
  * @time 2018/7/17
  */
 public interface OwnService {
-	void addOwn(OwnPo ownPo);
+	String addOwn(OwnPo ownPo);
 
-	void removeOwn(OwnQuery ownQuery);
+	String removeOwn(OwnQuery ownQuery);
 
 	OwnBo getOwn(OwnQuery ownQuery);
 
 	List<OwnBo> listOwn(OwnQuery ownQuery);
 
-	List<String> listSort(int userId);
+	List<String> listSort(OwnQuery ownQuery);
 
-	void changeOwn(OwnPo ownPo);
+	String changeOwn(OwnPo ownPo);
 
 	String checkAddOwn(OwnPo ownPo);
 

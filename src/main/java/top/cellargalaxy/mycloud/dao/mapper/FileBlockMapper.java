@@ -104,6 +104,9 @@ public interface FileBlockMapper {
 			if (fileBlockPo.getFileId() > 0) {
 				wheres.add(fileId);
 			}
+			if (fileBlockPo.getBlockId() > 0) {
+				wheres.add(blockId);
+			}
 		}
 
 		private static final void sets(FileBlockPo fileBlockPo, List<String> sets) {

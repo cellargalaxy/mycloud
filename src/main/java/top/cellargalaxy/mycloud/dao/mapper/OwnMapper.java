@@ -53,7 +53,7 @@ public interface OwnMapper {
 	List<OwnBo> selectSome(OwnQuery ownQuery);
 
 	@SelectProvider(type = OwnProvider.class, method = "selectSort")
-	List<String> selectSort(@Param("userId") int userId);
+	List<String> selectSort(OwnQuery ownQuery);
 
 	@UpdateProvider(type = OwnProvider.class, method = "update")
 	int update(OwnPo ownPo);
@@ -113,6 +113,7 @@ public interface OwnMapper {
 		}
 
 		public static final String selectSome(OwnQuery ownQuery) {
+			SqlUtil.initPageQuery(ownQuery);
 			List<String> selects = new LinkedList<>();
 			selects.add(TABLE_NAME + ".own_id");
 			selects.add(TABLE_NAME + ".user_id");
@@ -128,9 +129,11 @@ public interface OwnMapper {
 			selects.add(FileInfoDao.TABLE_NAME + ".content_type");
 			List<String> wheres = new LinkedList<>();
 			wheresAll(ownQuery, wheres);
+			if (ownQuery.isPage()) {
+				wheres.add("true");
+			}
 			StringBuilder sql = SqlUtil.createSelectSql(selects, TABLE_NAME + "," + UserDao.TABLE_NAME + "," + FileInfoDao.TABLE_NAME, wheres);
-			SqlUtil.initPageQuery(ownQuery);
-			if (ownQuery.getPageSize() > 0 && ownQuery.getPage() > 0) {
+			if (ownQuery.isPage()) {
 				sql.append(" limit #{off},#{len}");
 			}
 			String string = sql.toString();
@@ -138,8 +141,15 @@ public interface OwnMapper {
 			return string;
 		}
 
-		public static final String selectSort(@Param("userId") int userId) {
-			return "select distinct sort from " + TABLE_NAME + " where user_id=#{userId}";
+		public static final String selectSort(OwnQuery ownQuery) {
+			List<String> selects = new LinkedList<>();
+			selects.add("distinct sort");
+			List<String> wheres = new LinkedList<>();
+			wheresAll(ownQuery, wheres);
+			StringBuilder sql = SqlUtil.createSelectSql(selects, TABLE_NAME, wheres);
+			String string = sql.toString();
+			logger.debug("selectSome:{}, sql:{}", ownQuery, string);
+			return string;
 		}
 
 		public static final String update(OwnPo ownPo) {

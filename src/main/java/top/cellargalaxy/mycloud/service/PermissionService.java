@@ -12,9 +12,9 @@ import java.util.List;
  * @time 2018/7/17
  */
 public interface PermissionService {
-	void addPermission(PermissionPo permissionPo);
+	String addPermission(PermissionPo permissionPo);
 
-	void removePermission(PermissionQuery permissionQuery);
+	String removePermission(PermissionQuery permissionQuery);
 
 	PermissionBo getPermission(PermissionQuery permissionQuery);
 
@@ -24,7 +24,7 @@ public interface PermissionService {
 
 	List<PermissionAuthorizationVo> listPermissionAuthorization(PermissionQuery permissionQuery);
 
-	void changePermission(PermissionPo permissionPo);
+	String changePermission(PermissionPo permissionPo);
 
 	String checkAddPermission(PermissionPo permissionPo);
 

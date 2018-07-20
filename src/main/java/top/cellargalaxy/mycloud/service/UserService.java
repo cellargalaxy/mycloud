@@ -13,9 +13,11 @@ import java.util.List;
  * @time 2018/7/17
  */
 public interface UserService {
-	void addUser(UserPo userPo);
+	UserPo login(UserQuery userQuery);
 
-	void removeUser(UserQuery userQuery);
+	String addUser(UserPo userPo);
+
+	String removeUser(UserQuery userQuery);
 
 	UserBo getUser(UserQuery userQuery);
 
@@ -29,7 +31,7 @@ public interface UserService {
 
 	List<UserOwnVo> listUserOwn(UserQuery userQuery);
 
-	void changeUser(UserPo userPo);
+	String changeUser(UserPo userPo);
 
 	String checkAddUser(UserPo userPo);
 

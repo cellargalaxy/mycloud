@@ -53,6 +53,11 @@ public class OwnQuery extends OwnPo implements PageQuery {
 	}
 
 	@Override
+	public boolean isPage() {
+		return off > 0 && len > 0;
+	}
+
+	@Override
 	public String toString() {
 		return "OwnQuery{" +
 				"super=" + super.toString() +

@@ -1,5 +1,6 @@
 package top.cellargalaxy.mycloud.model.vo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.io.Serializable;

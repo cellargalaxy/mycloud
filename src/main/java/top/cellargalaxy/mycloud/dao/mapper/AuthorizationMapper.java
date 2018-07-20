@@ -95,6 +95,7 @@ public interface AuthorizationMapper {
 		}
 
 		public static final String selectSome(AuthorizationQuery authorizationQuery) {
+			SqlUtil.initPageQuery(authorizationQuery);
 			List<String> selects = new LinkedList<>();
 			selects.add(TABLE_NAME + ".authorization_id");
 			selects.add(TABLE_NAME + ".user_id");
@@ -105,11 +106,7 @@ public interface AuthorizationMapper {
 			selects.add(PermissionDao.TABLE_NAME + ".permission_mark");
 			List<String> wheres = new LinkedList<>();
 			wheresAll(authorizationQuery, wheres);
-			StringBuilder sql = SqlUtil.createSelectSql(selects, TABLE_NAME + "," + UserDao.TABLE_NAME + "," + PermissionDao.TABLE_NAME, wheres);
-			SqlUtil.initPageQuery(authorizationQuery);
-			if (authorizationQuery.getPageSize() > 0 && authorizationQuery.getPage() > 0) {
-				sql.append(" limit #{off},#{len}");
-			}
+			StringBuilder sql = SqlUtil.createSelectSql(selects, TABLE_NAME + "," + UserDao.TABLE_NAME + "," + PermissionDao.TABLE_NAME, wheres).append(" limit #{off},#{len}");
 			String string = sql.toString();
 			logger.debug("selectSome:{}, sql:{}", authorizationQuery, string);
 			return string;

@@ -1,5 +1,7 @@
 package top.cellargalaxy.mycloud.controlor;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,71 +17,147 @@ import top.cellargalaxy.mycloud.service.UserService;
  * Created by cellargalaxy on 18-7-19.
  */
 @RestController
-@RequestMapping("")
+@RequestMapping(UserControlor.URL)
 public class UserControlor {
+	public static final String URL = "/api/user";
+	private Logger logger = LoggerFactory.getLogger(UserControlor.class);
 	@Autowired
 	private UserService userService;
 
 	@PostMapping("/addUser")
 	public Vo addUser(UserPo userPo) {
-		Vo vo;
 		try {
-			userService.addUser(userPo);
-			vo = new Vo("添加成功", null);
+			String string = userService.addUser(userPo);
+			logger.info("addUser:{}", string);
+			return new Vo(string, null);
 		} catch (Exception e) {
+			e.printStackTrace();
 			GlobalException.add(e);
-			vo = new Vo(e, "添加失败");
+			return new Vo(e);
 		}
-		return vo;
 	}
 
 	@PostMapping("/removeUser")
-	public Vo removeUser(UserQuery userQuery){
-		Vo vo;
+	public Vo removeUser(UserQuery userQuery) {
 		try {
-			userService.removeUser(userQuery);
-			vo = new Vo("删除成功", null);
+			String string = userService.removeUser(userQuery);
+			logger.info("removeUser:{}", string);
+			return new Vo(string, null);
 		} catch (Exception e) {
+			e.printStackTrace();
 			GlobalException.add(e);
-			vo = new Vo(e, "删除失败");
+			return new Vo(e);
 		}
-		return vo;
 	}
 
 	@GetMapping("/getUser")
-	private Vo getUser(UserQuery userQuery){
-		Vo vo;
+	private Vo getUser(UserQuery userQuery) {
 		try {
-			vo = new Vo("获取成功", userService.getUser(userQuery));
+			logger.info("getUser");
+			return new Vo(null, userService.getUser(userQuery));
 		} catch (Exception e) {
+			e.printStackTrace();
 			GlobalException.add(e);
-			vo = new Vo(e, "获取失败");
+			return new Vo(e);
 		}
-		return vo;
 	}
 
 	@GetMapping("/listUser")
-	private Vo listUser(UserQuery userQuery){
-		Vo vo;
+	private Vo listUser(UserQuery userQuery) {
 		try {
-			vo = new Vo("获取成功", userService.listUser(userQuery));
+			logger.info("listUser");
+			return new Vo(null, userService.listUser(userQuery));
 		} catch (Exception e) {
+			e.printStackTrace();
 			GlobalException.add(e);
-			vo = new Vo(e, "获取失败");
+			return new Vo(e);
 		}
-		return vo;
+	}
+
+	@GetMapping("/getUserAuthorization")
+	private Vo getUserAuthorization(UserQuery userQuery) {
+		try {
+			logger.info("getUserAuthorization");
+			return new Vo(null, userService.getUserAuthorization(userQuery));
+		} catch (Exception e) {
+			e.printStackTrace();
+			GlobalException.add(e);
+			return new Vo(e);
+		}
+	}
+
+	@GetMapping("/listUserAuthorization")
+	private Vo listUserAuthorization(UserQuery userQuery) {
+		try {
+			logger.info("listUserAuthorization");
+			return new Vo(null, userService.listUserAuthorization(userQuery));
+		} catch (Exception e) {
+			e.printStackTrace();
+			GlobalException.add(e);
+			return new Vo(e);
+		}
+	}
+
+	@GetMapping("/getUserOwn")
+	private Vo getUserOwn(UserQuery userQuery) {
+		try {
+			logger.info("getUserOwn");
+			return new Vo(null, userService.getUserOwn(userQuery));
+		} catch (Exception e) {
+			e.printStackTrace();
+			GlobalException.add(e);
+			return new Vo(e);
+		}
+	}
+
+	@GetMapping("/listUserOwn")
+	private Vo listUserOwn(UserQuery userQuery) {
+		try {
+			logger.info("listUserOwn");
+			return new Vo(null, userService.listUserOwn(userQuery));
+		} catch (Exception e) {
+			e.printStackTrace();
+			GlobalException.add(e);
+			return new Vo(e);
+		}
 	}
 
 	@PostMapping("/changeUser")
-	public Vo changeUser(UserQuery userQuery){
-		Vo vo;
+	public Vo changeUser(UserQuery userQuery) {
 		try {
-			userService.changeUser(userQuery);
-			vo = new Vo("修改成功", null);
+			String string = userService.changeUser(userQuery);
+			logger.info("changeUser:{}", string);
+			return new Vo(string, null);
 		} catch (Exception e) {
+			e.printStackTrace();
 			GlobalException.add(e);
-			vo = new Vo(e, "修改失败");
+			return new Vo(e);
 		}
-		return vo;
+	}
+
+	@GetMapping("/checkAddUser")
+	public Vo checkAddUser(UserPo userPo) {
+		try {
+			String string = userService.checkAddUser(userPo);
+			logger.info("checkAddUser:{}", string);
+			return new Vo(string, null);
+		} catch (Exception e) {
+			e.printStackTrace();
+			GlobalException.add(e);
+			return new Vo(e);
+		}
+	}
+
+	@GetMapping("/checkChangeUser")
+	public Vo checkChangeUser(UserPo userPo) {
+		try {
+			String string = userService.checkChangeUser(userPo);
+			logger.info("checkChangeUser:{}", string);
+			return new Vo(string, null);
+		} catch (Exception e) {
+			e.printStackTrace();
+			GlobalException.add(e);
+			return new Vo(e);
+		}
 	}
 }

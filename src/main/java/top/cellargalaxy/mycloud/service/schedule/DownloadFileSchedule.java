@@ -2,6 +2,7 @@ package top.cellargalaxy.mycloud.service.schedule;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
 import top.cellargalaxy.mycloud.dao.BlockDao;
 import top.cellargalaxy.mycloud.dao.FileBlockDao;
 import top.cellargalaxy.mycloud.dao.FileInfoDao;
@@ -22,6 +23,7 @@ import java.util.List;
  * @author cellargalaxy
  * @time 2018/7/17
  */
+@Component
 public class DownloadFileSchedule extends AbstractSchedule<DownloadFileTask> {
 	@Autowired
 	private FileInfoDao fileInfoDao;

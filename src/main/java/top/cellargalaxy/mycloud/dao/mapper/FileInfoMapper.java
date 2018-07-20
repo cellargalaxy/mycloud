@@ -86,11 +86,14 @@ public interface FileInfoMapper {
 		}
 
 		public static final String selectSome(FileInfoQuery fileInfoQuery) {
+			SqlUtil.initPageQuery(fileInfoQuery);
 			List<String> wheres = new LinkedList<>();
 			wheresAll(fileInfoQuery, wheres);
+			if (fileInfoQuery.isPage()) {
+				wheres.add("true");
+			}
 			StringBuilder sql = SqlUtil.createSelectSql(null, TABLE_NAME, wheres);
-			SqlUtil.initPageQuery(fileInfoQuery);
-			if (fileInfoQuery.getPageSize() > 0 && fileInfoQuery.getPage() > 0) {
+			if (fileInfoQuery.isPage()) {
 				sql.append(" limit #{off},#{len}");
 			}
 			String string = sql.toString();

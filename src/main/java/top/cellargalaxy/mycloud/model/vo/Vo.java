@@ -15,12 +15,16 @@ public class Vo implements Serializable {
 	private final String massage;
 	private final Object data;
 
-	public Vo(String massage, Object data) {
-		this(SUCCESS_STATUS, massage, data);
+	public Vo() {
+		this(SUCCESS_STATUS, null, null);
 	}
 
-	public Vo(Exception e, String massage) {
-		this(FAIL_STATUS, massage, ExceptionUtil.printException(e));
+	public Vo(String massage, Object data) {
+		this(massage == null ? SUCCESS_STATUS : FAIL_STATUS, massage, data);
+	}
+
+	public Vo(Exception e) {
+		this(FAIL_STATUS, "未知异常", ExceptionUtil.printException(e));
 	}
 
 	public Vo(int status, String massage, Object data) {

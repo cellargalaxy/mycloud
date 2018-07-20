@@ -82,11 +82,14 @@ public interface PermissionMapper {
 		}
 
 		public static final String selectSome(PermissionQuery permissionQuery) {
+			SqlUtil.initPageQuery(permissionQuery);
 			List<String> wheres = new LinkedList<>();
 			wheresAll(permissionQuery, wheres);
+			if (permissionQuery.isPage()) {
+				wheres.add("true");
+			}
 			StringBuilder sql = SqlUtil.createSelectSql(null, TABLE_NAME, wheres);
-			SqlUtil.initPageQuery(permissionQuery);
-			if (permissionQuery.getPageSize() > 0 && permissionQuery.getPage() > 0) {
+			if (permissionQuery.isPage()) {
 				sql.append(" limit #{off},#{len}");
 			}
 			String string = sql.toString();

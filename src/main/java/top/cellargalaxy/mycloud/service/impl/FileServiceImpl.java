@@ -6,6 +6,7 @@ import top.cellargalaxy.mycloud.dao.FileInfoDao;
 import top.cellargalaxy.mycloud.model.bo.schedule.DownloadFileTask;
 import top.cellargalaxy.mycloud.model.bo.schedule.UploadFileTask;
 import top.cellargalaxy.mycloud.model.po.OwnPo;
+import top.cellargalaxy.mycloud.model.po.UserPo;
 import top.cellargalaxy.mycloud.model.query.FileInfoQuery;
 import top.cellargalaxy.mycloud.service.FileService;
 import top.cellargalaxy.mycloud.service.schedule.DownloadFileSchedule;
@@ -24,15 +25,13 @@ import java.util.concurrent.BlockingQueue;
 @Service
 public class FileServiceImpl implements FileService {
 	@Autowired
-	private FileInfoDao fileInfoDao;
-	@Autowired
 	private UploadFileSchedule uploadFileSchedule;
 	@Autowired
 	private DownloadFileSchedule downloadFileSchedule;
 
 	@Override
-	public void addUploadFileTask(File file, String contentType, OwnPo ownPo) {
-		UploadFileTask uploadFileTask = new UploadFileTask(file, contentType, ownPo);
+	public void addUploadFileTask(UserPo userPo, File file, String contentType, OwnPo ownPo) {
+		UploadFileTask uploadFileTask = new UploadFileTask(userPo, ownPo, file, contentType);
 		uploadFileSchedule.addTask(uploadFileTask);
 	}
 
@@ -57,8 +56,8 @@ public class FileServiceImpl implements FileService {
 	}
 
 	@Override
-	public void addDownloadFileTask(FileInfoQuery fileInfoQuery, File file) {
-		DownloadFileTask downloadFileTask = new DownloadFileTask(fileInfoQuery, file);
+	public void addDownloadFileTask(UserPo userPo, FileInfoQuery fileInfoQuery, File file) {
+		DownloadFileTask downloadFileTask = new DownloadFileTask(userPo, fileInfoQuery, file);
 		downloadFileSchedule.addTask(downloadFileTask);
 	}
 
@@ -85,10 +84,5 @@ public class FileServiceImpl implements FileService {
 	@Override
 	public List<DownloadFileTask> getFinishDownloadFileTasks() {
 		return downloadFileSchedule.getFinishTasks();
-	}
-
-	@Override
-	public List<String> listContentType() {
-		return fileInfoDao.selectContentType();
 	}
 }

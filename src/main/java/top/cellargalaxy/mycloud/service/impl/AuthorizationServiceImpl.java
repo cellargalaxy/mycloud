@@ -1,5 +1,7 @@
 package top.cellargalaxy.mycloud.service.impl;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import top.cellargalaxy.mycloud.dao.AuthorizationDao;
@@ -16,41 +18,90 @@ import java.util.List;
  */
 @Service
 public class AuthorizationServiceImpl implements AuthorizationService {
+	private Logger logger = LoggerFactory.getLogger(AuthorizationServiceImpl.class);
 	@Autowired
 	private AuthorizationDao authorizationDao;
 
 	@Override
-	public void addAuthorization(AuthorizationPo authorizationPo) {
-		authorizationDao.insert(authorizationPo);
+	public String addAuthorization(AuthorizationPo authorizationPo) {
+		logger.info("addAuthorization:{}", authorizationPo);
+		String string = checkAddAuthorization(authorizationPo);
+		if (string != null) {
+			return string;
+		}
+		int i = authorizationDao.insert(authorizationPo);
+		if (i == 0) {
+			return "授权空新增";
+		}
+		return null;
 	}
 
 	@Override
-	public void removeAuthorization(AuthorizationQuery authorizationQuery) {
-		authorizationDao.delete(authorizationQuery);
+	public String removeAuthorization(AuthorizationQuery authorizationQuery) {
+		logger.info("removeAuthorization:{}", authorizationQuery);
+		int i = authorizationDao.delete(authorizationQuery);
+		if (i == 0) {
+			return "授权空删除";
+		}
+		return null;
 	}
 
 	@Override
 	public AuthorizationBo getAuthorization(AuthorizationQuery authorizationQuery) {
+		logger.info("getAuthorization:{}", authorizationQuery);
 		return authorizationDao.selectOne(authorizationQuery);
 	}
 
 	@Override
 	public List<AuthorizationBo> listAuthorization(AuthorizationQuery authorizationQuery) {
+		logger.info("listAuthorization:{}", authorizationQuery);
 		return authorizationDao.selectSome(authorizationQuery);
 	}
 
 	@Override
-	public void changeAuthorization(AuthorizationPo authorizationPo) {
-		authorizationDao.update(authorizationPo);
+	public String changeAuthorization(AuthorizationPo authorizationPo) {
+		logger.info("changeAuthorization:{}", authorizationPo);
+		String string = checkChangeAuthorization(authorizationPo);
+		if (string != null) {
+			return string;
+		}
+		int i = authorizationDao.update(authorizationPo);
+		if (i == 0) {
+			return "授权空更新";
+		}
+		return null;
 	}
 
 	@Override
 	public String checkAddAuthorization(AuthorizationPo authorizationPo) {
-		return AuthorizationDao.checkInsert(authorizationPo);
+		logger.info("checkAddAuthorization:{}", authorizationPo);
+		String string = AuthorizationDao.checkInsert(authorizationPo);
+		if (string != null) {
+			return string;
+		}
+		AuthorizationQuery authorizationQuery = new AuthorizationQuery();
+		authorizationQuery.setUserId(authorizationPo.getUserId());
+		authorizationQuery.setPermissionId(authorizationPo.getPermissionId());
+		AuthorizationPo authorization = authorizationDao.selectOne(authorizationQuery);
+		if (authorization != null) {
+			return "授权已存在";
+		}
+		return null;
 	}
 
 	@Override
 	public String checkChangeAuthorization(AuthorizationPo authorizationPo) {
-		return AuthorizationDao.checkUpdate(authorizationPo);
+		logger.info("checkChangeAuthorization:{}", authorizationPo);
+		String string = AuthorizationDao.checkUpdate(authorizationPo);
+		if (string != null) {
+			return string;
+		}
+		AuthorizationQuery authorizationQuery = new AuthorizationQuery();
+		authorizationQuery.setAuthorizationId(authorizationPo.getAuthorizationId());
+		AuthorizationPo authorization = authorizationDao.selectOne(authorizationQuery);
+		if (authorization == null) {
+			return "授权不存在";
+		}
+		return null;
 	}
 }

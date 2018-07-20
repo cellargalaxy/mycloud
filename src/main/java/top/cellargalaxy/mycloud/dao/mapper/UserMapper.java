@@ -83,11 +83,14 @@ public interface UserMapper {
 		}
 
 		public static final String selectSome(UserQuery userQuery) {
+			SqlUtil.initPageQuery(userQuery);
 			List<String> wheres = new LinkedList<>();
 			wheresAll(userQuery, wheres);
+			if (userQuery.isPage()) {
+				wheres.add("true");
+			}
 			StringBuilder sql = SqlUtil.createSelectSql(null, TABLE_NAME, wheres);
-			SqlUtil.initPageQuery(userQuery);
-			if (userQuery.getPageSize() > 0 && userQuery.getPage() > 0) {
+			if (userQuery.isPage()) {
 				sql.append(" limit #{off},#{len}");
 			}
 			String string = sql.toString();
@@ -131,6 +134,9 @@ public interface UserMapper {
 		private static final void wheresKey(UserPo userPo, List<String> wheres) {
 			if (userPo.getUserId() > 0) {
 				wheres.add(userId);
+			}
+			if (!StringUtil.isBlank(userPo.getUsername())) {
+				wheres.add(username);
 			}
 		}
 

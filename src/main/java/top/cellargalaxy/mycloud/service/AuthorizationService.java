@@ -11,15 +11,15 @@ import java.util.List;
  * @time 2018/7/17
  */
 public interface AuthorizationService {
-	void addAuthorization(AuthorizationPo authorizationPo);
+	String addAuthorization(AuthorizationPo authorizationPo);
 
-	void removeAuthorization(AuthorizationQuery authorizationQuery);
+	String removeAuthorization(AuthorizationQuery authorizationQuery);
 
 	AuthorizationBo getAuthorization(AuthorizationQuery authorizationQuery);
 
 	List<AuthorizationBo> listAuthorization(AuthorizationQuery authorizationQuery);
 
-	void changeAuthorization(AuthorizationPo authorizationPo);
+	String changeAuthorization(AuthorizationPo authorizationPo);
 
 	String checkAddAuthorization(AuthorizationPo authorizationPo);
 

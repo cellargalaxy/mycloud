@@ -53,8 +53,10 @@ public class OwnDaoTest {
 
 	@Test
 	public void selectSort() {
+		OwnQuery ownQuery = new OwnQuery();
+		ownQuery.setUserId(1);
 		System.out.println();
-		System.out.println(ownDao.selectSort(1));
+		System.out.println(ownDao.selectSort(ownQuery));
 		System.out.println();
 	}
 

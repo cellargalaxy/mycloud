@@ -53,6 +53,11 @@ public class FileInfoQuery extends FileInfoPo implements PageQuery {
 	}
 
 	@Override
+	public boolean isPage() {
+		return off > 0 && len > 0;
+	}
+
+	@Override
 	public String toString() {
 		return "FileInfoQuery{" +
 				"super=" + super.toString() +

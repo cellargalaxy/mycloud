@@ -51,7 +51,7 @@
     <hr/>
     <div class="row">
         <div class="col-sm">
-            <div class="table-responsive" id="exception-table">
+            <div class="table-responsive" id="exception-info-table">
                 <table class="table table-hover">
                     <thead>
                     <tr>
@@ -73,7 +73,7 @@
                     </tr>
                     <tr>
                         <td>时间</td>
-                        <td v-text="exceptionInfoVo.date"></td>
+                        <td v-text="new Date(exceptionInfoVo.date).format('yyyy-MM-dd hh:mm:ss')"></td>
                     </tr>
                     </tbody>
                 </table>
@@ -97,10 +97,10 @@
                     <tbody>
                     <tr>
                         <td>
-                            <input type="text" class="form-control" placeholder="用户名" v-model="user.username"/>
+                            <input type="text" class="form-control" placeholder="用户名" v-model="userForm.username"/>
                         </td>
                         <td>
-                            <input type="password" class="form-control" placeholder="密码" v-model="user.userPassword"/>
+                            <input type="password" class="form-control" placeholder="密码" v-model="userForm.userPassword"/>
                         </td>
                         <td></td>
                         <td></td>
@@ -117,8 +117,8 @@
                             <input type="password" class="form-control" placeholder="密码"
                                    v-bind:v-bind:value="user.userPassword" v-model="users[i].userPassword"/>
                         </td>
-                        <td v-text="user.createTime">2018-11-11 22:22:22</td>
-                        <td v-text="user.updateTime">2018-11-11 22:22:22</td>
+                        <td v-text="new Date(user.createTime).format('yyyy-MM-dd hh:mm:ss')"></td>
+                        <td v-text="new Date(user.updateTime).format('yyyy-MM-dd hh:mm:ss')"></td>
                         <td>
                             <button type="button" class="btn btn-warning" @click="changeUser(i)">修改</button>
                             <button type="button" class="btn btn-danger" @click="deleteUser(i)">删除</button>
@@ -434,7 +434,11 @@
 <script src="https://cdn.bootcss.com/bootstrap-fileinput/4.4.8/js/fileinput.js"></script>
 <script src="https://cdn.bootcss.com/bootstrap-fileinput/4.4.8/js/locales/zh.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/spark-md5/3.0.0/spark-md5.js"></script>
+<script src="../static/js/pubcli.js"></script>
+<script src="../static/js/vue.js"></script>
 <script>
+
+
     createOwnListVue().fileInfos = [
         {
             url: 'https://i.loli.net/2018/04/10/5accdcbcb1738.jpg',
@@ -731,98 +735,10 @@
         return vue;
     }
 
-    createUserTableVue().users = [
-        {
-            userId: 1,
-            username: 'cellargalaxy',
-            userPassword: null,
-            createTime: '2017-7-7 11:11:11',
-            updateTime: '2017-7-7 11:11:11'
-        },
-        {
-            userId: 1,
-            username: 'cellargalaxy',
-            userPassword: null,
-            createTime: '2017-7-7 11:11:11',
-            updateTime: '2017-7-7 11:11:11'
-        },
-    ]
 
-    function createUserTableVue() {
-        var vue = new Vue({
-            el: '#user-table',
-            data: {
-                user: {
-                    username: null,
-                    userPassword: null,
-                },
-                users: []
-            },
-            methods: {
-                addUser: function () {
-                    console.log('addUser,' + this.user.username + ',' + this.user.userPassword)
-                },
-                changeUser: function (i) {
-                    console.log('修改：' + i);
-                },
-                deleteUser: function (i) {
-                    console.log('删除' + i);
-                },
-                loadData: function (data) {
-                    console.log('loadData')
-                },
-                getUsers: function () {
-                    console.log('getUsers')
-                }
-            }
-        });
-        return vue;
-    }
 
-    createExceptionTableVue().exceptionInfos = [
-        {
-            exceptionString: 'java.lang.Exception: 出问题啦！\n' +
-                '    at TestPrintStackTrace.f(TestPrintStackTrace.java:3)\n' +
-                '    at TestPrintStackTrace.g(TestPrintStackTrace.java:6)\n' +
-                '    at TestPrintStackTrace.main(TestPrintStackTrace.java:10)\n' +
-                'TestPrintStackTrace.f(TestPrintStackTrace.java:3)\n' +
-                'TestPrintStackTrace.g(TestPrintStackTrace.java:6)\n' +
-                'TestPrintStackTrace.main(TestPrintStackTrace.java:10)',
-            status: 0,
-            massage: 'massage',
-            date: '2017-07-07 11:11:11'
-        },
-        {
-            exceptionString: 'java.lang.Exception: 出问题啦！\n' +
-                '    at TestPrintStackTrace.f(TestPrintStackTrace.java:3)\n' +
-                '    at TestPrintStackTrace.g(TestPrintStackTrace.java:6)\n' +
-                '    at TestPrintStackTrace.main(TestPrintStackTrace.java:10)\n' +
-                'TestPrintStackTrace.f(TestPrintStackTrace.java:3)\n' +
-                'TestPrintStackTrace.g(TestPrintStackTrace.java:6)\n' +
-                'TestPrintStackTrace.main(TestPrintStackTrace.java:10)',
-            status: 0,
-            massage: 'massage',
-            date: '2017-07-07 11:11:11'
-        }
-    ]
 
-    function createExceptionTableVue() {
-        var vue = new Vue({
-            el: '#exception-table',
-            data: {
-                exceptionInfos: []
-            },
-            methods: {
-                loadData: function (data) {
-                    console.log('loadData')
-                },
-                getExceptionInfos: function () {
-                    console.log('getExceptionInfos')
-                }
-            }
-        });
-        return vue;
-    }
+
 
     createLoginFormVue();
 

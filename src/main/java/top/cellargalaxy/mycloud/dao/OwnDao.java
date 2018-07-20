@@ -22,7 +22,7 @@ public interface OwnDao {
 
 	List<OwnBo> selectSome(OwnQuery ownQuery);
 
-	List<String> selectSort(int userId);
+	List<String> selectSort(OwnQuery ownQuery);
 
 	int update(OwnPo ownPo);
 
