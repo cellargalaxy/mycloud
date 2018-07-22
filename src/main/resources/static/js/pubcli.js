@@ -192,8 +192,12 @@ function getPermission(permissionId, callback) {
     get('/api/permission/getPermission', {permissionId: permissionId}, callback);
 }
 
-function listPermission(pageSize, page, permissionId, permissionMark, createTime, updateTime, callback) {
-    get('/api/user/listPermission', {
+function listPermission(callback) {
+    listPermissions(100, 1, 0, null, null, null, callback);
+}
+
+function listPermissions(pageSize, page, permissionId, permissionMark, createTime, updateTime, callback) {
+    get('/api/permission/listPermission', {
         pageSize: pageSize,
         page: page,
         permissionId: permissionId,
@@ -208,7 +212,7 @@ function getPermissionAuthorization(permissionId, callback) {
 }
 
 function listPermissionAuthorization(pageSize, page, permissionId, permissionMark, createTime, updateTime, callback) {
-    get('/api/user/listPermissionAuthorization', {
+    get('/api/permission/listPermissionAuthorization', {
         pageSize: pageSize,
         page: page,
         permissionId: permissionId,
@@ -358,4 +362,10 @@ function formatDate(date, fmt) {
         }
     }
     return fmt;
+}
+
+function fileSize(bytes) {
+    var i = Math.floor(Math.log(bytes) / Math.log(1024)),
+        sizes = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+    return (bytes / Math.pow(1024, i)).toFixed(2) * 1 + ' ' + sizes[i];
 }

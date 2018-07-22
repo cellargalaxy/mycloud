@@ -22,26 +22,20 @@ public class WebDateConfigBeans {
 	private RequestMappingHandlerAdapter handlerAdapter;
 
 	/**
-	 * 增加字符串转日期的功能
+	 * http参数的日期字符串转Date对象
 	 */
-
 	@PostConstruct
 	public void initEditableAvlidation() {
-
 		ConfigurableWebBindingInitializer initializer = (ConfigurableWebBindingInitializer) handlerAdapter.getWebBindingInitializer();
 		if (initializer.getConversionService() != null) {
 			GenericConversionService genericConversionService = (GenericConversionService) initializer.getConversionService();
 			genericConversionService.addConverter(new Converter<String, Date>() {
-				DateFormat DATE_FORMAT_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-				DateFormat SHORT_DATE_FORMAT_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
+				private final DateFormat DATE_FORMAT_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+				private final DateFormat SHORT_DATE_FORMAT_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 
 				@Override
 				public Date convert(String s) {
-					if (s == null) {
-						return null;
-					}
-					s = s.trim();
-					if (s.length() == 0) {
+					if (s == null || (s = s.trim()).length() == 0) {
 						return null;
 					}
 					try {
@@ -59,6 +53,5 @@ public class WebDateConfigBeans {
 				}
 			});
 		}
-
 	}
 }

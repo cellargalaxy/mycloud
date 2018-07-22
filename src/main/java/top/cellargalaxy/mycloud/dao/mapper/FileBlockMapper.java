@@ -79,11 +79,11 @@ public interface FileBlockMapper {
 		}
 
 		public static final String update(FileBlockPo fileBlockPo) {
-			if (FileBlockDao.checkUpdate(fileBlockPo) != null) {
-				return "update " + TABLE_NAME + " set file_id=#{fileId} where false";
-			}
 			List<String> sets = new LinkedList<>();
 			sets(fileBlockPo, sets);
+			if (sets.size() == 0) {
+				return "update " + TABLE_NAME + " set file_id=#{fileId} where false";
+			}
 			List<String> wheres = new LinkedList<>();
 			wheresKey(fileBlockPo, wheres);
 			String string = SqlUtil.createUpdateSql(TABLE_NAME, sets, wheres).append(" limit 1").toString();

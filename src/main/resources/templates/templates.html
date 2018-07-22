@@ -53,6 +53,7 @@
         <div class="col-sm">
             <div class="table-responsive" id="exception-info-table">
                 <table class="table table-hover">
+                    <caption>异常栈表格({{exceptionInfos.length}})</caption>
                     <thead>
                     <tr>
                         <th colspan="2">其他信息</th>
@@ -85,6 +86,7 @@
         <div class="col-sm">
             <div class="table-responsive" id="user-table">
                 <table class="table table-hover">
+                    <caption>用户表格({{users.length}})</caption>
                     <thead>
                     <tr>
                         <th>用户名</th>
@@ -121,7 +123,7 @@
                         <td v-text="new Date(user.updateTime).format('yyyy-MM-dd hh:mm:ss')"></td>
                         <td>
                             <button type="button" class="btn btn-warning" @click="changeUser(i)">修改</button>
-                            <button type="button" class="btn btn-danger" @click="deleteUser(i)">删除</button>
+                            <button type="button" class="btn btn-danger" @click="removeUser(i)">删除</button>
                         </td>
                     </tr>
                     </tbody>
@@ -134,6 +136,7 @@
         <div class="col-sm">
             <div class="table-responsive" id="permission-table">
                 <table class="table table-hover">
+                    <caption>权限表格({{permissions.length}})</caption>
                     <thead>
                     <tr>
                         <th>权限id</th>
@@ -147,11 +150,11 @@
                     <tr>
                         <td>
                             <input type="number" class="form-control" placeholder="权限id"
-                                   v-model="permission.permissionId"/>
+                                   v-model="permissionForm.permissionId"/>
                         </td>
                         <td>
                             <input type="text" class="form-control" placeholder="权限备注"
-                                   v-model="permission.permissionMark"/>
+                                   v-model="permissionForm.permissionMark"/>
                         </td>
                         <td></td>
                         <td></td>
@@ -160,17 +163,17 @@
                         </td>
                     </tr>
                     <tr v-for="(permission, i) in permissions">
-                        <td v-text="permission.permissionId">1</td>
+                        <td v-text="permission.permissionId"></td>
                         <td>
                             <input type="text" class="form-control" placeholder="权限备注"
                                    v-bind:v-bind:value="permission.permissionMark"
                                    v-model="permissions[i].permissionMark"/>
                         </td>
-                        <td v-text="permission.createTime">2018-11-11 22:22:22</td>
-                        <td v-text="permission.updateTime">2018-11-11 22:22:22</td>
+                        <td v-text="new Date(permission.createTime).format('yyyy-MM-dd hh:mm:ss')"></td>
+                        <td v-text="new Date(permission.updateTime).format('yyyy-MM-dd hh:mm:ss')"></td>
                         <td>
                             <button type="button" class="btn btn-warning" @click="changePermission(i)">修改</button>
-                            <button type="button" class="btn btn-danger" @click="deletePermission(i)">删除</button>
+                            <button type="button" class="btn btn-danger" @click="removePermission(i)">删除</button>
                         </td>
                     </tr>
                     </tbody>
@@ -183,6 +186,7 @@
         <div class="col-sm">
             <div class="table-responsive" id="authorization-table">
                 <table class="table table-hover">
+                    <caption>授权表格({{authorizations.length}})</caption>
                     <thead>
                     <tr>
                         <th>用户</th>
@@ -191,21 +195,42 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr v-for="(user, userIndex) in users">
-                        <td v-text="user.username"></td>
+                    <tr>
                         <td>
-                            <span class="badge badge-light" v-for="(permission, permissionIndex) in user.permissions"
-                                  v-text="permission.permissionMark"
-                                  @click="showModal(userIndex,permissionIndex)"></span>
+                            <select class="form-control" v-model="authorizationForm.userId">
+                                <option v-for="user in users"
+                                        v-bind:value="user.userId"
+                                        v-text="user.username"></option>
+                            </select>
                         </td>
                         <td>
-                            <form class="form-inline">
-                                <select class="form-control" v-model="users[userIndex].permissionId">
+                            <select class="form-control" v-model="authorizationForm.permissionId">
+                                <option v-for="permission in permissions"
+                                        v-bind:value="permission.permissionId"
+                                        v-text="permission.permissionMark"></option>
+                            </select>
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-success" @click="addAuthorization(-1)">增添</button>
+                        </td>
+                    </tr>
+                    <tr v-for="(authorization, authorizationIndex) in authorizations">
+                        <td v-text="authorization.user.username"></td>
+                        <td>
+                            <span class="badge badge-light"
+                                  v-for="(auth, authIndex) in authorization.authorizations"
+                                  v-text="auth.permissionMark"
+                                  @click="showModal(authorizationIndex,authIndex)"></span>
+                        </td>
+                        <td>
+                            <form class="form-inline" onsubmit="return false">
+                                <select class="form-control" v-model="authorizations[authorizationIndex].authorizationForm.permissionId">
                                     <option v-for="permission in permissions"
-                                            v-bind:v-bind:value="permission.permissionId"
+                                            v-bind:value="permission.permissionId"
                                             v-text="permission.permissionMark"></option>
                                 </select>
-                                <button type="button" class="btn btn-success" @click="addAuthorization(userIndex)">增添
+                                <button type="button" class="btn btn-success"
+                                        @click="addAuthorization(authorizationIndex)">增添
                                 </button>
                             </form>
                         </td>
@@ -237,12 +262,12 @@
                                 <div class="form-group">
                                     <label>创建日期</label>
                                     <input type="text" class="form-control" readonly="readonly"
-                                           :value="authorization.createTime"/>
+                                           :value="new Date(authorization.createTime).format('yyyy-MM-dd hh:mm:ss')"/>
                                 </div>
                                 <div class="form-group">
                                     <label>更新日期</label>
                                     <input type="text" class="form-control" readonly="readonly"
-                                           :value="authorization.updateTime"/>
+                                           :value="new Date(authorization.updateTime).format('yyyy-MM-dd hh:mm:ss')"/>
                                 </div>
                             </div>
                             <div class="modal-footer">
@@ -435,11 +460,11 @@
 <script src="https://cdn.bootcss.com/bootstrap-fileinput/4.4.8/js/locales/zh.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/spark-md5/3.0.0/spark-md5.js"></script>
 <script src="../static/js/pubcli.js"></script>
-<script src="../static/js/vue.js"></script>
+<script src="../static/js/vueModel.js"></script>
 <script>
 
 
-    createOwnListVue().fileInfos = [
+    var fileInfos = [
         {
             url: 'https://i.loli.net/2018/04/10/5accdcbcb1738.jpg',
             md5: '01234567890123456789012345678901',
@@ -504,52 +529,7 @@
         },
     ]
 
-    function createOwnListVue() {
-        var vue = new Vue({
-            el: '#own-list',
-            data: {
-                fileInfos: [],
-                own: {
-                    username: null,
-                    md5: null,
-                    fileName: null,
-                    sort: null,
-                    description: null,
-                    createTime: null,
-                    updateTime: null,
-                    fileLength: null,
-                    contentType: null,
-                }
-            },
-            methods: {
-                deleteOwn: function () {
-                    console.log('deleteOwn')
-                },
-                changeOwn: function () {
-                    console.log('changeOwn')
-                },
-                showModal: function (fileInfoIndex, ownIndex) {
-                    this.own = this.fileInfos[fileInfoIndex].owns[ownIndex];
-                    $('#own-list-modal').modal('show');
-                },
-                hideModal: function () {
-                    $('#own-list-modal').modal('hide');
-                    this.own = {
-                        username: null,
-                        md5: null,
-                        fileName: null,
-                        sort: null,
-                        description: null,
-                        createTime: null,
-                        updateTime: null,
-                        fileLength: null,
-                        contentType: null,
-                    };
-                }
-            }
-        });
-        return vue;
-    }
+
 
     createFileUploadFormVue()
 
@@ -606,140 +586,6 @@
     }
 
 
-    var authorizationTableVue = createAuthorizationTableVue()
-    authorizationTableVue.permissions = [
-        {permissionId: 1, permissionMark: '管理员', createTime: '2017-7-7 11:11:11', updateTime: '2017-7-7 11:11:11'},
-        {permissionId: 2, permissionMark: '用户', createTime: '2017-7-7 11:11:11', updateTime: '2017-7-7 11:11:11'},
-    ]
-    authorizationTableVue.users = [
-        {
-            userId: 1, username: 'cellargalaxy', permissionId: -1, permissions: [
-                {
-                    permissionId: 1,
-                    permissionMark: '管理员',
-                    createTime: '2017-7-7 11:11:11',
-                    updateTime: '2017-7-7 11:11:11'
-                },
-                {
-                    permissionId: 2,
-                    permissionMark: '用户',
-                    createTime: '2017-7-7 11:11:11',
-                    updateTime: '2017-7-7 11:11:11'
-                },
-            ]
-        },
-        {
-            userId: 1, username: 'cellargalaxy', permissionId: -1, permissions: [
-                {
-                    permissionId: 1,
-                    permissionMark: '管理员',
-                    createTime: '2017-7-7 11:11:11',
-                    updateTime: '2017-7-7 11:11:11'
-                },
-                {
-                    permissionId: 2,
-                    permissionMark: '用户',
-                    createTime: '2017-7-7 11:11:11',
-                    updateTime: '2017-7-7 11:11:11'
-                },
-            ]
-        },
-    ]
-
-
-    function createAuthorizationTableVue() {
-        var vue = new Vue({
-            el: '#authorization-table',
-            data: {
-                permissions: [],
-                users: [],
-                authorization: {
-                    authorizationId: -1,
-                    createTime: null,
-                    updateTime: null,
-                    username: null,
-                    permissionMark: null
-
-                }
-            },
-            methods: {
-                addAuthorization: function (userIndex) {
-                    console.log('addAuthorization：' + userIndex);
-                },
-                deleteAuthorization: function () {
-                    console.log('deleteAuthorization');
-                },
-                loadData: function (data) {
-                    console.log('loadData')
-                },
-                getAuthorizations: function () {
-                    console.log('getAuthorizations')
-                },
-                showModal: function (userIndex, permissionIndex) {
-                    this.authorization.authorizationId = this.users[userIndex].permissions[permissionIndex].authorization;
-                    this.authorization.createTime = this.users[userIndex].permissions[permissionIndex].createTime;
-                    this.authorization.updateTime = this.users[userIndex].permissions[permissionIndex].updateTime;
-                    this.authorization.username = this.users[userIndex].username;
-                    this.authorization.permissionMark = this.users[userIndex].permissions[permissionIndex].permissionMark;
-                    $('#authorization-table-modal').modal('show');
-                },
-                hideModal: function () {
-                    $('#authorization-table-modal').modal('hide');
-                    this.authorization = {
-                        authorizationId: -1,
-                        createTime: null,
-                        updateTime: null,
-                        username: null,
-                        permissionMark: null
-
-                    }
-                }
-            }
-        });
-        return vue;
-    }
-
-    createPermissionTableVue().permissions = [
-        {permissionId: 1, permissionMark: '管理员', createTime: '2017-7-7 11:11:11', updateTime: '2017-7-7 11:11:11'},
-        {permissionId: 2, permissionMark: '用户', createTime: '2017-7-7 11:11:11', updateTime: '2017-7-7 11:11:11'},
-    ]
-
-    function createPermissionTableVue() {
-        var vue = new Vue({
-            el: '#permission-table',
-            data: {
-                permission: {
-                    permissionId: null,
-                    permissionMark: null,
-                },
-                permissions: []
-            },
-            methods: {
-                addPermission: function () {
-                    console.log('addPermission,' + this.permission.permissionId + ',' + this.permission.permissionMark)
-                },
-                changePermission: function (i) {
-                    console.log('修改：' + i);
-                },
-                deletePermission: function (i) {
-                    console.log('删除' + i);
-                },
-                loadData: function (data) {
-                    console.log('loadData')
-                },
-                getPermissions: function () {
-                    console.log('getPermissions')
-                }
-            }
-        });
-        return vue;
-    }
-
-
-
-
-
-
     createLoginFormVue();
 
     function createLoginFormVue() {
@@ -792,11 +638,7 @@
         return vue;
     }
 
-    function fileSize(bytes) {
-        var i = Math.floor(Math.log(bytes) / Math.log(1024)),
-            sizes = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
-        return (bytes / Math.pow(1024, i)).toFixed(2) * 1 + ' ' + sizes[i];
-    }
+
 
     // setTimeout('location.reload()', 1000 * 30);
 </script>

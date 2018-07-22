@@ -52,11 +52,6 @@ public class AuthorizationQuery extends AuthorizationPo implements PageQuery {
 	}
 
 	@Override
-	public boolean isPage() {
-		return off > 0 && len > 0;
-	}
-
-	@Override
 	public String toString() {
 		return "AuthorizationQuery{" +
 				"super=" + super.toString() +

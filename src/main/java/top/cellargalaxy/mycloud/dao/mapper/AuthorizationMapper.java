@@ -87,6 +87,8 @@ public interface AuthorizationMapper {
 			selects.add(UserDao.TABLE_NAME + ".username");
 			selects.add(PermissionDao.TABLE_NAME + ".permission_mark");
 			List<String> wheres = new LinkedList<>();
+			wheres.add(TABLE_NAME + ".user_id=" + UserDao.TABLE_NAME + ".user_id");
+			wheres.add(TABLE_NAME + ".permission_id=" + PermissionDao.TABLE_NAME + ".permission_id");
 			wheresKey(authorizationQuery, wheres);
 			StringBuilder sql = SqlUtil.createSelectSql(selects, TABLE_NAME + "," + UserDao.TABLE_NAME + "," + PermissionDao.TABLE_NAME, wheres);
 			String string = sql.append(" limit 1").toString();
@@ -105,21 +107,23 @@ public interface AuthorizationMapper {
 			selects.add(UserDao.TABLE_NAME + ".username");
 			selects.add(PermissionDao.TABLE_NAME + ".permission_mark");
 			List<String> wheres = new LinkedList<>();
+			wheres.add(TABLE_NAME + ".user_id=" + UserDao.TABLE_NAME + ".user_id");
+			wheres.add(TABLE_NAME + ".permission_id=" + PermissionDao.TABLE_NAME + ".permission_id");
 			wheresAll(authorizationQuery, wheres);
-			StringBuilder sql = SqlUtil.createSelectSql(selects, TABLE_NAME + "," + UserDao.TABLE_NAME + "," + PermissionDao.TABLE_NAME, wheres).append(" limit #{off},#{len}");
-			String string = sql.toString();
+			StringBuilder sql = SqlUtil.createSelectSql(selects, TABLE_NAME + "," + UserDao.TABLE_NAME + "," + PermissionDao.TABLE_NAME, wheres);
+			String string = sql.append(" limit #{off},#{len}").toString();
 			logger.debug("selectSome:{}, sql:{}", authorizationQuery, string);
 			return string;
 		}
 
 		public static final String update(AuthorizationPo authorizationPo) {
-			if (AuthorizationDao.checkUpdate(authorizationPo) != null) {
-				return "update " + TABLE_NAME + " set authorization_id=#{authorizationId} where false";
-			}
 			authorizationPo.setCreateTime(null);
 			authorizationPo.setUpdateTime(new Date());
 			List<String> sets = new LinkedList<>();
 			sets(authorizationPo, sets);
+			if (sets.size() == 0) {
+				return "update " + TABLE_NAME + " set authorization_id=#{authorizationId} where false";
+			}
 			List<String> wheres = new LinkedList<>();
 			wheresKey(authorizationPo, wheres);
 			String string = SqlUtil.createUpdateSql(TABLE_NAME, sets, wheres).append(" limit 1").toString();

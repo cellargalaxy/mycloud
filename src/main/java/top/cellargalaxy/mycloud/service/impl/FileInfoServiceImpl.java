@@ -13,6 +13,7 @@ import top.cellargalaxy.mycloud.model.query.FileInfoQuery;
 import top.cellargalaxy.mycloud.model.query.OwnQuery;
 import top.cellargalaxy.mycloud.model.vo.FileInfoOwnVo;
 import top.cellargalaxy.mycloud.service.FileInfoService;
+import top.cellargalaxy.mycloud.util.SqlUtil;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -89,6 +90,8 @@ public class FileInfoServiceImpl implements FileInfoService {
 		for (FileInfoBo fileInfoBo : fileInfoBos) {
 			OwnQuery ownQuery = new OwnQuery();
 			ownQuery.setFileId(fileInfoBo.getFileId());
+			ownQuery.setPage(1);
+			ownQuery.setPageSize(SqlUtil.MAX_PAGE_SIZE);
 			List<OwnBo> ownBos = ownDao.selectSome(ownQuery);
 			fileInfoOwnVos.add(new FileInfoOwnVo(fileInfoBo, ownBos));
 		}
@@ -122,6 +125,7 @@ public class FileInfoServiceImpl implements FileInfoService {
 			return string;
 		}
 		FileInfoQuery fileInfoQuery = new FileInfoQuery();
+		fileInfoQuery.setFileId(fileInfoPo.getFileId());
 		fileInfoQuery.setMd5(fileInfoPo.getMd5());
 		FileInfoPo fileInfo = fileInfoDao.selectOne(fileInfoQuery);
 		if (fileInfo != null) {
@@ -137,6 +141,7 @@ public class FileInfoServiceImpl implements FileInfoService {
 			return string;
 		}
 		FileInfoQuery fileInfoQuery = new FileInfoQuery();
+		fileInfoQuery.setFileId(fileInfoPo.getFileId());
 		fileInfoQuery.setMd5(fileInfoPo.getMd5());
 		FileInfoPo fileInfo = fileInfoDao.selectOne(fileInfoQuery);
 		if (fileInfo == null) {

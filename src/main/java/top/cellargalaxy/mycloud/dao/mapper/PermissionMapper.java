@@ -54,6 +54,7 @@ public interface PermissionMapper {
 		private static final String updateTime = TABLE_NAME + ".update_time=#{updateTime,jdbcType=TIMESTAMP}";
 
 		public static final String insert(PermissionPo permissionPo) {
+			init(permissionPo);
 			Date date = new Date();
 			permissionPo.setCreateTime(date);
 			permissionPo.setUpdateTime(date);
@@ -85,26 +86,21 @@ public interface PermissionMapper {
 			SqlUtil.initPageQuery(permissionQuery);
 			List<String> wheres = new LinkedList<>();
 			wheresAll(permissionQuery, wheres);
-			if (permissionQuery.isPage()) {
-				wheres.add("true");
-			}
 			StringBuilder sql = SqlUtil.createSelectSql(null, TABLE_NAME, wheres);
-			if (permissionQuery.isPage()) {
-				sql.append(" limit #{off},#{len}");
-			}
-			String string = sql.toString();
+			String string = sql.append(" limit #{off},#{len}").toString();
 			logger.debug("selectSome:{}, sql:{}", permissionQuery, string);
 			return string;
 		}
 
 		public static final String upldate(PermissionPo permissionPo) {
-			if (PermissionDao.checkUpdate(permissionPo) != null) {
-				return "update " + TABLE_NAME + " set permission_id=#{permissionId} where false";
-			}
+			init(permissionPo);
 			permissionPo.setCreateTime(null);
 			permissionPo.setUpdateTime(new Date());
 			List<String> sets = new LinkedList<>();
 			sets(permissionPo, sets);
+			if (sets.size() == 0) {
+				return "update " + TABLE_NAME + " set permission_id=#{permissionId} where false";
+			}
 			List<String> wheres = new LinkedList<>();
 			wheresKey(permissionPo, wheres);
 			String string = SqlUtil.createUpdateSql(TABLE_NAME, sets, wheres).append(" limit 1").toString();
@@ -142,5 +138,10 @@ public interface PermissionMapper {
 			}
 		}
 
+		private static final void init(PermissionPo permissionPo) {
+			if (permissionPo.getPermissionMark() != null) {
+				permissionPo.setPermissionMark(permissionPo.getPermissionMark().trim());
+			}
+		}
 	}
 }

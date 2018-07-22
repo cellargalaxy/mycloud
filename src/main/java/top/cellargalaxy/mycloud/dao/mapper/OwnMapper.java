@@ -72,6 +72,7 @@ public interface OwnMapper {
 		private static final String updateTime = TABLE_NAME + ".update_time=#{updateTime,jdbcType=TIMESTAMP}";
 
 		public static final String insert(OwnPo ownPo) {
+			init(ownPo);
 			Date date = new Date();
 			ownPo.setCreateTime(date);
 			ownPo.setUpdateTime(date);
@@ -105,6 +106,8 @@ public interface OwnMapper {
 			selects.add(FileInfoDao.TABLE_NAME + ".file_length");
 			selects.add(FileInfoDao.TABLE_NAME + ".content_type");
 			List<String> wheres = new LinkedList<>();
+			wheres.add(TABLE_NAME + ".user_id=" + UserDao.TABLE_NAME + ".user_id");
+			wheres.add(TABLE_NAME + ".file_id=" + FileInfoDao.TABLE_NAME + ".file_id");
 			wheresKey(ownQuery, wheres);
 			StringBuilder sql = SqlUtil.createSelectSql(selects, TABLE_NAME + "," + UserDao.TABLE_NAME + "," + FileInfoDao.TABLE_NAME, wheres);
 			String string = sql.append(" limit 1").toString();
@@ -129,14 +132,8 @@ public interface OwnMapper {
 			selects.add(FileInfoDao.TABLE_NAME + ".content_type");
 			List<String> wheres = new LinkedList<>();
 			wheresAll(ownQuery, wheres);
-			if (ownQuery.isPage()) {
-				wheres.add("true");
-			}
 			StringBuilder sql = SqlUtil.createSelectSql(selects, TABLE_NAME + "," + UserDao.TABLE_NAME + "," + FileInfoDao.TABLE_NAME, wheres);
-			if (ownQuery.isPage()) {
-				sql.append(" limit #{off},#{len}");
-			}
-			String string = sql.toString();
+			String string = sql.append(" limit #{off},#{len}").toString();
 			logger.debug("selectSome:{}, sql:{}", ownQuery, string);
 			return string;
 		}
@@ -153,13 +150,14 @@ public interface OwnMapper {
 		}
 
 		public static final String update(OwnPo ownPo) {
-			if (OwnDao.checkUpdate(ownPo) != null) {
-				return "update " + TABLE_NAME + " set own_id=#{ownId} where false";
-			}
+			init(ownPo);
 			ownPo.setCreateTime(null);
 			ownPo.setUpdateTime(new Date());
 			List<String> sets = new LinkedList<>();
 			sets(ownPo, sets);
+			if (sets.size() == 0) {
+				return "update " + TABLE_NAME + " set own_id=#{ownId} where false";
+			}
 			List<String> wheres = new LinkedList<>();
 			wheresKey(ownPo, wheres);
 			String string = SqlUtil.createUpdateSql(TABLE_NAME, sets, wheres).append(" limit 1").toString();
@@ -197,8 +195,7 @@ public interface OwnMapper {
 		private static final void wheresKey(OwnPo ownPo, List<String> wheres) {
 			if (ownPo.getOwnId() > 0) {
 				wheres.add(ownId);
-			}
-			if (ownPo.getUserId() > 0 && ownPo.getFileId() > 0) {
+			} else if (ownPo.getUserId() > 0 && ownPo.getFileId() > 0) {
 				wheres.add(userId);
 				wheres.add(fileId);
 			}
@@ -222,6 +219,18 @@ public interface OwnMapper {
 			}
 			if (ownPo.getUpdateTime() != null) {
 				sets.add(updateTime);
+			}
+		}
+
+		private static final void init(OwnPo ownPo) {
+			if (ownPo.getFileName() != null) {
+				ownPo.setFileName(ownPo.getFileName().trim());
+			}
+			if (ownPo.getSort() != null) {
+				ownPo.setSort(ownPo.getSort().trim());
+			}
+			if (ownPo.getDescription() != null) {
+				ownPo.setDescription(ownPo.getDescription().trim());
 			}
 		}
 	}

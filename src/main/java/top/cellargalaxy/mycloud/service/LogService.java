@@ -2,7 +2,7 @@ package top.cellargalaxy.mycloud.service;
 
 import top.cellargalaxy.mycloud.model.vo.ExceptionInfoVo;
 
-import java.util.concurrent.BlockingQueue;
+import java.util.List;
 
 /**
  * @author cellargalaxy
@@ -11,5 +11,5 @@ import java.util.concurrent.BlockingQueue;
 public interface LogService {
 	String clearExceptionInfo();
 
-	BlockingQueue<ExceptionInfoVo> listExceptionInfo();
+	List<ExceptionInfoVo> listExceptionInfo();
 }

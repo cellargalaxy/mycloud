@@ -18,6 +18,7 @@ import top.cellargalaxy.mycloud.model.query.UserQuery;
 import top.cellargalaxy.mycloud.model.vo.UserAuthorizationVo;
 import top.cellargalaxy.mycloud.model.vo.UserOwnVo;
 import top.cellargalaxy.mycloud.service.UserService;
+import top.cellargalaxy.mycloud.util.SqlUtil;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -52,7 +53,9 @@ public class UserServiceImpl implements UserService {
 		if (string != null) {
 			return string;
 		}
-		userPo.setUserPassword(DigestUtils.md5Hex(userPo.getUserPassword()));
+		if (userPo.getUserPassword() != null) {
+			userPo.setUserPassword(DigestUtils.md5Hex(userPo.getUserPassword()));
+		}
 		int i = userDao.insert(userPo);
 		if (i == 0) {
 			return "用户空新增";
@@ -106,6 +109,8 @@ public class UserServiceImpl implements UserService {
 		for (UserBo userBo : userBos) {
 			AuthorizationQuery authorizationQuery = new AuthorizationQuery();
 			authorizationQuery.setUserId(userBo.getUserId());
+			authorizationQuery.setPage(1);
+			authorizationQuery.setPageSize(SqlUtil.MAX_PAGE_SIZE);
 			List<AuthorizationBo> authorizationBos = authorizationDao.selectSome(authorizationQuery);
 			userAuthorizationVos.add(new UserAuthorizationVo(userBo, authorizationBos));
 		}
@@ -136,6 +141,8 @@ public class UserServiceImpl implements UserService {
 		for (UserBo userBo : userBos) {
 			OwnQuery ownQuery = new OwnQuery();
 			ownQuery.setUserId(userBo.getUserId());
+			ownQuery.setPage(1);
+			ownQuery.setPageSize(SqlUtil.MAX_PAGE_SIZE);
 			List<OwnBo> ownBos = ownDao.selectSome(ownQuery);
 			userOwnVos.add(new UserOwnVo(userBo, ownBos));
 		}
@@ -149,7 +156,9 @@ public class UserServiceImpl implements UserService {
 		if (string != null) {
 			return string;
 		}
-		userPo.setUserPassword(DigestUtils.md5Hex(userPo.getUserPassword()));
+		if (userPo.getUserPassword() != null) {
+			userPo.setUserPassword(DigestUtils.md5Hex(userPo.getUserPassword()));
+		}
 		int i = userDao.update(userPo);
 		if (i == 0) {
 			return "用户空更新";
@@ -165,6 +174,7 @@ public class UserServiceImpl implements UserService {
 			return string;
 		}
 		UserQuery userQuery = new UserQuery();
+		userQuery.setUserId(userPo.getUserId());
 		userQuery.setUsername(userPo.getUsername());
 		UserPo user = userDao.selectOne(userQuery);
 		if (user != null) {
@@ -181,6 +191,7 @@ public class UserServiceImpl implements UserService {
 			return string;
 		}
 		UserQuery userQuery = new UserQuery();
+		userQuery.setUserId(userPo.getUserId());
 		userQuery.setUsername(userPo.getUsername());
 		UserPo user = userDao.selectOne(userQuery);
 		if (user == null) {

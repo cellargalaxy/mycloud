@@ -53,11 +53,6 @@ public class UserQuery extends UserPo implements PageQuery {
 	}
 
 	@Override
-	public boolean isPage() {
-		return off > 0 && len > 0;
-	}
-
-	@Override
 	public String toString() {
 		return "UserQuery{" +
 				"super=" + super.toString() +

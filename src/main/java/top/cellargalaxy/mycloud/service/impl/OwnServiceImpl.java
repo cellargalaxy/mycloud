@@ -87,6 +87,8 @@ public class OwnServiceImpl implements OwnService {
 		}
 		OwnQuery ownQuery = new OwnQuery();
 		ownQuery.setOwnId(ownPo.getOwnId());
+		ownQuery.setUserId(ownPo.getUserId());
+		ownQuery.setFileId(ownPo.getFileId());
 		OwnPo own = ownDao.selectOne(ownQuery);
 		if (own == null) {
 			return "所属已存在";
@@ -103,6 +105,8 @@ public class OwnServiceImpl implements OwnService {
 		}
 		OwnQuery ownQuery = new OwnQuery();
 		ownQuery.setOwnId(ownPo.getOwnId());
+		ownQuery.setUserId(ownPo.getUserId());
+		ownQuery.setFileId(ownPo.getFileId());
 		OwnPo own = ownDao.selectOne(ownQuery);
 		if (own == null) {
 			return "所属不存在";

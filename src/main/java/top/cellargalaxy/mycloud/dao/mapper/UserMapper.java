@@ -55,6 +55,7 @@ public interface UserMapper {
 		private static final String updateTime = TABLE_NAME + ".update_time=#{updateTime,jdbcType=TIMESTAMP}";
 
 		public static final String insert(UserPo userPo) {
+			init(userPo);
 			Date date = new Date();
 			userPo.setCreateTime(date);
 			userPo.setUpdateTime(date);
@@ -86,26 +87,21 @@ public interface UserMapper {
 			SqlUtil.initPageQuery(userQuery);
 			List<String> wheres = new LinkedList<>();
 			wheresAll(userQuery, wheres);
-			if (userQuery.isPage()) {
-				wheres.add("true");
-			}
 			StringBuilder sql = SqlUtil.createSelectSql(null, TABLE_NAME, wheres);
-			if (userQuery.isPage()) {
-				sql.append(" limit #{off},#{len}");
-			}
-			String string = sql.toString();
+			String string = sql.append(" limit #{off},#{len}").toString();
 			logger.debug("selectSome:{}, sql:{}", userQuery, string);
 			return string;
 		}
 
 		public static final String update(UserPo userPo) {
-			if (UserDao.checkUpdate(userPo) != null) {
-				return "update " + TABLE_NAME + " set user_id=#{userId} where false";
-			}
+			init(userPo);
 			userPo.setCreateTime(null);
 			userPo.setUpdateTime(new Date());
 			List<String> sets = new LinkedList<>();
 			sets(userPo, sets);
+			if (sets.size() == 0) {
+				return "update " + TABLE_NAME + " set user_id=#{userId} where false";
+			}
 			List<String> wheres = new LinkedList<>();
 			wheresKey(userPo, wheres);
 			String string = SqlUtil.createUpdateSql(TABLE_NAME, sets, wheres).append(" limit 1").toString();
@@ -134,8 +130,7 @@ public interface UserMapper {
 		private static final void wheresKey(UserPo userPo, List<String> wheres) {
 			if (userPo.getUserId() > 0) {
 				wheres.add(userId);
-			}
-			if (!StringUtil.isBlank(userPo.getUsername())) {
+			}else if (!StringUtil.isBlank(userPo.getUsername())) {
 				wheres.add(username);
 			}
 		}
@@ -149,6 +144,15 @@ public interface UserMapper {
 			}
 			if (userPo.getUpdateTime() != null) {
 				sets.add(updateTime);
+			}
+		}
+
+		private static final void init(UserPo userPo) {
+			if (userPo.getUsername() != null) {
+				userPo.setUsername(userPo.getUsername().trim());
+			}
+			if (userPo.getUserPassword() != null) {
+				userPo.setUserPassword(userPo.getUserPassword().trim());
 			}
 		}
 	}

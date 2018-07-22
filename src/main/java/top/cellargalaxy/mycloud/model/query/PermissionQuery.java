@@ -52,11 +52,6 @@ public class PermissionQuery extends PermissionPo implements PageQuery {
 	}
 
 	@Override
-	public boolean isPage() {
-		return off > 0 && len > 0;
-	}
-
-	@Override
 	public String toString() {
 		return "PermissionQuery{" +
 				"super=" + super.toString() +

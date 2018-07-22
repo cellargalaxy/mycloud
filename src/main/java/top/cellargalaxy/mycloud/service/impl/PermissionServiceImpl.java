@@ -13,6 +13,7 @@ import top.cellargalaxy.mycloud.model.query.AuthorizationQuery;
 import top.cellargalaxy.mycloud.model.query.PermissionQuery;
 import top.cellargalaxy.mycloud.model.vo.PermissionAuthorizationVo;
 import top.cellargalaxy.mycloud.service.PermissionService;
+import top.cellargalaxy.mycloud.util.SqlUtil;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -89,6 +90,8 @@ public class PermissionServiceImpl implements PermissionService {
 		for (PermissionBo permissionBo : permissionBos) {
 			AuthorizationQuery authorizationQuery = new AuthorizationQuery();
 			authorizationQuery.setPermissionId(permissionBo.getPermissionId());
+			authorizationQuery.setPage(1);
+			authorizationQuery.setPageSize(SqlUtil.MAX_PAGE_SIZE);
 			List<AuthorizationBo> authorizationBos = authorizationDao.selectSome(authorizationQuery);
 			permissionAuthorizationVos.add(new PermissionAuthorizationVo(permissionBo, authorizationBos));
 		}

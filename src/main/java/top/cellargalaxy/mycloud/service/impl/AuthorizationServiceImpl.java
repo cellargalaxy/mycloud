@@ -80,6 +80,7 @@ public class AuthorizationServiceImpl implements AuthorizationService {
 			return string;
 		}
 		AuthorizationQuery authorizationQuery = new AuthorizationQuery();
+		authorizationQuery.setAuthorizationId(authorizationPo.getAuthorizationId());
 		authorizationQuery.setUserId(authorizationPo.getUserId());
 		authorizationQuery.setPermissionId(authorizationPo.getPermissionId());
 		AuthorizationPo authorization = authorizationDao.selectOne(authorizationQuery);
@@ -98,6 +99,8 @@ public class AuthorizationServiceImpl implements AuthorizationService {
 		}
 		AuthorizationQuery authorizationQuery = new AuthorizationQuery();
 		authorizationQuery.setAuthorizationId(authorizationPo.getAuthorizationId());
+		authorizationQuery.setUserId(authorizationPo.getUserId());
+		authorizationQuery.setPermissionId(authorizationPo.getPermissionId());
 		AuthorizationPo authorization = authorizationDao.selectOne(authorizationQuery);
 		if (authorization == null) {
 			return "授权不存在";

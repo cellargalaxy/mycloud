@@ -7,6 +7,7 @@ import top.cellargalaxy.mycloud.exception.GlobalException;
 import top.cellargalaxy.mycloud.model.vo.ExceptionInfoVo;
 import top.cellargalaxy.mycloud.service.LogService;
 
+import java.util.List;
 import java.util.concurrent.BlockingQueue;
 
 /**
@@ -24,7 +25,7 @@ public class LogServiceImpl implements LogService {
 	}
 
 	@Override
-	public BlockingQueue<ExceptionInfoVo> listExceptionInfo() {
+	public List<ExceptionInfoVo> listExceptionInfo() {
 		logger.info("listExceptionInfo");
 		return GlobalException.get();
 	}

@@ -69,11 +69,11 @@ public interface BlockMapper {
 		}
 
 		public static final String update(BlockPo blockPo) {
-			if (BlockDao.checkUpdate(blockPo) != null) {
-				return "update " + TABLE_NAME + " set block_id=#{blockId} where false";
-			}
 			List<String> sets = new LinkedList<>();
 			sets(blockPo, sets);
+			if (sets.size() == 0) {
+				return "update " + TABLE_NAME + " set block_id=#{blockId} where false";
+			}
 			List<String> wheres = new LinkedList<>();
 			wheresKey(blockPo, wheres);
 			String string = SqlUtil.createUpdateSql(TABLE_NAME, sets, wheres).append(" limit 1").toString();

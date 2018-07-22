@@ -60,6 +60,7 @@ public interface FileInfoMapper {
 		private static final String createTime = TABLE_NAME + ".create_time=#{createTime,jdbcType=TIMESTAMP}";
 
 		public static final String insert(FileInfoPo fileInfoPo) {
+			init(fileInfoPo);
 			fileInfoPo.setCreateTime(new Date());
 			String string = "insert into " + TABLE_NAME + "(md5,file_length,content_type,create_time) " +
 					"values(#{md5},#{fileLength},#{contentType},#{createTime,jdbcType=TIMESTAMP})";
@@ -89,14 +90,8 @@ public interface FileInfoMapper {
 			SqlUtil.initPageQuery(fileInfoQuery);
 			List<String> wheres = new LinkedList<>();
 			wheresAll(fileInfoQuery, wheres);
-			if (fileInfoQuery.isPage()) {
-				wheres.add("true");
-			}
 			StringBuilder sql = SqlUtil.createSelectSql(null, TABLE_NAME, wheres);
-			if (fileInfoQuery.isPage()) {
-				sql.append(" limit #{off},#{len}");
-			}
-			String string = sql.toString();
+			String string = sql.append(" limit #{off},#{len}").toString();
 			logger.debug("selectSome:{}, sql:{}", fileInfoQuery, string);
 			return string;
 		}
@@ -106,12 +101,13 @@ public interface FileInfoMapper {
 		}
 
 		public static final String update(FileInfoPo fileInfoPo) {
-			if (FileInfoDao.checkUpdate(fileInfoPo) != null) {
-				return "update " + TABLE_NAME + " set file_id=#{fileId} where false";
-			}
+			init(fileInfoPo);
 			fileInfoPo.setCreateTime(null);
 			List<String> sets = new LinkedList<>();
 			sets(fileInfoPo, sets);
+			if (sets.size() == 0) {
+				return "update " + TABLE_NAME + " set file_id=#{fileId} where false";
+			}
 			List<String> wheres = new LinkedList<>();
 			wheresKey(fileInfoPo, wheres);
 			String string = SqlUtil.createUpdateSql(TABLE_NAME, sets, wheres).append(" limit 1").toString();
@@ -154,6 +150,15 @@ public interface FileInfoMapper {
 			}
 			if (!StringUtil.isBlank(fileInfoPo.getContentType())) {
 				sets.add(contentType);
+			}
+		}
+
+		private static final void init(FileInfoPo fileInfoPo) {
+			if (fileInfoPo.getMd5() != null) {
+				fileInfoPo.setMd5(fileInfoPo.getMd5().trim());
+			}
+			if (fileInfoPo.getContentType() != null) {
+				fileInfoPo.setContentType(fileInfoPo.getContentType().trim());
 			}
 		}
 	}
