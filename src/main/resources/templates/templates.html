@@ -1,19 +1,19 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:v-bind="http://www.w3.org/1999/xhtml">
-<head>
+<html lang="en" xmlns:v-bind="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:fragment="head(title)">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/4.0.0/css/bootstrap.min.css"/>
     <link href="https://cdn.bootcss.com/bootstrap-fileinput/4.4.8/css/fileinput.css" rel="stylesheet"/>
-    <title>templates</title>
+    <title th:text="${title}">templates</title>
 </head>
 <body>
 <div class="container">
 
-    <div class="row">
+    <div class="row" th:fragment="navbar">
         <div class="col-sm">
             <nav class="navbar navbar-expand-lg navbar-light bg-light" role="navigation" id="navbar">
-                <a class="navbar-brand" :href="brand.url" v-text="brand.text"></a>
+                <a class="navbar-brand" th:href="@{/}">mycloud</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapse"
                         aria-controls="navbar-collapse" aria-expanded="false">
                     <span class="navbar-toggler-icon"></span>
@@ -21,21 +21,38 @@
 
                 <div class="collapse navbar-collapse" id="navbar-collapse">
                     <ul class="navbar-nav mr-auto">
-                        <li v-for="left in lefts" :class="'nav-item'+ left.active?'active':''">
-                            <a class="nav-link" :href="left.url" v-text="left.text"></a>
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/page/own}">所属管理</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/page/user}">用户管理</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/page/permission}">权限管理</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/page/authorization}">授权管理</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/page/exceptionInfo}">异常日志</a>
                         </li>
                     </ul>
                     <ul class="navbar-nav navbar-right">
-                        <li v-for="right in rights" :class="'nav-item'+ right.active?'active':''">
-                            <a class="nav-link" :href="right.url" v-text="right.text"></a>
+                        <li class="nav-item" th:if="${session.user==null}">
+                            <a class="nav-link" th:href="@{/login}">登录</a>
+                        </li>
+                        <li class="nav-item" th:if="${session.user!=null}">
+                            <a class="nav-link" th:href="@{#}" th:text="${session.user.username}">cellargalaxy</a>
                         </li>
                     </ul>
                 </div>
             </nav>
         </div>
     </div>
+
     <hr/>
-    <div class="row">
+
+    <div class="row" th:fragment="login-form">
         <div class="col-sm">
             <form class="form-signin text-center" id="login-form" onsubmit="return false">
                 <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
@@ -43,13 +60,15 @@
                 <input type="password" class="form-control" placeholder="密码" required="required"
                        v-model="userPassword"/>
                 <button class="btn btn-lg btn-primary btn-block" type="submit" @click="login">登录</button>
-                <p>我的文件床 mycloud</p>
-                <p>&copy; 2017-2018</p>
+                <!--<p>我的文件床 mycloud</p>-->
+                <!--<p>&copy; 2017-2018</p>-->
             </form>
         </div>
     </div>
+
     <hr/>
-    <div class="row">
+
+    <div class="row" th:fragment="exception-info-table">
         <div class="col-sm">
             <div class="table-responsive" id="exception-info-table">
                 <table class="table table-hover">
@@ -65,7 +84,7 @@
                         <td>状态</td>
                         <td v-text="exceptionInfoVo.status"></td>
                         <td rowspan="3">
-                            <pre><code v-text="exceptionInfoVo.exceptionString"></code></pre>
+                            <pre><code v-text="exceptionInfoVo.exceptionStack"></code></pre>
                         </td>
                     </tr>
                     <tr>
@@ -81,11 +100,13 @@
             </div>
         </div>
     </div>
+
     <hr/>
-    <div class="row">
+
+    <div class="row" th:fragment="user-table">
         <div class="col-sm">
             <div class="table-responsive" id="user-table">
-                <table class="table table-hover">
+                <table class="table table-hover" style="min-width: 40em;">
                     <caption>用户表格({{users.length}})</caption>
                     <thead>
                     <tr>
@@ -102,7 +123,8 @@
                             <input type="text" class="form-control" placeholder="用户名" v-model="userForm.username"/>
                         </td>
                         <td>
-                            <input type="password" class="form-control" placeholder="密码" v-model="userForm.userPassword"/>
+                            <input type="password" class="form-control" placeholder="密码"
+                                   v-model="userForm.userPassword"/>
                         </td>
                         <td></td>
                         <td></td>
@@ -110,20 +132,20 @@
                             <button type="button" class="btn btn-success" @click="addUser">增添</button>
                         </td>
                     </tr>
-                    <tr v-for="(user, i) in users">
+                    <tr v-for="(user, userIndex) in users">
                         <td>
                             <input type="text" class="form-control" placeholder="用户名"
-                                   v-bind:v-bind:value="user.username" v-model="users[i].username"/>
+                                   v-bind:v-bind:value="user.username" v-model="users[userIndex].username"/>
                         </td>
                         <td>
                             <input type="password" class="form-control" placeholder="密码"
-                                   v-bind:v-bind:value="user.userPassword" v-model="users[i].userPassword"/>
+                                   v-bind:v-bind:value="user.userPassword" v-model="users[userIndex].userPassword"/>
                         </td>
                         <td v-text="new Date(user.createTime).format('yyyy-MM-dd hh:mm:ss')"></td>
                         <td v-text="new Date(user.updateTime).format('yyyy-MM-dd hh:mm:ss')"></td>
                         <td>
-                            <button type="button" class="btn btn-warning" @click="changeUser(i)">修改</button>
-                            <button type="button" class="btn btn-danger" @click="removeUser(i)">删除</button>
+                            <button type="button" class="btn btn-warning" @click="changeUser(userIndex)">修改</button>
+                            <button type="button" class="btn btn-danger" @click="removeUser(userIndex)">删除</button>
                         </td>
                     </tr>
                     </tbody>
@@ -131,11 +153,13 @@
             </div>
         </div>
     </div>
+
     <hr/>
-    <div class="row">
+
+    <div class="row" th:fragment="permission-table">
         <div class="col-sm">
             <div class="table-responsive" id="permission-table">
-                <table class="table table-hover">
+                <table class="table table-hover" style="min-width: 40em;">
                     <caption>权限表格({{permissions.length}})</caption>
                     <thead>
                     <tr>
@@ -162,18 +186,21 @@
                             <button type="button" class="btn btn-success" @click="addPermission">增添</button>
                         </td>
                     </tr>
-                    <tr v-for="(permission, i) in permissions">
+                    <tr v-for="(permission, permissionIndex) in permissions">
                         <td v-text="permission.permissionId"></td>
                         <td>
                             <input type="text" class="form-control" placeholder="权限备注"
                                    v-bind:v-bind:value="permission.permissionMark"
-                                   v-model="permissions[i].permissionMark"/>
+                                   v-model="permissions[permissionIndex].permissionMark"/>
                         </td>
                         <td v-text="new Date(permission.createTime).format('yyyy-MM-dd hh:mm:ss')"></td>
                         <td v-text="new Date(permission.updateTime).format('yyyy-MM-dd hh:mm:ss')"></td>
                         <td>
-                            <button type="button" class="btn btn-warning" @click="changePermission(i)">修改</button>
-                            <button type="button" class="btn btn-danger" @click="removePermission(i)">删除</button>
+                            <button type="button" class="btn btn-warning" @click="changePermission(permissionIndex)">
+                                修改
+                            </button>
+                            <button type="button" class="btn btn-danger" @click="removePermission(permissionIndex)">删除
+                            </button>
                         </td>
                     </tr>
                     </tbody>
@@ -181,12 +208,14 @@
             </div>
         </div>
     </div>
+
     <hr/>
-    <div class="row">
+
+    <div class="row" th:fragment="user-authorization-table">
         <div class="col-sm">
-            <div class="table-responsive" id="authorization-table">
-                <table class="table table-hover">
-                    <caption>授权表格({{authorizations.length}})</caption>
+            <div class="table-responsive" id="user-authorization-table">
+                <table class="table table-hover" style="min-width: 20em;">
+                    <caption>用户授权表格({{userAuthorizations.length}})</caption>
                     <thead>
                     <tr>
                         <th>用户</th>
@@ -199,14 +228,14 @@
                         <td>
                             <select class="form-control" v-model="authorizationForm.userId">
                                 <option v-for="user in users"
-                                        v-bind:value="user.userId"
+                                        :value="user.userId"
                                         v-text="user.username"></option>
                             </select>
                         </td>
                         <td>
                             <select class="form-control" v-model="authorizationForm.permissionId">
                                 <option v-for="permission in permissions"
-                                        v-bind:value="permission.permissionId"
+                                        :value="permission.permissionId"
                                         v-text="permission.permissionMark"></option>
                             </select>
                         </td>
@@ -214,23 +243,24 @@
                             <button type="button" class="btn btn-success" @click="addAuthorization(-1)">增添</button>
                         </td>
                     </tr>
-                    <tr v-for="(authorization, authorizationIndex) in authorizations">
-                        <td v-text="authorization.user.username"></td>
+                    <tr v-for="(userAuthorization, userAuthorizationIndex) in userAuthorizations">
+                        <td v-text="userAuthorization.user.username"></td>
                         <td>
                             <span class="badge badge-light"
-                                  v-for="(auth, authIndex) in authorization.authorizations"
-                                  v-text="auth.permissionMark"
-                                  @click="showModal(authorizationIndex,authIndex)"></span>
+                                  v-for="(authorization, authorizationIndex) in userAuthorization.authorizations"
+                                  v-text="authorization.permissionMark"
+                                  @click="showModal(userAuthorizationIndex,authorizationIndex)"></span>
                         </td>
                         <td>
                             <form class="form-inline" onsubmit="return false">
-                                <select class="form-control" v-model="authorizations[authorizationIndex].authorizationForm.permissionId">
+                                <select class="form-control"
+                                        v-model="userAuthorizations[userAuthorizationIndex].authorizationForm.permissionId">
                                     <option v-for="permission in permissions"
-                                            v-bind:value="permission.permissionId"
+                                            :value="permission.permissionId"
                                             v-text="permission.permissionMark"></option>
                                 </select>
                                 <button type="button" class="btn btn-success"
-                                        @click="addAuthorization(authorizationIndex)">增添
+                                        @click="addAuthorization(userAuthorizationIndex)">增添
                                 </button>
                             </form>
                         </td>
@@ -280,7 +310,9 @@
             </div>
         </div>
     </div>
+
     <hr/>
+
     <div class="row">
         <div class="col-sm">
             <form id="upload-file-form" onsubmit="return false">
@@ -298,43 +330,61 @@
             </form>
         </div>
     </div>
+
     <hr/>
-    <div>
-        <div class="row" id="own-list">
-            <div class="col-sm-4 col-md-4" v-for="(fileInfo, fileInfoIndex) in fileInfos">
+
+    <div th:fragment="fileInfo-own-list">
+        <div class="row" id="fileInfo-own-list">
+            <div class="col-sm-4 col-md-4" v-for="(fileInfoOwn, fileInfoOwnIndex) in fileInfoOwns">
                 <div class="thumbnail">
-                    <a :href="fileInfo.url" target="_blank">
-                        <img :src="fileInfo.url" class="img-thumbnail img-fluid"/>
+                    <a :href="fileInfoOwn.fileInfo.url" target="_blank">
+                        <img :src="fileInfoOwn.fileInfo.url" class="img-thumbnail img-fluid"/>
                     </a>
                     <div class="caption">
                         <table class="table table-hover">
                             <tbody>
                             <tr>
                                 <td>md5</td>
-                                <td><code v-text="fileInfo.md5"></code></td>
+                                <td><code v-text="fileInfoOwn.fileInfo.md5"></code></td>
                             </tr>
                             <tr>
                                 <td>url</td>
-                                <td><code v-text="fileInfo.url"></code>
+                                <td><code v-text="fileInfoOwn.fileInfo.url"></code>
                                 </td>
                             </tr>
                             <tr>
                                 <td>大小</td>
-                                <td><code v-text="fileInfo.fileLength"></code></td>
+                                <td><code v-text="fileSize(fileInfoOwn.fileInfo.fileLength)"></code></td>
                             </tr>
                             <tr>
                                 <td>类型</td>
-                                <td><code v-text="fileInfo.contentType"></code></td>
+                                <td><code v-text="fileInfoOwn.fileInfo.contentType"></code></td>
                             </tr>
                             <tr>
                                 <td>创建时间</td>
-                                <td><code v-text="fileInfo.createTime"></code></td>
+                                <td><code
+                                        v-text="new Date(fileInfoOwn.fileInfo.createTime).format('yyyy-MM-dd hh:mm:ss')"></code>
+                                </td>
                             </tr>
                             <tr>
                                 <td>所属人</td>
                                 <td>
-                                    <span class="badge badge-light" v-for="(own, ownIndex) in fileInfo.owns"
-                                          v-text="own.username" @click="showModal(fileInfoIndex, ownIndex)"></span>
+                                    <span class="badge badge-light" v-for="(own, ownIndex) in fileInfoOwn.owns"
+                                          v-text="own.username" @click="showModal(fileInfoOwnIndex, ownIndex)"></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <select class="form-control"
+                                            v-model="fileInfoOwns[fileInfoOwnIndex].ownForm.userId">
+                                        <option v-for="user in users"
+                                                :value="user.userId"
+                                                v-text="user.username"></option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-success" @click="addOwn(fileInfoOwnIndex)">增添
+                                    </button>
                                 </td>
                             </tr>
                             </tbody>
@@ -364,26 +414,32 @@
                             </div>
                             <div class="form-group">
                                 <label>文件名</label>
-                                <input type="text" class="form-control" :value="own.fileName"/>
+                                <input type="text" class="form-control" v-bind:v-bind:value="own.fileName"
+                                       v-model="own.fileName"/>
                             </div>
                             <div class="form-group">
                                 <label>分类</label>
-                                <input type="text" class="form-control" :value="own.sort"/>
+                                <input type="text" class="form-control" v-bind:v-bind:value="own.sort"
+                                       v-model="own.sort"/>
                             </div>
                             <div class="form-group">
-                                <textarea class="form-control" rows="3" v-text="own.description"></textarea>
+                                <textarea class="form-control" rows="3" v-text="own.description"
+                                          v-model="own.description"></textarea>
                             </div>
                             <div class="form-group">
                                 <label>所属日期</label>
-                                <input type="text" class="form-control" readonly="readonly" :value="own.createTime"/>
+                                <input type="text" class="form-control" readonly="readonly"
+                                       :value="new Date(own.createTime).format('yyyy-MM-dd hh:mm:ss')"/>
                             </div>
                             <div class="form-group">
                                 <label>更新日期</label>
-                                <input type="text" class="form-control" readonly="readonly" :value="own.updateTime"/>
+                                <input type="text" class="form-control" readonly="readonly"
+                                       :value="new Date(own.updateTime).format('yyyy-MM-dd hh:mm:ss')"/>
                             </div>
                             <div class="form-group">
                                 <label>文件大小</label>
-                                <input type="text" class="form-control" readonly="readonly" :value="own.fileLength"/>
+                                <input type="text" class="form-control" readonly="readonly"
+                                       :value="fileSize(own.fileLength)"/>
                             </div>
                             <div class="form-group">
                                 <label>文件类型</label>
@@ -400,47 +456,27 @@
             </div>
         </div>
     </div>
+
     <hr/>
-    <div class="row">
-        <div class="col-sm">
-            <table class="table table-hover table-responsive" id="task-table">
-                <thead>
-                <tr>
-                    <th>提交者</th>
-                    <th>文件</th>
-                    <th>文件类型</th>
-                    <th>文件名</th>
-                    <th>分类</th>
-                    <th>描述</th>
-                    <th>信息</th>
-                    <th>创建时间</th>
-                    <th>完成时间</th>
-                    <th>操作</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr v-for="" class="table-warning">
-                    <td>cellargalaxy</td>
-                    <td><code>/xxx/bbb。jpg</code></td>
-                    <td><code>jpg</code></td>
-                    <td><code>bbb。jpg</code></td>
-                    <td>图片</td>
-                    <td>没有描述</td>
-                    <td>null</td>
-                    <td>2018-11-11 22:22:22</td>
-                    <td>2018-11-11 22:22:22</td>
-                    <td>
-                        <button type="button" class="btn btn-warning">结束</button>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
+
+    <nav aria-label="navigation" id="pagination" th:fragment="pagination">
+        <ul class="pagination justify-content-center">
+            <li v-for="page in pages" :class="'page-item' + (page==pageForm?' active':'')">
+                <a class="page-link" v-text="page" @click="pageTurn(page)">1</a>
+            </li>
+            <li class="page-item">
+                <input type="number" class="form-control" min="1" v-model="pageForm" @keyup.enter="pageTurn(-1)"/>
+            </li>
+            <li class="page-item">
+                <button type="button" class="btn btn-primary" @click="pageTurn(-1)">GO</button>
+            </li>
+        </ul>
+    </nav>
+
     <hr/>
 
 
-    <div class="row">
+    <div class="row" th:fragment="navigation">
         <div class="col-sm">
             <nav class="navbar sticky-top navbar-light bg-light" role="navigation">
                 <span class="navbar-text">
@@ -452,85 +488,19 @@
 
 </div>
 </body>
-<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
-<script src="https://cdn.bootcss.com/popper.js/1.12.9/umd/popper.js"></script>
-<script src="https://cdn.bootcss.com/bootstrap/4.0.0/js/bootstrap.js"></script>
-<script src="https://cdn.bootcss.com/vue/2.5.16/vue.js"></script>
-<script src="https://cdn.bootcss.com/bootstrap-fileinput/4.4.8/js/fileinput.js"></script>
-<script src="https://cdn.bootcss.com/bootstrap-fileinput/4.4.8/js/locales/zh.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/spark-md5/3.0.0/spark-md5.js"></script>
-<script src="../static/js/pubcli.js"></script>
-<script src="../static/js/vueModel.js"></script>
+<div th:fragment="js">
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+    <script src="https://cdn.bootcss.com/popper.js/1.12.9/umd/popper.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap/4.0.0/js/bootstrap.js"></script>
+    <script src="https://cdn.bootcss.com/vue/2.5.16/vue.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap-fileinput/4.4.8/js/fileinput.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap-fileinput/4.4.8/js/locales/zh.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/spark-md5/3.0.0/spark-md5.js"></script>
+    <script src="../static/js/api.js" th:src="@{/js/api.js}"></script>
+    <script src="../static/js/vues.js" th:src="@{/js/vues.js}"></script>
+</div>
+
 <script>
-
-
-    var fileInfos = [
-        {
-            url: 'https://i.loli.net/2018/04/10/5accdcbcb1738.jpg',
-            md5: '01234567890123456789012345678901',
-            fileLength: '293388 B',
-            contentType: 'image/jpeg',
-            createTime: '2018-04-08 23:04:44',
-            owns: [
-                {
-                    username: 'cellargalaxy',
-                    md5: '01234567890123456789012345678901',
-                    fileName: '5accdcbcb1738.jpg',
-                    sort: '图片',
-                    description: 'description',
-                    createTime: '2018-12-12 12:12:12',
-                    updateTime: '2018-12-12 12:12:12',
-                    fileLength: '2154 B',
-                    contentType: 'jpg'
-                },
-                {
-                    username: 'cellargalaxy',
-                    md5: '01234567890123456789012345678901',
-                    fileName: '5accdcbcb1738.jpg',
-                    sort: '图片',
-                    description: 'description',
-                    createTime: '2018-12-12 12:12:12',
-                    updateTime: '2018-12-12 12:12:12',
-                    fileLength: '2154 B',
-                    contentType: 'jpg'
-                },
-            ]
-        },
-        {
-            url: 'https://i.loli.net/2018/04/10/5accdcbcb1738.jpg',
-            md5: '01234567890123456789012345678901',
-            fileLength: '293388 B',
-            contentType: 'image/jpeg',
-            createTime: '2018-04-08 23:04:44',
-            owns: [
-                {
-                    username: 'cellargalaxy',
-                    md5: '01234567890123456789012345678901',
-                    fileName: '5accdcbcb1738.jpg',
-                    sort: '图片',
-                    description: 'description',
-                    createTime: '2018-12-12 12:12:12',
-                    updateTime: '2018-12-12 12:12:12',
-                    fileLength: '2154 B',
-                    contentType: 'jpg'
-                },
-                {
-                    username: 'cellargalaxy',
-                    md5: '01234567890123456789012345678901',
-                    fileName: '5accdcbcb1738.jpg',
-                    sort: '图片',
-                    description: 'description',
-                    createTime: '2018-12-12 12:12:12',
-                    updateTime: '2018-12-12 12:12:12',
-                    fileLength: '2154 B',
-                    contentType: 'jpg'
-                },
-            ]
-        },
-    ]
-
-
-
     createFileUploadFormVue()
 
     function createFileUploadFormVue() {
@@ -637,7 +607,6 @@
         });
         return vue;
     }
-
 
 
     // setTimeout('location.reload()', 1000 * 30);

@@ -90,7 +90,7 @@ function listFileInfoOwn(pageSize, page, fileId, md5, fileLength, contentType, c
     }, callback);
 }
 
-function listFileInfoOwn(callback) {
+function listContentType(callback) {
     get('/api/fileInfo/listContentType', {}, callback);
 }
 

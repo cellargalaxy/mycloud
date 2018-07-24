@@ -13,14 +13,14 @@ public class ExceptionInfoVo implements Serializable {
 	private static final long serialVersionUID = -3096389445125376855L;
 	@JsonIgnore
 	private final Exception exception;
-	private final String exceptionString;
+	private final String exceptionStack;
 	private final int status;
 	private final String massage;
 	private final Date date;
 
-	public ExceptionInfoVo(Exception exception, String exceptionString, int status, String massage, Date date) {
+	public ExceptionInfoVo(Exception exception, String exceptionStack, int status, String massage, Date date) {
 		this.exception = exception;
-		this.exceptionString = exceptionString;
+		this.exceptionStack = exceptionStack;
 		this.status = status;
 		this.massage = massage;
 		this.date = date;
@@ -30,8 +30,8 @@ public class ExceptionInfoVo implements Serializable {
 		return exception;
 	}
 
-	public String getExceptionString() {
-		return exceptionString;
+	public String getExceptionStack() {
+		return exceptionStack;
 	}
 
 	public int getStatus() {
@@ -50,7 +50,7 @@ public class ExceptionInfoVo implements Serializable {
 	public String toString() {
 		return "ExceptionInfoVo{" +
 				"exception=" + exception +
-				", exceptionString='" + exceptionString + '\'' +
+				", exceptionStack='" + exceptionStack + '\'' +
 				", status=" + status +
 				", massage='" + massage + '\'' +
 				", date=" + date +

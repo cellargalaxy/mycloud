@@ -1,4 +1,4 @@
-package top.cellargalaxy.mycloud.controlor;
+package top.cellargalaxy.mycloud.controlor.api;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RestController;
  * @time 2018/7/20
  */
 @RestController
-@RequestMapping(ExceptionInfoControlor.URL)
-public class ExceptionInfoControlor {
+@RequestMapping(ExceptionInfoApiControlor.URL)
+public class ExceptionInfoApiControlor {
 	public static final String URL="/api/exceptionInfo";
-	private Logger logger = LoggerFactory.getLogger(PermissionControlor.class);
+	private Logger logger = LoggerFactory.getLogger(PermissionApiControlor.class);
 }

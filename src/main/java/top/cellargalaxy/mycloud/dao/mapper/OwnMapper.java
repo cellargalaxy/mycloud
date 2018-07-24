@@ -131,6 +131,8 @@ public interface OwnMapper {
 			selects.add(FileInfoDao.TABLE_NAME + ".file_length");
 			selects.add(FileInfoDao.TABLE_NAME + ".content_type");
 			List<String> wheres = new LinkedList<>();
+			wheres.add(TABLE_NAME + ".user_id=" + UserDao.TABLE_NAME + ".user_id");
+			wheres.add(TABLE_NAME + ".file_id=" + FileInfoDao.TABLE_NAME + ".file_id");
 			wheresAll(ownQuery, wheres);
 			StringBuilder sql = SqlUtil.createSelectSql(selects, TABLE_NAME + "," + UserDao.TABLE_NAME + "," + FileInfoDao.TABLE_NAME, wheres);
 			String string = sql.append(" limit #{off},#{len}").toString();

@@ -1,4 +1,4 @@
-package top.cellargalaxy.mycloud.controlor;
+package top.cellargalaxy.mycloud.controlor.api;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,10 +18,10 @@ import top.cellargalaxy.mycloud.service.PermissionService;
  * @time 2018/7/20
  */
 @RestController
-@RequestMapping(PermissionControlor.URL)
-public class PermissionControlor {
+@RequestMapping(PermissionApiControlor.URL)
+public class PermissionApiControlor {
 	public static final String URL = "/api/permission";
-	private Logger logger = LoggerFactory.getLogger(PermissionControlor.class);
+	private Logger logger = LoggerFactory.getLogger(PermissionApiControlor.class);
 	@Autowired
 	private PermissionService permissionService;
 

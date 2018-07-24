@@ -1,4 +1,4 @@
-package top.cellargalaxy.mycloud.controlor;
+package top.cellargalaxy.mycloud.controlor.api;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,8 +14,8 @@ import top.cellargalaxy.mycloud.service.impl.LogServiceImpl;
  * @time 2018/7/20
  */
 @RestController
-@RequestMapping(LogControlor.URL)
-public class LogControlor {
+@RequestMapping(LogApiControlor.URL)
+public class LogApiControlor {
 	public static final String URL = "/api/log";
 	private Logger logger = LoggerFactory.getLogger(LogServiceImpl.class);
 	@Autowired

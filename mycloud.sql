@@ -132,7 +132,7 @@ CREATE TABLE `own` (
   `sort` varchar(32) NOT NULL COMMENT '分类',
   `description` varchar(255) DEFAULT NULL COMMENT '描述',
   `create_time` datetime NOT NULL COMMENT '创建时间',
-  `update_time` date NOT NULL COMMENT '更新时间',
+  `update_time` datetime NOT NULL COMMENT '更新时间',
   PRIMARY KEY (`own_id`),
   KEY `idx_user_id_sort` (`user_id`,`sort`),
   KEY `idx_file_id` (`file_id`)

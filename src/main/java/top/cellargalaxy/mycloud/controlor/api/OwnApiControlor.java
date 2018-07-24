@@ -1,4 +1,4 @@
-package top.cellargalaxy.mycloud.controlor;
+package top.cellargalaxy.mycloud.controlor.api;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,10 +18,10 @@ import top.cellargalaxy.mycloud.service.OwnService;
  * @time 2018/7/20
  */
 @RestController
-@RequestMapping(OwnControlor.URL)
-public class OwnControlor {
+@RequestMapping(OwnApiControlor.URL)
+public class OwnApiControlor {
 	public static final String URL = "/api/own";
-	private Logger logger = LoggerFactory.getLogger(OwnControlor.class);
+	private Logger logger = LoggerFactory.getLogger(OwnApiControlor.class);
 	@Autowired
 	private OwnService ownService;
 

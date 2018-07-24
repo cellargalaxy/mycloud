@@ -90,7 +90,7 @@ public class OwnServiceImpl implements OwnService {
 		ownQuery.setUserId(ownPo.getUserId());
 		ownQuery.setFileId(ownPo.getFileId());
 		OwnPo own = ownDao.selectOne(ownQuery);
-		if (own == null) {
+		if (own != null) {
 			return "所属已存在";
 		}
 		return null;

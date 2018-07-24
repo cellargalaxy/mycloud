@@ -1,4 +1,4 @@
-package top.cellargalaxy.mycloud.controlor;
+package top.cellargalaxy.mycloud.controlor.api;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,10 +17,10 @@ import top.cellargalaxy.mycloud.service.FileInfoService;
  * @time 2018/7/20
  */
 @RestController
-@RequestMapping(FileInfoControlor.URL)
-public class FileInfoControlor {
+@RequestMapping(FileInfoApiControlor.URL)
+public class FileInfoApiControlor {
 	public static final String URL = "/api/fileInfo";
-	private Logger logger = LoggerFactory.getLogger(FileInfoControlor.class);
+	private Logger logger = LoggerFactory.getLogger(FileInfoApiControlor.class);
 	@Autowired
 	private FileInfoService fileInfoService;
 
