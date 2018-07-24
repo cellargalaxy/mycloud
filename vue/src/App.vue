@@ -5,7 +5,7 @@
 </template>
 
 <script>
-  import vue from './components/public-menu'
+  import vue from './components/admin-user'
 
   export default {
     name: 'App',

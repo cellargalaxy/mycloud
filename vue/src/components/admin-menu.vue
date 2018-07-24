@@ -1,6 +1,6 @@
 <template>
-  <el-menu default-active="1-4-1" class="el-menu-vertical-demo" :collapse="isCollapse">
-    <el-menu-item index="1" @click="changeCollapse">
+  <el-menu :collapse="isCollapse" router>
+    <el-menu-item index="" @click="changeCollapse">
       <i class="el-icon-setting"></i>
     </el-menu-item>
     <el-menu-item index="1">

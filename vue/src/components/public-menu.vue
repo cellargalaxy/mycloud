@@ -1,17 +1,12 @@
 <template>
-  <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
+  <el-menu router mode="horizontal">
     <el-menu-item index="1">
       mycloud
     </el-menu-item>
     <el-menu-item index="2">
-      <router-link to="/about">
-        <i class="el-icon-upload"></i>
-        上传文件
-      </router-link>
-
+      <i class="el-icon-upload"></i>
+      上传文件
     </el-menu-item>
-
-
     <el-menu-item index="3">
       <i class="el-icon-picture-outline"></i>
       文件管理
@@ -38,17 +33,6 @@
 <script>
   export default {
     name: 'public-menu',
-    data() {
-      return {
-        activeIndex: '1',
-        activeIndex2: '1'
-      };
-    },
-    methods: {
-      handleSelect(key, keyPath) {
-        // window.location.href=""+keyPath;
-      }
-    }
   }
 </script>
 
