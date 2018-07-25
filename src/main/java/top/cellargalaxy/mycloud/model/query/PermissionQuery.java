@@ -2,6 +2,8 @@ package top.cellargalaxy.mycloud.model.query;
 
 import top.cellargalaxy.mycloud.model.po.PermissionPo;
 
+import java.util.Objects;
+
 /**
  * Created by cellargalaxy on 18-7-11.
  */
@@ -60,5 +62,22 @@ public class PermissionQuery extends PermissionPo implements PageQuery {
 				", off=" + off +
 				", len=" + len +
 				'}';
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		if (!super.equals(o)) return false;
+		PermissionQuery that = (PermissionQuery) o;
+		return pageSize == that.pageSize &&
+				page == that.page &&
+				off == that.off &&
+				len == that.len;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(super.hashCode(), pageSize, page, off, len);
 	}
 }

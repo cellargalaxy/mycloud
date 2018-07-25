@@ -44,6 +44,9 @@ public interface FileInfoMapper {
 	@SelectProvider(type = FileInfoProvider.class, method = "selectSome")
 	List<FileInfoBo> selectSome(FileInfoQuery fileInfoQuery);
 
+	@SelectProvider(type = FileInfoProvider.class, method = "selectCount")
+	int selectCount(FileInfoQuery fileInfoQuery);
+
 	@SelectProvider(type = FileInfoProvider.class, method = "selectContentType")
 	List<String> selectContentType();
 
@@ -91,6 +94,18 @@ public interface FileInfoMapper {
 			List<String> wheres = new LinkedList<>();
 			wheresAll(fileInfoQuery, wheres);
 			StringBuilder sql = SqlUtil.createSelectSql(null, TABLE_NAME, wheres);
+			String string = sql.append(" limit #{off},#{len}").toString();
+			logger.debug("selectSome:{}, sql:{}", fileInfoQuery, string);
+			return string;
+		}
+
+		public static final String selectCount(FileInfoQuery fileInfoQuery) {
+			SqlUtil.initPageQuery(fileInfoQuery);
+			List<String> selects = new LinkedList<>();
+			selects.add("count(*)");
+			List<String> wheres = new LinkedList<>();
+			wheresAll(fileInfoQuery, wheres);
+			StringBuilder sql = SqlUtil.createSelectSql(selects, TABLE_NAME, wheres);
 			String string = sql.append(" limit #{off},#{len}").toString();
 			logger.debug("selectSome:{}, sql:{}", fileInfoQuery, string);
 			return string;

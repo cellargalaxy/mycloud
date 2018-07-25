@@ -2,6 +2,8 @@ package top.cellargalaxy.mycloud.model.query;
 
 import top.cellargalaxy.mycloud.model.po.UserPo;
 
+import java.util.Objects;
+
 /**
  * @author cellargalaxy
  * @time 2018/7/9
@@ -61,5 +63,22 @@ public class UserQuery extends UserPo implements PageQuery {
 				", off=" + off +
 				", len=" + len +
 				'}';
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		if (!super.equals(o)) return false;
+		UserQuery userQuery = (UserQuery) o;
+		return pageSize == userQuery.pageSize &&
+				page == userQuery.page &&
+				off == userQuery.off &&
+				len == userQuery.len;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(super.hashCode(), pageSize, page, off, len);
 	}
 }

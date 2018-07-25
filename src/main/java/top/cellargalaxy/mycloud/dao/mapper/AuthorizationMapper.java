@@ -46,6 +46,9 @@ public interface AuthorizationMapper {
 	@SelectProvider(type = AuthorizationProvider.class, method = "selectSome")
 	List<AuthorizationBo> selectSome(AuthorizationQuery authorizationQuery);
 
+	@SelectProvider(type = AuthorizationProvider.class, method = "selectCount")
+	int selectCount(AuthorizationQuery authorizationQuery);
+
 	@UpdateProvider(type = AuthorizationProvider.class, method = "update")
 	int update(AuthorizationPo authorizationPo);
 
@@ -106,6 +109,20 @@ public interface AuthorizationMapper {
 			selects.add(TABLE_NAME + ".update_time");
 			selects.add(UserDao.TABLE_NAME + ".username");
 			selects.add(PermissionDao.TABLE_NAME + ".permission_mark");
+			List<String> wheres = new LinkedList<>();
+			wheres.add(TABLE_NAME + ".user_id=" + UserDao.TABLE_NAME + ".user_id");
+			wheres.add(TABLE_NAME + ".permission_id=" + PermissionDao.TABLE_NAME + ".permission_id");
+			wheresAll(authorizationQuery, wheres);
+			StringBuilder sql = SqlUtil.createSelectSql(selects, TABLE_NAME + "," + UserDao.TABLE_NAME + "," + PermissionDao.TABLE_NAME, wheres);
+			String string = sql.append(" limit #{off},#{len}").toString();
+			logger.debug("selectSome:{}, sql:{}", authorizationQuery, string);
+			return string;
+		}
+
+		public static final String selectCount(AuthorizationQuery authorizationQuery) {
+			SqlUtil.initPageQuery(authorizationQuery);
+			List<String> selects = new LinkedList<>();
+			selects.add("count(*)");
 			List<String> wheres = new LinkedList<>();
 			wheres.add(TABLE_NAME + ".user_id=" + UserDao.TABLE_NAME + ".user_id");
 			wheres.add(TABLE_NAME + ".permission_id=" + PermissionDao.TABLE_NAME + ".permission_id");

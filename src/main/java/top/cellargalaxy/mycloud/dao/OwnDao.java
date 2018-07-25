@@ -22,6 +22,8 @@ public interface OwnDao {
 
 	List<OwnBo> selectSome(OwnQuery ownQuery);
 
+	int selectCount(OwnQuery ownQuery);
+
 	List<String> selectSort(OwnQuery ownQuery);
 
 	int update(OwnPo ownPo);

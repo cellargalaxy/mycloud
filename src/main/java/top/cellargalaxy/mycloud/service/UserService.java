@@ -21,6 +21,8 @@ public interface UserService {
 
 	UserBo getUser(UserQuery userQuery);
 
+	int getUserCount(UserQuery userQuery);
+
 	List<UserBo> listUser(UserQuery userQuery);
 
 	UserAuthorizationVo getUserAuthorization(UserQuery userQuery);

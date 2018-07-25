@@ -61,6 +61,12 @@ public class PermissionServiceImpl implements PermissionService {
 	}
 
 	@Override
+	public int getPermissionCount(PermissionQuery permissionQuery) {
+		logger.info("getPermissionCount:{}", permissionQuery);
+		return permissionDao.selectCount(permissionQuery);
+	}
+
+	@Override
 	public List<PermissionBo> listPermission(PermissionQuery permissionQuery) {
 		logger.info("listPermission:{}", permissionQuery);
 		return permissionDao.selectSome(permissionQuery);

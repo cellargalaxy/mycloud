@@ -42,6 +42,9 @@ public interface UserMapper {
 	@SelectProvider(type = UserProvider.class, method = "selectSome")
 	List<UserBo> selectSome(UserQuery userQuery);
 
+	@SelectProvider(type = UserProvider.class, method = "selectCount")
+	int selectCount(UserQuery userQuery);
+
 	@UpdateProvider(type = UserProvider.class, method = "update")
 	int update(UserPo userPo);
 
@@ -93,6 +96,18 @@ public interface UserMapper {
 			return string;
 		}
 
+		public static final String selectCount(UserQuery userQuery) {
+			SqlUtil.initPageQuery(userQuery);
+			List<String> selects = new LinkedList<>();
+			selects.add("count(*)");
+			List<String> wheres = new LinkedList<>();
+			wheresAll(userQuery, wheres);
+			StringBuilder sql = SqlUtil.createSelectSql(selects, TABLE_NAME, wheres);
+			String string = sql.append(" limit #{off},#{len}").toString();
+			logger.debug("selectSome:{}, sql:{}", userQuery, string);
+			return string;
+		}
+
 		public static final String update(UserPo userPo) {
 			init(userPo);
 			userPo.setCreateTime(null);
@@ -130,7 +145,7 @@ public interface UserMapper {
 		private static final void wheresKey(UserPo userPo, List<String> wheres) {
 			if (userPo.getUserId() > 0) {
 				wheres.add(userId);
-			}else if (!StringUtil.isBlank(userPo.getUsername())) {
+			} else if (!StringUtil.isBlank(userPo.getUsername())) {
 				wheres.add(username);
 			}
 		}

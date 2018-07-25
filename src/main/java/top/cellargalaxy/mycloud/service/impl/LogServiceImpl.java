@@ -17,11 +17,18 @@ import java.util.concurrent.BlockingQueue;
 @Service
 public class LogServiceImpl implements LogService {
 	private Logger logger = LoggerFactory.getLogger(LogServiceImpl.class);
+
 	@Override
 	public String clearExceptionInfo() {
 		logger.info("clearExceptionInfo");
 		GlobalException.clear();
 		return null;
+	}
+
+	@Override
+	public int getExceptionInfoCount() {
+		logger.info("getExceptionInfoCount");
+		return GlobalException.get().size();
 	}
 
 	@Override

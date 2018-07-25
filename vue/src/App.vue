@@ -5,7 +5,7 @@
 </template>
 
 <script>
-  import vue from './components/admin-user'
+  import vue from './components/permission-form'
 
   export default {
     name: 'App',

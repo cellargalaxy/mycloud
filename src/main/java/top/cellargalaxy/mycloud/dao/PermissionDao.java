@@ -22,6 +22,8 @@ public interface PermissionDao {
 
 	List<PermissionBo> selectSome(PermissionQuery permissionQuery);
 
+	int selectCount(PermissionQuery permissionQuery);
+
 	int upldate(PermissionPo permissionPo);
 
 	static String checkInsert(PermissionPo permissionPo) {

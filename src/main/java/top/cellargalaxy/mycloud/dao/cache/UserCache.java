@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Repository;
 import top.cellargalaxy.mycloud.dao.UserDao;
 import top.cellargalaxy.mycloud.dao.mapper.UserMapper;
@@ -23,12 +24,16 @@ public class UserCache implements UserDao {
 	@Autowired
 	private UserMapper userMapper;
 
-	@CacheEvict(key = "#p0.userId")
+	@Caching(evict = {
+			@CacheEvict(key = "#p0.userId"),
+	})
 	public int insert(UserPo userPo) {
 		return userMapper.insert(userPo);
 	}
 
-	@CacheEvict(key = "#p0.userId")
+	@Caching(evict = {
+			@CacheEvict(key = "#p0.userId"),
+	})
 	public int delete(UserQuery userQuery) {
 		return userMapper.delete(userQuery);
 	}
@@ -42,7 +47,13 @@ public class UserCache implements UserDao {
 		return userMapper.selectSome(userQuery);
 	}
 
-	@CacheEvict(key = "#p0.userId")
+	public int selectCount(UserQuery userQuery) {
+		return userMapper.selectCount(userQuery);
+	}
+
+	@Caching(evict = {
+			@CacheEvict(key = "#p0.userId"),
+	})
 	public int update(UserPo userPo) {
 		return userMapper.update(userPo);
 	}

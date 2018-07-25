@@ -41,6 +41,9 @@ public interface PermissionMapper {
 	@SelectProvider(type = PermissionProvider.class, method = "selectSome")
 	List<PermissionBo> selectSome(PermissionQuery permissionQuery);
 
+	@SelectProvider(type = PermissionProvider.class, method = "selectCount")
+	int selectCount(PermissionQuery permissionQuery);
+
 	@UpdateProvider(type = PermissionProvider.class, method = "upldate")
 	int upldate(PermissionPo permissionPo);
 
@@ -87,6 +90,18 @@ public interface PermissionMapper {
 			List<String> wheres = new LinkedList<>();
 			wheresAll(permissionQuery, wheres);
 			StringBuilder sql = SqlUtil.createSelectSql(null, TABLE_NAME, wheres);
+			String string = sql.append(" limit #{off},#{len}").toString();
+			logger.debug("selectSome:{}, sql:{}", permissionQuery, string);
+			return string;
+		}
+
+		public static final String selectCount(PermissionQuery permissionQuery) {
+			SqlUtil.initPageQuery(permissionQuery);
+			List<String> selects = new LinkedList<>();
+			selects.add("count(*)");
+			List<String> wheres = new LinkedList<>();
+			wheresAll(permissionQuery, wheres);
+			StringBuilder sql = SqlUtil.createSelectSql(selects, TABLE_NAME, wheres);
 			String string = sql.append(" limit #{off},#{len}").toString();
 			logger.debug("selectSome:{}, sql:{}", permissionQuery, string);
 			return string;

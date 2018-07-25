@@ -2,6 +2,7 @@ package top.cellargalaxy.mycloud.model.po;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Objects;
 
 /**
  * Created by cellargalaxy on 18-7-11.
@@ -53,5 +54,21 @@ public class PermissionPo implements Serializable {
 				", createTime=" + createTime +
 				", updateTime=" + updateTime +
 				'}';
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		PermissionPo that = (PermissionPo) o;
+		return permissionId == that.permissionId &&
+				Objects.equals(permissionMark, that.permissionMark) &&
+				Objects.equals(createTime, that.createTime) &&
+				Objects.equals(updateTime, that.updateTime);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(permissionId, permissionMark, createTime, updateTime);
 	}
 }

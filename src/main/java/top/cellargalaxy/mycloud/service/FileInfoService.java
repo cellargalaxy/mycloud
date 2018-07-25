@@ -18,6 +18,8 @@ public interface FileInfoService {
 
 	FileInfoBo getFileInfo(FileInfoQuery fileInfoQuery);
 
+	int getFileInfoCount(FileInfoQuery fileInfoQuery);
+
 	List<FileInfoBo> listFileInfo(FileInfoQuery fileInfoQuery);
 
 	FileInfoOwnVo getFileInfoOwn(FileInfoQuery fileInfoQuery);

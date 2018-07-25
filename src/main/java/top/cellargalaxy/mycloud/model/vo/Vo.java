@@ -3,6 +3,7 @@ package top.cellargalaxy.mycloud.model.vo;
 import top.cellargalaxy.mycloud.util.ExceptionUtil;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * Created by cellargalaxy on 18-7-19.
@@ -52,5 +53,20 @@ public class Vo implements Serializable {
 				", massage='" + massage + '\'' +
 				", data=" + data +
 				'}';
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		Vo vo = (Vo) o;
+		return status == vo.status &&
+				Objects.equals(massage, vo.massage) &&
+				Objects.equals(data, vo.data);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(status, massage, data);
 	}
 }

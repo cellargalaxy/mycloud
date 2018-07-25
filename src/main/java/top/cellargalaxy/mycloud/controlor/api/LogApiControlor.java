@@ -33,6 +33,18 @@ public class LogApiControlor {
 		}
 	}
 
+	@GetMapping("/getExceptionInfoCount")
+	public Vo getExceptionInfoCount() {
+		try {
+			logger.info("getExceptionInfoCount");
+			return new Vo(null, logService.getExceptionInfoCount());
+		} catch (Exception e) {
+			e.printStackTrace();
+			GlobalException.add(e);
+			return new Vo(e);
+		}
+	}
+
 	@GetMapping("/listExceptionInfo")
 	public Vo listExceptionInfo() {
 		try {
@@ -44,4 +56,6 @@ public class LogApiControlor {
 			return new Vo(e);
 		}
 	}
+
+
 }

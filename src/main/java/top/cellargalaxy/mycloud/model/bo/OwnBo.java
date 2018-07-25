@@ -2,6 +2,8 @@ package top.cellargalaxy.mycloud.model.bo;
 
 import top.cellargalaxy.mycloud.model.po.OwnPo;
 
+import java.util.Objects;
+
 /**
  * @author cellargalaxy
  * @time 2018/7/16
@@ -53,5 +55,22 @@ public class OwnBo extends OwnPo {
 				", fileLength=" + fileLength +
 				", contentType='" + contentType + '\'' +
 				'}';
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		if (!super.equals(o)) return false;
+		OwnBo ownBo = (OwnBo) o;
+		return fileLength == ownBo.fileLength &&
+				Objects.equals(username, ownBo.username) &&
+				Objects.equals(md5, ownBo.md5) &&
+				Objects.equals(contentType, ownBo.contentType);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(super.hashCode(), username, md5, fileLength, contentType);
 	}
 }

@@ -18,6 +18,8 @@ public interface PermissionService {
 
 	PermissionBo getPermission(PermissionQuery permissionQuery);
 
+	int getPermissionCount(PermissionQuery permissionQuery);
+
 	List<PermissionBo> listPermission(PermissionQuery permissionQuery);
 
 	PermissionAuthorizationVo getPermissionAuthorization(PermissionQuery permissionQuery);

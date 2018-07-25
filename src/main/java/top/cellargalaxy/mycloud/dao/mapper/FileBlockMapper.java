@@ -35,6 +35,9 @@ public interface FileBlockMapper {
 	@SelectProvider(type = FileBlockProvider.class, method = "selectSome")
 	List<FileBlockBo> selectSome(FileBlockQuery fileBlockQuery);
 
+	@SelectProvider(type = FileBlockProvider.class, method = "selectCount")
+	int selectCount(FileBlockQuery fileBlockQuery);
+
 	@UpdateProvider(type = FileBlockProvider.class, method = "update")
 	int update(FileBlockPo fileBlockPo);
 
@@ -73,6 +76,17 @@ public interface FileBlockMapper {
 			List<String> wheres = new LinkedList<>();
 			wheresAll(fileBlockQuery, wheres);
 			StringBuilder sql = SqlUtil.createSelectSql(null, TABLE_NAME, wheres);
+			String string = sql.toString();
+			logger.debug("selectSome:{}, sql:{}", fileBlockQuery, string);
+			return string;
+		}
+
+		public static final String selectCount(FileBlockQuery fileBlockQuery) {
+			List<String> selects = new LinkedList<>();
+			selects.add("count(*)");
+			List<String> wheres = new LinkedList<>();
+			wheresAll(fileBlockQuery, wheres);
+			StringBuilder sql = SqlUtil.createSelectSql(selects, TABLE_NAME, wheres);
 			String string = sql.toString();
 			logger.debug("selectSome:{}, sql:{}", fileBlockQuery, string);
 			return string;

@@ -63,6 +63,18 @@ public class OwnApiControlor {
 		}
 	}
 
+	@GetMapping("/getOwnCount")
+	public Vo getOwnCount(OwnQuery ownQuery) {
+		try {
+			logger.info("getOwnCount");
+			return new Vo(null, ownService.getOwnCount(ownQuery));
+		} catch (Exception e) {
+			e.printStackTrace();
+			GlobalException.add(e);
+			return new Vo(e);
+		}
+	}
+
 	@GetMapping("/listOwn")
 	public Vo listOwn(OwnQuery ownQuery) {
 		try {

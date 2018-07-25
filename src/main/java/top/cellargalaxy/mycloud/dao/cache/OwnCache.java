@@ -26,14 +26,16 @@ public class OwnCache implements OwnDao {
 
 	@Caching(evict = {
 			@CacheEvict(key = "#p0.ownId"),
-			@CacheEvict(key = "'selectSort'+#p0.userId")})
+			@CacheEvict(key = "'selectSort'+#p0.userId"),
+	})
 	public int insert(OwnPo ownPo) {
 		return ownMapper.insert(ownPo);
 	}
 
 	@Caching(evict = {
 			@CacheEvict(key = "#p0.ownId"),
-			@CacheEvict(key = "'selectSort'+#p0.userId")})
+			@CacheEvict(key = "'selectSort'+#p0.userId"),
+	})
 	public int delete(OwnQuery ownQuery) {
 		return ownMapper.delete(ownQuery);
 	}
@@ -47,6 +49,10 @@ public class OwnCache implements OwnDao {
 		return ownMapper.selectSome(ownQuery);
 	}
 
+	public int selectCount(OwnQuery ownQuery) {
+		return ownMapper.selectCount(ownQuery);
+	}
+
 	@Cacheable(key = "'selectSort'+#p0.userId", condition = "#p0.userId>0")
 	public List<String> selectSort(OwnQuery ownQuery) {
 		return ownMapper.selectSort(ownQuery);
@@ -54,7 +60,8 @@ public class OwnCache implements OwnDao {
 
 	@Caching(evict = {
 			@CacheEvict(key = "#p0.ownId"),
-			@CacheEvict(key = "'selectSort'+#p0.userId")})
+			@CacheEvict(key = "'selectSort'+#p0.userId"),
+	})
 	public int update(OwnPo ownPo) {
 		return ownMapper.update(ownPo);
 	}

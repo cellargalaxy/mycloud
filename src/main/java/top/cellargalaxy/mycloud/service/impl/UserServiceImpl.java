@@ -80,6 +80,12 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
+	public int getUserCount(UserQuery userQuery) {
+		logger.info("getUserCount:{}", userQuery);
+		return userDao.selectCount(userQuery);
+	}
+
+	@Override
 	public List<UserBo> listUser(UserQuery userQuery) {
 		logger.info("listUser:{}", userQuery);
 		return userDao.selectSome(userQuery);

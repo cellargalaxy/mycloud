@@ -62,6 +62,18 @@ public class FileInfoApiControlor {
 		}
 	}
 
+	@GetMapping("/getFileInfoCount")
+	public Vo getFileInfoCount(FileInfoQuery fileInfoQuery) {
+		try {
+			logger.info("getFileInfoCount");
+			return new Vo(null, fileInfoService.getFileInfoCount(fileInfoQuery));
+		} catch (Exception e) {
+			e.printStackTrace();
+			GlobalException.add(e);
+			return new Vo(e);
+		}
+	}
+
 	@GetMapping("/listFileInfo")
 	public Vo listFileInfo(FileInfoQuery fileInfoQuery) {
 		try {

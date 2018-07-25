@@ -2,6 +2,7 @@ package top.cellargalaxy.mycloud.model.po;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Objects;
 
 /**
  * @author cellargalaxy
@@ -94,5 +95,25 @@ public class OwnPo implements Serializable {
 				", createTime=" + createTime +
 				", updateTime=" + updateTime +
 				'}';
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		OwnPo ownPo = (OwnPo) o;
+		return ownId == ownPo.ownId &&
+				userId == ownPo.userId &&
+				fileId == ownPo.fileId &&
+				Objects.equals(fileName, ownPo.fileName) &&
+				Objects.equals(sort, ownPo.sort) &&
+				Objects.equals(description, ownPo.description) &&
+				Objects.equals(createTime, ownPo.createTime) &&
+				Objects.equals(updateTime, ownPo.updateTime);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(ownId, userId, fileId, fileName, sort, description, createTime, updateTime);
 	}
 }

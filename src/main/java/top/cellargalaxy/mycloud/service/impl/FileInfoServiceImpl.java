@@ -61,6 +61,12 @@ public class FileInfoServiceImpl implements FileInfoService {
 	}
 
 	@Override
+	public int getFileInfoCount(FileInfoQuery fileInfoQuery) {
+		logger.info("getFileInfoCount:{}", fileInfoQuery);
+		return fileInfoDao.selectCount(fileInfoQuery);
+	}
+
+	@Override
 	public List<FileInfoBo> listFileInfo(FileInfoQuery fileInfoQuery) {
 		logger.info("listFileInfo:{}", fileInfoQuery);
 		return fileInfoDao.selectSome(fileInfoQuery);
@@ -136,8 +142,8 @@ public class FileInfoServiceImpl implements FileInfoService {
 
 	@Override
 	public String checkChangeFileInfo(FileInfoPo fileInfoPo) {
-		String string=FileInfoDao.checkUpdate(fileInfoPo);
-		if (string!=null) {
+		String string = FileInfoDao.checkUpdate(fileInfoPo);
+		if (string != null) {
 			return string;
 		}
 		FileInfoQuery fileInfoQuery = new FileInfoQuery();

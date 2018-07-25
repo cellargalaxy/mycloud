@@ -2,6 +2,8 @@ package top.cellargalaxy.mycloud.model.bo;
 
 import top.cellargalaxy.mycloud.model.po.AuthorizationPo;
 
+import java.util.Objects;
+
 /**
  * @author cellargalaxy
  * @time 2018/7/16
@@ -33,5 +35,20 @@ public class AuthorizationBo extends AuthorizationPo {
 				", username='" + username + '\'' +
 				", permissionMark='" + permissionMark + '\'' +
 				'}';
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		if (!super.equals(o)) return false;
+		AuthorizationBo that = (AuthorizationBo) o;
+		return Objects.equals(username, that.username) &&
+				Objects.equals(permissionMark, that.permissionMark);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(super.hashCode(), username, permissionMark);
 	}
 }

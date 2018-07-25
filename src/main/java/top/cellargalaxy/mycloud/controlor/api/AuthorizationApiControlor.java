@@ -63,6 +63,18 @@ public class AuthorizationApiControlor {
 		}
 	}
 
+	@GetMapping("/getAuthorizationCount")
+	public Vo getAuthorizationCount(AuthorizationQuery authorizationQuery) {
+		try {
+			logger.info("getAuthorizationCount");
+			return new Vo(null, authorizationService.getAuthorizationCount(authorizationQuery));
+		} catch (Exception e) {
+			e.printStackTrace();
+			GlobalException.add(e);
+			return new Vo(e);
+		}
+	}
+
 	@GetMapping("/listAuthorization")
 	public Vo listAuthorization(AuthorizationQuery authorizationQuery) {
 		try {

@@ -62,6 +62,18 @@ public class UserApiControlor {
 		}
 	}
 
+	@GetMapping("/getUserCount")
+	private Vo getUserCount(UserQuery userQuery) {
+		try {
+			logger.info("getUserCount");
+			return new Vo(null, userService.getUserCount(userQuery));
+		} catch (Exception e) {
+			e.printStackTrace();
+			GlobalException.add(e);
+			return new Vo(e);
+		}
+	}
+
 	@GetMapping("/listUser")
 	private Vo listUser(UserQuery userQuery) {
 		try {

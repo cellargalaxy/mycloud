@@ -2,6 +2,7 @@ package top.cellargalaxy.mycloud.model.po;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Objects;
 
 /**
  * @author cellargalaxy
@@ -64,5 +65,22 @@ public class FileInfoPo implements Serializable {
 				", contentType='" + contentType + '\'' +
 				", createTime=" + createTime +
 				'}';
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		FileInfoPo that = (FileInfoPo) o;
+		return fileId == that.fileId &&
+				fileLength == that.fileLength &&
+				Objects.equals(md5, that.md5) &&
+				Objects.equals(contentType, that.contentType) &&
+				Objects.equals(createTime, that.createTime);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(fileId, md5, fileLength, contentType, createTime);
 	}
 }

@@ -52,6 +52,9 @@ public interface OwnMapper {
 	@SelectProvider(type = OwnProvider.class, method = "selectSome")
 	List<OwnBo> selectSome(OwnQuery ownQuery);
 
+	@SelectProvider(type = OwnProvider.class, method = "selectCount")
+	int selectCount(OwnQuery ownQuery);
+
 	@SelectProvider(type = OwnProvider.class, method = "selectSort")
 	List<String> selectSort(OwnQuery ownQuery);
 
@@ -130,6 +133,20 @@ public interface OwnMapper {
 			selects.add(FileInfoDao.TABLE_NAME + ".md5");
 			selects.add(FileInfoDao.TABLE_NAME + ".file_length");
 			selects.add(FileInfoDao.TABLE_NAME + ".content_type");
+			List<String> wheres = new LinkedList<>();
+			wheres.add(TABLE_NAME + ".user_id=" + UserDao.TABLE_NAME + ".user_id");
+			wheres.add(TABLE_NAME + ".file_id=" + FileInfoDao.TABLE_NAME + ".file_id");
+			wheresAll(ownQuery, wheres);
+			StringBuilder sql = SqlUtil.createSelectSql(selects, TABLE_NAME + "," + UserDao.TABLE_NAME + "," + FileInfoDao.TABLE_NAME, wheres);
+			String string = sql.append(" limit #{off},#{len}").toString();
+			logger.debug("selectSome:{}, sql:{}", ownQuery, string);
+			return string;
+		}
+
+		public static final String selectCount(OwnQuery ownQuery) {
+			SqlUtil.initPageQuery(ownQuery);
+			List<String> selects = new LinkedList<>();
+			selects.add("count(*)");
 			List<String> wheres = new LinkedList<>();
 			wheres.add(TABLE_NAME + ".user_id=" + UserDao.TABLE_NAME + ".user_id");
 			wheres.add(TABLE_NAME + ".file_id=" + FileInfoDao.TABLE_NAME + ".file_id");

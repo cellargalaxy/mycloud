@@ -63,6 +63,18 @@ public class PermissionApiControlor {
 		}
 	}
 
+	@GetMapping("/getPermissionCount")
+	public Vo getPermissionCount(PermissionQuery permissionQuery) {
+		try {
+			logger.info("getPermissionCount");
+			return new Vo(null, permissionService.getPermissionCount(permissionQuery));
+		} catch (Exception e) {
+			e.printStackTrace();
+			GlobalException.add(e);
+			return new Vo(e);
+		}
+	}
+
 	@GetMapping("/listPermission")
 	public Vo listPermission(PermissionQuery permissionQuery) {
 		try {

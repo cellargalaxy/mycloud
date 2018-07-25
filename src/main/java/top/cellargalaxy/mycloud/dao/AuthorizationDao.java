@@ -21,6 +21,8 @@ public interface AuthorizationDao {
 
 	List<AuthorizationBo> selectSome(AuthorizationQuery authorizationQuery);
 
+	int selectCount(AuthorizationQuery authorizationQuery);
+
 	int update(AuthorizationPo authorizationPo);
 
 	static String checkInsert(AuthorizationPo authorizationPo) {

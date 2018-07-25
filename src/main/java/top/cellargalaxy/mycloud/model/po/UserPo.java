@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Objects;
 
 /**
  * @author cellargalaxy
@@ -67,5 +68,22 @@ public class UserPo implements Serializable {
 				", createTime=" + createTime +
 				", updateTime=" + updateTime +
 				'}';
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		UserPo userPo = (UserPo) o;
+		return userId == userPo.userId &&
+				Objects.equals(username, userPo.username) &&
+				Objects.equals(userPassword, userPo.userPassword) &&
+				Objects.equals(createTime, userPo.createTime) &&
+				Objects.equals(updateTime, userPo.updateTime);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(userId, username, userPassword, createTime, updateTime);
 	}
 }

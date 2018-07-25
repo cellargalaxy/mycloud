@@ -11,5 +11,7 @@ import java.util.List;
 public interface LogService {
 	String clearExceptionInfo();
 
+	int getExceptionInfoCount();
+
 	List<ExceptionInfoVo> listExceptionInfo();
 }

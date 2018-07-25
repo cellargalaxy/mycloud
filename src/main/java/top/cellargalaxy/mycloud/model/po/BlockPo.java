@@ -1,6 +1,7 @@
 package top.cellargalaxy.mycloud.model.po;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * @author cellargalaxy
@@ -32,5 +33,18 @@ public class BlockPo implements Serializable {
 		return "BlockPo{" +
 				"blockId=" + blockId +
 				'}';
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		BlockPo blockPo = (BlockPo) o;
+		return blockId == blockPo.blockId;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(blockId);
 	}
 }

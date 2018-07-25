@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Objects;
 
 /**
  * @author cellargalaxy
@@ -55,5 +56,22 @@ public class ExceptionInfoVo implements Serializable {
 				", massage='" + massage + '\'' +
 				", date=" + date +
 				'}';
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		ExceptionInfoVo that = (ExceptionInfoVo) o;
+		return status == that.status &&
+				Objects.equals(exception, that.exception) &&
+				Objects.equals(exceptionStack, that.exceptionStack) &&
+				Objects.equals(massage, that.massage) &&
+				Objects.equals(date, that.date);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(exception, exceptionStack, status, massage, date);
 	}
 }

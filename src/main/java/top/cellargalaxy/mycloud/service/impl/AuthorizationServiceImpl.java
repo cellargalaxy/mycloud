@@ -53,6 +53,12 @@ public class AuthorizationServiceImpl implements AuthorizationService {
 	}
 
 	@Override
+	public int getAuthorizationCount(AuthorizationQuery authorizationQuery) {
+		logger.info("getAuthorizationCount:{}", authorizationQuery);
+		return authorizationDao.selectCount(authorizationQuery);
+	}
+
+	@Override
 	public List<AuthorizationBo> listAuthorization(AuthorizationQuery authorizationQuery) {
 		logger.info("listAuthorization:{}", authorizationQuery);
 		return authorizationDao.selectSome(authorizationQuery);

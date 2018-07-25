@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Repository;
 import top.cellargalaxy.mycloud.dao.AuthorizationDao;
 import top.cellargalaxy.mycloud.dao.mapper.AuthorizationMapper;
@@ -23,12 +24,16 @@ public class AuthorizationCache implements AuthorizationDao {
 	@Autowired
 	private AuthorizationMapper authorizationMapper;
 
-	@CacheEvict(key = "#p0.authorizationId")
+	@Caching(evict = {
+			@CacheEvict(key = "#p0.authorizationId"),
+	})
 	public int insert(AuthorizationPo authorizationPo) {
 		return authorizationMapper.insert(authorizationPo);
 	}
 
-	@CacheEvict(key = "#p0.authorizationId")
+	@Caching(evict = {
+			@CacheEvict(key = "#p0.authorizationId"),
+	})
 	public int delete(AuthorizationQuery authorizationQuery) {
 		return authorizationMapper.delete(authorizationQuery);
 	}
@@ -42,7 +47,13 @@ public class AuthorizationCache implements AuthorizationDao {
 		return authorizationMapper.selectSome(authorizationQuery);
 	}
 
-	@CacheEvict(key = "#p0.authorizationId")
+	public int selectCount(AuthorizationQuery authorizationQuery) {
+		return authorizationMapper.selectCount(authorizationQuery);
+	}
+
+	@Caching(evict = {
+			@CacheEvict(key = "#p0.authorizationId"),
+	})
 	public int update(AuthorizationPo authorizationPo) {
 		return authorizationMapper.update(authorizationPo);
 	}

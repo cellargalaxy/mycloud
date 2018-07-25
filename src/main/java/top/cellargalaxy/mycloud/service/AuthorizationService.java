@@ -17,6 +17,8 @@ public interface AuthorizationService {
 
 	AuthorizationBo getAuthorization(AuthorizationQuery authorizationQuery);
 
+	int getAuthorizationCount(AuthorizationQuery authorizationQuery);
+
 	List<AuthorizationBo> listAuthorization(AuthorizationQuery authorizationQuery);
 
 	String changeAuthorization(AuthorizationPo authorizationPo);

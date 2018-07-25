@@ -21,6 +21,8 @@ public interface UserDao {
 
 	List<UserBo> selectSome(UserQuery userQuery);
 
+	int selectCount(UserQuery userQuery);
+
 	int update(UserPo userPo);
 
 	static String checkInsert(UserPo userPo) {

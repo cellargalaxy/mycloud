@@ -53,6 +53,12 @@ public class OwnServiceImpl implements OwnService {
 	}
 
 	@Override
+	public int getOwnCount(OwnQuery ownQuery) {
+		logger.info("getOwnCount:{}", ownQuery);
+		return ownDao.selectCount(ownQuery);
+	}
+
+	@Override
 	public List<OwnBo> listOwn(OwnQuery ownQuery) {
 		logger.info("listOwn:{}", ownQuery);
 		return ownDao.selectSome(ownQuery);

@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Repository;
 import top.cellargalaxy.mycloud.dao.FileBlockDao;
 import top.cellargalaxy.mycloud.dao.mapper.FileBlockMapper;
@@ -23,12 +24,16 @@ public class FileBlockCache implements FileBlockDao {
 	@Autowired
 	private FileBlockMapper fileBlockMapper;
 
-	@CacheEvict(key = "#p0.fileId")
+	@Caching(evict = {
+			@CacheEvict(key = "#p0.fileId"),
+	})
 	public int insert(FileBlockPo fileBlockPo) {
 		return fileBlockMapper.insert(fileBlockPo);
 	}
 
-	@CacheEvict(key = "#p0.fileId")
+	@Caching(evict = {
+			@CacheEvict(key = "#p0.fileId"),
+	})
 	public int delete(FileBlockQuery fileBlockQuery) {
 		return fileBlockMapper.delete(fileBlockQuery);
 	}
@@ -42,7 +47,13 @@ public class FileBlockCache implements FileBlockDao {
 		return fileBlockMapper.selectSome(fileBlockQuery);
 	}
 
-	@CacheEvict(key = "#p0.fileId")
+	public int selectCount(FileBlockQuery fileBlockQuery) {
+		return fileBlockMapper.selectCount(fileBlockQuery);
+	}
+
+	@Caching(evict = {
+			@CacheEvict(key = "#p0.fileId"),
+	})
 	public int update(FileBlockPo fileBlockPo) {
 		return fileBlockMapper.update(fileBlockPo);
 	}

@@ -18,28 +18,28 @@
 </template>
 
 <script>
+  import api from '../utils/api'
+  import util from '../utils/util'
 
   export default {
-    name: "exception-info",
+    name: "exception-info-table",
     data() {
       return {
-        exceptionInfos: [
-          {
-            status: 0,
-            massage: '好滋好味鸡蛋仔',
-            date: '江浙小吃、小吃零食',
-            exceptionStack: '荷兰优质淡奶，奶香浓而不腻',
-          },
-        ]
+        exceptionInfos: []
       }
     },
     created: function () {
-      this.$http.get('/api/log/listExceptionInfo').then(response => {
-        this.exceptionInfos = response.data.data;
-        for (let i = 0; i < this.exceptionInfos.length; i++) {
-          this.exceptionInfos[i].date = this.$formatDate(this.exceptionInfos[i].date, 'yyyy-MM-dd hh:mm:ss');
-        }
-      });
+      util.simpleDealApi(api.listExceptionInfo())
+        .then(res => {
+          if (res.data.status != 1) {
+            alert(res.data.massage)
+            return;
+          }
+          this.exceptionInfos = response.data.data;
+          for (let i = 0; i < this.exceptionInfos.length; i++) {
+            this.exceptionInfos[i].date = util.formatTimestamp(this.exceptionInfos[i].date, 'yyyy-MM-dd hh:mm:ss');
+          }
+        })
     },
   }
 </script>

@@ -17,6 +17,8 @@ public interface OwnService {
 
 	OwnBo getOwn(OwnQuery ownQuery);
 
+	int getOwnCount(OwnQuery ownQuery);
+
 	List<OwnBo> listOwn(OwnQuery ownQuery);
 
 	List<String> listSort(OwnQuery ownQuery);

@@ -22,6 +22,8 @@ public interface FileInfoDao {
 
 	List<FileInfoBo> selectSome(FileInfoQuery fileInfoQuery);
 
+	int selectCount(FileInfoQuery fileInfoQuery);
+
 	List<String> selectContentType();
 
 	int update(FileInfoPo fileInfoPo);

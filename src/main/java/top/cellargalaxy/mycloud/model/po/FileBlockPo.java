@@ -1,6 +1,7 @@
 package top.cellargalaxy.mycloud.model.po;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * @author cellargalaxy
@@ -33,5 +34,19 @@ public class FileBlockPo implements Serializable {
 				"fileId=" + fileId +
 				", blockId=" + blockId +
 				'}';
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		FileBlockPo that = (FileBlockPo) o;
+		return fileId == that.fileId &&
+				blockId == that.blockId;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(fileId, blockId);
 	}
 }

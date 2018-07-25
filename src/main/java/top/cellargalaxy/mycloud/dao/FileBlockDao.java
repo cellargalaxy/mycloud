@@ -22,6 +22,8 @@ public interface FileBlockDao {
 
 	List<FileBlockBo> selectSome(FileBlockQuery fileBlockQuery);
 
+	int selectCount(FileBlockQuery fileBlockQuery);
+
 	int update(FileBlockPo fileBlockPo);
 
 	static String checkInsert(FileBlockPo fileBlockPo) {

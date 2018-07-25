@@ -5,6 +5,7 @@ import top.cellargalaxy.mycloud.model.bo.UserBo;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Created by cellargalaxy on 18-7-19.
@@ -33,5 +34,19 @@ public class UserAuthorizationVo implements Serializable {
 				"user=" + user +
 				", authorizations=" + authorizations +
 				'}';
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		UserAuthorizationVo that = (UserAuthorizationVo) o;
+		return Objects.equals(user, that.user) &&
+				Objects.equals(authorizations, that.authorizations);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(user, authorizations);
 	}
 }

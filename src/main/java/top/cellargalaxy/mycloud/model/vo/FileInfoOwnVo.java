@@ -5,6 +5,7 @@ import top.cellargalaxy.mycloud.model.bo.OwnBo;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author cellargalaxy
@@ -34,5 +35,19 @@ public class FileInfoOwnVo implements Serializable {
 				"fileInfo=" + fileInfo +
 				", owns=" + owns +
 				'}';
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		FileInfoOwnVo that = (FileInfoOwnVo) o;
+		return Objects.equals(fileInfo, that.fileInfo) &&
+				Objects.equals(owns, that.owns);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(fileInfo, owns);
 	}
 }

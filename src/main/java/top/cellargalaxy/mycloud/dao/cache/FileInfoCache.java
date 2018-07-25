@@ -26,14 +26,16 @@ public class FileInfoCache implements FileInfoDao {
 
 	@Caching(evict = {
 			@CacheEvict(key = "#p0.fileId"),
-			@CacheEvict(key = "'selectContentType'")})
+			@CacheEvict(key = "'selectContentType'"),
+	})
 	public int insert(FileInfoPo fileInfoPo) {
 		return fileInfoMapper.insert(fileInfoPo);
 	}
 
 	@Caching(evict = {
 			@CacheEvict(key = "#p0.fileId"),
-			@CacheEvict(key = "'selectContentType'")})
+			@CacheEvict(key = "'selectContentType'"),
+	})
 	public int delete(FileInfoQuery fileInfoQuery) {
 		return fileInfoMapper.delete(fileInfoQuery);
 	}
@@ -47,6 +49,10 @@ public class FileInfoCache implements FileInfoDao {
 		return fileInfoMapper.selectSome(fileInfoQuery);
 	}
 
+	public int selectCount(FileInfoQuery fileInfoQuery) {
+		return fileInfoMapper.selectCount(fileInfoQuery);
+	}
+
 	@Cacheable(key = "'selectContentType'")
 	public List<String> selectContentType() {
 		return fileInfoMapper.selectContentType();
@@ -54,7 +60,8 @@ public class FileInfoCache implements FileInfoDao {
 
 	@Caching(evict = {
 			@CacheEvict(key = "#p0.fileId"),
-			@CacheEvict(key = "'selectContentType'")})
+			@CacheEvict(key = "'selectContentType'"),
+	})
 	public int update(FileInfoPo fileInfoPo) {
 		return fileInfoMapper.update(fileInfoPo);
 	}
