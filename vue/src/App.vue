@@ -5,7 +5,7 @@
 </template>
 
 <script>
-  import vue from './components/permission-form'
+  import vue from './components/pagination'
 
   export default {
     name: 'App',
