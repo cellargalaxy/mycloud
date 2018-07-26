@@ -1,5 +1,5 @@
 <template>
-  <el-table :data="exceptionInfos">
+  <el-table :data="exceptionInfos" v-loading="loading">
 
     <el-table-column type="expand">
       <template slot-scope="props">
@@ -22,23 +22,26 @@
   import util from '../utils/util'
 
   export default {
-    name: "exception-info-table",
+    name: "admin-exception-info",
     data() {
       return {
+        loading: false,
         exceptionInfos: []
       }
     },
     created: function () {
-      util.simpleDealApi(api.listExceptionInfo())
+      this.loading = true;
+      api.listExceptionInfo()
         .then(res => {
           if (res.data.status != 1) {
-            alert(res.data.massage)
+            this.$message.error(res.data.massage)
             return;
           }
-          this.exceptionInfos = response.data.data;
+          this.exceptionInfos = res.data.data;
           for (let i = 0; i < this.exceptionInfos.length; i++) {
             this.exceptionInfos[i].date = util.formatTimestamp(this.exceptionInfos[i].date, 'yyyy-MM-dd hh:mm:ss');
           }
+          this.loading = false;
         })
     },
   }

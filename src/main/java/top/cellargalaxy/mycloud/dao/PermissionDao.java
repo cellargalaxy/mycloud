@@ -27,6 +27,9 @@ public interface PermissionDao {
 	int upldate(PermissionPo permissionPo);
 
 	static String checkInsert(PermissionPo permissionPo) {
+		if (permissionPo.getPermissionId() < 1) {
+			return "权限id不得为空";
+		}
 		if (StringUtil.isBlank(permissionPo.getPermissionMark())) {
 			return "权限描述不得为空";
 		}

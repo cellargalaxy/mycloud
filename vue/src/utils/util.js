@@ -33,18 +33,18 @@ function formatFileSize(bytes) {
   return (bytes / Math.pow(1024, i)).toFixed(2) * 1 + ' ' + sizes[i];
 }
 
-function simpleDealApi(axios) {
-  return axios
-    // .then(res => {
-    // })
-    .catch(err => {
-      alert('网络异常:' + err)
-    })
-}
+// function simpleDealApi(axios) {
+//   return axios
+//     // .then(res => {
+//     // })
+//     .catch(err => {
+//       alert('网络异常:' + err)
+//     })
+// }
 
 export default {
   formatTimestamp: formatTimestamp,
   formatDate: formatDate,
   formatFileSize: formatFileSize,
-  simpleDealApi: simpleDealApi,
+  // simpleDealApi: simpleDealApi,
 }

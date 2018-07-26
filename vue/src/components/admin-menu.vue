@@ -1,8 +1,8 @@
 <template>
   <el-menu :collapse="isCollapse" router>
-    <el-menu-item index="" @click="changeCollapse">
-      <i class="el-icon-setting"></i>
-    </el-menu-item>
+    <!--<el-menu-item index="" @click="changeCollapse">-->
+      <!--<i class="el-icon-setting"></i>-->
+    <!--</el-menu-item>-->
     <el-menu-item index="1">
       <i class="el-icon-star-on"></i>
       <span slot="title">所属管理</span>
@@ -35,7 +35,7 @@
     name: "admin-menu",
     data() {
       return {
-        isCollapse: true
+        isCollapse: false
       };
     },
     methods: {

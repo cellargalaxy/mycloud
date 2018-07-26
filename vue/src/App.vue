@@ -5,7 +5,7 @@
 </template>
 
 <script>
-  import vue from './components/pagination'
+  import vue from './components/page-admin-user'
 
   export default {
     name: 'App',

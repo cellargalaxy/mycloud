@@ -20,6 +20,7 @@ instance.interceptors.request.use(
   error => {
     // 对请求错误做些什么
     console.log(error);
+    alert('网络异常:' + error);
     return Promise.reject(error);
   }
 );
@@ -33,6 +34,7 @@ instance.interceptors.response.use(
   error => {
     // 对响应错误做点什么
     console.log(error);
+    alert('网络异常:' + error);
     return Promise.reject(error);
   }
 );
