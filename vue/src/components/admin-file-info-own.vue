@@ -2,6 +2,35 @@
   <el-container>
     <el-header>
 
+      <el-form :inline="true" class="demo-form-inline">
+        <el-form-item label="列数">
+          <el-select v-model="columnCount" placeholder="列数" size="mini">
+            <el-option
+              v-for="columnCount in columnCounts"
+              :key="columnCount"
+              :label="columnCount"
+              :value="columnCount">
+            </el-option>
+          </el-select>
+        </el-form-item>
+
+        <el-form-item label="md5">
+          <el-input v-model="fileInfoOwnQuery.md5" :value="fileInfoOwnQuery.md5" placeholder="md5" size="mini"></el-input>
+        </el-form-item>
+        <el-form-item label="文件大小">
+          <el-input v-model="fileInfoOwnQuery.fileLength" :value="fileInfoOwnQuery.fileLength"
+                    type="number" min="0" placeholder="md5" size="mini"></el-input>
+        </el-form-item>
+        <el-form-item label="文件类型">
+          <el-select v-model="fileInfoOwnQuery.contentType" :value="fileInfoOwnQuery.contentType" placeholder="文件类型" size="mini">
+            <el-option v-for="(contentType, index) in contentTypes" :label="contentType" :value="contentType" :key="index"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" size="mini" @click="listFileInfoOwn">查询</el-button>
+        </el-form-item>
+      </el-form>
+
     </el-header>
     <el-main>
       <el-row>
@@ -25,8 +54,8 @@
             <el-alert title="time " type="info" :closable="false">
               <code v-text="fileInfoOwn.fileInfo.createTime"></code>
             </el-alert>
-            <el-alert title="" type="info" :closable="false" v-if="fileInfoOwn.owns!=null">
-              <el-tag v-for="own in fileInfoOwn.owns">
+              <el-alert title="" type="info" :closable="false">
+              <el-tag v-for="own in fileInfoOwn.owns" :key="own.ownId">
                 <a @click="openDialog(own)" v-text="own.username"></a>
               </el-tag>
             </el-alert>
@@ -86,9 +115,10 @@
     data() {
       return {
         total: 0,
-        columnCount: 2,
+        columnCount: 3,
         columnCounts: [1, 2, 3, 4, 6],
         fileInfoOwns: [],
+        contentTypes: [],
         fileInfoOwnQuery: {
           pageSize: 10,
           page: 1,
@@ -115,22 +145,8 @@
     },
     created: function () {
       this.listFileInfoOwn()
-      api.getFileInfoCount(
-        this.fileInfoOwnQuery.pageSize,
-        this.fileInfoOwnQuery.page,
-        this.fileInfoOwnQuery.fileId,
-        this.fileInfoOwnQuery.md5,
-        this.fileInfoOwnQuery.fileLength,
-        this.fileInfoOwnQuery.contentType,
-        this.fileInfoOwnQuery.createTime,
-        this.fileInfoOwnQuery.updateTime)
-        .then(res => {
-          if (res.data.status != 1) {
-            this.$message.error(res.data.massage)
-            return;
-          }
-          this.total = res.data.data;
-        })
+      this.getFileInfoCount()
+      this.listContentType()
     },
     methods: {
       changePageSize: function (pageSize) {
@@ -147,6 +163,7 @@
               this.$message.error(res.data.massage)
               return;
             }
+            this.listFileInfoOwn()
             this.$message.success('删除成功')
             this.dialogVisible = false;
             this.own = {
@@ -205,6 +222,34 @@
                 this.fileInfoOwns[i].owns[j].fileLength = util.formatFileSize(this.fileInfoOwns[i].owns[j].fileLength)
               }
             }
+          })
+      },
+      getFileInfoCount:function () {
+        api.getFileInfoCount(
+          this.fileInfoOwnQuery.pageSize,
+          this.fileInfoOwnQuery.page,
+          this.fileInfoOwnQuery.fileId,
+          this.fileInfoOwnQuery.md5,
+          this.fileInfoOwnQuery.fileLength,
+          this.fileInfoOwnQuery.contentType,
+          this.fileInfoOwnQuery.createTime,
+          this.fileInfoOwnQuery.updateTime)
+          .then(res => {
+            if (res.data.status != 1) {
+              this.$message.error(res.data.massage)
+              return;
+            }
+            this.total = res.data.data;
+          })
+      },
+      listContentType:function () {
+        api.listContentType()
+          .then(res => {
+            if (res.data.status != 1) {
+              this.$message.error(res.data.massage)
+              return;
+            }
+            this.contentTypes = res.data.data;
           })
       }
     },

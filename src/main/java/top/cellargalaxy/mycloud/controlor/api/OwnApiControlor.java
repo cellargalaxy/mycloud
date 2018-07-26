@@ -75,7 +75,7 @@ public class OwnApiControlor {
 		}
 	}
 
-	@GetMapping("/listOwn")
+	@GetMapping("/  ")
 	public Vo listOwn(OwnQuery ownQuery) {
 		try {
 			logger.info("listOwn");

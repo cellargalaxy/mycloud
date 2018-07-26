@@ -15,11 +15,12 @@
 </template>
 
 <script>
-  import publicMenu from './menu'
+  import publicMenu from './public-menu'
   import adminMenu from './admin-menu'
   import userAuthorizationTable from './admin-user-authorization'
-    export default {
-        name: "page-user-authorization",
+
+  export default {
+        name: "page-admin-user-authorization",
       components: {
         'public-menu': publicMenu,
         'admin-menu': adminMenu,

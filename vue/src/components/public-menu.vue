@@ -32,7 +32,7 @@
 
 <script>
   export default {
-    name: 'menu',
+    name: 'public-menu',
   }
 </script>
 

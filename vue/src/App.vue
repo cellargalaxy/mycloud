@@ -5,7 +5,7 @@
 </template>
 
 <script>
-  import vue from './components/page-admin-user'
+  import vue from './components/upload-file'
 
   export default {
     name: 'App',

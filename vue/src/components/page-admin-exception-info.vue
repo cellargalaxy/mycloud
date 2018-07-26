@@ -15,11 +15,11 @@
 </template>
 
 <script>
-  import publicMenu from './menu'
+  import publicMenu from './public-menu'
   import adminMenu from './admin-menu'
   import adminExceptionInfo from './admin-exception-info'
     export default {
-        name: "page-exception-info",
+        name: "page-admin-exception-info",
       components: {
         'public-menu': publicMenu,
         'admin-menu': adminMenu,

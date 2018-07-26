@@ -8,23 +8,23 @@
         <admin-menu></admin-menu>
       </el-aside>
       <el-main style="min-width: 40em;max-width: 60em;">
-        <admin-user></admin-user>
+        <admin-permission></admin-permission>
       </el-main>
     </el-container>
   </el-container>
 </template>
 
 <script>
-  import publicMenu from './public-menu.vue'
+  import publicMenu from './public-menu'
   import adminMenu from './admin-menu'
-  import adminUser from './admin-user'
+  import adminPermission from './admin-permission'
 
   export default {
-    name: "page-admin-user",
+    name: "page-admin-permission",
     components: {
       'public-menu': publicMenu,
       'admin-menu': adminMenu,
-      'admin-user': adminUser,
+      'admin-permission': adminPermission,
     },
   }
 </script>
