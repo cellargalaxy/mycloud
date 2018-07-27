@@ -1,9 +1,9 @@
 <template>
   <el-menu router mode="horizontal">
-    <el-menu-item index="1">
+    <el-menu-item index="/">
       mycloud
     </el-menu-item>
-    <el-menu-item index="2">
+    <el-menu-item index="/uploadFile">
       <i class="el-icon-upload"></i>
       上传文件
     </el-menu-item>
@@ -15,7 +15,7 @@
       <i class="el-icon-menu"></i>
       个人主页
     </el-menu-item>
-    <el-menu-item index="5">
+    <el-menu-item index="/admin/fileInfoOwn">
       <i class="el-icon-setting"></i>
       后台管理
     </el-menu-item>

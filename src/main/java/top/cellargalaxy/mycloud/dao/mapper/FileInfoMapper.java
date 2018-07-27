@@ -54,7 +54,6 @@ public interface FileInfoMapper {
 	int update(FileInfoPo fileInfoPo);
 
 	class FileInfoProvider {
-		private static final Logger logger = LoggerFactory.getLogger(FileInfoProvider.class);
 		private static final String TABLE_NAME = FileInfoDao.TABLE_NAME;
 		private static final String fileId = TABLE_NAME + ".file_id=#{fileId}";
 		private static final String md5 = TABLE_NAME + ".md5=#{md5}";
@@ -67,7 +66,6 @@ public interface FileInfoMapper {
 			fileInfoPo.setCreateTime(new Date());
 			String string = "insert into " + TABLE_NAME + "(md5,file_length,content_type,create_time) " +
 					"values(#{md5},#{fileLength},#{contentType},#{createTime,jdbcType=TIMESTAMP})";
-			logger.debug("insert:{}, sql:{}", fileInfoPo, string);
 			return string;
 		}
 
@@ -76,7 +74,6 @@ public interface FileInfoMapper {
 			wheresAll(fileInfoQuery, wheres);
 			StringBuilder sql = SqlUtil.createDeleteSql(TABLE_NAME, wheres);
 			String string = sql.toString();
-			logger.debug("delete:{}, sql:{}", fileInfoQuery, string);
 			return string;
 		}
 
@@ -85,7 +82,6 @@ public interface FileInfoMapper {
 			wheresKey(fileInfoQuery, wheres);
 			StringBuilder sql = SqlUtil.createSelectSql(null, TABLE_NAME, wheres);
 			String string = sql.append(" limit 1").toString();
-			logger.debug("selectOne:{}, sql:{}", fileInfoQuery, string);
 			return string;
 		}
 
@@ -95,7 +91,6 @@ public interface FileInfoMapper {
 			wheresAll(fileInfoQuery, wheres);
 			StringBuilder sql = SqlUtil.createSelectSql(null, TABLE_NAME, wheres);
 			String string = sql.append(" limit #{off},#{len}").toString();
-			logger.debug("selectSome:{}, sql:{}", fileInfoQuery, string);
 			return string;
 		}
 
@@ -106,8 +101,7 @@ public interface FileInfoMapper {
 			List<String> wheres = new LinkedList<>();
 			wheresAll(fileInfoQuery, wheres);
 			StringBuilder sql = SqlUtil.createSelectSql(selects, TABLE_NAME, wheres);
-			String string = sql.append(" limit #{off},#{len}").toString();
-			logger.debug("selectSome:{}, sql:{}", fileInfoQuery, string);
+			String string = sql.toString();
 			return string;
 		}
 
@@ -126,7 +120,6 @@ public interface FileInfoMapper {
 			List<String> wheres = new LinkedList<>();
 			wheresKey(fileInfoPo, wheres);
 			String string = SqlUtil.createUpdateSql(TABLE_NAME, sets, wheres).append(" limit 1").toString();
-			logger.debug("update:{}, sql:{}", fileInfoPo, string);
 			return string;
 		}
 

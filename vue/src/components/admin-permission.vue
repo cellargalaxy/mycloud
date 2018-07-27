@@ -6,7 +6,7 @@
           <el-input v-model="permissionForm.permissionId" :value="permissionForm.permissionId" size="mini" type="number" placeholder="权限id"></el-input>
         </el-form-item>
         <el-form-item label="权限">
-          <el-input v-model="permissionForm.permissionMark" :value="permissionForm.permissionMark" size="mini" type="text" placeholder="权限"></el-input>
+          <el-input v-model="permissionForm.permissionMark" :value="permissionForm.permissionMark" size="mini" type="text" placeholder="权限" clearable></el-input>
         </el-form-item>
         <el-form-item>
           <el-button @click="add" size="mini" type="success">添加</el-button>

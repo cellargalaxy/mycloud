@@ -49,7 +49,6 @@ public interface UserMapper {
 	int update(UserPo userPo);
 
 	class UserProvider {
-		private static final Logger logger = LoggerFactory.getLogger(UserProvider.class);
 		private static final String TABLE_NAME = UserDao.TABLE_NAME;
 		private static final String userId = TABLE_NAME + ".user_id=#{userId}";
 		private static final String username = TABLE_NAME + ".username=#{username}";
@@ -64,7 +63,6 @@ public interface UserMapper {
 			userPo.setUpdateTime(date);
 			String string = "insert into " + TABLE_NAME + "(username,user_password,create_time,update_time) " +
 					"values(#{username},#{userPassword},#{createTime,jdbcType=TIMESTAMP},#{updateTime,jdbcType=TIMESTAMP})";
-			logger.debug("insert:{}, sql:{}", userPo, string);
 			return string;
 		}
 
@@ -73,7 +71,6 @@ public interface UserMapper {
 			wheresAll(userQuery, wheres);
 			StringBuilder sql = SqlUtil.createDeleteSql(TABLE_NAME, wheres);
 			String string = sql.toString();
-			logger.debug("delete:{}, sql:{}", userQuery, string);
 			return string;
 		}
 
@@ -82,7 +79,6 @@ public interface UserMapper {
 			wheresKey(userQuery, wheres);
 			StringBuilder sql = SqlUtil.createSelectSql(null, TABLE_NAME, wheres);
 			String string = sql.append(" limit 1").toString();
-			logger.debug("selectOne:{}, sql:{}", userQuery, string);
 			return string;
 		}
 
@@ -92,7 +88,6 @@ public interface UserMapper {
 			wheresAll(userQuery, wheres);
 			StringBuilder sql = SqlUtil.createSelectSql(null, TABLE_NAME, wheres);
 			String string = sql.append(" limit #{off},#{len}").toString();
-			logger.debug("selectSome:{}, sql:{}", userQuery, string);
 			return string;
 		}
 
@@ -103,8 +98,7 @@ public interface UserMapper {
 			List<String> wheres = new LinkedList<>();
 			wheresAll(userQuery, wheres);
 			StringBuilder sql = SqlUtil.createSelectSql(selects, TABLE_NAME, wheres);
-			String string = sql.append(" limit #{off},#{len}").toString();
-			logger.debug("selectSome:{}, sql:{}", userQuery, string);
+			String string = sql.toString();
 			return string;
 		}
 
@@ -120,7 +114,6 @@ public interface UserMapper {
 			List<String> wheres = new LinkedList<>();
 			wheresKey(userPo, wheres);
 			String string = SqlUtil.createUpdateSql(TABLE_NAME, sets, wheres).append(" limit 1").toString();
-			logger.debug("update:{}, sql:{}", userPo, string);
 			return string;
 		}
 

@@ -1,5 +1,4 @@
 <template>
-
   <el-row>
     <el-col :xs="0" :sm="1" :md="3" :lg="4" :xl="5">
       <div style="min-height: 1em;"></div>
@@ -32,35 +31,15 @@
       <div style="min-height: 1em;"></div>
     </el-col>
   </el-row>
-
-
-
-
 </template>
 
 <script>
   import publicMenu from './public-menu'
   import adminMenu from './admin-menu'
   import uploadFile from './upload-file'
+
   export default {
-    name: "test",
-    data() {
-      return {
-        dialogTableVisible: false,
-        dialogFormVisible: false,
-        form: {
-          name: '',
-          region: '',
-          date1: '',
-          date2: '',
-          delivery: false,
-          type: [],
-          resource: '',
-          desc: ''
-        },
-        formLabelWidth: '120px'
-      };
-    },
+    name: "page-upload-file",
     components: {
       'public-menu': publicMenu,
       'admin-menu': adminMenu,

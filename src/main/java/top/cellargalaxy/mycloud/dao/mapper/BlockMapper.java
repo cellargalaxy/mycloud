@@ -38,7 +38,6 @@ public interface BlockMapper {
 	int update(BlockPo blockPo);
 
 	class BlockProvider {
-		private static final Logger logger = LoggerFactory.getLogger(BlockProvider.class);
 		private static final String TABLE_NAME = BlockDao.TABLE_NAME;
 		private static final String blockId = TABLE_NAME + ".block_id=#{blockId}";
 		private static final String block = TABLE_NAME + ".block=#{block}";
@@ -46,7 +45,6 @@ public interface BlockMapper {
 		public static final String insert(BlockPo blockPo) {
 			String string = "insert into " + TABLE_NAME + "(block) " +
 					"values(#{block,jdbcType=BLOB})";
-			logger.debug("insert:{}, sql:{}", blockPo, string);
 			return string;
 		}
 
@@ -55,7 +53,6 @@ public interface BlockMapper {
 			wheresAll(blockQuery, wheres);
 			StringBuilder sql = SqlUtil.createDeleteSql(TABLE_NAME, wheres);
 			String string = sql.toString();
-			logger.debug("delete:{}, sql:{}", blockQuery, string);
 			return string;
 		}
 
@@ -64,7 +61,6 @@ public interface BlockMapper {
 			wheresKey(blockQuery, wheres);
 			StringBuilder sql = SqlUtil.createSelectSql(null, TABLE_NAME, wheres);
 			String string = sql.append(" limit 1").toString();
-			logger.debug("selectOne:{}, sql:{}", blockQuery, string);
 			return string;
 		}
 
@@ -77,7 +73,6 @@ public interface BlockMapper {
 			List<String> wheres = new LinkedList<>();
 			wheresKey(blockPo, wheres);
 			String string = SqlUtil.createUpdateSql(TABLE_NAME, sets, wheres).append(" limit 1").toString();
-			logger.debug("update:{}, sql:{}", blockPo, string);
 			return string;
 		}
 

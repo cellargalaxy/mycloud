@@ -1,9 +1,11 @@
 import axios from 'axios';
 import qs from 'qs';
 
+var baseURL = 'http://localhost:8080/'
+
 // axios配置
 var instance = axios.create({
-  baseURL: 'http://localhost:8080/',
+  baseURL: baseURL,
   timeout: 5000,
 });
 
@@ -39,4 +41,7 @@ instance.interceptors.response.use(
   }
 );
 
-export default instance;
+export default {
+  instance: instance,
+  baseURL: baseURL,
+};

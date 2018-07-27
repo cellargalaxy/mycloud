@@ -42,7 +42,6 @@ public interface FileBlockMapper {
 	int update(FileBlockPo fileBlockPo);
 
 	class FileBlockProvider {
-		private static final Logger logger = LoggerFactory.getLogger(FileBlockProvider.class);
 		private static final String TABLE_NAME = FileBlockDao.TABLE_NAME;
 		private static final String fileId = TABLE_NAME + ".file_id=#{fileId}";
 		private static final String blockId = TABLE_NAME + ".block_id=#{blockId}";
@@ -50,7 +49,6 @@ public interface FileBlockMapper {
 		public static final String insert(FileBlockPo fileBlockPo) {
 			String string = "insert into " + TABLE_NAME + "(file_id,block_id) " +
 					"values(#{fileId},#{blockId})";
-			logger.debug("insert:{}, sql:{}", fileBlockPo, string);
 			return string;
 		}
 
@@ -59,7 +57,6 @@ public interface FileBlockMapper {
 			wheresAll(fileBlockQuery, wheres);
 			StringBuilder sql = SqlUtil.createDeleteSql(TABLE_NAME, wheres);
 			String string = sql.toString();
-			logger.debug("delete:{}, sql:{}", fileBlockQuery, string);
 			return string;
 		}
 
@@ -68,7 +65,6 @@ public interface FileBlockMapper {
 			wheresKey(fileBlockQuery, wheres);
 			StringBuilder sql = SqlUtil.createSelectSql(null, TABLE_NAME, wheres);
 			String string = sql.append(" limit 1").toString();
-			logger.debug("selectOne:{}, sql:{}", fileBlockQuery, string);
 			return string;
 		}
 
@@ -77,7 +73,6 @@ public interface FileBlockMapper {
 			wheresAll(fileBlockQuery, wheres);
 			StringBuilder sql = SqlUtil.createSelectSql(null, TABLE_NAME, wheres);
 			String string = sql.toString();
-			logger.debug("selectSome:{}, sql:{}", fileBlockQuery, string);
 			return string;
 		}
 
@@ -88,7 +83,6 @@ public interface FileBlockMapper {
 			wheresAll(fileBlockQuery, wheres);
 			StringBuilder sql = SqlUtil.createSelectSql(selects, TABLE_NAME, wheres);
 			String string = sql.toString();
-			logger.debug("selectSome:{}, sql:{}", fileBlockQuery, string);
 			return string;
 		}
 
@@ -101,7 +95,6 @@ public interface FileBlockMapper {
 			List<String> wheres = new LinkedList<>();
 			wheresKey(fileBlockPo, wheres);
 			String string = SqlUtil.createUpdateSql(TABLE_NAME, sets, wheres).append(" limit 1").toString();
-			logger.debug("update:{}, sql:{}", fileBlockPo, string);
 			return string;
 		}
 

@@ -48,7 +48,6 @@ public interface PermissionMapper {
 	int upldate(PermissionPo permissionPo);
 
 	class PermissionProvider {
-		private static final Logger logger = LoggerFactory.getLogger(PermissionProvider.class);
 		private static final String TABLE_NAME = PermissionDao.TABLE_NAME;
 		private static final String permissionId = TABLE_NAME + ".permission_id=#{permissionId}";
 		private static final String permissionMark = TABLE_NAME + ".permission_mark like CONCAT(CONCAT('%', #{permissionMark}),'%')";
@@ -63,7 +62,6 @@ public interface PermissionMapper {
 			permissionPo.setUpdateTime(date);
 			String string = "insert into " + TABLE_NAME + "(permission_id,permission_mark,create_time,update_time) " +
 					"values(#{permissionId},#{permissionMark},#{createTime,jdbcType=TIMESTAMP},#{updateTime,jdbcType=TIMESTAMP})";
-			logger.debug("insert:{}, sql:{}", permissionPo, string);
 			return string;
 		}
 
@@ -72,7 +70,6 @@ public interface PermissionMapper {
 			wheresAll(permissionQuery, wheres);
 			StringBuilder sql = SqlUtil.createDeleteSql(TABLE_NAME, wheres);
 			String string = sql.toString();
-			logger.debug("delete:{}, sql:{}", permissionQuery, string);
 			return string;
 		}
 
@@ -81,7 +78,6 @@ public interface PermissionMapper {
 			wheresKey(permissionQuery, wheres);
 			StringBuilder sql = SqlUtil.createSelectSql(null, TABLE_NAME, wheres);
 			String string = sql.append(" limit 1").toString();
-			logger.debug("selectOne:{}, sql:{}", permissionQuery, string);
 			return string;
 		}
 
@@ -91,7 +87,6 @@ public interface PermissionMapper {
 			wheresAll(permissionQuery, wheres);
 			StringBuilder sql = SqlUtil.createSelectSql(null, TABLE_NAME, wheres);
 			String string = sql.append(" limit #{off},#{len}").toString();
-			logger.debug("selectSome:{}, sql:{}", permissionQuery, string);
 			return string;
 		}
 
@@ -102,8 +97,7 @@ public interface PermissionMapper {
 			List<String> wheres = new LinkedList<>();
 			wheresAll(permissionQuery, wheres);
 			StringBuilder sql = SqlUtil.createSelectSql(selects, TABLE_NAME, wheres);
-			String string = sql.append(" limit #{off},#{len}").toString();
-			logger.debug("selectSome:{}, sql:{}", permissionQuery, string);
+			String string = sql.toString();
 			return string;
 		}
 
@@ -119,7 +113,6 @@ public interface PermissionMapper {
 			List<String> wheres = new LinkedList<>();
 			wheresKey(permissionPo, wheres);
 			String string = SqlUtil.createUpdateSql(TABLE_NAME, sets, wheres).append(" limit 1").toString();
-			logger.debug("update:{}, sql:{}", permissionPo, string);
 			return string;
 		}
 

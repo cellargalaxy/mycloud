@@ -62,7 +62,6 @@ public interface OwnMapper {
 	int update(OwnPo ownPo);
 
 	class OwnProvider {
-		private static final Logger logger = LoggerFactory.getLogger(OwnProvider.class);
 		private static final String TABLE_NAME = OwnDao.TABLE_NAME;
 		private static final String ownId = TABLE_NAME + ".own_id=#{ownId}";
 		private static final String userId = TABLE_NAME + ".user_id=#{userId}";
@@ -81,7 +80,6 @@ public interface OwnMapper {
 			ownPo.setUpdateTime(date);
 			String string = "insert into " + TABLE_NAME + "(user_id,file_id,file_name,sort,description,create_time,update_time) " +
 					"values(#{userId},#{fileId},#{fileName},#{sort},#{description},#{createTime,jdbcType=TIMESTAMP},#{updateTime,jdbcType=TIMESTAMP})";
-			logger.debug("insert:{}, sql:{}", ownPo, string);
 			return string;
 		}
 
@@ -90,7 +88,6 @@ public interface OwnMapper {
 			wheresAll(ownQuery, wheres);
 			StringBuilder sql = SqlUtil.createDeleteSql(TABLE_NAME, wheres);
 			String string = sql.toString();
-			logger.debug("delete:{}, sql:{}", ownQuery, string);
 			return string;
 		}
 
@@ -114,7 +111,6 @@ public interface OwnMapper {
 			wheresKey(ownQuery, wheres);
 			StringBuilder sql = SqlUtil.createSelectSql(selects, TABLE_NAME + "," + UserDao.TABLE_NAME + "," + FileInfoDao.TABLE_NAME, wheres);
 			String string = sql.append(" limit 1").toString();
-			logger.debug("selectOne:{}, sql:{}", ownQuery, string);
 			return string;
 		}
 
@@ -139,7 +135,6 @@ public interface OwnMapper {
 			wheresAll(ownQuery, wheres);
 			StringBuilder sql = SqlUtil.createSelectSql(selects, TABLE_NAME + "," + UserDao.TABLE_NAME + "," + FileInfoDao.TABLE_NAME, wheres);
 			String string = sql.append(" limit #{off},#{len}").toString();
-			logger.debug("selectSome:{}, sql:{}", ownQuery, string);
 			return string;
 		}
 
@@ -152,8 +147,7 @@ public interface OwnMapper {
 			wheres.add(TABLE_NAME + ".file_id=" + FileInfoDao.TABLE_NAME + ".file_id");
 			wheresAll(ownQuery, wheres);
 			StringBuilder sql = SqlUtil.createSelectSql(selects, TABLE_NAME + "," + UserDao.TABLE_NAME + "," + FileInfoDao.TABLE_NAME, wheres);
-			String string = sql.append(" limit #{off},#{len}").toString();
-			logger.debug("selectSome:{}, sql:{}", ownQuery, string);
+			String string = sql.toString();
 			return string;
 		}
 
@@ -164,7 +158,6 @@ public interface OwnMapper {
 			wheresAll(ownQuery, wheres);
 			StringBuilder sql = SqlUtil.createSelectSql(selects, TABLE_NAME, wheres);
 			String string = sql.toString();
-			logger.debug("selectSome:{}, sql:{}", ownQuery, string);
 			return string;
 		}
 
@@ -180,7 +173,6 @@ public interface OwnMapper {
 			List<String> wheres = new LinkedList<>();
 			wheresKey(ownPo, wheres);
 			String string = SqlUtil.createUpdateSql(TABLE_NAME, sets, wheres).append(" limit 1").toString();
-			logger.debug("update:{}, sql:{}", ownPo, string);
 			return string;
 		}
 

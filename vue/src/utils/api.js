@@ -1,35 +1,40 @@
 import axios from './axios'
 
+function getUploadFileUrl() {
+  return 'https://jsonplaceholder.typicode.com/posts';
+  // return axios.baseURL + '';
+}
+
 //exceptionInfo
 
 function clearExceptionInfo() {
-  return axios.post('/api/log/clearExceptionInfo', {});
+  return axios.instance.post('/api/log/clearExceptionInfo', {});
 }
 
 function getExceptionInfoCount() {
-  return axios.get('/api/log/getExceptionInfoCount', {params: {}});
+  return axios.instance.get('/api/log/getExceptionInfoCount', {params: {}});
 }
 
 function listExceptionInfo() {
-  return axios.get('/api/log/listExceptionInfo', {params: {}});
+  return axios.instance.get('/api/log/listExceptionInfo', {params: {}});
 }
 
 //authorization
 
 function addAuthorization(userId, permissionId) {
-  return axios.post('/api/authorization/addAuthorization', {userId: userId, permissionId: permissionId});
+  return axios.instance.post('/api/authorization/addAuthorization', {userId: userId, permissionId: permissionId});
 }
 
 function removeAuthorization(authorizationId) {
-  return axios.post('/api/authorization/removeAuthorization', {authorizationId: authorizationId});
+  return axios.instance.post('/api/authorization/removeAuthorization', {authorizationId: authorizationId});
 }
 
 function getAuthorization(authorizationId) {
-  return axios.get('/api/authorization/getAuthorization', {params: {authorizationId: authorizationId}});
+  return axios.instance.get('/api/authorization/getAuthorization', {params: {authorizationId: authorizationId}});
 }
 
 function getAuthorizationCount(pageSize, page, authorizationId, userId, permissionId, createTime, updateTime) {
-  return axios.get('/api/authorization/getAuthorizationCount', {
+  return axios.instance.get('/api/authorization/getAuthorizationCount', {
     params: {
       pageSize: pageSize,
       page: page,
@@ -43,7 +48,7 @@ function getAuthorizationCount(pageSize, page, authorizationId, userId, permissi
 }
 
 function listAuthorization(pageSize, page, authorizationId, userId, permissionId, createTime, updateTime) {
-  return axios.get('/api/authorization/listAuthorization', {
+  return axios.instance.get('/api/authorization/listAuthorization', {
     params: {
       pageSize: pageSize,
       page: page,
@@ -57,7 +62,7 @@ function listAuthorization(pageSize, page, authorizationId, userId, permissionId
 }
 
 function changeAuthorization(authorizationId, userId, permissionId) {
-  return axios.post('/api/authorization/changeAuthorization', {
+  return axios.instance.post('/api/authorization/changeAuthorization', {
     authorizationId: authorizationId,
     userId: userId,
     permissionId: permissionId
@@ -65,11 +70,16 @@ function changeAuthorization(authorizationId, userId, permissionId) {
 }
 
 function checkAddAuthorization(userId, permissionId) {
-  return axios.get('/api/authorization/checkAddAuthorization', {params: {userId: userId, permissionId: permissionId}});
+  return axios.instance.get('/api/authorization/checkAddAuthorization', {
+    params: {
+      userId: userId,
+      permissionId: permissionId
+    }
+  });
 }
 
 function checkChangeAuthorization(authorizationId, userId, permissionId) {
-  return axios.get('/api/authorization/checkChangeAuthorization', {
+  return axios.instance.get('/api/authorization/checkChangeAuthorization', {
     params: {
       authorizationId: authorizationId,
       userId: userId,
@@ -81,11 +91,11 @@ function checkChangeAuthorization(authorizationId, userId, permissionId) {
 //fileInfo
 
 function getFileInfo(fileId, md5) {
-  return axios.get('/api/fileInfo/getFileInfo', {params: {fileId: fileId, md5: md5}});
+  return axios.instance.get('/api/fileInfo/getFileInfo', {params: {fileId: fileId, md5: md5}});
 }
 
 function getFileInfoCount(pageSize, page, fileId, md5, fileLength, contentType, createTime, updateTime) {
-  return axios.get('/api/fileInfo/getFileInfoCount', {
+  return axios.instance.get('/api/fileInfo/getFileInfoCount', {
     params: {
       pageSize: pageSize,
       page: page,
@@ -100,7 +110,7 @@ function getFileInfoCount(pageSize, page, fileId, md5, fileLength, contentType, 
 }
 
 function listFileInfo(pageSize, page, fileId, md5, fileLength, contentType, createTime, updateTime) {
-  return axios.get('/api/fileInfo/listFileInfo', {
+  return axios.instance.get('/api/fileInfo/listFileInfo', {
     params: {
       pageSize: pageSize,
       page: page,
@@ -115,11 +125,11 @@ function listFileInfo(pageSize, page, fileId, md5, fileLength, contentType, crea
 }
 
 function getFileInfoOwn(fileId, md5) {
-  return axios.get('/api/fileInfo/getFileInfoOwn', {params: {fileId: fileId, md5: md5}});
+  return axios.instance.get('/api/fileInfo/getFileInfoOwn', {params: {fileId: fileId, md5: md5}});
 }
 
 function listFileInfoOwn(pageSize, page, fileId, md5, fileLength, contentType, createTime, updateTime) {
-  return axios.get('/api/fileInfo/listFileInfoOwn', {
+  return axios.instance.get('/api/fileInfo/listFileInfoOwn', {
     params: {
       pageSize: pageSize,
       page: page,
@@ -134,11 +144,11 @@ function listFileInfoOwn(pageSize, page, fileId, md5, fileLength, contentType, c
 }
 
 function listContentType() {
-  return axios.get('/api/fileInfo/listContentType', {params: {}});
+  return axios.instance.get('/api/fileInfo/listContentType', {params: {}});
 }
 
 function checkAddFileInfo(md5, fileLength, contentType) {
-  return axios.get('/api/fileInfo/checkAddFileInfo', {
+  return axios.instance.get('/api/fileInfo/checkAddFileInfo', {
     params: {
       md5: md5,
       fileLength: fileLength,
@@ -148,7 +158,7 @@ function checkAddFileInfo(md5, fileLength, contentType) {
 }
 
 function checkChangeFileInfo(fileId, md5, fileLength, contentType) {
-  return axios.get('/api/fileInfo/checkChangeFileInfo', {
+  return axios.instance.get('/api/fileInfo/checkChangeFileInfo', {
     params: {
       fileId: fileId,
       md5: md5,
@@ -161,7 +171,7 @@ function checkChangeFileInfo(fileId, md5, fileLength, contentType) {
 //own
 
 function addOwn(userId, fileId, fileName, sort, description) {
-  return axios.post('/api/own/addOwn', {
+  return axios.instance.post('/api/own/addOwn', {
     userId: userId,
     fileId: fileId,
     fileName: fileName,
@@ -171,15 +181,15 @@ function addOwn(userId, fileId, fileName, sort, description) {
 }
 
 function removeOwn(ownId) {
-  return axios.post('/api/own/removeOwn', {ownId: ownId});
+  return axios.instance.post('/api/own/removeOwn', {ownId: ownId});
 }
 
 function getOwn(ownId) {
-  return axios.get('/api/own/getOwn', {params: {ownId: ownId}});
+  return axios.instance.get('/api/own/getOwn', {params: {ownId: ownId}});
 }
 
 function getOwnCount(pageSize, page, ownId, userId, fileId, fileName, sort, description, createTime, updateTime) {
-  return axios.get('/api/own/getOwnCount', {
+  return axios.instance.get('/api/own/getOwnCount', {
     params: {
       pageSize: pageSize,
       page: page,
@@ -196,7 +206,7 @@ function getOwnCount(pageSize, page, ownId, userId, fileId, fileName, sort, desc
 }
 
 function listOwn(pageSize, page, ownId, userId, fileId, fileName, sort, description, createTime, updateTime) {
-  return axios.get('/api/own/listOwn', {
+  return axios.instance.get('/api/own/listOwn', {
     params: {
       pageSize: pageSize,
       page: page,
@@ -213,11 +223,11 @@ function listOwn(pageSize, page, ownId, userId, fileId, fileName, sort, descript
 }
 
 function listSort(userId) {
-  return axios.get('/api/own/listSort', {params: {userId: userId}});
+  return axios.instance.get('/api/own/listSort', {params: {userId: userId}});
 }
 
 function changeOwn(ownId, userId, fileId, fileName, sort, description) {
-  return axios.post('/api/own/changeOwn', {
+  return axios.instance.post('/api/own/changeOwn', {
     ownId: ownId,
     userId: userId,
     fileId: fileId,
@@ -228,7 +238,7 @@ function changeOwn(ownId, userId, fileId, fileName, sort, description) {
 }
 
 function checkAddOwn(userId, fileId, fileName, sort, description) {
-  return axios.get('/api/own/checkAddOwn', {
+  return axios.instance.get('/api/own/checkAddOwn', {
     params: {
       userId: userId,
       fileId: fileId,
@@ -240,7 +250,7 @@ function checkAddOwn(userId, fileId, fileName, sort, description) {
 }
 
 function checkChangeOwn(ownId, userId, fileId, fileName, sort, description) {
-  return axios.get('/api/own/checkChangeOwn', {
+  return axios.instance.get('/api/own/checkChangeOwn', {
     params: {
       ownId: ownId,
       userId: userId,
@@ -255,15 +265,18 @@ function checkChangeOwn(ownId, userId, fileId, fileName, sort, description) {
 //permission
 
 function addPermission(permissionId, permissionMark) {
-  return axios.post('/api/permission/addPermission', {permissionId: permissionId, permissionMark: permissionMark});
+  return axios.instance.post('/api/permission/addPermission', {
+    permissionId: permissionId,
+    permissionMark: permissionMark
+  });
 }
 
 function removePermission(permissionId) {
-  return axios.post('/api/permission/removePermission', {permissionId: permissionId});
+  return axios.instance.post('/api/permission/removePermission', {permissionId: permissionId});
 }
 
 function getPermission(permissionId) {
-  return axios.get('/api/permission/getPermission', {params: {permissionId: permissionId}});
+  return axios.instance.get('/api/permission/getPermission', {params: {permissionId: permissionId}});
 }
 
 function listPermission() {
@@ -271,7 +284,7 @@ function listPermission() {
 }
 
 function listPermissions(pageSize, page, permissionId, permissionMark, createTime, updateTime) {
-  return axios.get('/api/permission/listPermission', {
+  return axios.instance.get('/api/permission/listPermission', {
     params: {
       pageSize: pageSize,
       page: page,
@@ -284,11 +297,11 @@ function listPermissions(pageSize, page, permissionId, permissionMark, createTim
 }
 
 function getPermissionAuthorization(permissionId) {
-  return axios.get('/api/permission/getPermissionAuthorization', {params: {permissionId: permissionId}});
+  return axios.instance.get('/api/permission/getPermissionAuthorization', {params: {permissionId: permissionId}});
 }
 
 function listPermissionAuthorization(pageSize, page, permissionId, permissionMark, createTime, updateTime) {
-  return axios.get('/api/permission/listPermissionAuthorization', {
+  return axios.instance.get('/api/permission/listPermissionAuthorization', {
     params: {
       pageSize: pageSize,
       page: page,
@@ -301,11 +314,14 @@ function listPermissionAuthorization(pageSize, page, permissionId, permissionMar
 }
 
 function changePermission(permissionId, permissionMark) {
-  return axios.post('/api/permission/changePermission', {permissionId: permissionId, permissionMark: permissionMark});
+  return axios.instance.post('/api/permission/changePermission', {
+    permissionId: permissionId,
+    permissionMark: permissionMark
+  });
 }
 
 function checkAddPermission(permissionId, permissionMark) {
-  return axios.get('/api/permission/checkAddPermission', {
+  return axios.instance.get('/api/permission/checkAddPermission', {
     params: {
       permissionId: permissionId,
       permissionMark: permissionMark
@@ -314,7 +330,7 @@ function checkAddPermission(permissionId, permissionMark) {
 }
 
 function checkChangePermission(permissionId, permissionMark) {
-  return axios.get('/api/permission/checkChangePermission', {
+  return axios.instance.get('/api/permission/checkChangePermission', {
     params: {
       permissionId: permissionId,
       permissionMark: permissionMark
@@ -325,19 +341,19 @@ function checkChangePermission(permissionId, permissionMark) {
 //user
 
 function addUser(username, userPassword) {
-  return axios.post('/api/user/addUser', {username: username, userPassword: userPassword});
+  return axios.instance.post('/api/user/addUser', {username: username, userPassword: userPassword});
 }
 
 function removeUser(userId) {
-  return axios.post('/api/user/removeUser', {userId: userId});
+  return axios.instance.post('/api/user/removeUser', {userId: userId});
 }
 
 function getUser(userId) {
-  return axios.get('/api/user/getUser', {params: {userId: userId}});
+  return axios.instance.get('/api/user/getUser', {params: {userId: userId}});
 }
 
 function getUserCount(pageSize, page, userId, username, createTime, updateTime) {
-  return axios.get('/api/user/getUserCount', {
+  return axios.instance.get('/api/user/getUserCount', {
     params: {
       pageSize: pageSize,
       page: page,
@@ -350,7 +366,7 @@ function getUserCount(pageSize, page, userId, username, createTime, updateTime) 
 }
 
 function listUser(pageSize, page, userId, username, createTime, updateTime) {
-  return axios.get('/api/user/listUser', {
+  return axios.instance.get('/api/user/listUser', {
     params: {
       pageSize: pageSize,
       page: page,
@@ -363,11 +379,11 @@ function listUser(pageSize, page, userId, username, createTime, updateTime) {
 }
 
 function getUserAuthorization(userId) {
-  return axios.get('/api/user/getUserAuthorization', {params: {userId: userId}});
+  return axios.instance.get('/api/user/getUserAuthorization', {params: {userId: userId}});
 }
 
 function listUserAuthorization(pageSize, page, userId, username, createTime, updateTime) {
-  return axios.get('/api/user/listUserAuthorization', {
+  return axios.instance.get('/api/user/listUserAuthorization', {
     params: {
       pageSize: pageSize,
       page: page,
@@ -380,11 +396,11 @@ function listUserAuthorization(pageSize, page, userId, username, createTime, upd
 }
 
 function getUserOwn(userId) {
-  return axios.get('/api/user/getUserOwn', {params: {userId: userId}});
+  return axios.instance.get('/api/user/getUserOwn', {params: {userId: userId}});
 }
 
 function listUserOwn(pageSize, page, userId, username, createTime, updateTime) {
-  return axios.get('/api/user/listUserOwn', {
+  return axios.instance.get('/api/user/listUserOwn', {
     pageSize: pageSize,
     page: page,
     userId: userId,
@@ -395,15 +411,15 @@ function listUserOwn(pageSize, page, userId, username, createTime, updateTime) {
 }
 
 function changeUser(userId, username, userPassword) {
-  return axios.post('/api/user/changeUser', {userId: userId, username: username, userPassword: userPassword});
+  return axios.instance.post('/api/user/changeUser', {userId: userId, username: username, userPassword: userPassword});
 }
 
 function checkAddUser(username, userPassword) {
-  return axios.get('/api/user/checkAddUser', {params: {username: username, userPassword: userPassword}});
+  return axios.instance.get('/api/user/checkAddUser', {params: {username: username, userPassword: userPassword}});
 }
 
 function checkChangeUser(userId, username, userPassword) {
-  return axios.get('/api/user/checkChangeUser', {
+  return axios.instance.get('/api/user/checkChangeUser', {
     params: {
       userId: userId,
       username: username,
@@ -413,6 +429,7 @@ function checkChangeUser(userId, username, userPassword) {
 }
 
 export default {
+  getUploadFileUrl: getUploadFileUrl,
   clearExceptionInfo: clearExceptionInfo,
   getExceptionInfoCount: getExceptionInfoCount,
   listExceptionInfo: listExceptionInfo,

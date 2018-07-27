@@ -53,7 +53,6 @@ public interface AuthorizationMapper {
 	int update(AuthorizationPo authorizationPo);
 
 	class AuthorizationProvider {
-		private static final Logger logger = LoggerFactory.getLogger(AuthorizationProvider.class);
 		private static final String TABLE_NAME = AuthorizationDao.TABLE_NAME;
 		private static final String authorizationId = TABLE_NAME + ".authorization_id=#{authorizationId}";
 		private static final String userId = TABLE_NAME + ".user_id=#{userId}";
@@ -67,7 +66,6 @@ public interface AuthorizationMapper {
 			authorizationPo.setUpdateTime(date);
 			String string = "insert into " + TABLE_NAME + "(user_id,permission_id,create_time,update_time) " +
 					"values(#{userId},#{permissionId},#{createTime,jdbcType=TIMESTAMP},#{updateTime,jdbcType=TIMESTAMP})";
-			logger.debug("insert:{}, sql:{}", authorizationPo, string);
 			return string;
 		}
 
@@ -76,7 +74,6 @@ public interface AuthorizationMapper {
 			wheresAll(authorizationQuery, wheres);
 			StringBuilder sql = SqlUtil.createDeleteSql(TABLE_NAME, wheres);
 			String string = sql.toString();
-			logger.debug("delete:{}, sql:{}", authorizationQuery, string);
 			return string;
 		}
 
@@ -95,7 +92,6 @@ public interface AuthorizationMapper {
 			wheresKey(authorizationQuery, wheres);
 			StringBuilder sql = SqlUtil.createSelectSql(selects, TABLE_NAME + "," + UserDao.TABLE_NAME + "," + PermissionDao.TABLE_NAME, wheres);
 			String string = sql.append(" limit 1").toString();
-			logger.debug("selectOne:{}, sql:{}", authorizationQuery, string);
 			return string;
 		}
 
@@ -115,7 +111,6 @@ public interface AuthorizationMapper {
 			wheresAll(authorizationQuery, wheres);
 			StringBuilder sql = SqlUtil.createSelectSql(selects, TABLE_NAME + "," + UserDao.TABLE_NAME + "," + PermissionDao.TABLE_NAME, wheres);
 			String string = sql.append(" limit #{off},#{len}").toString();
-			logger.debug("selectSome:{}, sql:{}", authorizationQuery, string);
 			return string;
 		}
 
@@ -128,8 +123,7 @@ public interface AuthorizationMapper {
 			wheres.add(TABLE_NAME + ".permission_id=" + PermissionDao.TABLE_NAME + ".permission_id");
 			wheresAll(authorizationQuery, wheres);
 			StringBuilder sql = SqlUtil.createSelectSql(selects, TABLE_NAME + "," + UserDao.TABLE_NAME + "," + PermissionDao.TABLE_NAME, wheres);
-			String string = sql.append(" limit #{off},#{len}").toString();
-			logger.debug("selectSome:{}, sql:{}", authorizationQuery, string);
+			String string = sql.toString();
 			return string;
 		}
 
@@ -144,7 +138,6 @@ public interface AuthorizationMapper {
 			List<String> wheres = new LinkedList<>();
 			wheresKey(authorizationPo, wheres);
 			String string = SqlUtil.createUpdateSql(TABLE_NAME, sets, wheres).append(" limit 1").toString();
-			logger.debug("update:{}, sql:{}", authorizationPo, string);
 			return string;
 		}
 

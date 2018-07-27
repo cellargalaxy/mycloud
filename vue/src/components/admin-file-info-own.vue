@@ -15,14 +15,14 @@
         </el-form-item>
 
         <el-form-item label="md5">
-          <el-input v-model="fileInfoOwnQuery.md5" :value="fileInfoOwnQuery.md5" placeholder="md5" size="mini"></el-input>
+          <el-input v-model="fileInfoOwnQuery.md5" :value="fileInfoOwnQuery.md5" placeholder="md5" size="mini" clearable></el-input>
         </el-form-item>
         <el-form-item label="文件大小">
           <el-input v-model="fileInfoOwnQuery.fileLength" :value="fileInfoOwnQuery.fileLength"
-                    type="number" min="0" placeholder="md5" size="mini"></el-input>
+                    type="number" min="0" placeholder="byte" size="mini" clearable></el-input>
         </el-form-item>
         <el-form-item label="文件类型">
-          <el-select v-model="fileInfoOwnQuery.contentType" :value="fileInfoOwnQuery.contentType" placeholder="文件类型" size="mini">
+          <el-select v-model="fileInfoOwnQuery.contentType" :value="fileInfoOwnQuery.contentType" placeholder="文件类型" size="mini" clearable>
             <el-option v-for="(contentType, index) in contentTypes" :label="contentType" :value="contentType" :key="index"></el-option>
           </el-select>
         </el-form-item>
@@ -124,7 +124,7 @@
           page: 1,
           fileId: 0,
           md5: null,
-          fileLength: 0,
+          fileLength: null,
           contentType: null,
           createTime: null,
           updateTime: null

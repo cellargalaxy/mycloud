@@ -3,12 +3,12 @@
     <el-header>
       <el-form :inline="true" class="demo-form-inline">
         <el-form-item label="账号">
-          <el-input v-model="userForm.username" :value="userForm.username" size="mini" type="text"
-                    placeholder="账号"></el-input>
+          <el-input v-model="userForm.username" :value="userForm.username"
+                    size="mini" type="text" placeholder="账号" clearable></el-input>
         </el-form-item>
         <el-form-item label="密码">
-          <el-input v-model="userForm.userPassword" :value="userForm.userPassword" size="mini" type="password"
-                    placeholder="密码"></el-input>
+          <el-input v-model="userForm.userPassword" :value="userForm.userPassword"
+                    size="mini" type="password" placeholder="密码" clearable></el-input>
         </el-form-item>
         <el-form-item>
           <el-button @click="add" size="mini" type="success">添加</el-button>
