@@ -75,7 +75,6 @@ public class LoginFilter extends AbstractAuthenticationProcessingFilter {
 				.signWith(SignatureAlgorithm.HS512, secret)
 				.compact();
 
-
 		logger.info("登录成功,username:{},token:{}", username, jwt);
 
 		Cookie cookie = new Cookie(TOKEN_KEY, jwt);

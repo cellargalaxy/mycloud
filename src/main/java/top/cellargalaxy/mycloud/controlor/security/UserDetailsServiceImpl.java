@@ -17,7 +17,7 @@ import java.util.List;
  * @author cellargalaxy
  * @time 2018/7/30
  */
-@Service
+//@Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 	@Autowired
 	private UserService userService;

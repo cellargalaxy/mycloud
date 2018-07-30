@@ -115,6 +115,17 @@ public class AuthenticationFilter extends GenericFilterBean {
 			httpServletResponse.setStatus(HttpServletResponse.SC_OK);
 			PrintWriter printWriter = httpServletResponse.getWriter();
 			printWriter.write(objectMapper.writeValueAsString(vo));
+		}catch (Exception e) {
+			logger.info("过时token");
+			Map<String, Object> vo = new HashMap<>();
+			vo.put("status", 0);
+			vo.put("massage", "未能识别token");
+			vo.put("data", null);
+			httpServletResponse.setCharacterEncoding("utf-8");
+			httpServletResponse.setContentType("application/json");
+			httpServletResponse.setStatus(HttpServletResponse.SC_OK);
+			PrintWriter printWriter = httpServletResponse.getWriter();
+			printWriter.write(objectMapper.writeValueAsString(vo));
 		}
 	}
 }

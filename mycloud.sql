@@ -1,13 +1,13 @@
--- MySQL dump 10.13  Distrib 8.0.11, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 5.7.22, for Linux (x86_64)
 --
 -- Host: 127.0.0.1    Database: mycloud
 -- ------------------------------------------------------
--- Server version	8.0.11
+-- Server version	5.7.22-0ubuntu0.16.04.1-log
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
- SET NAMES utf8mb4 ;
+/*!40101 SET NAMES utf8 */;
 /*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
 /*!40103 SET TIME_ZONE='+00:00' */;
 /*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
@@ -21,7 +21,7 @@
 
 DROP TABLE IF EXISTS `authorization`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `authorization` (
   `authorization_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '授权id',
   `user_id` int(11) NOT NULL COMMENT '用户id',
@@ -31,7 +31,7 @@ CREATE TABLE `authorization` (
   PRIMARY KEY (`authorization_id`),
   KEY `idx_user_id` (`user_id`),
   KEY `idx_permission_id` (`permission_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -40,6 +40,7 @@ CREATE TABLE `authorization` (
 
 LOCK TABLES `authorization` WRITE;
 /*!40000 ALTER TABLE `authorization` DISABLE KEYS */;
+INSERT INTO `authorization` VALUES (1,1,1,'2018-08-01 00:00:00','2018-08-01 00:00:00'),(2,1,2,'2018-08-01 00:00:00','2018-08-01 00:00:00'),(3,1,3,'2018-08-01 00:00:00','2018-08-01 00:00:00');
 /*!40000 ALTER TABLE `authorization` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -49,7 +50,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `block`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `block` (
   `block_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '数据块id',
   `block` blob NOT NULL COMMENT '数据块',
@@ -72,7 +73,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `file_block`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `file_block` (
   `file_id` int(11) NOT NULL COMMENT '文件id',
   `block_id` int(11) NOT NULL COMMENT '数据块id',
@@ -90,17 +91,40 @@ LOCK TABLES `file_block` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `file_data`
+--
+
+DROP TABLE IF EXISTS `file_data`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `file_data` (
+  `file_id` int(11) NOT NULL COMMENT '文件id',
+  `file_data` mediumblob NOT NULL COMMENT '文件数据',
+  PRIMARY KEY (`file_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `file_data`
+--
+
+LOCK TABLES `file_data` WRITE;
+/*!40000 ALTER TABLE `file_data` DISABLE KEYS */;
+/*!40000 ALTER TABLE `file_data` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `file_info`
 --
 
 DROP TABLE IF EXISTS `file_info`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `file_info` (
   `file_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '文件id',
   `md5` char(32) NOT NULL COMMENT 'MD5',
   `file_length` bigint(20) NOT NULL COMMENT '文件长度',
-  `content_type` varchar(16) CHARACTER SET utf8mb4 NOT NULL COMMENT '文件类型',
+  `content_type` varchar(16) NOT NULL COMMENT '文件类型',
   `create_time` datetime NOT NULL COMMENT '创建时间',
   PRIMARY KEY (`file_id`),
   UNIQUE KEY `uk_md5` (`md5`) USING BTREE,
@@ -123,7 +147,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `own`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `own` (
   `own_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '所属id',
   `user_id` int(11) NOT NULL COMMENT '用户id',
@@ -154,7 +178,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `permission`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `permission` (
   `permission_id` int(11) NOT NULL COMMENT '权限id',
   `permission_mark` varchar(256) NOT NULL COMMENT '权限备注',
@@ -170,6 +194,7 @@ CREATE TABLE `permission` (
 
 LOCK TABLES `permission` WRITE;
 /*!40000 ALTER TABLE `permission` DISABLE KEYS */;
+INSERT INTO `permission` VALUES (1,'ROOT','2018-08-01 00:00:00','2018-08-01 00:00:00'),(2,'ADMIN','2018-08-01 00:00:00','2018-08-01 00:00:00'),(3,'USER','2018-08-01 00:00:00','2018-08-01 00:00:00');
 /*!40000 ALTER TABLE `permission` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -179,16 +204,16 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `user`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `user` (
   `user_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '用户id',
-  `username` varchar(32) CHARACTER SET utf8mb4 NOT NULL COMMENT '用户名',
+  `username` varchar(32) NOT NULL COMMENT '用户名',
   `user_password` char(68) NOT NULL COMMENT '用户密码',
   `create_time` datetime NOT NULL COMMENT '创建时间',
   `update_time` datetime NOT NULL COMMENT '更新时间',
   PRIMARY KEY (`user_id`),
   UNIQUE KEY `uk_username` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -197,6 +222,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
+INSERT INTO `user` VALUES (1,'mycloud','{bcrypt}$2a$04$hGp/prtFmGykz4eEl9DaNO.Nbm/nJASJk7kNf8m3nCCVF/ElRCG7a','2018-08-01 00:00:00','2018-08-01 00:00:00');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -209,4 +235,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-07-16 14:36:17
+-- Dump completed on 2018-08-01 00:00:00

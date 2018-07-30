@@ -12,6 +12,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import top.cellargalaxy.mycloud.configuration.MycloudConfiguration;
 
@@ -19,9 +20,9 @@ import top.cellargalaxy.mycloud.configuration.MycloudConfiguration;
  * @author cellargalaxy
  * @time 2018/7/30
  */
-@Configuration
-@EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+//@Configuration
+//@EnableWebSecurity
+//@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private UserDetailsService userDetailsService;
@@ -33,6 +34,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		authenticationManagerBuilder
 				//设置UserDetailsService
 				.userDetailsService(userDetailsService);
+//				使用BCrypt进行密码的hash
+//				.passwordEncoder(new BCryptPasswordEncoder());
 	}
 
 	@Override
@@ -61,21 +64,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.anyRequest().authenticated()
 
 				.and()
-				// 添加一个过滤器验证其他请求的Token是否合法
+				//登录
 				.addFilterBefore(
 						new LoginFilter("/login", authenticationManager(), mycloudConfiguration.getSecret(), userDetailsService),
 						UsernamePasswordAuthenticationFilter.class)
-				// 添加一个过滤器验证其他请求的Token是否合法
+
+				//检验token
 				.addFilterBefore(new AuthenticationFilter(mycloudConfiguration.getSecret()),
 						UsernamePasswordAuthenticationFilter.class);
 
 		// 禁用缓存
 		httpSecurity.headers().cacheControl();
-	}
-
-	@Bean
-	@Override
-	public AuthenticationManager authenticationManagerBean() {
-		return authenticationManagerBean();
 	}
 }
