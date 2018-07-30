@@ -8,9 +8,11 @@ import org.springframework.stereotype.Component;
  * @time 2018/7/17
  */
 @Component
-public class Configuration {
-	@Value("${blobLength:16777215}")
+public class MycloudConfiguration {
+	@Value("${blobLength:65535}")
 	private int blobLength;
+	@Value("${secret:'mycloud'}")
+	private String secret;
 
 	public int getBlobLength() {
 		return blobLength;
@@ -18,5 +20,13 @@ public class Configuration {
 
 	public void setBlobLength(int blobLength) {
 		this.blobLength = blobLength;
+	}
+
+	public String getSecret() {
+		return secret;
+	}
+
+	public void setSecret(String secret) {
+		this.secret = secret;
 	}
 }

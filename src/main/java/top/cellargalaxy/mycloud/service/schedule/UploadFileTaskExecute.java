@@ -1,15 +1,12 @@
 package top.cellargalaxy.mycloud.service.schedule;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Component;
-import top.cellargalaxy.mycloud.configuration.Configuration;
+import org.springframework.stereotype.Service;
+import top.cellargalaxy.mycloud.configuration.MycloudConfiguration;
 import top.cellargalaxy.mycloud.dao.BlockDao;
 import top.cellargalaxy.mycloud.dao.FileBlockDao;
 import top.cellargalaxy.mycloud.dao.FileInfoDao;
 import top.cellargalaxy.mycloud.dao.OwnDao;
-import top.cellargalaxy.mycloud.exception.GlobalException;
-import top.cellargalaxy.mycloud.model.bo.schedule.Task;
 import top.cellargalaxy.mycloud.model.bo.schedule.UploadFileTask;
 import top.cellargalaxy.mycloud.model.po.BlockPo;
 import top.cellargalaxy.mycloud.model.po.FileBlockPo;
@@ -19,18 +16,18 @@ import top.cellargalaxy.mycloud.util.FileBlocks;
 import top.cellargalaxy.mycloud.util.StreamUtil;
 
 import java.io.File;
-import java.io.IOException;
 
 /**
  * @author cellargalaxy
- * @time 2018/7/17
+ * @time 2018/7/30
  */
-@Component
-public class UploadFileSchedule extends AbstractSchedule<UploadFileTask> {
+@Service
+public class UploadFileTaskExecute implements TaskExecute<UploadFileTask> {
+	public static final String TASK_SORT = UploadFileTask.TASK_SORT;
 	@Autowired
 	private FileInfoDao fileInfoDao;
 	@Autowired
-	private Configuration configuration;
+	private MycloudConfiguration mycloudConfiguration;
 	@Autowired
 	private BlockDao blockDao;
 	@Autowired
@@ -38,25 +35,8 @@ public class UploadFileSchedule extends AbstractSchedule<UploadFileTask> {
 	@Autowired
 	private OwnDao ownDao;
 
-	@Scheduled(fixedDelay = 1000 * 5)
-	public void uploadFileSchedule() {
-		while (true) {
-			UploadFileTask task = null;
-			try (UploadFileTask uploadFileTask = getWaitTask()) {
-				task = uploadFileTask;
-				uploadFileSchedule(task);
-				addFinishTask(task, Task.SUCCESS_STATUS);
-			} catch (Exception e) {
-				e.printStackTrace();
-				GlobalException.add(e, 0, "未知异常");
-				if (task != null) {
-					addFinishTask(task, Task.FAIL_STATUS);
-				}
-			}
-		}
-	}
-
-	public void uploadFileSchedule(UploadFileTask uploadFileTask) throws IOException {
+	@Override
+	public void executeTask(UploadFileTask uploadFileTask) throws Exception {
 		File file = uploadFileTask.getFile();
 		String contentType = uploadFileTask.getContentType();
 		String md5 = StreamUtil.md5Hex(file);
@@ -65,7 +45,7 @@ public class UploadFileSchedule extends AbstractSchedule<UploadFileTask> {
 
 		//写数据块
 		int[] blockIds;
-		try (FileBlocks fileBlocks = new FileBlocks(file, configuration.getBlobLength())) {
+		try (FileBlocks fileBlocks = new FileBlocks(file, mycloudConfiguration.getBlobLength())) {
 			blockIds = new int[fileBlocks.getBlockLengths().length];
 			byte[] block;
 			while ((block = fileBlocks.next()) != null) {

@@ -1,29 +1,29 @@
 //exceptionInfo
 
 function clearExceptionInfo(callback) {
-    post('/api/log/clearExceptionInfo', {}, callback);
+    post('/admin/log/clearExceptionInfo', {}, callback);
 }
 
 function listExceptionInfo(callback) {
-    get('/api/log/listExceptionInfo', {}, callback);
+    get('/admin/log/listExceptionInfo', {}, callback);
 }
 
 //authorization
 
 function addAuthorization(userId, permissionId, callback) {
-    post('/api/authorization/addAuthorization', {userId: userId, permissionId: permissionId}, callback);
+    post('/admin/authorization/addAuthorization', {userId: userId, permissionId: permissionId}, callback);
 }
 
 function removeAuthorization(authorizationId, callback) {
-    post('/api/authorization/removeAuthorization', {authorizationId: authorizationId}, callback);
+    post('/admin/authorization/removeAuthorization', {authorizationId: authorizationId}, callback);
 }
 
 function getAuthorization(authorizationId, callback) {
-    get('/api/authorization/getAuthorization', {authorizationId: authorizationId}, callback);
+    get('/admin/authorization/getAuthorization', {authorizationId: authorizationId}, callback);
 }
 
 function listAuthorization(pageSize, page, authorizationId, userId, permissionId, createTime, updateTime, callback) {
-    get('/api/authorization/listAuthorization', {
+    get('/admin/authorization/listAuthorization', {
         pageSize: pageSize,
         page: page,
         authorizationId: authorizationId,
@@ -35,7 +35,7 @@ function listAuthorization(pageSize, page, authorizationId, userId, permissionId
 }
 
 function changeAuthorization(authorizationId, userId, permissionId, callback) {
-    post('/api/authorization/changeAuthorization', {
+    post('/admin/authorization/changeAuthorization', {
         authorizationId: authorizationId,
         userId: userId,
         permissionId: permissionId
@@ -43,11 +43,11 @@ function changeAuthorization(authorizationId, userId, permissionId, callback) {
 }
 
 function checkAddAuthorization(userId, permissionId, callback) {
-    get('/api/authorization/checkAddAuthorization', {userId: userId, permissionId: permissionId}, callback);
+    get('/admin/authorization/checkAddAuthorization', {userId: userId, permissionId: permissionId}, callback);
 }
 
 function checkChangeAuthorization(authorizationId, userId, permissionId, callback) {
-    get('/api/authorization/checkChangeAuthorization', {
+    get('/admin/authorization/checkChangeAuthorization', {
         authorizationId: authorizationId,
         userId: userId,
         permissionId: permissionId
@@ -57,11 +57,11 @@ function checkChangeAuthorization(authorizationId, userId, permissionId, callbac
 //fileInfo
 
 function getFileInfo(fileId, md5, callback) {
-    get('/api/fileInfo/getFileInfo', {fileId: fileId, md5: md5}, callback);
+    get('/admin/fileInfo/getFileInfo', {fileId: fileId, md5: md5}, callback);
 }
 
 function listFileInfo(pageSize, page, fileId, md5, fileLength, contentType, createTime, updateTime, callback) {
-    get('/api/fileInfo/listFileInfo', {
+    get('/admin/fileInfo/listFileInfo', {
         pageSize: pageSize,
         page: page,
         fileId: fileId,
@@ -74,11 +74,11 @@ function listFileInfo(pageSize, page, fileId, md5, fileLength, contentType, crea
 }
 
 function getFileInfoOwn(fileId, md5, callback) {
-    get('/api/fileInfo/getFileInfoOwn', {fileId: fileId, md5: md5}, callback);
+    get('/admin/fileInfo/getFileInfoOwn', {fileId: fileId, md5: md5}, callback);
 }
 
 function listFileInfoOwn(pageSize, page, fileId, md5, fileLength, contentType, createTime, updateTime, callback) {
-    get('/api/fileInfo/listFileInfoOwn', {
+    get('/admin/fileInfo/listFileInfoOwn', {
         pageSize: pageSize,
         page: page,
         fileId: fileId,
@@ -91,15 +91,15 @@ function listFileInfoOwn(pageSize, page, fileId, md5, fileLength, contentType, c
 }
 
 function listContentType(callback) {
-    get('/api/fileInfo/listContentType', {}, callback);
+    get('/admin/fileInfo/listContentType', {}, callback);
 }
 
 function checkAddFileInfo(md5, fileLength, contentType, callback) {
-    get('/api/fileInfo/checkAddFileInfo', {md5: md5, fileLength: fileLength, contentType: contentType}, callback);
+    get('/admin/fileInfo/checkAddFileInfo', {md5: md5, fileLength: fileLength, contentType: contentType}, callback);
 }
 
 function checkChangeFileInfo(fileId, md5, fileLength, contentType, callback) {
-    get('/api/fileInfo/checkChangeFileInfo', {
+    get('/admin/fileInfo/checkChangeFileInfo', {
         fileId: fileId,
         md5: md5,
         fileLength: fileLength,
@@ -110,7 +110,7 @@ function checkChangeFileInfo(fileId, md5, fileLength, contentType, callback) {
 //own
 
 function addOwn(userId, fileId, fileName, sort, description, callback) {
-    post('/api/own/addOwn', {
+    post('/admin/own/addOwn', {
         userId: userId,
         fileId: fileId,
         fileName: fileName,
@@ -120,15 +120,15 @@ function addOwn(userId, fileId, fileName, sort, description, callback) {
 }
 
 function removeOwn(ownId, callback) {
-    post('/api/own/removeOwn', {ownId: ownId}, callback);
+    post('/admin/own/removeOwn', {ownId: ownId}, callback);
 }
 
 function getOwn(ownId, callback) {
-    get('/api/own/getOwn', {ownId: ownId}, callback);
+    get('/admin/own/getOwn', {ownId: ownId}, callback);
 }
 
 function listOwn(pageSize, page, ownId, userId, fileId, fileName, sort, description, createTime, updateTime, callback) {
-    get('/api/own/listOwn', {
+    get('/admin/own/listOwn', {
         pageSize: pageSize,
         page: page,
         ownId: ownId,
@@ -143,11 +143,11 @@ function listOwn(pageSize, page, ownId, userId, fileId, fileName, sort, descript
 }
 
 function listSort(userId, callback) {
-    get('/api/own/listSort', {userId: userId}, callback);
+    get('/admin/own/listSort', {userId: userId}, callback);
 }
 
 function changeOwn(ownId, userId, fileId, fileName, sort, description, callback) {
-    post('/api/own/changeOwn', {
+    post('/admin/own/changeOwn', {
         ownId: ownId,
         userId: userId,
         fileId: fileId,
@@ -158,7 +158,7 @@ function changeOwn(ownId, userId, fileId, fileName, sort, description, callback)
 }
 
 function checkAddOwn(userId, fileId, fileName, sort, description, callback) {
-    get('/api/own/checkAddOwn', {
+    get('/admin/own/checkAddOwn', {
         userId: userId,
         fileId: fileId,
         fileName: fileName,
@@ -168,7 +168,7 @@ function checkAddOwn(userId, fileId, fileName, sort, description, callback) {
 }
 
 function checkChangeOwn(ownId, userId, fileId, fileName, sort, description, callback) {
-    get('/api/own/checkChangeOwn', {
+    get('/admin/own/checkChangeOwn', {
         ownId: ownId,
         userId: userId,
         fileId: fileId,
@@ -181,15 +181,15 @@ function checkChangeOwn(ownId, userId, fileId, fileName, sort, description, call
 //permission
 
 function addPermission(permissionId, permissionMark, callback) {
-    post('/api/permission/addPermission', {permissionId: permissionId, permissionMark: permissionMark}, callback);
+    post('/admin/permission/addPermission', {permissionId: permissionId, permissionMark: permissionMark}, callback);
 }
 
 function removePermission(permissionId, callback) {
-    post('/api/permission/removePermission', {permissionId: permissionId}, callback);
+    post('/admin/permission/removePermission', {permissionId: permissionId}, callback);
 }
 
 function getPermission(permissionId, callback) {
-    get('/api/permission/getPermission', {permissionId: permissionId}, callback);
+    get('/admin/permission/getPermission', {permissionId: permissionId}, callback);
 }
 
 function listPermission(callback) {
@@ -197,7 +197,7 @@ function listPermission(callback) {
 }
 
 function listPermissions(pageSize, page, permissionId, permissionMark, createTime, updateTime, callback) {
-    get('/api/permission/listPermission', {
+    get('/admin/permission/listPermission', {
         pageSize: pageSize,
         page: page,
         permissionId: permissionId,
@@ -208,11 +208,11 @@ function listPermissions(pageSize, page, permissionId, permissionMark, createTim
 }
 
 function getPermissionAuthorization(permissionId, callback) {
-    get('/api/permission/getPermissionAuthorization', {permissionId: permissionId}, callback);
+    get('/admin/permission/getPermissionAuthorization', {permissionId: permissionId}, callback);
 }
 
 function listPermissionAuthorization(pageSize, page, permissionId, permissionMark, createTime, updateTime, callback) {
-    get('/api/permission/listPermissionAuthorization', {
+    get('/admin/permission/listPermissionAuthorization', {
         pageSize: pageSize,
         page: page,
         permissionId: permissionId,
@@ -223,15 +223,15 @@ function listPermissionAuthorization(pageSize, page, permissionId, permissionMar
 }
 
 function changePermission(permissionId, permissionMark, callback) {
-    post('/api/permission/changePermission', {permissionId: permissionId, permissionMark: permissionMark}, callback);
+    post('/admin/permission/changePermission', {permissionId: permissionId, permissionMark: permissionMark}, callback);
 }
 
 function checkAddPermission(permissionId, permissionMark, callback) {
-    get('/api/permission/checkAddPermission', {permissionId: permissionId, permissionMark: permissionMark}, callback);
+    get('/admin/permission/checkAddPermission', {permissionId: permissionId, permissionMark: permissionMark}, callback);
 }
 
 function checkChangePermission(permissionId, permissionMark, callback) {
-    get('/api/permission/checkChangePermission', {
+    get('/admin/permission/checkChangePermission', {
         permissionId: permissionId,
         permissionMark: permissionMark
     }, callback);
@@ -240,19 +240,19 @@ function checkChangePermission(permissionId, permissionMark, callback) {
 //user
 
 function addUser(username, userPassword, callback) {
-    post('/api/user/addUser', {username: username, userPassword: userPassword}, callback);
+    post('/admin/user/addUser', {username: username, userPassword: userPassword}, callback);
 }
 
 function removeUser(userId, callback) {
-    post('/api/user/removeUser', {userId: userId}, callback);
+    post('/admin/user/removeUser', {userId: userId}, callback);
 }
 
 function getUser(userId, callback) {
-    get('/api/user/getUser', {userId: userId}, callback);
+    get('/admin/user/getUser', {userId: userId}, callback);
 }
 
 function listUser(pageSize, page, userId, username, createTime, updateTime, callback) {
-    get('/api/user/listUser', {
+    get('/admin/user/listUser', {
         pageSize: pageSize,
         page: page,
         userId: userId,
@@ -263,11 +263,11 @@ function listUser(pageSize, page, userId, username, createTime, updateTime, call
 }
 
 function getUserAuthorization(userId, callback) {
-    get('/api/user/getUserAuthorization', {userId: userId}, callback);
+    get('/admin/user/getUserAuthorization', {userId: userId}, callback);
 }
 
 function listUserAuthorization(pageSize, page, userId, username, createTime, updateTime, callback) {
-    get('/api/user/listUserAuthorization', {
+    get('/admin/user/listUserAuthorization', {
         pageSize: pageSize,
         page: page,
         userId: userId,
@@ -278,11 +278,11 @@ function listUserAuthorization(pageSize, page, userId, username, createTime, upd
 }
 
 function getUserOwn(userId, callback) {
-    get('/api/user/getUserOwn', {userId: userId}, callback);
+    get('/admin/user/getUserOwn', {userId: userId}, callback);
 }
 
 function listUserOwn(pageSize, page, userId, username, createTime, updateTime, callback) {
-    get('/api/user/listUserOwn', {
+    get('/admin/user/listUserOwn', {
         pageSize: pageSize,
         page: page,
         userId: userId,
@@ -293,15 +293,15 @@ function listUserOwn(pageSize, page, userId, username, createTime, updateTime, c
 }
 
 function changeUser(userId, username, userPassword, callback) {
-    post('/api/user/changeUser', {userId: userId, username: username, userPassword: userPassword}, callback);
+    post('/admin/user/changeUser', {userId: userId, username: username, userPassword: userPassword}, callback);
 }
 
 function checkAddUser(username, userPassword, callback) {
-    get('/api/user/checkAddUser', {username: username, userPassword: userPassword}, callback);
+    get('/admin/user/checkAddUser', {username: username, userPassword: userPassword}, callback);
 }
 
 function checkChangeUser(userId, username, userPassword, callback) {
-    get('/api/user/checkChangeUser', {userId: userId, username: username, userPassword: userPassword}, callback);
+    get('/admin/user/checkChangeUser', {userId: userId, username: username, userPassword: userPassword}, callback);
 }
 
 //public

@@ -1,8 +1,9 @@
-package top.cellargalaxy.mycloud.controlor.api;
+package top.cellargalaxy.mycloud.controlor.admin;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,10 +17,11 @@ import top.cellargalaxy.mycloud.service.UserService;
 /**
  * Created by cellargalaxy on 18-7-19.
  */
+@PreAuthorize("hasRole('USER')")
 @RestController
 @RequestMapping(UserApiControlor.URL)
 public class UserApiControlor {
-	public static final String URL = "/api/user";
+	public static final String URL = "/admin/user";
 	private Logger logger = LoggerFactory.getLogger(UserApiControlor.class);
 	@Autowired
 	private UserService userService;
@@ -77,8 +79,8 @@ public class UserApiControlor {
 	@GetMapping("/listUser")
 	private Vo listUser(UserQuery userQuery) {
 		try {
-			logger.info("listUser");
-			return new Vo(null, userService.listUser(userQuery));
+//			logger.info("listUser");
+			return new Vo(null, null/*userService.listUser(userQuery)*/);
 		} catch (Exception e) {
 			e.printStackTrace();
 			GlobalException.add(e);

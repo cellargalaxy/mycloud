@@ -22,6 +22,10 @@ public class GlobalException {
 		add(exception, 0, null);
 	}
 
+	public static final void add(Exception exception, String massage) {
+		add(exception, 0, massage);
+	}
+
 	public static final synchronized void add(Exception exception, int status, String massage) {
 		ExceptionInfoVo exceptionInfoVo = new ExceptionInfoVo(exception, ExceptionUtil.printException(exception), status, massage, new Date());
 		if (EXCEPTION_INFO_VOS.size() >= MAX_EXCEPTION_INFO_SIZE) {

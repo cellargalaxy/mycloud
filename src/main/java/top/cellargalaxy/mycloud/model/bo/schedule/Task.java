@@ -12,7 +12,7 @@ import java.util.UUID;
  * @author cellargalaxy
  * @time 2018/7/17
  */
-public class Task implements Serializable, Closeable {
+public abstract class Task implements Serializable, Closeable {
 	public static final int CANCEL_STATUS = -3;
 	public static final int WAIT_STATUS = -2;
 	public static final int EXECUTION_STATUS = -1;
@@ -22,16 +22,20 @@ public class Task implements Serializable, Closeable {
 	private final UserPo userPo;
 	private final String taskId;
 	private final Date createTime;
+	private final String taskSort;
 	private int status;
 	private String massage;
 	private Date finishTime;
 
-	public Task(UserPo userPo) {
-		this.userPo = userPo;
+	public Task(UserPo userPo, String taskSort) {
+		this.userPo = userPo.getUserId() > 0 ? userPo : null;
+		this.taskSort = taskSort;
 		taskId = UUID.randomUUID().toString();
 		createTime = new Date();
 		status = WAIT_STATUS;
 	}
+
+	public abstract String getTaskDetail();
 
 	public UserPo getUserPo() {
 		return userPo;
@@ -43,6 +47,10 @@ public class Task implements Serializable, Closeable {
 
 	public Date getCreateTime() {
 		return createTime;
+	}
+
+	public String getTaskSort() {
+		return taskSort;
 	}
 
 	public int getStatus() {

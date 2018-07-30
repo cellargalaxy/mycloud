@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import top.cellargalaxy.mycloud.dao.*;
+import top.cellargalaxy.mycloud.service.UserService;
+import top.cellargalaxy.mycloud.service.impl.UserServiceImplTest;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -21,9 +23,11 @@ public class MycloudApplicationTests {
 	private FileInfoDao fileInfoDao;
 	@Autowired
 	private OwnDao ownDao;
+	@Autowired
+	private UserService userService;
 
 	@Test
 	public void test() throws Exception {
-		new FileInfoDaoTest(fileInfoDao).insert();
+		new UserServiceImplTest(userService).pageUserAuthorization();
 	}
 }

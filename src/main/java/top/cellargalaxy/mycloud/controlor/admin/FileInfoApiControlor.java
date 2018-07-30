@@ -1,8 +1,9 @@
-package top.cellargalaxy.mycloud.controlor.api;
+package top.cellargalaxy.mycloud.controlor.admin;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,10 +17,11 @@ import top.cellargalaxy.mycloud.service.FileInfoService;
  * @author cellargalaxy
  * @time 2018/7/20
  */
+@PreAuthorize("hasAuthority('ADMIN')")
 @RestController
 @RequestMapping(FileInfoApiControlor.URL)
 public class FileInfoApiControlor {
-	public static final String URL = "/api/fileInfo";
+	public static final String URL = "/admin/fileInfo";
 	private Logger logger = LoggerFactory.getLogger(FileInfoApiControlor.class);
 	@Autowired
 	private FileInfoService fileInfoService;

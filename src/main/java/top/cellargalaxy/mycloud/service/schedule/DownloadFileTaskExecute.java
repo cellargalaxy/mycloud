@@ -1,12 +1,10 @@
 package top.cellargalaxy.mycloud.service.schedule;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import top.cellargalaxy.mycloud.dao.BlockDao;
 import top.cellargalaxy.mycloud.dao.FileBlockDao;
 import top.cellargalaxy.mycloud.dao.FileInfoDao;
-import top.cellargalaxy.mycloud.exception.GlobalException;
 import top.cellargalaxy.mycloud.model.bo.BlockBo;
 import top.cellargalaxy.mycloud.model.bo.FileBlockBo;
 import top.cellargalaxy.mycloud.model.bo.FileInfoBo;
@@ -21,36 +19,20 @@ import java.util.List;
 
 /**
  * @author cellargalaxy
- * @time 2018/7/17
+ * @time 2018/7/30
  */
-@Component
-public class DownloadFileSchedule extends AbstractSchedule<DownloadFileTask> {
-	@Autowired
-	private FileInfoDao fileInfoDao;
+@Service
+public class DownloadFileTaskExecute implements TaskExecute<DownloadFileTask> {
+	public static final String TASK_SORT = DownloadFileTask.TASK_SORT;
 	@Autowired
 	private FileBlockDao fileBlockDao;
 	@Autowired
+	private FileInfoDao fileInfoDao;
+	@Autowired
 	private BlockDao blockDao;
 
-	@Scheduled(fixedDelay = 1000 * 5)
-	public void downloadFileSchedule() {
-		while (true) {
-			DownloadFileTask task = null;
-			try (DownloadFileTask downloadFileTask = getWaitTask()) {
-				task = downloadFileTask;
-				downloadFile(task);
-				addFinishTask(task, Task.SUCCESS_STATUS);
-			} catch (Exception e) {
-				e.printStackTrace();
-				GlobalException.add(e, 0, "未知异常");
-				if (task != null) {
-					addFinishTask(task, Task.FAIL_STATUS);
-				}
-			}
-		}
-	}
-
-	public void downloadFile(DownloadFileTask downloadFileTask) throws IOException {
+	@Override
+	public void executeTask(DownloadFileTask downloadFileTask) throws Exception {
 		FileInfoQuery fileInfoQuery = downloadFileTask.getFileInfoQuery();
 		File file = downloadFileTask.getFile();
 
@@ -58,7 +40,7 @@ public class DownloadFileSchedule extends AbstractSchedule<DownloadFileTask> {
 			downloadFile(fileInfoQuery, outputStream);
 		}
 
-		downloadFileTask.setStatus(1);
+		downloadFileTask.setStatus(Task.SUCCESS_STATUS);
 	}
 
 	public void downloadFile(FileInfoQuery fileInfoQuery, OutputStream outputStream) throws IOException {

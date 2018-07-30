@@ -2,21 +2,17 @@ package top.cellargalaxy.mycloud.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import top.cellargalaxy.mycloud.dao.FileInfoDao;
 import top.cellargalaxy.mycloud.model.bo.schedule.DownloadFileTask;
+import top.cellargalaxy.mycloud.model.bo.schedule.Task;
 import top.cellargalaxy.mycloud.model.bo.schedule.UploadFileTask;
 import top.cellargalaxy.mycloud.model.po.OwnPo;
 import top.cellargalaxy.mycloud.model.po.UserPo;
 import top.cellargalaxy.mycloud.model.query.FileInfoQuery;
 import top.cellargalaxy.mycloud.service.FileService;
-import top.cellargalaxy.mycloud.service.schedule.DownloadFileSchedule;
-import top.cellargalaxy.mycloud.service.schedule.UploadFileSchedule;
+import top.cellargalaxy.mycloud.service.schedule.TaskSchedule;
 
 import java.io.File;
-import java.io.IOException;
-import java.io.OutputStream;
 import java.util.List;
-import java.util.concurrent.BlockingQueue;
 
 /**
  * @author cellargalaxy
@@ -25,64 +21,35 @@ import java.util.concurrent.BlockingQueue;
 @Service
 public class FileServiceImpl implements FileService {
 	@Autowired
-	private UploadFileSchedule uploadFileSchedule;
-	@Autowired
-	private DownloadFileSchedule downloadFileSchedule;
+	private TaskSchedule taskSchedule;
 
 	@Override
-	public void addUploadFileTask(UserPo userPo, File file, String contentType, OwnPo ownPo) {
-		UploadFileTask uploadFileTask = new UploadFileTask(userPo, ownPo, file, contentType);
-		uploadFileSchedule.addTask(uploadFileTask);
-	}
-
-	@Override
-	public UploadFileTask removeUploadFileTask(String taskId) {
-		return uploadFileSchedule.removeTask(taskId);
-	}
-
-	@Override
-	public BlockingQueue<UploadFileTask> getWaitUploadFileTasks() {
-		return uploadFileSchedule.getWaitTasks();
-	}
-
-	@Override
-	public UploadFileTask getCurrentUploadFileTask() {
-		return uploadFileSchedule.getCurrentTask();
-	}
-
-	@Override
-	public List<UploadFileTask> getFinishUploadFileTasks() {
-		return uploadFileSchedule.getFinishTasks();
+	public void addUploadFileTask(OwnPo ownPo, File file, String contentType) {
+		taskSchedule.addTask(new UploadFileTask(ownPo, file, contentType));
 	}
 
 	@Override
 	public void addDownloadFileTask(UserPo userPo, FileInfoQuery fileInfoQuery, File file) {
-		DownloadFileTask downloadFileTask = new DownloadFileTask(userPo, fileInfoQuery, file);
-		downloadFileSchedule.addTask(downloadFileTask);
+		taskSchedule.addTask(new DownloadFileTask(userPo, fileInfoQuery, file));
 	}
 
 	@Override
-	public void downloadFile(FileInfoQuery fileInfoQuery, OutputStream outputStream) throws IOException {
-		downloadFileSchedule.downloadFile(fileInfoQuery, outputStream);
+	public Task removeTask(String taskId) {
+		return taskSchedule.removeTask(taskId);
 	}
 
 	@Override
-	public DownloadFileTask removeDownloadFileTask(String taskId) {
-		return downloadFileSchedule.removeTask(taskId);
+	public List<Task> listWaitTask(int off, int len) {
+		return taskSchedule.listWaitTask(off, len);
 	}
 
 	@Override
-	public BlockingQueue<DownloadFileTask> getWaitDownloadFileTasks() {
-		return downloadFileSchedule.getWaitTasks();
+	public Task getCurrentTask() {
+		return taskSchedule.getCurrentTask();
 	}
 
 	@Override
-	public DownloadFileTask getCurrentDownloadFileTask() {
-		return downloadFileSchedule.getCurrentTask();
-	}
-
-	@Override
-	public List<DownloadFileTask> getFinishDownloadFileTasks() {
-		return downloadFileSchedule.getFinishTasks();
+	public List<Task> listFinishTask(int off, int len) {
+		return taskSchedule.listFinishTask(off, len);
 	}
 }

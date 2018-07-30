@@ -2,28 +2,54 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c2ef05b8-2b63-4160-a53e-9bf9d968257d" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/vue/src/components/page-upload-file.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__io_jsonwebtoken_jjwt_0_9_1.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_boot_spring_boot_starter_security_2_0_3_RELEASE.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_security_spring_security_config_5_0_6_RELEASE.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_security_spring_security_core_5_0_6_RELEASE.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_springframework_security_spring_security_web_5_0_6_RELEASE.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/controlor/security/AuthenticationFilter.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/controlor/security/LoginFilter.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/controlor/security/UserDetailsImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/service/schedule/DownloadFileTaskExecute.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/service/schedule/TaskExecute.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/service/schedule/TaskExecuteFactory.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/service/schedule/UploadFileTaskExecute.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/top/cellargalaxy/mycloud/service/impl/UserServiceImplTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/dao/mapper/AuthorizationMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/dao/mapper/AuthorizationMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/dao/mapper/BlockMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/dao/mapper/BlockMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/dao/mapper/FileBlockMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/dao/mapper/FileBlockMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/dao/mapper/FileInfoMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/dao/mapper/FileInfoMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/dao/mapper/OwnMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/dao/mapper/OwnMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/dao/mapper/PermissionMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/dao/mapper/PermissionMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/dao/mapper/UserMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/dao/mapper/UserMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vue/src/App.vue" beforeDir="false" afterPath="$PROJECT_DIR$/vue/src/App.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vue/src/components/admin-file-info-own.vue" beforeDir="false" afterPath="$PROJECT_DIR$/vue/src/components/admin-file-info-own.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vue/src/components/admin-menu.vue" beforeDir="false" afterPath="$PROJECT_DIR$/vue/src/components/admin-menu.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vue/src/components/admin-permission.vue" beforeDir="false" afterPath="$PROJECT_DIR$/vue/src/components/admin-permission.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vue/src/components/admin-user-authorization.vue" beforeDir="false" afterPath="$PROJECT_DIR$/vue/src/components/admin-user-authorization.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vue/src/components/admin-user.vue" beforeDir="false" afterPath="$PROJECT_DIR$/vue/src/components/admin-user.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vue/src/components/public-menu.vue" beforeDir="false" afterPath="$PROJECT_DIR$/vue/src/components/public-menu.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vue/src/components/test.vue" beforeDir="false" afterPath="$PROJECT_DIR$/vue/src/components/test.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vue/src/components/upload-file.vue" beforeDir="false" afterPath="$PROJECT_DIR$/vue/src/components/upload-file.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vue/src/router/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/vue/src/router/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mycloud.iml" beforeDir="false" afterPath="$PROJECT_DIR$/mycloud.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mycloud.sql" beforeDir="false" afterPath="$PROJECT_DIR$/mycloud.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/configuration/Configuration.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/configuration/MycloudConfiguration.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/controlor/AdminControlor.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/controlor/RootControlor.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/controlor/UserControlor.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/controlor/api/AuthorizationApiControlor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/controlor/admin/AuthorizationApiControlor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/controlor/api/FileInfoApiControlor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/controlor/admin/FileInfoApiControlor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/controlor/api/LogApiControlor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/controlor/admin/LogApiControlor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/controlor/api/OwnApiControlor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/controlor/admin/OwnApiControlor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/controlor/api/PermissionApiControlor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/controlor/admin/PermissionApiControlor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/controlor/api/UserApiControlor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/controlor/admin/UserApiControlor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/controlor/security/GrantedAuthorityImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/controlor/security/GrantedAuthorityImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/controlor/security/UserDetailsServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/controlor/security/UserDetailsServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/controlor/security/UserPoDetails.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/controlor/security/WebSecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/controlor/security/WebSecurityConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/exception/GlobalException.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/exception/GlobalException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/model/bo/schedule/DownloadFileTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/model/bo/schedule/DownloadFileTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/model/bo/schedule/Task.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/model/bo/schedule/Task.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/model/bo/schedule/UploadFileTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/model/bo/schedule/UploadFileTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/model/query/AuthorizationQuery.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/model/query/AuthorizationQuery.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/model/query/FileInfoQuery.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/model/query/FileInfoQuery.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/model/query/OwnQuery.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/model/query/OwnQuery.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/model/query/PermissionQuery.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/model/query/PermissionQuery.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/model/query/UserQuery.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/model/query/UserQuery.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/service/FileService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/service/FileService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/service/impl/FileServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/service/impl/FileServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/service/schedule/AbstractSchedule.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/service/schedule/TaskSchedule.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/service/schedule/DownloadFileSchedule.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/service/schedule/UploadFileSchedule.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/api.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/js/api.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/top/cellargalaxy/mycloud/MycloudApplicationTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/top/cellargalaxy/mycloud/MycloudApplicationTests.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/vue/src/utils/api.js" beforeDir="false" afterPath="$PROJECT_DIR$/vue/src/utils/api.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vue/src/utils/axios.js" beforeDir="false" afterPath="$PROJECT_DIR$/vue/src/utils/axios.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -90,71 +116,72 @@
     <session id="178857532">
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="class" value="25" />
+          <entry key="class" value="31" />
           <entry key="css" value="1" />
           <entry key="ejs" value="2" />
           <entry key="html" value="20" />
-          <entry key="java" value="1162" />
+          <entry key="java" value="1323" />
           <entry key="js" value="68" />
           <entry key="json" value="2" />
           <entry key="png" value="1" />
-          <entry key="properties" value="13" />
-          <entry key="sql" value="13" />
+          <entry key="properties" value="17" />
+          <entry key="sql" value="16" />
           <entry key="ts" value="1" />
           <entry key="user" value="1" />
           <entry key="vue" value="222" />
-          <entry key="xml" value="11" />
+          <entry key="xml" value="15" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="CLASS" value="25" />
+          <entry key="CLASS" value="31" />
           <entry key="CSS" value="1" />
           <entry key="Database Element" value="1" />
           <entry key="HTML" value="20" />
           <entry key="Image" value="1" />
-          <entry key="JAVA" value="1162" />
+          <entry key="JAVA" value="1323" />
           <entry key="JSON" value="2" />
           <entry key="JavaScript" value="68" />
           <entry key="PLAIN_TEXT" value="2" />
-          <entry key="Properties" value="13" />
-          <entry key="SQL" value="13" />
+          <entry key="Properties" value="17" />
+          <entry key="SQL" value="16" />
           <entry key="TypeScript" value="1" />
           <entry key="Vue.js" value="222" />
-          <entry key="XML" value="11" />
+          <entry key="XML" value="15" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="HTML" value="1710" />
-          <entry key="JAVA" value="17324" />
+          <entry key="JAVA" value="20056" />
           <entry key="JavaScript" value="2334" />
-          <entry key="PLAIN_TEXT" value="31" />
-          <entry key="Properties" value="32" />
-          <entry key="SQL" value="22" />
+          <entry key="PLAIN_TEXT" value="45" />
+          <entry key="Properties" value="35" />
+          <entry key="SQL" value="26" />
           <entry key="Vue.js" value="4015" />
-          <entry key="XML" value="7" />
+          <entry key="XML" value="12" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="dummy" value="31" />
+          <entry key="dummy" value="45" />
           <entry key="html" value="1710" />
-          <entry key="java" value="17324" />
+          <entry key="java" value="20056" />
           <entry key="js" value="2334" />
-          <entry key="properties" value="32" />
-          <entry key="sql" value="22" />
+          <entry key="properties" value="35" />
+          <entry key="sql" value="26" />
           <entry key="vue" value="4015" />
-          <entry key="xml" value="7" />
+          <entry key="xml" value="12" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="2" />
+          <entry key="project.closed" value="3" />
           <entry key="project.open.time.1" value="2" />
           <entry key="project.open.time.10" value="1" />
+          <entry key="project.open.time.2" value="2" />
           <entry key="project.open.time.7" value="1" />
-          <entry key="project.opened" value="4" />
+          <entry key="project.opened" value="6" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.js.language.service.starts">
@@ -165,30 +192,45 @@
     </session>
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300" />
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/controlor/security/WebSecurityConfig.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="425">
+              <caret line="78" column="26" selection-start-line="78" selection-start-column="26" selection-end-line="78" selection-end-column="26" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/controlor/admin/UserApiControlor.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="131">
+              <caret line="19" selection-start-line="19" selection-end-line="19" selection-end-column="13" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="JUnit4 Test Class" />
         <option value="FxmlFile" />
-        <option value="Interface" />
         <option value="HTML File" />
-        <option value="Class" />
         <option value="JavaScript File" />
         <option value="Vue Single File Component" />
+        <option value="JUnit4 Test Class" />
+        <option value="Interface" />
+        <option value="Class" />
       </list>
     </option>
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>activeIndex2</find>
-      <find>toLowerCase</find>
-      <find>get</find>
-      <find>post</find>
-      <find>, callback</find>
-      <find>callback</find>
-      <find>listUser</find>
       <find>getOwnCount</find>
       <find>changeUser</find>
       <find>class</find>
@@ -212,6 +254,13 @@
       <find>bg-purple</find>
       <find>proxyTable</find>
       <find>sql:</find>
+      <find>selectSome</find>
+      <find>start</find>
+      <find>select</find>
+      <find>Total: 12</find>
+      <find>startPage</find>
+      <find>user</find>
+      <find>getUserAuthorization</find>
     </findStrings>
     <replaceStrings>
       <replace>Change</replace>
@@ -226,57 +275,57 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/controlor/api/LogApiControlor.java" />
-        <option value="$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/controlor/api/PermissionApiControlor.java" />
-        <option value="$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/controlor/api/UserApiControlor.java" />
-        <option value="$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/dao/cache/UserCache.java" />
-        <option value="$PROJECT_DIR$/vue/src/components/child.vue" />
-        <option value="$PROJECT_DIR$/vue/src/components/parent.vue" />
-        <option value="$PROJECT_DIR$/vue/src/components/pagination.vue" />
-        <option value="$PROJECT_DIR$/vue/src/utils/util.js" />
-        <option value="$PROJECT_DIR$/vue/src/components/user-form.vue" />
-        <option value="$PROJECT_DIR$/vue/src/components/permission-form.vue" />
-        <option value="$PROJECT_DIR$/vue/src/components/own-dalog.vue" />
-        <option value="$PROJECT_DIR$/vue/src/components/exception-info-table.vue" />
-        <option value="$PROJECT_DIR$/vue/src/components/file-info-own-card.vue" />
-        <option value="$PROJECT_DIR$/vue/src/components/user-table.vue" />
-        <option value="$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/service/impl/PermissionServiceImpl.java" />
-        <option value="$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/dao/PermissionDao.java" />
-        <option value="$PROJECT_DIR$/vue/src/components/exception-info.vue" />
-        <option value="$PROJECT_DIR$/vue/src/components/permission-table.vue" />
-        <option value="$PROJECT_DIR$/vue/src/components/user-authorization-table.vue" />
-        <option value="$PROJECT_DIR$/vue/src/components/user-authorization.vue" />
-        <option value="$PROJECT_DIR$/vue/src/components/permission.vue" />
-        <option value="$PROJECT_DIR$/vue/src/components/admin-exception-info.vue" />
-        <option value="$PROJECT_DIR$/vue/src/components/admin-file-info-own-card.vue" />
-        <option value="$PROJECT_DIR$/vue/src/components/page-admin-user.vue" />
-        <option value="$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/model/bo/FileInfoBo.java" />
-        <option value="$PROJECT_DIR$/vue/src/components/page-exception-info.vue" />
-        <option value="$PROJECT_DIR$/vue/src/components/page-permission.vue" />
-        <option value="$PROJECT_DIR$/vue/src/components/page-user-authorization.vue" />
-        <option value="$PROJECT_DIR$/vue/src/components/page-admin-file-info-own.vue" />
-        <option value="$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/controlor/api/OwnApiControlor.java" />
-        <option value="$PROJECT_DIR$/vue/src/utils/axios.js" />
-        <option value="$PROJECT_DIR$/vue/src/utils/api.js" />
-        <option value="$PROJECT_DIR$/vue/src/components/upload-file.vue" />
-        <option value="$PROJECT_DIR$/vue/src/components/test.vue" />
-        <option value="$PROJECT_DIR$/vue/src/components/page-upload-file.vue" />
-        <option value="$PROJECT_DIR$/vue/src/App.vue" />
-        <option value="$PROJECT_DIR$/vue/src/components/admin-menu.vue" />
-        <option value="$PROJECT_DIR$/vue/src/components/admin-user-authorization.vue" />
-        <option value="$PROJECT_DIR$/vue/src/components/admin-permission.vue" />
-        <option value="$PROJECT_DIR$/vue/src/components/admin-user.vue" />
-        <option value="$PROJECT_DIR$/vue/src/components/admin-file-info-own.vue" />
-        <option value="$PROJECT_DIR$/vue/src/components/public-menu.vue" />
-        <option value="$PROJECT_DIR$/vue/src/router/index.js" />
-        <option value="$PROJECT_DIR$/src/main/resources/application.properties" />
-        <option value="$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/dao/mapper/BlockMapper.java" />
         <option value="$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/dao/mapper/FileBlockMapper.java" />
-        <option value="$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/dao/mapper/FileInfoMapper.java" />
+        <option value="$PROJECT_DIR$/src/test/java/top/cellargalaxy/mycloud/MycloudApplicationTests.java" />
+        <option value="$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/service/AuthorizationService.java" />
+        <option value="$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/service/FileInfoService.java" />
+        <option value="$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/service/OwnService.java" />
+        <option value="$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/service/PermissionService.java" />
+        <option value="$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/service/UserService.java" />
+        <option value="$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/service/impl/UserServiceImpl.java" />
         <option value="$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/dao/mapper/AuthorizationMapper.java" />
+        <option value="$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/dao/mapper/FileInfoMapper.java" />
         <option value="$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/dao/mapper/OwnMapper.java" />
         <option value="$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/dao/mapper/PermissionMapper.java" />
         <option value="$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/dao/mapper/UserMapper.java" />
+        <option value="$PROJECT_DIR$/src/main/resources/application.properties" />
+        <option value="$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/service/schedule/DownloadTaskExecute.java" />
+        <option value="$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/service/schedule/UploadFileSchedule.java" />
+        <option value="$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/service/schedule/AbstractSchedule.java" />
+        <option value="$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/exception/GlobalException.java" />
+        <option value="$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/model/bo/schedule/Task.java" />
+        <option value="$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/service/schedule/TaskExecute.java" />
+        <option value="$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/service/schedule/UploadFileTaskExecute.java" />
+        <option value="$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/service/schedule/DownloadFileTaskExecute.java" />
+        <option value="$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/service/schedule/TaskExecuteFactory.java" />
+        <option value="$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/service/schedule/TaskSchedule.java" />
+        <option value="$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/model/bo/schedule/DownloadFileTask.java" />
+        <option value="$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/model/bo/schedule/UploadFileTask.java" />
+        <option value="$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/service/FileService.java" />
+        <option value="$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/service/impl/FileServiceImpl.java" />
+        <option value="$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/controlor/security/GrantedAuthorityImpl.java" />
+        <option value="$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/controlor/security/UserDetailsImpl.java" />
+        <option value="$PROJECT_DIR$/pom.xml" />
+        <option value="$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/configuration/Configuration.java" />
+        <option value="$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/configuration/MycloudConfiguration.java" />
+        <option value="$PROJECT_DIR$/src/test/java/top/cellargalaxy/mycloud/service/impl/UserServiceImplTest.java" />
+        <option value="$PROJECT_DIR$/mycloud.sql" />
+        <option value="$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/controlor/security/UserDetailsServiceImpl.java" />
+        <option value="$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/model/query/PageQuery.java" />
+        <option value="$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/model/query/AuthorizationQuery.java" />
+        <option value="$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/model/query/FileInfoQuery.java" />
+        <option value="$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/model/query/OwnQuery.java" />
+        <option value="$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/model/query/PermissionQuery.java" />
+        <option value="$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/model/query/UserQuery.java" />
+        <option value="$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/controlor/security/AuthenticationFilter.java" />
+        <option value="$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/controlor/admin/AuthorizationApiControlor.java" />
+        <option value="$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/controlor/admin/PermissionApiControlor.java" />
+        <option value="$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/controlor/admin/FileInfoApiControlor.java" />
+        <option value="$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/controlor/admin/LogApiControlor.java" />
+        <option value="$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/controlor/admin/OwnApiControlor.java" />
+        <option value="$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/controlor/security/LoginFilter.java" />
+        <option value="$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/controlor/admin/UserApiControlor.java" />
+        <option value="$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/controlor/security/WebSecurityConfig.java" />
       </list>
     </option>
   </component>
@@ -298,11 +347,6 @@
           <item name="mycloud" type="9519ce18:MavenProjectsStructure$ProjectNode" />
           <item name="Lifecycle" type="58874e2:MavenProjectsStructure$LifecycleNode" />
         </path>
-        <path>
-          <item name="" type="16c1761:MavenProjectsStructure$RootNode" />
-          <item name="mycloud" type="9519ce18:MavenProjectsStructure$ProjectNode" />
-          <item name="Dependencies" type="f4be9f2a:MavenProjectsStructure$DependenciesNode" />
-        </path>
       </expand>
       <select />
     </treeState>
@@ -319,10 +363,10 @@
     <servers />
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-1" />
-    <option name="y" value="-4" />
-    <option name="width" value="962" />
-    <option name="height" value="1085" />
+    <option name="x" value="-8" />
+    <option name="y" value="-8" />
+    <option name="width" value="974" />
+    <option name="height" value="1047" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectUserFactors">
@@ -3018,6 +3062,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
+      <pane id="AndroidView" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -3058,7 +3104,7 @@
               <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="mycloud" type="462c0819:PsiDirectoryNode" />
-              <item name="dao" type="462c0819:PsiDirectoryNode" />
+              <item name="controlor" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="mycloud" type="b2602c69:ProjectViewProjectNode" />
@@ -3067,8 +3113,18 @@
               <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="mycloud" type="462c0819:PsiDirectoryNode" />
-              <item name="dao" type="462c0819:PsiDirectoryNode" />
-              <item name="mapper" type="462c0819:PsiDirectoryNode" />
+              <item name="controlor" type="462c0819:PsiDirectoryNode" />
+              <item name="admin" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="mycloud" type="b2602c69:ProjectViewProjectNode" />
+              <item name="mycloud" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="mycloud" type="462c0819:PsiDirectoryNode" />
+              <item name="controlor" type="462c0819:PsiDirectoryNode" />
+              <item name="security" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="mycloud" type="b2602c69:ProjectViewProjectNode" />
@@ -3080,41 +3136,38 @@
             <path>
               <item name="mycloud" type="b2602c69:ProjectViewProjectNode" />
               <item name="mycloud" type="462c0819:PsiDirectoryNode" />
-              <item name="vue" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="mycloud" type="b2602c69:ProjectViewProjectNode" />
-              <item name="mycloud" type="462c0819:PsiDirectoryNode" />
-              <item name="vue" type="462c0819:PsiDirectoryNode" />
-              <item name="config" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="mycloud" type="b2602c69:ProjectViewProjectNode" />
-              <item name="mycloud" type="462c0819:PsiDirectoryNode" />
-              <item name="vue" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="mycloud" type="b2602c69:ProjectViewProjectNode" />
               <item name="mycloud" type="462c0819:PsiDirectoryNode" />
-              <item name="vue" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="components" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="mycloud" type="b2602c69:ProjectViewProjectNode" />
               <item name="mycloud" type="462c0819:PsiDirectoryNode" />
-              <item name="vue" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="router" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="mycloud" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="mycloud" type="b2602c69:ProjectViewProjectNode" />
+              <item name="mycloud" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="mycloud" type="462c0819:PsiDirectoryNode" />
+              <item name="impl" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
       <pane id="PackagesPane" />
-      <pane id="AndroidView" />
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -3125,7 +3178,7 @@
     <property name="RequestMappingsPanelWidth1" value="75" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1532674013085" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1532953207403" />
     <property name="com.intellij.database.dataSource.DataSourceTemplate" value="MySQL" />
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary" value="JUnit4" />
     <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit4" value="" />
@@ -3139,19 +3192,20 @@
   </component>
   <component name="RecentsManager">
     <key name="CreateTestDialog.RecentsKey">
+      <recent name="top.cellargalaxy.mycloud.service.impl" />
       <recent name="top.cellargalaxy.mycloud.dao" />
       <recent name="top.cellargalaxy.newcloud.learn" />
       <recent name="top.cellargalaxy.newcloud.dao" />
     </key>
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="D:\idea\mycloud" />
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\idea\mycloud\src\main\java\top\cellargalaxy\newcloud\dao" />
+      <recent name="D:\idea\mycloud\src\main\java\top\cellargalaxy\newcloud\dao\db" />
     </key>
     <key name="CreateTestDialog.Recents.Supers">
       <recent name="" />
     </key>
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="D:\idea\mycloud\src\main\java\top\cellargalaxy\newcloud\dao" />
-      <recent name="D:\idea\mycloud\src\main\java\top\cellargalaxy\newcloud\dao\db" />
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\idea\mycloud" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -3216,24 +3270,6 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="PermissionDaoTest.selectOne" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="newcloud" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="top.cellargalaxy.mycloud.dao.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="top.cellargalaxy.newcloud.dao" />
-      <option name="MAIN_CLASS_NAME" value="top.cellargalaxy.newcloud.dao.PermissionDaoTest" />
-      <option name="METHOD_NAME" value="selectOne" />
-      <option name="TEST_OBJECT" value="method" />
-      <option name="VM_PARAMETERS" />
-      <option name="WORKING_DIRECTORY" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="UserDaoTest.selectOne" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="newcloud" />
       <extension name="coverage">
@@ -3252,6 +3288,22 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="UserServiceImplTest.pageUser" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="mycloud" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="top.cellargalaxy.mycloud.service.impl.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="top.cellargalaxy.mycloud.service.impl" />
+      <option name="MAIN_CLASS_NAME" value="top.cellargalaxy.mycloud.service.impl.UserServiceImplTest" />
+      <option name="METHOD_NAME" value="pageUser" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="MycloudApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
       <module name="mycloud" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="top.cellargalaxy.mycloud.MycloudApplication" />
@@ -3264,17 +3316,17 @@
       <item itemvalue="Spring Boot.MycloudApplication" />
       <item itemvalue="Application.MainTest" />
       <item itemvalue="JUnit.UserDaoTest.selectOne" />
-      <item itemvalue="JUnit.PermissionDaoTest.selectOne" />
       <item itemvalue="JUnit.MycloudApplicationTests.test" />
       <item itemvalue="JUnit.MycloudApplicationTests.main" />
+      <item itemvalue="JUnit.UserServiceImplTest.pageUser" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.MainTest" />
         <item itemvalue="JUnit.MycloudApplicationTests.test" />
+        <item itemvalue="JUnit.UserServiceImplTest.pageUser" />
+        <item itemvalue="Application.MainTest" />
         <item itemvalue="JUnit.MycloudApplicationTests.main" />
         <item itemvalue="JUnit.UserDaoTest.selectOne" />
-        <item itemvalue="JUnit.PermissionDaoTest.selectOne" />
       </list>
     </recent_temporary>
   </component>
@@ -3304,48 +3356,51 @@
       <workItem from="1532482012652" duration="17093000" />
       <workItem from="1532613788975" duration="8016000" />
       <workItem from="1532674045954" duration="212000" />
+      <workItem from="1532930578067" duration="14352000" />
+      <workItem from="1532945054748" duration="6564000" />
     </task>
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="NewcloudApplicationTests_test - 2018.07.17 at 11h 58m 29s.xml">
-      <configuration name="NewcloudApplicationTests.test" configurationId="JUnit" />
+    <history-entry file="MycloudApplicationTests_test - 2018.07.30 at 15h 09m 00s.xml">
+      <configuration name="MycloudApplicationTests.test" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="NewcloudApplicationTests_test - 2018.07.17 at 11h 58m 55s.xml">
-      <configuration name="NewcloudApplicationTests.test" configurationId="JUnit" />
+    <history-entry file="MycloudApplicationTests_test - 2018.07.30 at 15h 09m 27s.xml">
+      <configuration name="MycloudApplicationTests.test" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="NewcloudApplicationTests_test - 2018.07.17 at 13h 19m 27s.xml">
-      <configuration name="NewcloudApplicationTests.test" configurationId="JUnit" />
+    <history-entry file="MycloudApplicationTests_test - 2018.07.30 at 15h 10m 06s.xml">
+      <configuration name="MycloudApplicationTests.test" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="NewcloudApplicationTests_main - 2018.07.17 at 13h 40m 56s.xml">
-      <configuration name="NewcloudApplicationTests.main" configurationId="JUnit" />
+    <history-entry file="MycloudApplicationTests_test - 2018.07.30 at 15h 12m 35s.xml">
+      <configuration name="MycloudApplicationTests.test" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="NewcloudApplicationTests_main - 2018.07.17 at 13h 41m 07s.xml">
-      <configuration name="NewcloudApplicationTests.main" configurationId="JUnit" />
+    <history-entry file="MycloudApplicationTests_test - 2018.07.30 at 15h 13m 04s.xml">
+      <configuration name="MycloudApplicationTests.test" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="NewcloudApplicationTests_main - 2018.07.17 at 13h 41m 29s.xml">
-      <configuration name="NewcloudApplicationTests.main" configurationId="JUnit" />
+    <history-entry file="MycloudApplicationTests_test - 2018.07.30 at 15h 15m 25s.xml">
+      <configuration name="MycloudApplicationTests.test" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="NewcloudApplicationTests_test - 2018.07.17 at 14h 57m 57s.xml">
-      <configuration name="NewcloudApplicationTests.test" configurationId="JUnit" />
+    <history-entry file="MycloudApplicationTests_test - 2018.07.30 at 15h 17m 21s.xml">
+      <configuration name="MycloudApplicationTests.test" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="NewcloudApplicationTests_test - 2018.07.17 at 15h 00m 16s.xml">
-      <configuration name="NewcloudApplicationTests.test" configurationId="JUnit" />
+    <history-entry file="MycloudApplicationTests_test - 2018.07.30 at 15h 18m 15s.xml">
+      <configuration name="MycloudApplicationTests.test" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="NewcloudApplicationTests_test - 2018.07.17 at 15h 00m 40s.xml">
-      <configuration name="NewcloudApplicationTests.test" configurationId="JUnit" />
+    <history-entry file="MycloudApplicationTests_test - 2018.07.30 at 18h 03m 16s.xml">
+      <configuration name="MycloudApplicationTests.test" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="NewcloudApplicationTests_test - 2018.07.17 at 15h 00m 58s.xml">
-      <configuration name="NewcloudApplicationTests.test" configurationId="JUnit" />
+    <history-entry file="MycloudApplicationTests_test - 2018.07.30 at 18h 04m 59s.xml">
+      <configuration name="MycloudApplicationTests.test" configurationId="JUnit" />
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="273820000" />
+    <option name="totallyTimeSpent" value="294736000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.15298508" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.18017058" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Designer" order="2" />
       <window_info id="Image Layers" order="3" />
@@ -3368,7 +3423,7 @@
       <window_info anchor="bottom" id="Database Changes" order="12" />
       <window_info anchor="bottom" id="Version Control" order="13" />
       <window_info anchor="bottom" id="Database Console" order="14" weight="0.32899022" />
-      <window_info anchor="bottom" id="Run" order="15" weight="0.19543974" />
+      <window_info anchor="bottom" id="Run" order="15" visible="true" weight="0.29858848" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -3423,330 +3478,380 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/vue/src/components/parent.vue" />
-    <entry file="file://$PROJECT_DIR$/vue/src/components/child.vue" />
-    <entry file="file://$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/controlor/api/UserApiControlor.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/model/po/UserPo.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="209">
-          <caret line="64" column="30" selection-start-line="64" selection-start-column="18" selection-end-line="64" selection-end-column="30" />
+        <state relative-caret-position="152">
+          <caret line="12" column="13" selection-start-line="12" selection-start-column="13" selection-end-line="12" selection-end-column="13" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/resources/templates/templates.html">
+    <entry file="file://$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/service/schedule/DownloadFileSchedule.java" />
+    <entry file="file://$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/service/schedule/UploadFileSchedule.java" />
+    <entry file="file://$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/exception/GlobalException.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="263">
-          <caret line="347" column="83" lean-forward="true" selection-start-line="347" selection-start-column="36" selection-end-line="347" selection-end-column="83" />
+        <state relative-caret-position="437">
+          <caret line="27" lean-forward="true" selection-start-line="27" selection-end-line="27" />
+          <folding>
+            <element signature="e#541#542#0" expanded="true" />
+            <element signature="e#571#572#0" expanded="true" />
+            <element signature="e#654#655#0" expanded="true" />
+            <element signature="e#684#685#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/vue/src/components/own-dalog.vue" />
-    <entry file="file://$PROJECT_DIR$/vue/src/components/user-form.vue" />
-    <entry file="file://$PROJECT_DIR$/vue/src/components/permission-form.vue" />
-    <entry file="file://$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/service/impl/PermissionServiceImpl.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/service/schedule/DownloadFileTaskExecute.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="263">
-          <caret line="130" column="33" lean-forward="true" selection-start-line="130" selection-start-column="33" selection-end-line="130" selection-end-column="33" />
+        <state relative-caret-position="168">
+          <caret line="26" column="14" selection-start-line="26" selection-start-column="14" selection-end-line="26" selection-end-column="14" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/util/SqlUtil.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/service/schedule/TaskExecute.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="147">
-          <caret line="41" column="38" selection-start-line="41" selection-start-column="38" selection-end-line="41" selection-end-column="38" />
+        <state relative-caret-position="114">
+          <caret line="6" column="17" selection-start-line="6" selection-start-column="17" selection-end-line="6" selection-end-column="17" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/dao/PermissionDao.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/service/schedule/TaskExecuteFactory.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="267">
-          <caret line="31" column="9" lean-forward="true" selection-start-line="31" selection-start-column="9" selection-end-line="31" selection-end-column="9" />
+        <state relative-caret-position="456">
+          <caret line="24" column="34" selection-start-line="24" selection-start-column="34" selection-end-line="24" selection-end-column="34" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/vue/src/components/page-admin-user.vue">
+    <entry file="file://$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/service/schedule/UploadFileTaskExecute.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="471">
-          <caret line="30" lean-forward="true" selection-start-line="30" selection-end-line="30" />
+        <state relative-caret-position="684">
+          <caret line="36" lean-forward="true" selection-start-line="36" selection-end-line="36" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/model/vo/FileInfoOwnVo.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/model/bo/schedule/Task.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="220">
-          <caret line="15" column="23" lean-forward="true" selection-start-line="15" selection-start-column="23" selection-end-line="15" selection-end-column="23" />
+        <state relative-caret-position="418">
+          <caret line="28" lean-forward="true" selection-start-line="28" selection-end-line="28" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/model/bo/OwnBo.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/model/vo/ExceptionInfoVo.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="246">
-          <caret line="50" column="25" lean-forward="true" selection-start-line="50" selection-start-column="25" selection-end-line="51" selection-end-column="45" />
+        <state relative-caret-position="301">
+          <caret line="20" lean-forward="true" selection-start-line="20" selection-end-line="20" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/model/vo/OwnVo.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/model/bo/schedule/DownloadFileTask.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="154">
-          <caret line="7" column="30" selection-start-line="7" selection-start-column="30" selection-end-line="7" selection-end-column="30" />
+        <state relative-caret-position="510">
+          <caret line="46" column="37" selection-start-line="46" selection-start-column="37" selection-end-line="46" selection-end-column="37" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/vue/src/components/page-admin-permission.vue">
+    <entry file="file://$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/model/bo/schedule/UploadFileTask.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="484">
-          <caret line="22" column="33" lean-forward="true" selection-start-line="22" selection-start-column="33" selection-end-line="27" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/model/po/FileInfoPo.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="308">
-          <caret line="16" column="28" lean-forward="true" selection-start-line="16" selection-start-column="28" selection-end-line="16" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/model/query/FileInfoQuery.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="176">
-          <caret line="10" column="41" selection-start-line="10" selection-start-column="41" selection-end-line="10" selection-end-column="41" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/model/bo/FileInfoBo.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="138">
-          <caret line="10" column="44" lean-forward="true" selection-start-line="10" selection-start-column="44" selection-end-line="10" selection-end-column="44" />
+        <state relative-caret-position="817">
+          <caret line="55" column="37" selection-start-line="55" selection-start-column="37" selection-end-line="55" selection-end-column="37" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/service/FileInfoService.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="374">
-          <caret line="22" column="17" lean-forward="true" selection-start-line="22" selection-start-column="17" selection-end-line="22" selection-end-column="17" />
+        <state relative-caret-position="342">
+          <caret line="23" lean-forward="true" selection-start-line="23" selection-end-line="23" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/controlor/api/FileInfoApiControlor.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/service/LogService.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="176">
-          <caret line="51" lean-forward="true" selection-start-line="51" selection-end-line="51" />
+        <state relative-caret-position="285">
+          <caret line="17" lean-forward="true" selection-start-line="17" selection-end-line="17" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/controlor/api/OwnApiControlor.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/service/FileService.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="444">
-          <caret line="77" column="20" selection-start-line="77" selection-start-column="20" selection-end-line="77" selection-end-column="20" />
+        <state relative-caret-position="494">
+          <caret line="26" lean-forward="true" selection-start-line="26" selection-end-line="26" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/vue/src/components/page-admin-file-info-own.vue">
+    <entry file="file://$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/service/impl/LogServiceImpl.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="330">
-          <caret line="15" lean-forward="true" selection-start-line="15" selection-end-line="15" />
+        <state relative-caret-position="342">
+          <caret line="26" lean-forward="true" selection-start-line="26" selection-end-line="26" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/vue/src/components/admin-exception-info.vue">
+    <entry file="file://$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/service/impl/FileServiceImpl.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="303">
-          <caret line="15" lean-forward="true" selection-start-line="15" selection-end-line="15" />
+        <state relative-caret-position="228">
+          <caret line="24" lean-forward="true" selection-start-line="24" selection-end-line="24" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/vue/src/components/page-admin-exception-info.vue">
+    <entry file="file://$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/controlor/AdminControlor.java" />
+    <entry file="file://$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/controlor/RootControlor.java" />
+    <entry file="file://$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/controlor/security/GrantedAuthorityImpl.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="399">
-          <caret line="21" column="26" selection-start-line="21" selection-start-column="26" selection-end-line="21" selection-end-column="26" />
+        <state relative-caret-position="57">
+          <caret line="3" lean-forward="true" selection-start-line="3" selection-end-line="3" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/vue/src/components/pagination.vue">
+    <entry file="jar://$MAVEN_REPOSITORY$/org/springframework/security/spring-security-core/5.0.6.RELEASE/spring-security-core-5.0.6.RELEASE.jar!/org/springframework/security/core/authority/AuthorityUtils.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="361">
-          <caret line="29" column="15" lean-forward="true" selection-start-line="29" selection-start-column="15" selection-end-line="29" selection-end-column="15" />
+        <state relative-caret-position="627">
+          <caret line="44" column="26" lean-forward="true" selection-start-line="44" selection-start-column="26" selection-end-line="44" selection-end-column="26" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/vue/src/components/page-admin-user-authorization.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="418">
-          <caret line="22" column="45" selection-start-line="22" selection-start-column="45" selection-end-line="27" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/vue/src/utils/util.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="38">
-          <caret line="2" column="41" lean-forward="true" selection-start-line="2" selection-start-column="41" selection-end-line="2" selection-end-column="41" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/vue/src/utils/api.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="168">
-          <caret line="432" column="37" selection-start-line="432" selection-start-column="37" selection-end-line="432" selection-end-column="37" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/vue/src/components/upload-file.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="570">
-          <caret line="30" column="84" selection-start-line="30" selection-start-column="84" selection-end-line="30" selection-end-column="84" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/vue/src/components/page-upload-file.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="19">
-          <caret line="1" column="10" lean-forward="true" selection-start-line="1" selection-start-column="10" selection-end-line="1" selection-end-column="10" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/vue/src/main.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="38">
-          <caret line="2" column="7" lean-forward="true" selection-start-line="2" selection-start-column="7" selection-end-line="2" selection-end-column="7" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/vue/src/utils/axios.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="836">
-          <caret line="44" column="20" selection-start-line="44" selection-start-column="12" selection-end-line="44" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/vue/config/index.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="330">
-          <caret line="19" column="25" lean-forward="true" selection-start-line="19" selection-start-column="25" selection-end-line="19" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/vue/src/App.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="38">
-          <caret line="2" column="16" selection-start-line="2" selection-start-column="16" selection-end-line="2" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/vue/src/components/admin-menu.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="171">
-          <caret line="9" column="36" selection-start-line="9" selection-start-column="36" selection-end-line="9" selection-end-column="36" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/vue/src/components/admin-user-authorization.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="537">
-          <caret line="83" column="34" selection-start-line="83" selection-start-column="34" selection-end-line="83" selection-end-column="34" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/vue/src/components/admin-permission.vue">
+    <entry file="file://$PROJECT_DIR$/src/test/java/top/cellargalaxy/mycloud/service/impl/UserServiceImplTest.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="152">
-          <caret line="8" column="149" selection-start-line="8" selection-start-column="149" selection-end-line="8" selection-end-column="149" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/vue/src/components/admin-user.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="190">
-          <caret line="10" column="48" selection-start-line="10" selection-start-column="48" selection-end-line="10" selection-end-column="48" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/vue/src/components/admin-file-info-own.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="290">
-          <caret line="126" column="26" selection-start-line="126" selection-start-column="26" selection-end-line="126" selection-end-column="26" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/vue/src/components/public-menu.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="323">
-          <caret line="17" column="43" selection-start-line="17" selection-start-column="43" selection-end-line="17" selection-end-column="43" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/vue/src/components/test.vue">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="703">
-          <caret line="37" lean-forward="true" selection-start-line="37" selection-end-line="37" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/vue/src/router/index.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="570">
-          <caret line="30" column="32" lean-forward="true" selection-start-line="30" selection-start-column="32" selection-end-line="30" selection-end-column="32" />
+          <caret line="15" selection-start-line="15" selection-end-line="15" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/pom.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="380">
-          <caret line="35" column="21" lean-forward="true" selection-start-line="32" selection-start-column="8" selection-end-line="35" selection-end-column="21" />
+        <state relative-caret-position="1520">
+          <caret line="80" selection-start-line="80" selection-end-line="80" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/service/schedule/TaskSchedule.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="171">
+          <caret line="24" lean-forward="true" selection-start-line="24" selection-end-line="24" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="method#removeTask#0;class#TaskSchedule#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/mycloud.sql">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="269">
+          <caret line="180" column="62" lean-forward="true" selection-start-line="180" selection-start-column="62" selection-end-line="180" selection-end-column="62" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/org/springframework/security/spring-security-core/5.0.6.RELEASE/spring-security-core-5.0.6.RELEASE.jar!/org/springframework/security/core/userdetails/UserDetailsService.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="38">
+          <caret line="5" column="26" selection-start-line="5" selection-start-column="26" selection-end-line="5" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/service/UserService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="374">
+          <caret line="27" column="24" selection-start-line="27" selection-start-column="24" selection-end-line="27" selection-end-column="24" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/service/impl/UserServiceImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="399">
+          <caret line="107" column="65" lean-forward="true" selection-start-line="107" selection-start-column="65" selection-end-line="107" selection-end-column="65" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/model/query/PageQuery.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="114">
+          <caret line="6" column="17" selection-start-line="6" selection-start-column="17" selection-end-line="6" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/dao/AuthorizationDao.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="152">
+          <caret line="12" column="17" selection-start-line="12" selection-start-column="17" selection-end-line="12" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/model/query/AuthorizationQuery.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="133">
+          <caret line="10" column="78" lean-forward="true" selection-start-line="10" selection-start-column="78" selection-end-line="12" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/model/query/BlockQuery.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="152">
+          <caret line="8" column="13" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/model/query/FileBlockQuery.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="152">
+          <caret line="8" column="13" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/model/query/FileInfoQuery.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="190">
+          <caret line="13" column="25" selection-start-line="13" selection-start-column="25" selection-end-line="13" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/model/query/OwnQuery.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="190">
+          <caret line="13" column="25" selection-start-line="13" selection-start-column="25" selection-end-line="13" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/model/query/PermissionQuery.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="171">
+          <caret line="12" column="25" selection-start-line="12" selection-start-column="25" selection-end-line="12" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/model/query/UserQuery.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="247">
+          <caret line="16" lean-forward="true" selection-start-line="16" selection-end-line="16" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/resources/application.properties">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1311">
-          <caret line="69" column="44" selection-start-line="69" selection-start-column="44" selection-end-line="69" selection-end-column="44" />
+        <state relative-caret-position="1252">
+          <caret line="69" column="50" lean-forward="true" selection-start-line="69" selection-start-column="50" selection-end-line="69" selection-end-column="50" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/dao/mapper/AuthorizationMapper.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/controlor/admin/AuthorizationApiControlor.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2375">
-          <caret line="140" column="26" lean-forward="true" selection-start-line="140" selection-start-column="26" selection-end-line="140" selection-end-column="26" />
+        <state relative-caret-position="152">
+          <caret line="20" column="33" selection-start-line="20" selection-start-column="29" selection-end-line="20" selection-end-column="33" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/dao/mapper/BlockMapper.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/controlor/admin/FileInfoApiControlor.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="339">
-          <caret line="75" column="26" selection-start-line="75" selection-start-column="26" selection-end-line="75" selection-end-column="26" />
+        <state relative-caret-position="133">
+          <caret line="18" column="3" lean-forward="true" selection-start-line="18" selection-start-column="3" selection-end-line="19" selection-end-column="38" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/dao/mapper/FileBlockMapper.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/controlor/admin/LogApiControlor.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="168">
-          <caret line="97" column="26" selection-start-line="97" selection-start-column="26" selection-end-line="97" selection-end-column="26" />
+        <state relative-caret-position="152">
+          <caret line="16" column="38" selection-start-line="16" selection-start-column="38" selection-end-line="16" selection-end-column="38" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/dao/mapper/FileInfoMapper.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/controlor/admin/OwnApiControlor.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="19">
-          <caret line="122" column="26" selection-start-line="122" selection-start-column="26" selection-end-line="122" selection-end-column="26" />
+        <state relative-caret-position="152">
+          <caret line="20" column="38" selection-start-line="20" selection-start-column="38" selection-end-line="20" selection-end-column="38" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/dao/mapper/OwnMapper.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/configuration/MycloudConfiguration.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="95">
-          <caret line="160" column="26" lean-forward="true" selection-start-line="160" selection-start-column="26" selection-end-line="160" selection-end-column="26" />
+        <state relative-caret-position="361">
+          <caret line="24" column="31" selection-start-line="24" selection-start-column="31" selection-end-line="24" selection-end-column="31" />
+          <folding>
+            <element signature="e#551#552#0" expanded="true" />
+            <element signature="e#592#593#0" expanded="true" />
+            <element signature="e#619#620#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/dao/mapper/PermissionMapper.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/controlor/security/LoginFilter.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="128">
-          <caret line="115" column="26" lean-forward="true" selection-start-line="115" selection-start-column="26" selection-end-line="115" selection-end-column="26" />
+        <state relative-caret-position="122">
+          <caret line="40" lean-forward="true" selection-start-line="40" selection-end-line="40" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/dao/mapper/UserMapper.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/controlor/security/UserDetailsImpl.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="624">
-          <caret line="136" lean-forward="true" selection-start-line="136" selection-end-line="136" />
+        <state relative-caret-position="399">
+          <caret line="21" lean-forward="true" selection-start-line="21" selection-end-line="21" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#756#757#0" expanded="true" />
+            <element signature="e#788#789#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/controlor/security/UserDetailsServiceImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="271">
+          <caret line="26" column="69" selection-start-line="26" selection-start-column="69" selection-end-line="26" selection-end-column="69" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/controlor/security/AuthenticationFilter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1336">
+          <caret line="94" column="62" selection-start-line="94" selection-start-column="62" selection-end-line="94" selection-end-column="62" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/controlor/admin/PermissionApiControlor.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="152">
+          <caret line="20" selection-start-line="20" selection-end-line="20" selection-end-column="37" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/org/springframework/security/spring-security-config/5.0.6.RELEASE/spring-security-config-5.0.6.RELEASE.jar!/org/springframework/security/config/annotation/method/configuration/EnableGlobalMethodSecurity.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="177">
+          <caret line="23" column="18" selection-start-line="23" selection-start-column="18" selection-end-line="23" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/controlor/admin/UserApiControlor.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="131">
+          <caret line="19" selection-start-line="19" selection-end-line="19" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/top/cellargalaxy/mycloud/controlor/security/WebSecurityConfig.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="425">
+          <caret line="78" column="26" selection-start-line="78" selection-start-column="26" selection-end-line="78" selection-end-column="26" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

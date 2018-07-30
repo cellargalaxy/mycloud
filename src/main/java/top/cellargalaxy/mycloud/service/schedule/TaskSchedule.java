@@ -1,5 +1,11 @@
 package top.cellargalaxy.mycloud.service.schedule;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
+import top.cellargalaxy.mycloud.exception.GlobalException;
+import top.cellargalaxy.mycloud.model.bo.schedule.Task;
+
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -10,11 +16,34 @@ import java.util.concurrent.LinkedTransferQueue;
  * @author cellargalaxy
  * @time 2018/7/19
  */
-public abstract class AbstractSchedule<Task extends top.cellargalaxy.mycloud.model.bo.schedule.Task> {
+@Component
+public class TaskSchedule {
 	public static final int MAX_FINISH_TASKS_LIST = 1000;
 	private final BlockingQueue<Task> waitTasks = new LinkedTransferQueue<>();
 	private Task currentTask;
 	private final LinkedList<Task> finishTasks = new LinkedList<>();
+
+	@Autowired
+	private TaskExecuteFactory taskExecuteFactory;
+
+	@Scheduled(fixedDelay = 1000 * 5)
+	public void uploadFileSchedule() {
+		while (true) {
+			try (Task task = getWaitTask()) {
+				currentTask = task;
+				TaskExecute taskExecute = taskExecuteFactory.getTaskExecute(currentTask.getTaskSort());
+				taskExecute.executeTask(currentTask);
+				addFinishTask(currentTask, Task.SUCCESS_STATUS);
+				currentTask = null;
+			} catch (Exception e) {
+				e.printStackTrace();
+				GlobalException.add(e, 0, "未知异常");
+				if (currentTask != null) {
+					addFinishTask(currentTask, Task.FAIL_STATUS);
+				}
+			}
+		}
+	}
 
 	public void addTask(Task task) {
 		if (task == null) {
@@ -41,13 +70,13 @@ public abstract class AbstractSchedule<Task extends top.cellargalaxy.mycloud.mod
 		return null;
 	}
 
-	protected Task getWaitTask() throws InterruptedException {
-		currentTask = waitTasks.take();
-		currentTask.setStatus(Task.EXECUTION_STATUS);
-		return currentTask;
+	private Task getWaitTask() throws InterruptedException {
+		Task task = waitTasks.take();
+		task.setStatus(Task.EXECUTION_STATUS);
+		return task;
 	}
 
-	protected void addFinishTask(Task task, int status) {
+	private void addFinishTask(Task task, int status) {
 		if (task == null) {
 			return;
 		}
@@ -56,11 +85,10 @@ public abstract class AbstractSchedule<Task extends top.cellargalaxy.mycloud.mod
 		}
 		task.setStatus(status);
 		finishTasks.add(task);
-		currentTask = null;
 	}
 
 	//并发问题
-	public List<Task> getWaitTasks(int off, int len) {
+	public List<Task> listWaitTask(int off, int len) {
 		List<Task> tasks = new LinkedList<>();
 		Iterator<Task> iterator = waitTasks.iterator();
 		for (int i = 0; iterator.hasNext() && i < off; i++) {
@@ -73,7 +101,7 @@ public abstract class AbstractSchedule<Task extends top.cellargalaxy.mycloud.mod
 	}
 
 	//并发问题
-	public List<Task> getFinishTasks(int off, int len) {
+	public List<Task> listFinishTask(int off, int len) {
 		return finishTasks.subList(off, off + len);
 	}
 

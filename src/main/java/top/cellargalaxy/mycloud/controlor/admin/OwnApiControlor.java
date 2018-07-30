@@ -1,8 +1,9 @@
-package top.cellargalaxy.mycloud.controlor.api;
+package top.cellargalaxy.mycloud.controlor.admin;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,10 +18,11 @@ import top.cellargalaxy.mycloud.service.OwnService;
  * @author cellargalaxy
  * @time 2018/7/20
  */
+@PreAuthorize("hasAuthority('ADMIN')")
 @RestController
 @RequestMapping(OwnApiControlor.URL)
 public class OwnApiControlor {
-	public static final String URL = "/api/own";
+	public static final String URL = "/admin/own";
 	private Logger logger = LoggerFactory.getLogger(OwnApiControlor.class);
 	@Autowired
 	private OwnService ownService;

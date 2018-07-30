@@ -52,7 +52,7 @@ DROP TABLE IF EXISTS `block`;
  SET character_set_client = utf8mb4 ;
 CREATE TABLE `block` (
   `block_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '数据块id',
-  `block` mediumblob NOT NULL COMMENT '数据块',
+  `block` blob NOT NULL COMMENT '数据块',
   PRIMARY KEY (`block_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -183,7 +183,7 @@ DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user` (
   `user_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '用户id',
   `username` varchar(32) CHARACTER SET utf8mb4 NOT NULL COMMENT '用户名',
-  `user_password` char(32) NOT NULL COMMENT '用户密码',
+  `user_password` char(68) NOT NULL COMMENT '用户密码',
   `create_time` datetime NOT NULL COMMENT '创建时间',
   `update_time` datetime NOT NULL COMMENT '更新时间',
   PRIMARY KEY (`user_id`),

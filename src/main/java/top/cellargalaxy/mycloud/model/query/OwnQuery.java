@@ -1,6 +1,7 @@
 package top.cellargalaxy.mycloud.model.query;
 
 import top.cellargalaxy.mycloud.model.po.OwnPo;
+import top.cellargalaxy.mycloud.util.SqlUtil;
 
 import java.util.Objects;
 
@@ -9,8 +10,8 @@ import java.util.Objects;
  * @time 2018/7/16
  */
 public class OwnQuery extends OwnPo implements PageQuery {
-	private int pageSize;
-	private int page;
+	private int pageSize = SqlUtil.MAX_PAGE_SIZE;
+	private int page = 1;
 	private int off;
 	private int len;
 
