@@ -20,10 +20,10 @@ import top.cellargalaxy.mycloud.service.PermissionService;
  */
 @PreAuthorize("hasAuthority('ROOT')")
 @RestController
-@RequestMapping(PermissionApiControlor.URL)
-public class PermissionApiControlor {
+@RequestMapping(PermissionApiController.URL)
+public class PermissionApiController {
 	public static final String URL = "/admin/permission";
-	private Logger logger = LoggerFactory.getLogger(PermissionApiControlor.class);
+	private Logger logger = LoggerFactory.getLogger(PermissionApiController.class);
 	@Autowired
 	private PermissionService permissionService;
 

@@ -20,10 +20,10 @@ import top.cellargalaxy.mycloud.service.AuthorizationService;
  */
 @PreAuthorize("hasAuthority('ROOT')")
 @RestController
-@RequestMapping(AuthorizationApiControlor.URL)
-public class AuthorizationApiControlor {
+@RequestMapping(AuthorizationApiController.URL)
+public class AuthorizationApiController {
 	public static final String URL = "/admin/authorization";
-	private Logger logger = LoggerFactory.getLogger(AuthorizationApiControlor.class);
+	private Logger logger = LoggerFactory.getLogger(AuthorizationApiController.class);
 	@Autowired
 	private AuthorizationService authorizationService;
 

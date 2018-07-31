@@ -1,10 +1,8 @@
 package top.cellargalaxy.mycloud.controlor.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -12,7 +10,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import top.cellargalaxy.mycloud.configuration.MycloudConfiguration;
 
@@ -20,9 +17,9 @@ import top.cellargalaxy.mycloud.configuration.MycloudConfiguration;
  * @author cellargalaxy
  * @time 2018/7/30
  */
-//@Configuration
-//@EnableWebSecurity
-//@EnableGlobalMethodSecurity(prePostEnabled = true)
+@Configuration
+@EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private UserDetailsService userDetailsService;
@@ -34,8 +31,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		authenticationManagerBuilder
 				//设置UserDetailsService
 				.userDetailsService(userDetailsService);
-//				使用BCrypt进行密码的hash
-//				.passwordEncoder(new BCryptPasswordEncoder());
 	}
 
 	@Override

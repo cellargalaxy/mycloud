@@ -16,8 +16,8 @@ import top.cellargalaxy.mycloud.service.impl.LogServiceImpl;
  */
 @PreAuthorize("hasAuthority('ADMIN')")
 @RestController
-@RequestMapping(LogApiControlor.URL)
-public class LogApiControlor {
+@RequestMapping(LogApiController.URL)
+public class LogApiController {
 	public static final String URL = "/admin/log";
 	private Logger logger = LoggerFactory.getLogger(LogServiceImpl.class);
 	@Autowired

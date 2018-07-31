@@ -20,10 +20,10 @@ import top.cellargalaxy.mycloud.service.OwnService;
  */
 @PreAuthorize("hasAuthority('ADMIN')")
 @RestController
-@RequestMapping(OwnApiControlor.URL)
-public class OwnApiControlor {
+@RequestMapping(OwnApiController.URL)
+public class OwnApiController {
 	public static final String URL = "/admin/own";
-	private Logger logger = LoggerFactory.getLogger(OwnApiControlor.class);
+	private Logger logger = LoggerFactory.getLogger(OwnApiController.class);
 	@Autowired
 	private OwnService ownService;
 

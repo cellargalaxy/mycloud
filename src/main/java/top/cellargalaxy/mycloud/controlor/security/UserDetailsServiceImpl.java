@@ -10,14 +10,16 @@ import top.cellargalaxy.mycloud.model.query.UserQuery;
 import top.cellargalaxy.mycloud.model.vo.UserAuthorizationVo;
 import top.cellargalaxy.mycloud.service.UserService;
 
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * @author cellargalaxy
  * @time 2018/7/30
  */
-//@Service
+@Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 	@Autowired
 	private UserService userService;
@@ -28,7 +30,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 			setUsername(s);
 		}});
 		if (userAuthorization == null) {
-			return new UserDetailsImpl(null, null, null);
+			String randomUUID = UUID.randomUUID().toString();
+			return new UserDetailsImpl(randomUUID, "{noop}" + randomUUID, Collections.emptyList());
 		}
 		List<GrantedAuthorityImpl> grantedAuthorities = new LinkedList<>();
 		for (AuthorizationBo authorization : userAuthorization.getAuthorizations()) {

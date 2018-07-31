@@ -17,12 +17,12 @@ import top.cellargalaxy.mycloud.service.UserService;
 /**
  * Created by cellargalaxy on 18-7-19.
  */
-@PreAuthorize("hasRole('USER')")
+@PreAuthorize("hasAuthority('USER')")
 @RestController
-@RequestMapping(UserApiControlor.URL)
-public class UserApiControlor {
+@RequestMapping(UserApiController.URL)
+public class UserApiController {
 	public static final String URL = "/admin/user";
-	private Logger logger = LoggerFactory.getLogger(UserApiControlor.class);
+	private Logger logger = LoggerFactory.getLogger(UserApiController.class);
 	@Autowired
 	private UserService userService;
 
@@ -53,7 +53,7 @@ public class UserApiControlor {
 	}
 
 	@GetMapping("/getUser")
-	private Vo getUser(UserQuery userQuery) {
+	public Vo getUser(UserQuery userQuery) {
 		try {
 			logger.info("getUser");
 			return new Vo(null, userService.getUser(userQuery));
@@ -65,7 +65,7 @@ public class UserApiControlor {
 	}
 
 	@GetMapping("/getUserCount")
-	private Vo getUserCount(UserQuery userQuery) {
+	public Vo getUserCount(UserQuery userQuery) {
 		try {
 			logger.info("getUserCount");
 			return new Vo(null, userService.getUserCount(userQuery));
@@ -77,7 +77,7 @@ public class UserApiControlor {
 	}
 
 	@GetMapping("/listUser")
-	private Vo listUser(UserQuery userQuery) {
+	public Vo listUser(UserQuery userQuery) {
 		try {
 //			logger.info("listUser");
 			return new Vo(null, null/*userService.listUser(userQuery)*/);
@@ -89,7 +89,7 @@ public class UserApiControlor {
 	}
 
 	@GetMapping("/getUserAuthorization")
-	private Vo getUserAuthorization(UserQuery userQuery) {
+	public Vo getUserAuthorization(UserQuery userQuery) {
 		try {
 			logger.info("getUserAuthorization");
 			return new Vo(null, userService.getUserAuthorization(userQuery));
@@ -101,7 +101,7 @@ public class UserApiControlor {
 	}
 
 	@GetMapping("/listUserAuthorization")
-	private Vo listUserAuthorization(UserQuery userQuery) {
+	public Vo listUserAuthorization(UserQuery userQuery) {
 		try {
 			logger.info("listUserAuthorization");
 			return new Vo(null, userService.listUserAuthorization(userQuery));
@@ -113,7 +113,7 @@ public class UserApiControlor {
 	}
 
 	@GetMapping("/getUserOwn")
-	private Vo getUserOwn(UserQuery userQuery) {
+	public Vo getUserOwn(UserQuery userQuery) {
 		try {
 			logger.info("getUserOwn");
 			return new Vo(null, userService.getUserOwn(userQuery));
@@ -125,7 +125,7 @@ public class UserApiControlor {
 	}
 
 	@GetMapping("/listUserOwn")
-	private Vo listUserOwn(UserQuery userQuery) {
+	public Vo listUserOwn(UserQuery userQuery) {
 		try {
 			logger.info("listUserOwn");
 			return new Vo(null, userService.listUserOwn(userQuery));

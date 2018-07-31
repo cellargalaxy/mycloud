@@ -19,10 +19,10 @@ import top.cellargalaxy.mycloud.service.FileInfoService;
  */
 @PreAuthorize("hasAuthority('ADMIN')")
 @RestController
-@RequestMapping(FileInfoApiControlor.URL)
-public class FileInfoApiControlor {
+@RequestMapping(FileInfoApiController.URL)
+public class FileInfoApiController {
 	public static final String URL = "/admin/fileInfo";
-	private Logger logger = LoggerFactory.getLogger(FileInfoApiControlor.class);
+	private Logger logger = LoggerFactory.getLogger(FileInfoApiController.class);
 	@Autowired
 	private FileInfoService fileInfoService;
 

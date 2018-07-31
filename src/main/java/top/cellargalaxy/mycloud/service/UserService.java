@@ -13,7 +13,9 @@ import java.util.List;
  * @time 2018/7/17
  */
 public interface UserService {
-	UserPo login(UserQuery userQuery);
+	UserPo login(String username, String password);
+
+
 
 	String addUser(UserPo userPo);
 
