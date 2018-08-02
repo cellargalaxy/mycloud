@@ -4,6 +4,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.LinkedList;
 
 /**
  * @author cellargalaxy
@@ -12,16 +13,16 @@ import java.util.Collection;
 public class UserDetailsImpl implements UserDetails {
 	private final String username;
 	private final String password;
-	private final Collection<? extends GrantedAuthority> grantedAuthorities;
+	private final Collection<GrantedAuthority> grantedAuthorities;
 
-	public UserDetailsImpl(String username, String password, Collection<? extends GrantedAuthority> grantedAuthorities) {
+	public UserDetailsImpl(String username, String password) {
 		this.username = username;
 		this.password = password;
-		this.grantedAuthorities = grantedAuthorities;
+		grantedAuthorities = new LinkedList<>();
 	}
 
 	@Override
-	public Collection<? extends GrantedAuthority> getAuthorities() {
+	public Collection<GrantedAuthority> getAuthorities() {
 		return grantedAuthorities;
 	}
 

@@ -25,38 +25,20 @@ public class LogApiController {
 
 	@PostMapping("/clearExceptionInfo")
 	public Vo clearExceptionInfo() {
-		try {
-			logger.info("clearExceptionInfo");
-			return new Vo(null, logService.clearExceptionInfo());
-		} catch (Exception e) {
-			e.printStackTrace();
-			GlobalException.add(e);
-			return new Vo(e);
-		}
+		logger.info("clearExceptionInfo");
+		return new Vo(null, logService.clearExceptionInfo());
 	}
 
 	@GetMapping("/getExceptionInfoCount")
 	public Vo getExceptionInfoCount() {
-		try {
-			logger.info("getExceptionInfoCount");
-			return new Vo(null, logService.getExceptionInfoCount());
-		} catch (Exception e) {
-			e.printStackTrace();
-			GlobalException.add(e);
-			return new Vo(e);
-		}
+		logger.info("getExceptionInfoCount");
+		return new Vo(null, logService.getExceptionInfoCount());
 	}
 
 	@GetMapping("/listExceptionInfo")
 	public Vo listExceptionInfo() {
-		try {
-			logger.info("listExceptionInfo");
-			return new Vo(null, logService.listExceptionInfo());
-		} catch (Exception e) {
-			e.printStackTrace();
-			GlobalException.add(e);
-			return new Vo(e);
-		}
+		logger.info("listExceptionInfo");
+		return new Vo(null, logService.listExceptionInfo());
 	}
 
 

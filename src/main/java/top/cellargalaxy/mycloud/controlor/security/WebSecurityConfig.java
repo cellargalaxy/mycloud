@@ -9,9 +9,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import top.cellargalaxy.mycloud.configuration.MycloudConfiguration;
+import top.cellargalaxy.mycloud.service.security.SecurityService;
 
 /**
  * @author cellargalaxy
@@ -22,15 +21,11 @@ import top.cellargalaxy.mycloud.configuration.MycloudConfiguration;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
-	private UserDetailsService userDetailsService;
-	@Autowired
-	private MycloudConfiguration mycloudConfiguration;
+	private SecurityService securityService;
 
 	@Autowired
 	public void configureAuthentication(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
-		authenticationManagerBuilder
-				//设置UserDetailsService
-				.userDetailsService(userDetailsService);
+		authenticationManagerBuilder.userDetailsService(new UserDetailsServiceImpl(securityService));
 	}
 
 	@Override
@@ -55,20 +50,21 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 						"/**/*.js"
 				).permitAll()
 
-				// 除上面外的所有请求全部需要鉴权认证
+				//除上面外的，所有请求全部需要登录与鉴权
 				.anyRequest().authenticated()
 
 				.and()
+
 				//登录
 				.addFilterBefore(
-						new LoginFilter("/login", authenticationManager(), mycloudConfiguration.getSecret(), userDetailsService),
+						new LoginFilter("/login", authenticationManager(), securityService),
 						UsernamePasswordAuthenticationFilter.class)
 
 				//检验token
-				.addFilterBefore(new AuthenticationFilter(mycloudConfiguration.getSecret()),
+				.addFilterBefore(new AuthenticationFilter(securityService),
 						UsernamePasswordAuthenticationFilter.class);
 
-		// 禁用缓存
+		//禁用缓存
 		httpSecurity.headers().cacheControl();
 	}
 }

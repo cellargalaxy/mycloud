@@ -29,126 +29,66 @@ public class PermissionApiController {
 
 	@PostMapping("/addPermission")
 	public Vo addPermission(PermissionPo permissionPo) {
-		try {
-			String string = permissionService.addPermission(permissionPo);
-			logger.info("addPermission:{}", string);
-			return new Vo(string, null);
-		} catch (Exception e) {
-			e.printStackTrace();
-			GlobalException.add(e);
-			return new Vo(e);
-		}
+		String string = permissionService.addPermission(permissionPo);
+		logger.info("addPermission:{}", string);
+		return new Vo(string, null);
 	}
 
 	@PostMapping("/removePermission")
 	public Vo removePermission(PermissionQuery permissionQuery) {
-		try {
-			String string = permissionService.removePermission(permissionQuery);
-			logger.info("removePermission:{}", string);
-			return new Vo(string, null);
-		} catch (Exception e) {
-			e.printStackTrace();
-			GlobalException.add(e);
-			return new Vo(e);
-		}
+		String string = permissionService.removePermission(permissionQuery);
+		logger.info("removePermission:{}", string);
+		return new Vo(string, null);
 	}
 
 	@GetMapping("/getPermission")
 	public Vo getPermission(PermissionQuery permissionQuery) {
-		try {
-			logger.info("getPermission");
-			return new Vo(null, permissionService.getPermission(permissionQuery));
-		} catch (Exception e) {
-			e.printStackTrace();
-			GlobalException.add(e);
-			return new Vo(e);
-		}
+		logger.info("getPermission");
+		return new Vo(null, permissionService.getPermission(permissionQuery));
 	}
 
 	@GetMapping("/getPermissionCount")
 	public Vo getPermissionCount(PermissionQuery permissionQuery) {
-		try {
-			logger.info("getPermissionCount");
-			return new Vo(null, permissionService.getPermissionCount(permissionQuery));
-		} catch (Exception e) {
-			e.printStackTrace();
-			GlobalException.add(e);
-			return new Vo(e);
-		}
+		logger.info("getPermissionCount");
+		return new Vo(null, permissionService.getPermissionCount(permissionQuery));
 	}
 
 	@GetMapping("/listPermission")
 	public Vo listPermission(PermissionQuery permissionQuery) {
-		try {
-			logger.info("listPermission");
-			return new Vo(null, permissionService.listPermission(permissionQuery));
-		} catch (Exception e) {
-			e.printStackTrace();
-			GlobalException.add(e);
-			return new Vo(e);
-		}
+		logger.info("listPermission");
+		return new Vo(null, permissionService.listPermission(permissionQuery));
 	}
 
 	@GetMapping("/getPermissionAuthorization")
 	public Vo getPermissionAuthorization(PermissionQuery permissionQuery) {
-		try {
-			logger.info("getPermissionAuthorization");
-			return new Vo(null, permissionService.getPermissionAuthorization(permissionQuery));
-		} catch (Exception e) {
-			e.printStackTrace();
-			GlobalException.add(e);
-			return new Vo(e);
-		}
+		logger.info("getPermissionAuthorization");
+		return new Vo(null, permissionService.getPermissionAuthorization(permissionQuery));
 	}
 
 	@GetMapping("/listPermissionAuthorization")
 	public Vo listPermissionAuthorization(PermissionQuery permissionQuery) {
-		try {
-			logger.info("listPermissionAuthorization");
-			return new Vo(null, permissionService.listPermissionAuthorization(permissionQuery));
-		} catch (Exception e) {
-			e.printStackTrace();
-			GlobalException.add(e);
-			return new Vo(e);
-		}
+		logger.info("listPermissionAuthorization");
+		return new Vo(null, permissionService.listPermissionAuthorization(permissionQuery));
 	}
 
 	@PostMapping("/changePermission")
 	public Vo changePermission(PermissionPo permissionPo) {
-		try {
-			String string = permissionService.changePermission(permissionPo);
-			logger.info("changePermission:{}", string);
-			return new Vo(string, null);
-		} catch (Exception e) {
-			e.printStackTrace();
-			GlobalException.add(e);
-			return new Vo(e);
-		}
+		String string = permissionService.changePermission(permissionPo);
+		logger.info("changePermission:{}", string);
+		return new Vo(string, null);
 	}
 
 	@GetMapping("/checkAddPermission")
 	public Vo checkAddPermission(PermissionPo permissionPo) {
-		try {
-			String string = permissionService.checkAddPermission(permissionPo);
-			logger.info("checkAddPermission:{}", string);
-			return new Vo(string, null);
-		} catch (Exception e) {
-			e.printStackTrace();
-			GlobalException.add(e);
-			return new Vo(e);
-		}
+		String string = permissionService.checkAddPermission(permissionPo);
+		logger.info("checkAddPermission:{}", string);
+		return new Vo(string, null);
 	}
 
 	@GetMapping("/checkChangePermission")
 	public Vo checkChangePermission(PermissionPo permissionPo) {
-		try {
-			String string = permissionService.checkChangePermission(permissionPo);
-			logger.info("checkChangePermission:{}", string);
-			return new Vo(string, null);
-		} catch (Exception e) {
-			e.printStackTrace();
-			GlobalException.add(e);
-			return new Vo(e);
-		}
+		String string = permissionService.checkChangePermission(permissionPo);
+		logger.info("checkChangePermission:{}", string);
+		return new Vo(string, null);
 	}
 }

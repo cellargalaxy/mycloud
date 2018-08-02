@@ -28,150 +28,78 @@ public class UserApiController {
 
 	@PostMapping("/addUser")
 	public Vo addUser(UserPo userPo) {
-		try {
-			String string = userService.addUser(userPo);
-			logger.info("addUser:{}", string);
-			return new Vo(string, null);
-		} catch (Exception e) {
-			e.printStackTrace();
-			GlobalException.add(e);
-			return new Vo(e);
-		}
+		String string = userService.addUser(userPo);
+		logger.info("addUser:{}", string);
+		return new Vo(string, null);
 	}
 
 	@PostMapping("/removeUser")
 	public Vo removeUser(UserQuery userQuery) {
-		try {
-			String string = userService.removeUser(userQuery);
-			logger.info("removeUser:{}", string);
-			return new Vo(string, null);
-		} catch (Exception e) {
-			e.printStackTrace();
-			GlobalException.add(e);
-			return new Vo(e);
-		}
+		String string = userService.removeUser(userQuery);
+		logger.info("removeUser:{}", string);
+		return new Vo(string, null);
 	}
 
 	@GetMapping("/getUser")
 	public Vo getUser(UserQuery userQuery) {
-		try {
-			logger.info("getUser");
-			return new Vo(null, userService.getUser(userQuery));
-		} catch (Exception e) {
-			e.printStackTrace();
-			GlobalException.add(e);
-			return new Vo(e);
-		}
+		logger.info("getUser");
+		return new Vo(null, userService.getUser(userQuery));
 	}
 
 	@GetMapping("/getUserCount")
 	public Vo getUserCount(UserQuery userQuery) {
-		try {
-			logger.info("getUserCount");
-			return new Vo(null, userService.getUserCount(userQuery));
-		} catch (Exception e) {
-			e.printStackTrace();
-			GlobalException.add(e);
-			return new Vo(e);
-		}
+		logger.info("getUserCount");
+		return new Vo(null, userService.getUserCount(userQuery));
 	}
 
 	@GetMapping("/listUser")
 	public Vo listUser(UserQuery userQuery) {
-		try {
-//			logger.info("listUser");
-			return new Vo(null, null/*userService.listUser(userQuery)*/);
-		} catch (Exception e) {
-			e.printStackTrace();
-			GlobalException.add(e);
-			return new Vo(e);
-		}
+		logger.info("listUser");
+		return new Vo(null, userService.listUser(userQuery));
 	}
 
 	@GetMapping("/getUserAuthorization")
 	public Vo getUserAuthorization(UserQuery userQuery) {
-		try {
-			logger.info("getUserAuthorization");
-			return new Vo(null, userService.getUserAuthorization(userQuery));
-		} catch (Exception e) {
-			e.printStackTrace();
-			GlobalException.add(e);
-			return new Vo(e);
-		}
+		logger.info("getUserAuthorization");
+		return new Vo(null, userService.getUserAuthorization(userQuery));
 	}
 
 	@GetMapping("/listUserAuthorization")
 	public Vo listUserAuthorization(UserQuery userQuery) {
-		try {
-			logger.info("listUserAuthorization");
-			return new Vo(null, userService.listUserAuthorization(userQuery));
-		} catch (Exception e) {
-			e.printStackTrace();
-			GlobalException.add(e);
-			return new Vo(e);
-		}
+		logger.info("listUserAuthorization");
+		return new Vo(null, userService.listUserAuthorization(userQuery));
 	}
 
 	@GetMapping("/getUserOwn")
 	public Vo getUserOwn(UserQuery userQuery) {
-		try {
-			logger.info("getUserOwn");
-			return new Vo(null, userService.getUserOwn(userQuery));
-		} catch (Exception e) {
-			e.printStackTrace();
-			GlobalException.add(e);
-			return new Vo(e);
-		}
+		logger.info("getUserOwn");
+		return new Vo(null, userService.getUserOwn(userQuery));
 	}
 
 	@GetMapping("/listUserOwn")
 	public Vo listUserOwn(UserQuery userQuery) {
-		try {
-			logger.info("listUserOwn");
-			return new Vo(null, userService.listUserOwn(userQuery));
-		} catch (Exception e) {
-			e.printStackTrace();
-			GlobalException.add(e);
-			return new Vo(e);
-		}
+		logger.info("listUserOwn");
+		return new Vo(null, userService.listUserOwn(userQuery));
 	}
 
 	@PostMapping("/changeUser")
 	public Vo changeUser(UserQuery userQuery) {
-		try {
-			String string = userService.changeUser(userQuery);
-			logger.info("changeUser:{}", string);
-			return new Vo(string, null);
-		} catch (Exception e) {
-			e.printStackTrace();
-			GlobalException.add(e);
-			return new Vo(e);
-		}
+		String string = userService.changeUser(userQuery);
+		logger.info("changeUser:{}", string);
+		return new Vo(string, null);
 	}
 
 	@GetMapping("/checkAddUser")
 	public Vo checkAddUser(UserPo userPo) {
-		try {
-			String string = userService.checkAddUser(userPo);
-			logger.info("checkAddUser:{}", string);
-			return new Vo(string, null);
-		} catch (Exception e) {
-			e.printStackTrace();
-			GlobalException.add(e);
-			return new Vo(e);
-		}
+		String string = userService.checkAddUser(userPo);
+		logger.info("checkAddUser:{}", string);
+		return new Vo(string, null);
 	}
 
 	@GetMapping("/checkChangeUser")
 	public Vo checkChangeUser(UserPo userPo) {
-		try {
-			String string = userService.checkChangeUser(userPo);
-			logger.info("checkChangeUser:{}", string);
-			return new Vo(string, null);
-		} catch (Exception e) {
-			e.printStackTrace();
-			GlobalException.add(e);
-			return new Vo(e);
-		}
+		String string = userService.checkChangeUser(userPo);
+		logger.info("checkChangeUser:{}", string);
+		return new Vo(string, null);
 	}
 }

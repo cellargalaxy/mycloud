@@ -29,102 +29,54 @@ public class AuthorizationApiController {
 
 	@PostMapping("/addAuthorization")
 	public Vo addAuthorization(AuthorizationPo authorizationPo) {
-		try {
-			String string = authorizationService.addAuthorization(authorizationPo);
-			logger.info("addAuthorization:{}", string);
-			return new Vo(string, null);
-		} catch (Exception e) {
-			e.printStackTrace();
-			GlobalException.add(e);
-			return new Vo(e);
-		}
+		String string = authorizationService.addAuthorization(authorizationPo);
+		logger.info("addAuthorization:{}", string);
+		return new Vo(string, null);
 	}
 
 	@PostMapping("/removeAuthorization")
 	public Vo removeAuthorization(AuthorizationQuery authorizationQuery) {
-		try {
-			String string = authorizationService.removeAuthorization(authorizationQuery);
-			logger.info("removeAuthorization:{}", string);
-			return new Vo(string, null);
-		} catch (Exception e) {
-			e.printStackTrace();
-			GlobalException.add(e);
-			return new Vo(e);
-		}
+		String string = authorizationService.removeAuthorization(authorizationQuery);
+		logger.info("removeAuthorization:{}", string);
+		return new Vo(string, null);
 	}
 
 	@GetMapping("/getAuthorization")
 	public Vo getAuthorization(AuthorizationQuery authorizationQuery) {
-		try {
-			logger.info("getAuthorization");
-			return new Vo(null, authorizationService.getAuthorization(authorizationQuery));
-		} catch (Exception e) {
-			e.printStackTrace();
-			GlobalException.add(e);
-			return new Vo(e);
-		}
+		logger.info("getAuthorization");
+		return new Vo(null, authorizationService.getAuthorization(authorizationQuery));
 	}
 
 	@GetMapping("/getAuthorizationCount")
 	public Vo getAuthorizationCount(AuthorizationQuery authorizationQuery) {
-		try {
-			logger.info("getAuthorizationCount");
-			return new Vo(null, authorizationService.getAuthorizationCount(authorizationQuery));
-		} catch (Exception e) {
-			e.printStackTrace();
-			GlobalException.add(e);
-			return new Vo(e);
-		}
+		logger.info("getAuthorizationCount");
+		return new Vo(null, authorizationService.getAuthorizationCount(authorizationQuery));
 	}
 
 	@GetMapping("/listAuthorization")
 	public Vo listAuthorization(AuthorizationQuery authorizationQuery) {
-		try {
-			logger.info("listAuthorization");
-			return new Vo(null, authorizationService.listAuthorization(authorizationQuery));
-		} catch (Exception e) {
-			e.printStackTrace();
-			GlobalException.add(e);
-			return new Vo(e);
-		}
+		logger.info("listAuthorization");
+		return new Vo(null, authorizationService.listAuthorization(authorizationQuery));
 	}
 
 	@PostMapping("/changeAuthorization")
 	public Vo changeAuthorization(AuthorizationPo authorizationPo) {
-		try {
-			String string = authorizationService.changeAuthorization(authorizationPo);
-			logger.info("changeAuthorization:{}", string);
-			return new Vo(string, null);
-		} catch (Exception e) {
-			e.printStackTrace();
-			GlobalException.add(e);
-			return new Vo(e);
-		}
+		String string = authorizationService.changeAuthorization(authorizationPo);
+		logger.info("changeAuthorization:{}", string);
+		return new Vo(string, null);
 	}
 
 	@GetMapping("/checkAddAuthorization")
 	public Vo checkAddAuthorization(AuthorizationPo authorizationPo) {
-		try {
-			String string = authorizationService.checkAddAuthorization(authorizationPo);
-			logger.info("checkAddAuthorization:{}", string);
-			return new Vo(string, null);
-		} catch (Exception e) {
-			e.printStackTrace();
-			GlobalException.add(e);
-			return new Vo(e);
-		}
+		String string = authorizationService.checkAddAuthorization(authorizationPo);
+		logger.info("checkAddAuthorization:{}", string);
+		return new Vo(string, null);
 	}
 
 	@GetMapping("/checkChangeAuthorization")
 	public Vo checkChangeAuthorization(AuthorizationPo authorizationPo) {
-		try {
-			String string = authorizationService.checkChangeAuthorization(authorizationPo);
-			logger.info("checkChangeAuthorization:{}", string);
-			return new Vo(string, null);
-		} catch (Exception e) {
-			e.printStackTrace();
-			GlobalException.add(e);
-			return new Vo(e);
-		}
+		String string = authorizationService.checkChangeAuthorization(authorizationPo);
+		logger.info("checkChangeAuthorization:{}", string);
+		return new Vo(string, null);
 	}
 }

@@ -38,15 +38,6 @@ public class UserServiceImpl implements UserService {
 	private OwnDao ownDao;
 
 	@Override
-	public UserPo login(UserQuery userQuery) {
-		UserPo userPo = userDao.selectOne(userQuery);
-		if (userPo == null || !userPo.getUserPassword().equals(DigestUtils.md5Hex(userQuery.getUserPassword()))) {
-			return null;
-		}
-		return userPo;
-	}
-
-	@Override
 	public String addUser(UserPo userPo) {
 		logger.info("addUser:{}", userPo);
 		String string = checkAddUser(userPo);

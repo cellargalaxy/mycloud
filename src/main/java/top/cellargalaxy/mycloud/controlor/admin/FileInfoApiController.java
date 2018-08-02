@@ -54,50 +54,26 @@ public class FileInfoApiController {
 
 	@GetMapping("/getFileInfo")
 	public Vo getFileInfo(FileInfoQuery fileInfoQuery) {
-		try {
-			logger.info("getFileInfo");
-			return new Vo(null, fileInfoService.getFileInfo(fileInfoQuery));
-		} catch (Exception e) {
-			e.printStackTrace();
-			GlobalException.add(e);
-			return new Vo(e);
-		}
+		logger.info("getFileInfo");
+		return new Vo(null, fileInfoService.getFileInfo(fileInfoQuery));
 	}
 
 	@GetMapping("/getFileInfoCount")
 	public Vo getFileInfoCount(FileInfoQuery fileInfoQuery) {
-		try {
-			logger.info("getFileInfoCount");
-			return new Vo(null, fileInfoService.getFileInfoCount(fileInfoQuery));
-		} catch (Exception e) {
-			e.printStackTrace();
-			GlobalException.add(e);
-			return new Vo(e);
-		}
+		logger.info("getFileInfoCount");
+		return new Vo(null, fileInfoService.getFileInfoCount(fileInfoQuery));
 	}
 
 	@GetMapping("/listFileInfo")
 	public Vo listFileInfo(FileInfoQuery fileInfoQuery) {
-		try {
-			logger.info("listFileInfo");
-			return new Vo(null, fileInfoService.listFileInfo(fileInfoQuery));
-		} catch (Exception e) {
-			e.printStackTrace();
-			GlobalException.add(e);
-			return new Vo(e);
-		}
+		logger.info("listFileInfo");
+		return new Vo(null, fileInfoService.listFileInfo(fileInfoQuery));
 	}
 
 	@GetMapping("/getFileInfoOwn")
 	public Vo getFileInfoOwn(FileInfoQuery fileInfoQuery) {
-		try {
-			logger.info("getFileInfoOwn");
-			return new Vo(null, fileInfoService.getFileInfoOwn(fileInfoQuery));
-		} catch (Exception e) {
-			e.printStackTrace();
-			GlobalException.add(e);
-			return new Vo(e);
-		}
+		logger.info("getFileInfoOwn");
+		return new Vo(null, fileInfoService.getFileInfoOwn(fileInfoQuery));
 	}
 
 	@GetMapping("/listFileInfoOwn")
@@ -114,14 +90,8 @@ public class FileInfoApiController {
 
 	@GetMapping("/listContentType")
 	public Vo listContentType() {
-		try {
-			logger.info("listContentType");
-			return new Vo(null, fileInfoService.listContentType());
-		} catch (Exception e) {
-			e.printStackTrace();
-			GlobalException.add(e);
-			return new Vo(e);
-		}
+		logger.info("listContentType");
+		return new Vo(null, fileInfoService.listContentType());
 	}
 
 //	@PostMapping("/changeFileInfo")
@@ -139,27 +109,15 @@ public class FileInfoApiController {
 
 	@GetMapping("/checkAddFileInfo")
 	public Vo checkAddFileInfo(FileInfoPo fileInfoPo) {
-		try {
-			String string = fileInfoService.checkAddFileInfo(fileInfoPo);
-			logger.info("checkAddFileInfo:{}", string);
-			return new Vo(string, null);
-		} catch (Exception e) {
-			e.printStackTrace();
-			GlobalException.add(e);
-			return new Vo(e);
-		}
+		String string = fileInfoService.checkAddFileInfo(fileInfoPo);
+		logger.info("checkAddFileInfo:{}", string);
+		return new Vo(string, null);
 	}
 
 	@GetMapping("/checkChangeFileInfo")
 	public Vo checkChangeFileInfo(FileInfoPo fileInfoPo) {
-		try {
-			String string = fileInfoService.checkChangeFileInfo(fileInfoPo);
-			logger.info("checkChangeFileInfo:{}", string);
-			return new Vo(string, null);
-		} catch (Exception e) {
-			e.printStackTrace();
-			GlobalException.add(e);
-			return new Vo(e);
-		}
+		String string = fileInfoService.checkChangeFileInfo(fileInfoPo);
+		logger.info("checkChangeFileInfo:{}", string);
+		return new Vo(string, null);
 	}
 }

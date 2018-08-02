@@ -29,76 +29,40 @@ public class OwnApiController {
 
 	@PostMapping("/addOwn")
 	public Vo addOwn(OwnPo ownPo) {
-		try {
-			String string = ownService.addOwn(ownPo);
-			logger.info("addOwn:{}", string);
-			return new Vo(string, null);
-		} catch (Exception e) {
-			e.printStackTrace();
-			GlobalException.add(e);
-			return new Vo(e);
-		}
+		String string = ownService.addOwn(ownPo);
+		logger.info("addOwn:{}", string);
+		return new Vo(string, null);
 	}
 
 	@PostMapping("/removeOwn")
 	public Vo removeOwn(OwnQuery ownQuery) {
-		try {
-			String string = ownService.removeOwn(ownQuery);
-			logger.info("removeOwn:{}", string);
-			return new Vo(string, null);
-		} catch (Exception e) {
-			e.printStackTrace();
-			GlobalException.add(e);
-			return new Vo(e);
-		}
+		String string = ownService.removeOwn(ownQuery);
+		logger.info("removeOwn:{}", string);
+		return new Vo(string, null);
 	}
 
 	@GetMapping("/getOwn")
 	public Vo getOwn(OwnQuery ownQuery) {
-		try {
-			logger.info("ownQuery");
-			return new Vo(null, ownService.getOwn(ownQuery));
-		} catch (Exception e) {
-			e.printStackTrace();
-			GlobalException.add(e);
-			return new Vo(e);
-		}
+		logger.info("ownQuery");
+		return new Vo(null, ownService.getOwn(ownQuery));
 	}
 
 	@GetMapping("/getOwnCount")
 	public Vo getOwnCount(OwnQuery ownQuery) {
-		try {
-			logger.info("getOwnCount");
-			return new Vo(null, ownService.getOwnCount(ownQuery));
-		} catch (Exception e) {
-			e.printStackTrace();
-			GlobalException.add(e);
-			return new Vo(e);
-		}
+		logger.info("getOwnCount");
+		return new Vo(null, ownService.getOwnCount(ownQuery));
 	}
 
 	@GetMapping("/  ")
 	public Vo listOwn(OwnQuery ownQuery) {
-		try {
-			logger.info("listOwn");
-			return new Vo(null, ownService.listOwn(ownQuery));
-		} catch (Exception e) {
-			e.printStackTrace();
-			GlobalException.add(e);
-			return new Vo(e);
-		}
+		logger.info("listOwn");
+		return new Vo(null, ownService.listOwn(ownQuery));
 	}
 
 	@GetMapping("/listSort")
 	public Vo listSort(OwnQuery ownQuery) {
-		try {
-			logger.info("listSort");
-			return new Vo(null, ownService.listSort(ownQuery));
-		} catch (Exception e) {
-			e.printStackTrace();
-			GlobalException.add(e);
-			return new Vo(e);
-		}
+		logger.info("listSort");
+		return new Vo(null, ownService.listSort(ownQuery));
 	}
 
 	@PostMapping("/changeOwn")
@@ -116,27 +80,15 @@ public class OwnApiController {
 
 	@GetMapping("/checkAddOwn")
 	public Vo checkAddOwn(OwnPo ownPo) {
-		try {
-			String string = ownService.checkAddOwn(ownPo);
-			logger.info("checkAddOwn:{}", string);
-			return new Vo(string, null);
-		} catch (Exception e) {
-			e.printStackTrace();
-			GlobalException.add(e);
-			return new Vo(e);
-		}
+		String string = ownService.checkAddOwn(ownPo);
+		logger.info("checkAddOwn:{}", string);
+		return new Vo(string, null);
 	}
 
 	@GetMapping("/checkChangeOwn")
 	public Vo checkChangeOwn(OwnPo ownPo) {
-		try {
-			String string = ownService.checkChangeOwn(ownPo);
-			logger.info("checkChangeOwn:{}", string);
-			return new Vo(string, null);
-		} catch (Exception e) {
-			e.printStackTrace();
-			GlobalException.add(e);
-			return new Vo(e);
-		}
+		String string = ownService.checkChangeOwn(ownPo);
+		logger.info("checkChangeOwn:{}", string);
+		return new Vo(string, null);
 	}
 }
