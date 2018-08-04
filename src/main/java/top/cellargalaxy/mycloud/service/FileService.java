@@ -13,7 +13,7 @@ import java.util.List;
  * @time 2018/7/17
  */
 public interface FileService {
-	void addUploadFileTask(OwnPo ownPo, File file, String contentType);
+	void addUploadFileTask(UserPo userPo, OwnPo ownPo, File file, String contentType);
 
 	void addDownloadFileTask(UserPo userPo, FileInfoQuery fileInfoQuery, File file);
 
@@ -24,5 +24,4 @@ public interface FileService {
 	Task getCurrentTask();
 
 	List<Task> listFinishTask(int off, int len);
-
 }

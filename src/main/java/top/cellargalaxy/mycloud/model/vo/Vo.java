@@ -28,6 +28,10 @@ public class Vo implements Serializable {
 		this(FAIL_STATUS, "未知异常", ExceptionUtil.printException(e));
 	}
 
+	public Vo(String massage, Exception e) {
+		this(FAIL_STATUS, massage, ExceptionUtil.printException(e));
+	}
+
 	public Vo(int status, String massage, Object data) {
 		this.status = status;
 		this.massage = massage;

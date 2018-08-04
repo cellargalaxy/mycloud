@@ -1,18 +1,16 @@
 package top.cellargalaxy.mycloud.dao.mapper;
 
 import org.apache.ibatis.annotations.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import top.cellargalaxy.mycloud.dao.PermissionDao;
 import top.cellargalaxy.mycloud.model.bo.PermissionBo;
 import top.cellargalaxy.mycloud.model.po.PermissionPo;
 import top.cellargalaxy.mycloud.model.query.PermissionQuery;
-import top.cellargalaxy.mycloud.util.SqlUtil;
+import top.cellargalaxy.mycloud.util.ProviderUtil;
 import top.cellargalaxy.mycloud.util.StringUtil;
 
 import java.util.Date;
-import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import static org.apache.ibatis.type.JdbcType.TIMESTAMP;
 
@@ -22,11 +20,11 @@ import static org.apache.ibatis.type.JdbcType.TIMESTAMP;
  */
 @Mapper
 public interface PermissionMapper {
-	@InsertProvider(type = PermissionProvider.class, method = "insert")
+	@InsertProvider(type = PermissionProviderUtil.class, method = "insert")
 	int insert(PermissionPo permissionPo);
 
-	@DeleteProvider(type = PermissionProvider.class, method = "delete")
-	int delete(PermissionQuery permissionQuery);
+	@DeleteProvider(type = PermissionProviderUtil.class, method = "delete")
+	int delete(PermissionPo permissionPo);
 
 	@Results(id = "permissionResult", value = {
 			@Result(property = "permissionId", column = "permission_id", id = true),
@@ -34,89 +32,63 @@ public interface PermissionMapper {
 			@Result(property = "createTime", column = "create_time", javaType = Date.class, jdbcType = TIMESTAMP),
 			@Result(property = "updateTime", column = "update_time", javaType = Date.class, jdbcType = TIMESTAMP)
 	})
-	@SelectProvider(type = PermissionProvider.class, method = "selectOne")
-	PermissionBo selectOne(PermissionQuery permissionQuery);
+	@SelectProvider(type = PermissionProviderUtil.class, method = "selectOne")
+	PermissionBo selectOne(PermissionPo permissionPo);
 
 	@ResultMap(value = "permissionResult")
-	@SelectProvider(type = PermissionProvider.class, method = "selectSome")
+	@SelectProvider(type = PermissionProviderUtil.class, method = "selectSome")
 	List<PermissionBo> selectSome(PermissionQuery permissionQuery);
 
-	@SelectProvider(type = PermissionProvider.class, method = "selectCount")
+	@SelectProvider(type = PermissionProviderUtil.class, method = "selectCount")
 	int selectCount(PermissionQuery permissionQuery);
 
-	@UpdateProvider(type = PermissionProvider.class, method = "upldate")
-	int upldate(PermissionPo permissionPo);
+	@UpdateProvider(type = PermissionProviderUtil.class, method = "update")
+	int update(PermissionPo permissionPo);
 
-	class PermissionProvider {
-		private static final String TABLE_NAME = PermissionDao.TABLE_NAME;
-		private static final String permissionId = TABLE_NAME + ".permission_id=#{permissionId}";
-		private static final String permissionMark = TABLE_NAME + ".permission_mark like CONCAT(CONCAT('%', #{permissionMark}),'%')";
-		private static final String permissionMarkSet = TABLE_NAME + ".permission_mark=#{permissionMark}";
-		private static final String createTime = TABLE_NAME + ".create_time=#{createTime,jdbcType=TIMESTAMP}";
-		private static final String updateTime = TABLE_NAME + ".update_time=#{updateTime,jdbcType=TIMESTAMP}";
+	class PermissionProviderUtil {
+		private String tableName = PermissionDao.TABLE_NAME;
+		private String permissionId = tableName + ".permission_id=#{permissionId}";
+		private String permissionMark = tableName + ".permission_mark like CONCAT(CONCAT('%', #{permissionMark}),'%')";
+		private String permissionMarkSet = tableName + ".permission_mark=#{permissionMark}";
+		private String createTime = tableName + ".create_time=#{createTime,jdbcType=TIMESTAMP}";
+		private String updateTime = tableName + ".update_time=#{updateTime,jdbcType=TIMESTAMP}";
 
-		public static final String insert(PermissionPo permissionPo) {
+		public String insert(PermissionPo permissionPo) {
 			init(permissionPo);
 			Date date = new Date();
 			permissionPo.setCreateTime(date);
 			permissionPo.setUpdateTime(date);
-			String string = "insert into " + TABLE_NAME + "(permission_id,permission_mark,create_time,update_time) " +
+
+			String string = "insert into " + tableName + "(permission_id,permission_mark,create_time,update_time) " +
 					"values(#{permissionId},#{permissionMark},#{createTime,jdbcType=TIMESTAMP},#{updateTime,jdbcType=TIMESTAMP})";
 			return string;
 		}
 
-		public static final String delete(PermissionQuery permissionQuery) {
-			List<String> wheres = new LinkedList<>();
-			wheresAll(permissionQuery, wheres);
-			StringBuilder sql = SqlUtil.createDeleteSql(TABLE_NAME, wheres);
-			String string = sql.toString();
-			return string;
+		public String delete(PermissionPo permissionPo) {
+			return ProviderUtil.delete(tableName, permissionPo, this::wheresKey);
 		}
 
-		public static final String selectOne(PermissionQuery permissionQuery) {
-			List<String> wheres = new LinkedList<>();
-			wheresKey(permissionQuery, wheres);
-			StringBuilder sql = SqlUtil.createSelectSql(null, TABLE_NAME, wheres);
-			String string = sql.append(" limit 1").toString();
-			return string;
+		public String selectOne(PermissionPo permissionPo) {
+			return ProviderUtil.selectOne(tableName, permissionPo, this::wheresKey);
 		}
 
-		public static final String selectSome(PermissionQuery permissionQuery) {
-			SqlUtil.initPageQuery(permissionQuery);
-			List<String> wheres = new LinkedList<>();
-			wheresAll(permissionQuery, wheres);
-			StringBuilder sql = SqlUtil.createSelectSql(null, TABLE_NAME, wheres);
-			String string = sql.append(" limit #{off},#{len}").toString();
-			return string;
+		public String selectSome(PermissionQuery permissionQuery) {
+			return ProviderUtil.selectSome(tableName, permissionQuery, this::wheresAll);
 		}
 
-		public static final String selectCount(PermissionQuery permissionQuery) {
-			SqlUtil.initPageQuery(permissionQuery);
-			List<String> selects = new LinkedList<>();
-			selects.add("count(*)");
-			List<String> wheres = new LinkedList<>();
-			wheresAll(permissionQuery, wheres);
-			StringBuilder sql = SqlUtil.createSelectSql(selects, TABLE_NAME, wheres);
-			String string = sql.toString();
-			return string;
+		public String selectCount(PermissionQuery permissionQuery) {
+			return ProviderUtil.selectCount(tableName, permissionQuery, this::wheresAll);
 		}
 
-		public static final String upldate(PermissionPo permissionPo) {
+		public String update(PermissionPo permissionPo) {
 			init(permissionPo);
 			permissionPo.setCreateTime(null);
 			permissionPo.setUpdateTime(new Date());
-			List<String> sets = new LinkedList<>();
-			sets(permissionPo, sets);
-			if (sets.size() == 0) {
-				return "update " + TABLE_NAME + " set permission_id=#{permissionId} where false";
-			}
-			List<String> wheres = new LinkedList<>();
-			wheresKey(permissionPo, wheres);
-			String string = SqlUtil.createUpdateSql(TABLE_NAME, sets, wheres).append(" limit 1").toString();
-			return string;
+
+			return ProviderUtil.update(tableName, permissionPo, permissionId, this::sets, this::wheresKey);
 		}
 
-		private static final void wheresAll(PermissionQuery permissionQuery, List<String> wheres) {
+		private void wheresAll(PermissionQuery permissionQuery, Set<String> wheres) {
 			if (permissionQuery.getPermissionId() > 0) {
 				wheres.add(permissionId);
 			}
@@ -131,13 +103,13 @@ public interface PermissionMapper {
 			}
 		}
 
-		private static final void wheresKey(PermissionPo permissionPo, List<String> wheres) {
+		private void wheresKey(PermissionPo permissionPo, Set<String> wheres) {
 			if (permissionPo.getPermissionId() > 0) {
 				wheres.add(permissionId);
 			}
 		}
 
-		private static final void sets(PermissionPo permissionPo, List<String> sets) {
+		private void sets(PermissionPo permissionPo, Set<String> sets) {
 			if (!StringUtil.isBlank(permissionPo.getPermissionMark())) {
 				sets.add(permissionMarkSet);
 			}
@@ -146,7 +118,7 @@ public interface PermissionMapper {
 			}
 		}
 
-		private static final void init(PermissionPo permissionPo) {
+		private void init(PermissionPo permissionPo) {
 			if (permissionPo.getPermissionMark() != null) {
 				permissionPo.setPermissionMark(permissionPo.getPermissionMark().trim());
 			}

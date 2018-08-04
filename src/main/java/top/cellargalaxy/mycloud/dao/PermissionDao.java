@@ -1,8 +1,8 @@
 package top.cellargalaxy.mycloud.dao;
 
+import top.cellargalaxy.mycloud.model.bo.PermissionBo;
 import top.cellargalaxy.mycloud.model.po.PermissionPo;
 import top.cellargalaxy.mycloud.model.query.PermissionQuery;
-import top.cellargalaxy.mycloud.model.bo.PermissionBo;
 import top.cellargalaxy.mycloud.util.StringUtil;
 
 import java.util.List;
@@ -16,15 +16,15 @@ public interface PermissionDao {
 
 	int insert(PermissionPo permissionPo);
 
-	int delete(PermissionQuery permissionQuery);
+	int delete(PermissionPo permissionPo);
 
-	PermissionBo selectOne(PermissionQuery permissionQuery);
+	PermissionBo selectOne(PermissionPo permissionPo);
 
 	List<PermissionBo> selectSome(PermissionQuery permissionQuery);
 
 	int selectCount(PermissionQuery permissionQuery);
 
-	int upldate(PermissionPo permissionPo);
+	int update(PermissionPo permissionPo);
 
 	static String checkInsert(PermissionPo permissionPo) {
 		if (permissionPo.getPermissionId() < 1) {

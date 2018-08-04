@@ -125,6 +125,7 @@ public class SecurityServiceImpl implements SecurityService {
 			Date createTime = new Date(claims.get(CREATE_TIME_KEY, Long.class));
 			Date updateTime = new Date(claims.get(UPDATE_TIME_KEY, Long.class));
 			final String[] permissions = claims.get(PERMISSIONS_KEY, String.class).split(",");
+
 			return new SecurityUserImpl() {{
 				setUserId(userId);
 				setUsername(username);

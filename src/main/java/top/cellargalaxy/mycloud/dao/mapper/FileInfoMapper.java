@@ -1,18 +1,16 @@
 package top.cellargalaxy.mycloud.dao.mapper;
 
 import org.apache.ibatis.annotations.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import top.cellargalaxy.mycloud.dao.FileInfoDao;
 import top.cellargalaxy.mycloud.model.bo.FileInfoBo;
 import top.cellargalaxy.mycloud.model.po.FileInfoPo;
 import top.cellargalaxy.mycloud.model.query.FileInfoQuery;
-import top.cellargalaxy.mycloud.util.SqlUtil;
+import top.cellargalaxy.mycloud.util.ProviderUtil;
 import top.cellargalaxy.mycloud.util.StringUtil;
 
 import java.util.Date;
-import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import static org.apache.ibatis.type.JdbcType.BIGINT;
 import static org.apache.ibatis.type.JdbcType.TIMESTAMP;
@@ -23,12 +21,12 @@ import static org.apache.ibatis.type.JdbcType.TIMESTAMP;
  */
 @Mapper
 public interface FileInfoMapper {
-	@InsertProvider(type = FileInfoProvider.class, method = "insert")
+	@InsertProvider(type = FileInfoProviderUtil.class, method = "insert")
 	@Options(useGeneratedKeys = true, keyProperty = "fileId")
 	int insert(FileInfoPo fileInfoPo);
 
-	@DeleteProvider(type = FileInfoProvider.class, method = "delete")
-	int delete(FileInfoQuery fileInfoQuery);
+	@DeleteProvider(type = FileInfoProviderUtil.class, method = "delete")
+	int delete(FileInfoPo fileInfoPo);
 
 	@Results(id = "fileInfoResult", value = {
 			@Result(property = "fileId", column = "file_id", id = true),
@@ -37,93 +35,67 @@ public interface FileInfoMapper {
 			@Result(property = "contentType", column = "content_type"),
 			@Result(property = "createTime", column = "create_time", javaType = Date.class, jdbcType = TIMESTAMP)
 	})
-	@SelectProvider(type = FileInfoProvider.class, method = "selectOne")
-	FileInfoBo selectOne(FileInfoQuery fileInfoQuery);
+	@SelectProvider(type = FileInfoProviderUtil.class, method = "selectOne")
+	FileInfoBo selectOne(FileInfoPo fileInfoPo);
 
 	@ResultMap(value = "fileInfoResult")
-	@SelectProvider(type = FileInfoProvider.class, method = "selectSome")
+	@SelectProvider(type = FileInfoProviderUtil.class, method = "selectSome")
 	List<FileInfoBo> selectSome(FileInfoQuery fileInfoQuery);
 
-	@SelectProvider(type = FileInfoProvider.class, method = "selectCount")
+	@SelectProvider(type = FileInfoProviderUtil.class, method = "selectCount")
 	int selectCount(FileInfoQuery fileInfoQuery);
 
-	@SelectProvider(type = FileInfoProvider.class, method = "selectContentType")
+	@SelectProvider(type = FileInfoProviderUtil.class, method = "selectContentType")
 	List<String> selectContentType();
 
-	@UpdateProvider(type = FileInfoProvider.class, method = "update")
+	@UpdateProvider(type = FileInfoProviderUtil.class, method = "update")
 	int update(FileInfoPo fileInfoPo);
 
-	class FileInfoProvider {
-		private static final String TABLE_NAME = FileInfoDao.TABLE_NAME;
-		private static final String fileId = TABLE_NAME + ".file_id=#{fileId}";
-		private static final String md5 = TABLE_NAME + ".md5=#{md5}";
-		private static final String fileLength = TABLE_NAME + ".file_length=#{fileLength}";
-		private static final String contentType = TABLE_NAME + ".content_type=#{contentType}";
-		private static final String createTime = TABLE_NAME + ".create_time=#{createTime,jdbcType=TIMESTAMP}";
+	class FileInfoProviderUtil {
+		private String tableName = FileInfoDao.TABLE_NAME;
+		private String fileId = tableName + ".file_id=#{fileId}";
+		private String md5 = tableName + ".md5=#{md5}";
+		private String fileLength = tableName + ".file_length=#{fileLength}";
+		private String contentType = tableName + ".content_type=#{contentType}";
+		private String createTime = tableName + ".create_time=#{createTime,jdbcType=TIMESTAMP}";
 
-		public static final String insert(FileInfoPo fileInfoPo) {
+		public String insert(FileInfoPo fileInfoPo) {
 			init(fileInfoPo);
 			fileInfoPo.setCreateTime(new Date());
-			String string = "insert into " + TABLE_NAME + "(md5,file_length,content_type,create_time) " +
+
+			String string = "insert into " + tableName + "(md5,file_length,content_type,create_time) " +
 					"values(#{md5},#{fileLength},#{contentType},#{createTime,jdbcType=TIMESTAMP})";
 			return string;
 		}
 
-		public static final String delete(FileInfoQuery fileInfoQuery) {
-			List<String> wheres = new LinkedList<>();
-			wheresAll(fileInfoQuery, wheres);
-			StringBuilder sql = SqlUtil.createDeleteSql(TABLE_NAME, wheres);
-			String string = sql.toString();
-			return string;
+		public String delete(FileInfoPo fileInfoPo) {
+			return ProviderUtil.delete(tableName, fileInfoPo, this::wheresKey);
 		}
 
-		public static final String selectOne(FileInfoQuery fileInfoQuery) {
-			List<String> wheres = new LinkedList<>();
-			wheresKey(fileInfoQuery, wheres);
-			StringBuilder sql = SqlUtil.createSelectSql(null, TABLE_NAME, wheres);
-			String string = sql.append(" limit 1").toString();
-			return string;
+		public String selectOne(FileInfoPo fileInfoPo) {
+			return ProviderUtil.selectOne(tableName, fileInfoPo, this::wheresKey);
 		}
 
-		public static final String selectSome(FileInfoQuery fileInfoQuery) {
-			SqlUtil.initPageQuery(fileInfoQuery);
-			List<String> wheres = new LinkedList<>();
-			wheresAll(fileInfoQuery, wheres);
-			StringBuilder sql = SqlUtil.createSelectSql(null, TABLE_NAME, wheres);
-			String string = sql.append(" limit #{off},#{len}").toString();
-			return string;
+		public String selectSome(FileInfoQuery fileInfoQuery) {
+			return ProviderUtil.selectSome(tableName, fileInfoQuery, this::wheresAll);
 		}
 
-		public static final String selectCount(FileInfoQuery fileInfoQuery) {
-			SqlUtil.initPageQuery(fileInfoQuery);
-			List<String> selects = new LinkedList<>();
-			selects.add("count(*)");
-			List<String> wheres = new LinkedList<>();
-			wheresAll(fileInfoQuery, wheres);
-			StringBuilder sql = SqlUtil.createSelectSql(selects, TABLE_NAME, wheres);
-			String string = sql.toString();
-			return string;
+		public String selectCount(FileInfoQuery fileInfoQuery) {
+			return ProviderUtil.selectCount(tableName, fileInfoQuery, this::wheresAll);
 		}
 
-		public static final String selectContentType() {
-			return "select distinct content_type from " + TABLE_NAME;
+		public String selectContentType() {
+			return "select distinct content_type from " + tableName;
 		}
 
-		public static final String update(FileInfoPo fileInfoPo) {
+		public String update(FileInfoPo fileInfoPo) {
 			init(fileInfoPo);
 			fileInfoPo.setCreateTime(null);
-			List<String> sets = new LinkedList<>();
-			sets(fileInfoPo, sets);
-			if (sets.size() == 0) {
-				return "update " + TABLE_NAME + " set file_id=#{fileId} where false";
-			}
-			List<String> wheres = new LinkedList<>();
-			wheresKey(fileInfoPo, wheres);
-			String string = SqlUtil.createUpdateSql(TABLE_NAME, sets, wheres).append(" limit 1").toString();
-			return string;
+
+			return ProviderUtil.update(tableName, fileInfoPo, fileId, this::sets, this::wheresKey);
 		}
 
-		private static final void wheresAll(FileInfoQuery fileInfoQuery, List<String> wheres) {
+		private void wheresAll(FileInfoQuery fileInfoQuery, Set<String> wheres) {
 			if (fileInfoQuery.getFileId() > 0) {
 				wheres.add(fileId);
 			}
@@ -141,7 +113,7 @@ public interface FileInfoMapper {
 			}
 		}
 
-		private static final void wheresKey(FileInfoPo fileInfoPo, List<String> wheres) {
+		private void wheresKey(FileInfoPo fileInfoPo, Set<String> wheres) {
 			if (fileInfoPo.getFileId() > 0) {
 				wheres.add(fileId);
 			} else if (!StringUtil.isBlank(fileInfoPo.getMd5())) {
@@ -149,7 +121,7 @@ public interface FileInfoMapper {
 			}
 		}
 
-		private static final void sets(FileInfoPo fileInfoPo, List<String> sets) {
+		private void sets(FileInfoPo fileInfoPo, Set<String> sets) {
 			if (!StringUtil.isBlank(fileInfoPo.getMd5())) {
 				sets.add(md5);
 			}
@@ -161,7 +133,7 @@ public interface FileInfoMapper {
 			}
 		}
 
-		private static final void init(FileInfoPo fileInfoPo) {
+		private void init(FileInfoPo fileInfoPo) {
 			if (fileInfoPo.getMd5() != null) {
 				fileInfoPo.setMd5(fileInfoPo.getMd5().trim());
 			}

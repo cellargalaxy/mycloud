@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import top.cellargalaxy.mycloud.exception.GlobalException;
 import top.cellargalaxy.mycloud.model.po.PermissionPo;
 import top.cellargalaxy.mycloud.model.query.PermissionQuery;
 import top.cellargalaxy.mycloud.model.vo.Vo;
@@ -20,10 +19,10 @@ import top.cellargalaxy.mycloud.service.PermissionService;
  */
 @PreAuthorize("hasAuthority('ROOT')")
 @RestController
-@RequestMapping(PermissionApiController.URL)
-public class PermissionApiController {
+@RequestMapping(PermissionAdminController.URL)
+public class PermissionAdminController {
 	public static final String URL = "/admin/permission";
-	private Logger logger = LoggerFactory.getLogger(PermissionApiController.class);
+	private Logger logger = LoggerFactory.getLogger(PermissionAdminController.class);
 	@Autowired
 	private PermissionService permissionService;
 

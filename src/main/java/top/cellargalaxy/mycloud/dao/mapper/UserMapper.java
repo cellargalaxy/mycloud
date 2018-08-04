@@ -1,18 +1,16 @@
 package top.cellargalaxy.mycloud.dao.mapper;
 
 import org.apache.ibatis.annotations.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import top.cellargalaxy.mycloud.dao.UserDao;
 import top.cellargalaxy.mycloud.model.bo.UserBo;
 import top.cellargalaxy.mycloud.model.po.UserPo;
 import top.cellargalaxy.mycloud.model.query.UserQuery;
-import top.cellargalaxy.mycloud.util.SqlUtil;
+import top.cellargalaxy.mycloud.util.ProviderUtil;
 import top.cellargalaxy.mycloud.util.StringUtil;
 
 import java.util.Date;
-import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import static org.apache.ibatis.type.JdbcType.TIMESTAMP;
 
@@ -21,12 +19,12 @@ import static org.apache.ibatis.type.JdbcType.TIMESTAMP;
  */
 @Mapper
 public interface UserMapper {
-	@InsertProvider(type = UserProvider.class, method = "insert")
+	@InsertProvider(type = UserProviderUtil.class, method = "insert")
 	@Options(useGeneratedKeys = true, keyProperty = "userId")
 	int insert(UserPo userPo);
 
-	@DeleteProvider(type = UserProvider.class, method = "delete")
-	int delete(UserQuery userQuery);
+	@DeleteProvider(type = UserProviderUtil.class, method = "delete")
+	int delete(UserPo userPo);
 
 	@Results(id = "userResult", value = {
 			@Result(property = "userId", column = "user_id", id = true),
@@ -35,89 +33,63 @@ public interface UserMapper {
 			@Result(property = "createTime", column = "create_time", javaType = Date.class, jdbcType = TIMESTAMP),
 			@Result(property = "updateTime", column = "update_time", javaType = Date.class, jdbcType = TIMESTAMP)
 	})
-	@SelectProvider(type = UserProvider.class, method = "selectOne")
-	UserBo selectOne(UserQuery userQuery);
+	@SelectProvider(type = UserProviderUtil.class, method = "selectOne")
+	UserBo selectOne(UserPo userPo);
 
 	@ResultMap(value = "userResult")
-	@SelectProvider(type = UserProvider.class, method = "selectSome")
+	@SelectProvider(type = UserProviderUtil.class, method = "selectSome")
 	List<UserBo> selectSome(UserQuery userQuery);
 
-	@SelectProvider(type = UserProvider.class, method = "selectCount")
+	@SelectProvider(type = UserProviderUtil.class, method = "selectCount")
 	int selectCount(UserQuery userQuery);
 
-	@UpdateProvider(type = UserProvider.class, method = "update")
+	@UpdateProvider(type = UserProviderUtil.class, method = "update")
 	int update(UserPo userPo);
 
-	class UserProvider {
-		private static final String TABLE_NAME = UserDao.TABLE_NAME;
-		private static final String userId = TABLE_NAME + ".user_id=#{userId}";
-		private static final String username = TABLE_NAME + ".username=#{username}";
-		private static final String userPassword = TABLE_NAME + ".user_password=#{userPassword}";
-		private static final String createTime = TABLE_NAME + ".create_time=#{createTime,jdbcType=TIMESTAMP}";
-		private static final String updateTime = TABLE_NAME + ".update_time=#{updateTime,jdbcType=TIMESTAMP}";
+	class UserProviderUtil {
+		private String tableName = UserDao.TABLE_NAME;
+		private String userId = tableName + ".user_id=#{userId}";
+		private String username = tableName + ".username=#{username}";
+		private String userPassword = tableName + ".user_password=#{userPassword}";
+		private String createTime = tableName + ".create_time=#{createTime,jdbcType=TIMESTAMP}";
+		private String updateTime = tableName + ".update_time=#{updateTime,jdbcType=TIMESTAMP}";
 
-		public static final String insert(UserPo userPo) {
+		public String insert(UserPo userPo) {
 			init(userPo);
 			Date date = new Date();
 			userPo.setCreateTime(date);
 			userPo.setUpdateTime(date);
-			String string = "insert into " + TABLE_NAME + "(username,user_password,create_time,update_time) " +
+
+			String string = "insert into " + tableName + "(username,user_password,create_time,update_time) " +
 					"values(#{username},#{userPassword},#{createTime,jdbcType=TIMESTAMP},#{updateTime,jdbcType=TIMESTAMP})";
 			return string;
 		}
 
-		public static final String delete(UserQuery userQuery) {
-			List<String> wheres = new LinkedList<>();
-			wheresAll(userQuery, wheres);
-			StringBuilder sql = SqlUtil.createDeleteSql(TABLE_NAME, wheres);
-			String string = sql.toString();
-			return string;
+		public String delete(UserPo userPo) {
+			return ProviderUtil.delete(tableName, userPo, this::wheresKey);
 		}
 
-		public static final String selectOne(UserQuery userQuery) {
-			List<String> wheres = new LinkedList<>();
-			wheresKey(userQuery, wheres);
-			StringBuilder sql = SqlUtil.createSelectSql(null, TABLE_NAME, wheres);
-			String string = sql.append(" limit 1").toString();
-			return string;
+		public String selectOne(UserPo userPo) {
+			return ProviderUtil.selectOne(tableName, userPo, this::wheresKey);
 		}
 
-		public static final String selectSome(UserQuery userQuery) {
-			SqlUtil.initPageQuery(userQuery);
-			List<String> wheres = new LinkedList<>();
-			wheresAll(userQuery, wheres);
-			StringBuilder sql = SqlUtil.createSelectSql(null, TABLE_NAME, wheres);
-			String string = sql.append(" limit #{off},#{len}").toString();
-			return string;
+		public String selectSome(UserQuery userQuery) {
+			return ProviderUtil.selectSome(tableName, userQuery, this::wheresAll);
 		}
 
-		public static final String selectCount(UserQuery userQuery) {
-			SqlUtil.initPageQuery(userQuery);
-			List<String> selects = new LinkedList<>();
-			selects.add("count(*)");
-			List<String> wheres = new LinkedList<>();
-			wheresAll(userQuery, wheres);
-			StringBuilder sql = SqlUtil.createSelectSql(selects, TABLE_NAME, wheres);
-			String string = sql.toString();
-			return string;
+		public String selectCount(UserQuery userQuery) {
+			return ProviderUtil.selectCount(tableName, userQuery, this::wheresAll);
 		}
 
-		public static final String update(UserPo userPo) {
+		public String update(UserPo userPo) {
 			init(userPo);
 			userPo.setCreateTime(null);
 			userPo.setUpdateTime(new Date());
-			List<String> sets = new LinkedList<>();
-			sets(userPo, sets);
-			if (sets.size() == 0) {
-				return "update " + TABLE_NAME + " set user_id=#{userId} where false";
-			}
-			List<String> wheres = new LinkedList<>();
-			wheresKey(userPo, wheres);
-			String string = SqlUtil.createUpdateSql(TABLE_NAME, sets, wheres).append(" limit 1").toString();
-			return string;
+
+			return ProviderUtil.update(tableName, userPo, userId, this::sets, this::wheresKey);
 		}
 
-		private static final void wheresAll(UserQuery userQuery, List<String> wheres) {
+		private void wheresAll(UserQuery userQuery, Set<String> wheres) {
 			if (userQuery.getUserId() > 0) {
 				wheres.add(userId);
 			}
@@ -135,7 +107,7 @@ public interface UserMapper {
 			}
 		}
 
-		private static final void wheresKey(UserPo userPo, List<String> wheres) {
+		private void wheresKey(UserPo userPo, Set<String> wheres) {
 			if (userPo.getUserId() > 0) {
 				wheres.add(userId);
 			} else if (!StringUtil.isBlank(userPo.getUsername())) {
@@ -143,7 +115,7 @@ public interface UserMapper {
 			}
 		}
 
-		private static final void sets(UserPo userPo, List<String> sets) {
+		private void sets(UserPo userPo, Set<String> sets) {
 			if (!StringUtil.isBlank(userPo.getUsername())) {
 				sets.add(username);
 			}
@@ -155,7 +127,7 @@ public interface UserMapper {
 			}
 		}
 
-		private static final void init(UserPo userPo) {
+		private void init(UserPo userPo) {
 			if (userPo.getUsername() != null) {
 				userPo.setUsername(userPo.getUsername().trim());
 			}

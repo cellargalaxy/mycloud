@@ -36,13 +36,13 @@ public class OwnCache implements OwnDao {
 			@CacheEvict(key = "#p0.ownId"),
 			@CacheEvict(key = "'selectSort'+#p0.userId"),
 	})
-	public int delete(OwnQuery ownQuery) {
-		return ownMapper.delete(ownQuery);
+	public int delete(OwnPo ownPo) {
+		return ownMapper.delete(ownPo);
 	}
 
 	@Cacheable(key = "#p0.ownId", condition = "#p0.ownId>0")
-	public OwnBo selectOne(OwnQuery ownQuery) {
-		return ownMapper.selectOne(ownQuery);
+	public OwnBo selectOne(OwnPo ownPo) {
+		return ownMapper.selectOne(ownPo);
 	}
 
 	public List<OwnBo> selectSome(OwnQuery ownQuery) {

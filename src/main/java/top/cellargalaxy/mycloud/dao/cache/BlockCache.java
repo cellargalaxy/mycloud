@@ -27,13 +27,13 @@ public class BlockCache implements BlockDao {
 	}
 
 	@CacheEvict(key = "#p0.blockId")
-	public int delete(BlockQuery blockQuery) {
-		return blockMapper.delete(blockQuery);
+	public int delete(BlockPo blockPo) {
+		return blockMapper.delete(blockPo);
 	}
 
 	@Cacheable(key = "#p0.blockId", condition = "#p0.blockId>0")
-	public BlockBo selectOne(BlockQuery blockQuery) {
-		return blockMapper.selectOne(blockQuery);
+	public BlockBo selectOne(BlockPo blockPo) {
+		return blockMapper.selectOne(blockPo);
 	}
 
 	@CacheEvict(key = "#p0.blockId")

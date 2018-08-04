@@ -5,9 +5,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import top.cellargalaxy.mycloud.exception.GlobalException;
 import top.cellargalaxy.mycloud.model.po.FileInfoPo;
 import top.cellargalaxy.mycloud.model.query.FileInfoQuery;
 import top.cellargalaxy.mycloud.model.vo.Vo;
@@ -19,38 +19,19 @@ import top.cellargalaxy.mycloud.service.FileInfoService;
  */
 @PreAuthorize("hasAuthority('ADMIN')")
 @RestController
-@RequestMapping(FileInfoApiController.URL)
-public class FileInfoApiController {
+@RequestMapping(FileInfoAdminController.URL)
+public class FileInfoAdminController {
 	public static final String URL = "/admin/fileInfo";
-	private Logger logger = LoggerFactory.getLogger(FileInfoApiController.class);
+	private Logger logger = LoggerFactory.getLogger(FileInfoAdminController.class);
 	@Autowired
 	private FileInfoService fileInfoService;
 
-//	@PostMapping("/addFileInfo")
-//	public Vo addFileInfo(FileInfoPo fileInfoPo) {
-//		try {
-//			String string = fileInfoService.addFileInfo(fileInfoPo);
-//			logger.info("addFileInfo:{}", string);
-//			return new Vo(string, null);
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//			GlobalException.add(e);
-//			return new Vo(e);
-//		}
-//	}
-//
-//	@PostMapping("/removeFileInfo")
-//	public Vo removeFileInfo(FileInfoQuery fileInfoQuery) {
-//		try {
-//			String string = fileInfoService.removeFileInfo(fileInfoQuery);
-//			logger.info("removeFileInfo:{}", string);
-//			return new Vo(string, null);
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//			GlobalException.add(e);
-//			return new Vo(e);
-//		}
-//	}
+	@PostMapping("/removeFileInfo")
+	public Vo removeFileInfo(FileInfoQuery fileInfoQuery) {
+		String string = fileInfoService.removeFileInfo(fileInfoQuery);
+		logger.info("removeFileInfo:{}", string);
+		return new Vo(string, null);
+	}
 
 	@GetMapping("/getFileInfo")
 	public Vo getFileInfo(FileInfoQuery fileInfoQuery) {
@@ -78,14 +59,8 @@ public class FileInfoApiController {
 
 	@GetMapping("/listFileInfoOwn")
 	public Vo listFileInfoOwn(FileInfoQuery fileInfoQuery) {
-		try {
-			logger.info("listFileInfoOwn");
-			return new Vo(null, fileInfoService.listFileInfoOwn(fileInfoQuery));
-		} catch (Exception e) {
-			e.printStackTrace();
-			GlobalException.add(e);
-			return new Vo(e);
-		}
+		logger.info("listFileInfoOwn");
+		return new Vo(null, fileInfoService.listFileInfoOwn(fileInfoQuery));
 	}
 
 	@GetMapping("/listContentType")
@@ -94,18 +69,12 @@ public class FileInfoApiController {
 		return new Vo(null, fileInfoService.listContentType());
 	}
 
-//	@PostMapping("/changeFileInfo")
-//	public Vo changeFileInfo(FileInfoPo fileInfoPo) {
-//		try {
-//			String string = fileInfoService.changeFileInfo(fileInfoPo);
-//			logger.info("changeFileInfo:{}", string);
-//			return new Vo(string, null);
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//			GlobalException.add(e);
-//			return new Vo(e);
-//		}
-//	}
+	@PostMapping("/changeFileInfo")
+	public Vo changeFileInfo(FileInfoPo fileInfoPo) {
+		String string = fileInfoService.changeFileInfo(fileInfoPo);
+		logger.info("changeFileInfo:{}", string);
+		return new Vo(string, null);
+	}
 
 	@GetMapping("/checkAddFileInfo")
 	public Vo checkAddFileInfo(FileInfoPo fileInfoPo) {

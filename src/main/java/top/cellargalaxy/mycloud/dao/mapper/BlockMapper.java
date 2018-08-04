@@ -1,16 +1,13 @@
 package top.cellargalaxy.mycloud.dao.mapper;
 
 import org.apache.ibatis.annotations.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import top.cellargalaxy.mycloud.dao.BlockDao;
 import top.cellargalaxy.mycloud.model.bo.BlockBo;
 import top.cellargalaxy.mycloud.model.po.BlockPo;
 import top.cellargalaxy.mycloud.model.query.BlockQuery;
-import top.cellargalaxy.mycloud.util.SqlUtil;
+import top.cellargalaxy.mycloud.util.ProviderUtil;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.Set;
 
 import static org.apache.ibatis.type.JdbcType.BLOB;
 
@@ -20,78 +17,63 @@ import static org.apache.ibatis.type.JdbcType.BLOB;
  */
 @Mapper
 public interface BlockMapper {
-	@SelectProvider(type = BlockProvider.class, method = "insert")
 	@Options(useGeneratedKeys = true, keyProperty = "blockId")
+	@SelectProvider(type = BlockProviderUtil.class, method = "insert")
 	int insert(BlockPo blockPo);
 
-	@DeleteProvider(type = BlockProvider.class, method = "delete")
-	int delete(BlockQuery blockQuery);
+	@DeleteProvider(type = BlockProviderUtil.class, method = "delete")
+	int delete(BlockPo blockPo);
 
 	@Results(id = "blockResult", value = {
 			@Result(property = "blockId", column = "block_id", id = true),
 			@Result(property = "block", column = "block", javaType = byte[].class, jdbcType = BLOB)
 	})
-	@SelectProvider(type = BlockProvider.class, method = "selectOne")
-	BlockBo selectOne(BlockQuery blockQuery);
+	@SelectProvider(type = BlockProviderUtil.class, method = "selectOne")
+	BlockBo selectOne(BlockPo blockPo);
 
-	@UpdateProvider(type = BlockProvider.class, method = "update")
+	@UpdateProvider(type = BlockProviderUtil.class, method = "update")
 	int update(BlockPo blockPo);
 
-	class BlockProvider {
-		private static final String TABLE_NAME = BlockDao.TABLE_NAME;
-		private static final String blockId = TABLE_NAME + ".block_id=#{blockId}";
-		private static final String block = TABLE_NAME + ".block=#{block}";
+	class BlockProviderUtil {
+		private String tableName = BlockDao.TABLE_NAME;
+		private String blockId = tableName + ".block_id=#{blockId}";
+		private String block = tableName + ".block=#{block}";
 
-		public static final String insert(BlockPo blockPo) {
-			String string = "insert into " + TABLE_NAME + "(block) " +
+		public String insert(BlockPo blockPo) {
+			String string = "insert into " + tableName + "(block) " +
 					"values(#{block,jdbcType=BLOB})";
 			return string;
 		}
 
-		public static final String delete(BlockQuery blockQuery) {
-			List<String> wheres = new LinkedList<>();
-			wheresAll(blockQuery, wheres);
-			StringBuilder sql = SqlUtil.createDeleteSql(TABLE_NAME, wheres);
-			String string = sql.toString();
-			return string;
+		public String delete(BlockPo blockPo) {
+			return ProviderUtil.delete(tableName, blockPo, this::wheresKey);
 		}
 
-		public static final String selectOne(BlockQuery blockQuery) {
-			List<String> wheres = new LinkedList<>();
-			wheresKey(blockQuery, wheres);
-			StringBuilder sql = SqlUtil.createSelectSql(null, TABLE_NAME, wheres);
-			String string = sql.append(" limit 1").toString();
-			return string;
+		public String selectOne(BlockPo blockPo) {
+			return ProviderUtil.selectOne(tableName, blockPo, this::wheresKey);
 		}
 
-		public static final String update(BlockPo blockPo) {
-			List<String> sets = new LinkedList<>();
-			sets(blockPo, sets);
-			if (sets.size() == 0) {
-				return "update " + TABLE_NAME + " set block_id=#{blockId} where false";
-			}
-			List<String> wheres = new LinkedList<>();
-			wheresKey(blockPo, wheres);
-			String string = SqlUtil.createUpdateSql(TABLE_NAME, sets, wheres).append(" limit 1").toString();
-			return string;
+		public String update(BlockPo blockPo) {
+			return ProviderUtil.update(tableName, blockPo, blockId, this::sets, this::wheresKey);
 		}
 
-		private static final void wheresAll(BlockQuery blockQuery, List<String> wheres) {
+		private void wheresAll(BlockQuery blockQuery, Set<String> wheres) {
 			if (blockQuery.getBlockId() > 0) {
 				wheres.add(blockId);
 			}
 		}
 
-		private static final void wheresKey(BlockPo blockPo, List<String> wheres) {
+		private void wheresKey(BlockPo blockPo, Set<String> wheres) {
 			if (blockPo.getBlockId() > 0) {
 				wheres.add(blockId);
 			}
 		}
 
-		private static final void sets(BlockPo blockPo, List<String> sets) {
+		private void sets(BlockPo blockPo, Set<String> sets) {
 			if (blockPo.getBlock() != null) {
 				sets.add(block);
 			}
 		}
+
 	}
 }

@@ -36,13 +36,13 @@ public class FileInfoCache implements FileInfoDao {
 			@CacheEvict(key = "#p0.fileId"),
 			@CacheEvict(key = "'selectContentType'"),
 	})
-	public int delete(FileInfoQuery fileInfoQuery) {
-		return fileInfoMapper.delete(fileInfoQuery);
+	public int delete(FileInfoPo fileInfoPo) {
+		return fileInfoMapper.delete(fileInfoPo);
 	}
 
 	@Cacheable(key = "#p0.fileId", condition = "#p0.fileId>0")
-	public FileInfoBo selectOne(FileInfoQuery fileInfoQuery) {
-		return fileInfoMapper.selectOne(fileInfoQuery);
+	public FileInfoBo selectOne(FileInfoPo fileInfoPo) {
+		return fileInfoMapper.selectOne(fileInfoPo);
 	}
 
 	public List<FileInfoBo> selectSome(FileInfoQuery fileInfoQuery) {

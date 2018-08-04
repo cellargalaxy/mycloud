@@ -16,9 +16,9 @@ public interface OwnDao {
 
 	int insert(OwnPo ownPo);
 
-	int delete(OwnQuery ownQuery);
+	int delete(OwnPo ownPo);
 
-	OwnBo selectOne(OwnQuery ownQuery);
+	OwnBo selectOne(OwnPo ownPo);
 
 	List<OwnBo> selectSome(OwnQuery ownQuery);
 

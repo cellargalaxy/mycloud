@@ -11,6 +11,7 @@ public class FileBlocks implements Closeable {
 	private final File file;
 	private final int blockLength;
 	private final InputStream inputStream;
+	private int blockCount;
 	private int blockIndex;
 	private final int[] blockLengths;
 
@@ -20,7 +21,7 @@ public class FileBlocks implements Closeable {
 		inputStream = new BufferedInputStream(new FileInputStream(file));
 		blockIndex = 0;
 		int remainder = (int) (file.length() % blockLength);
-		int blockCount = (int) (file.length() / blockLength);
+		blockCount = (int) (file.length() / blockLength);
 		if (remainder > 0) {
 			blockCount++;
 		}
@@ -39,24 +40,29 @@ public class FileBlocks implements Closeable {
 		if (blockIndex >= blockLengths.length) {
 			return null;
 		}
-		byte[] bytes = new byte[blockLengths[blockIndex++]];
+		byte[] bytes = new byte[blockLengths[blockIndex]];
 		int count = 0;
 		do {
 			count += inputStream.read(bytes, count, bytes.length);
 		} while (count < bytes.length);
+		blockIndex++;
 		return bytes;
-	}
-
-	public int getBlockIndex() {
-		return blockIndex;
 	}
 
 	public File getFile() {
 		return file;
 	}
 
-	public long getBlockLength() {
+	public int getBlockLength() {
 		return blockLength;
+	}
+
+	public int getBlockCount() {
+		return blockCount;
+	}
+
+	public int getBlockIndex() {
+		return blockIndex;
 	}
 
 	public int[] getBlockLengths() {
@@ -68,7 +74,7 @@ public class FileBlocks implements Closeable {
 		return "FileBlocks{" +
 				"file=" + file +
 				", blockLength=" + blockLength +
-				", inputStream=" + inputStream +
+				", blockCount=" + blockCount +
 				", blockIndex=" + blockIndex +
 				", blockLengths=" + Arrays.toString(blockLengths) +
 				'}';

@@ -1,8 +1,8 @@
 package top.cellargalaxy.mycloud.dao;
 
+import top.cellargalaxy.mycloud.model.bo.UserBo;
 import top.cellargalaxy.mycloud.model.po.UserPo;
 import top.cellargalaxy.mycloud.model.query.UserQuery;
-import top.cellargalaxy.mycloud.model.bo.UserBo;
 import top.cellargalaxy.mycloud.util.StringUtil;
 
 import java.util.List;
@@ -15,9 +15,9 @@ public interface UserDao {
 
 	int insert(UserPo userPo);
 
-	int delete(UserQuery userQuery);
+	int delete(UserPo userPo);
 
-	UserBo selectOne(UserQuery userQuery);
+	UserBo selectOne(UserPo userPo);
 
 	List<UserBo> selectSome(UserQuery userQuery);
 

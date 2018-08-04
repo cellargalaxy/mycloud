@@ -34,13 +34,13 @@ public class FileBlockCache implements FileBlockDao {
 	@Caching(evict = {
 			@CacheEvict(key = "#p0.fileId"),
 	})
-	public int delete(FileBlockQuery fileBlockQuery) {
-		return fileBlockMapper.delete(fileBlockQuery);
+	public int delete(FileBlockPo fileBlockPo) {
+		return fileBlockMapper.delete(fileBlockPo);
 	}
 
 	@Cacheable(key = "#p0.fileId", condition = "#p0.fileId>0")
-	public FileBlockBo selectOne(FileBlockQuery fileBlockQuery) {
-		return fileBlockMapper.selectOne(fileBlockQuery);
+	public FileBlockBo selectOne(FileBlockPo fileBlockPo) {
+		return fileBlockMapper.selectOne(fileBlockPo);
 	}
 
 	public List<FileBlockBo> selectSome(FileBlockQuery fileBlockQuery) {

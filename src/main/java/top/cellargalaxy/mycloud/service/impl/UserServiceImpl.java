@@ -71,6 +71,13 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
+	public UserBo getUser(UserPo userPo, UserQuery userQuery) {
+		userQuery.setUserId(userPo.getUserId());
+		userQuery.setUsername(userPo.getUsername());
+		return getUser(userQuery);
+	}
+
+	@Override
 	public int getUserCount(UserQuery userQuery) {
 		logger.info("getUserCount:{}", userQuery);
 		return userDao.selectCount(userQuery);
@@ -93,6 +100,13 @@ public class UserServiceImpl implements UserService {
 		authorizationQuery.setUserId(userBo.getUserId());
 		List<AuthorizationBo> authorizationBos = authorizationDao.selectSome(authorizationQuery);
 		return new UserAuthorizationVo(userBo, authorizationBos);
+	}
+
+	@Override
+	public UserAuthorizationVo getUserAuthorization(UserPo userPo, UserQuery userQuery) {
+		userQuery.setUserId(userPo.getUserId());
+		userQuery.setUsername(userPo.getUsername());
+		return getUserAuthorization(userQuery);
 	}
 
 	@Override
@@ -161,6 +175,14 @@ public class UserServiceImpl implements UserService {
 			return "用户空更新";
 		}
 		return null;
+	}
+
+	@Override
+	public String changeUser(UserPo odUserPo, UserPo newUserPo) {
+		if (odUserPo.getUserId() != newUserPo.getUserId()) {
+			return "登录账号与被修改账号不相同";
+		}
+		return changeUser(newUserPo);
 	}
 
 	@Override

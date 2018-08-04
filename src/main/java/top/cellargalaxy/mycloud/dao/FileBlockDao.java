@@ -1,9 +1,8 @@
 package top.cellargalaxy.mycloud.dao;
 
+import top.cellargalaxy.mycloud.model.bo.FileBlockBo;
 import top.cellargalaxy.mycloud.model.po.FileBlockPo;
 import top.cellargalaxy.mycloud.model.query.FileBlockQuery;
-import top.cellargalaxy.mycloud.model.bo.FileBlockBo;
-import top.cellargalaxy.mycloud.util.StringUtil;
 
 import java.util.List;
 
@@ -16,9 +15,9 @@ public interface FileBlockDao {
 
 	int insert(FileBlockPo fileBlockPo);
 
-	int delete(FileBlockQuery fileBlockQuery);
+	int delete(FileBlockPo fileBlockPo);
 
-	FileBlockBo selectOne(FileBlockQuery fileBlockQuery);
+	FileBlockBo selectOne(FileBlockPo fileBlockPo);
 
 	List<FileBlockBo> selectSome(FileBlockQuery fileBlockQuery);
 

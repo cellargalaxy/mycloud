@@ -34,13 +34,13 @@ public class PermissionCache implements PermissionDao {
 	@Caching(evict = {
 			@CacheEvict(key = "#p0.permissionId"),
 	})
-	public int delete(PermissionQuery permissionQuery) {
-		return permissionMapper.delete(permissionQuery);
+	public int delete(PermissionPo permissionPo) {
+		return permissionMapper.delete(permissionPo);
 	}
 
 	@Cacheable(key = "#p0.permissionId", condition = "#p0.permissionId>0")
-	public PermissionBo selectOne(PermissionQuery permissionQuery) {
-		return permissionMapper.selectOne(permissionQuery);
+	public PermissionBo selectOne(PermissionPo permissionPo) {
+		return permissionMapper.selectOne(permissionPo);
 	}
 
 	public List<PermissionBo> selectSome(PermissionQuery permissionQuery) {
@@ -54,8 +54,8 @@ public class PermissionCache implements PermissionDao {
 	@Caching(evict = {
 			@CacheEvict(key = "#p0.permissionId"),
 	})
-	public int upldate(PermissionPo permissionPo) {
-		return permissionMapper.upldate(permissionPo);
+	public int update(PermissionPo permissionPo) {
+		return permissionMapper.update(permissionPo);
 	}
 
 

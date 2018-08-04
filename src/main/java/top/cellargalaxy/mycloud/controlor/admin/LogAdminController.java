@@ -5,7 +5,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import top.cellargalaxy.mycloud.exception.GlobalException;
 import top.cellargalaxy.mycloud.model.vo.Vo;
 import top.cellargalaxy.mycloud.service.LogService;
 import top.cellargalaxy.mycloud.service.impl.LogServiceImpl;
@@ -16,8 +15,8 @@ import top.cellargalaxy.mycloud.service.impl.LogServiceImpl;
  */
 @PreAuthorize("hasAuthority('ADMIN')")
 @RestController
-@RequestMapping(LogApiController.URL)
-public class LogApiController {
+@RequestMapping(LogAdminController.URL)
+public class LogAdminController {
 	public static final String URL = "/admin/log";
 	private Logger logger = LoggerFactory.getLogger(LogServiceImpl.class);
 	@Autowired

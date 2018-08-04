@@ -8,6 +8,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.GenericFilterBean;
+import top.cellargalaxy.mycloud.controlor.user.UserUserController;
 import top.cellargalaxy.mycloud.model.security.SecurityUser;
 import top.cellargalaxy.mycloud.service.security.SecurityService;
 
@@ -27,7 +28,6 @@ import java.util.List;
  * @time 2018/7/30
  */
 public class AuthenticationFilter extends GenericFilterBean {
-	public static final String SECURITY_USER_KEY = "user";
 	private final Logger logger = LoggerFactory.getLogger(AuthenticationFilter.class);
 	private final SecurityService securityService;
 
@@ -63,7 +63,7 @@ public class AuthenticationFilter extends GenericFilterBean {
 		//这样之后的Filter发现他有账号对象，就会认为他已经登录，允许放行
 		SecurityUser securityUser = securityService.checkToken(token);
 		if (securityUser != null) {
-			httpServletRequest.setAttribute(SECURITY_USER_KEY, securityUser);
+			httpServletRequest.setAttribute(UserUserController.USER_KEY, securityUser);
 
 			List<GrantedAuthority> authorities = new LinkedList<>();
 			for (String permission : securityUser.getPermissions()) {

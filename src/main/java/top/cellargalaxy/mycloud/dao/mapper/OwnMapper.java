@@ -1,20 +1,17 @@
 package top.cellargalaxy.mycloud.dao.mapper;
 
 import org.apache.ibatis.annotations.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import top.cellargalaxy.mycloud.dao.FileInfoDao;
 import top.cellargalaxy.mycloud.dao.OwnDao;
 import top.cellargalaxy.mycloud.dao.UserDao;
 import top.cellargalaxy.mycloud.model.bo.OwnBo;
 import top.cellargalaxy.mycloud.model.po.OwnPo;
 import top.cellargalaxy.mycloud.model.query.OwnQuery;
+import top.cellargalaxy.mycloud.util.ProviderUtil;
 import top.cellargalaxy.mycloud.util.SqlUtil;
 import top.cellargalaxy.mycloud.util.StringUtil;
 
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 import static org.apache.ibatis.type.JdbcType.TIMESTAMP;
 
@@ -24,12 +21,12 @@ import static org.apache.ibatis.type.JdbcType.TIMESTAMP;
  */
 @Mapper
 public interface OwnMapper {
-	@InsertProvider(type = OwnProvider.class, method = "insert")
+	@InsertProvider(type = OwnProviderUtil.class, method = "insert")
 	@Options(useGeneratedKeys = true, keyProperty = "ownId")
 	int insert(OwnPo ownPo);
 
-	@DeleteProvider(type = OwnProvider.class, method = "delete")
-	int delete(OwnQuery ownQuery);
+	@DeleteProvider(type = OwnProviderUtil.class, method = "delete")
+	int delete(OwnPo ownPo);
 
 	@Results(id = "ownResult", value = {
 			@Result(property = "ownId", column = "own_id", id = true),
@@ -45,138 +42,137 @@ public interface OwnMapper {
 			@Result(property = "fileLength", column = "file_length"),
 			@Result(property = "contentType", column = "content_type")
 	})
-	@SelectProvider(type = OwnProvider.class, method = "selectOne")
-	OwnBo selectOne(OwnQuery ownQuery);
+	@SelectProvider(type = OwnProviderUtil.class, method = "selectOne")
+	OwnBo selectOne(OwnPo ownPo);
 
 	@ResultMap(value = "ownResult")
-	@SelectProvider(type = OwnProvider.class, method = "selectSome")
+	@SelectProvider(type = OwnProviderUtil.class, method = "selectSome")
 	List<OwnBo> selectSome(OwnQuery ownQuery);
 
-	@SelectProvider(type = OwnProvider.class, method = "selectCount")
+	@SelectProvider(type = OwnProviderUtil.class, method = "selectCount")
 	int selectCount(OwnQuery ownQuery);
 
-	@SelectProvider(type = OwnProvider.class, method = "selectSort")
+	@SelectProvider(type = OwnProviderUtil.class, method = "selectSort")
 	List<String> selectSort(OwnQuery ownQuery);
 
-	@UpdateProvider(type = OwnProvider.class, method = "update")
+	@UpdateProvider(type = OwnProviderUtil.class, method = "update")
 	int update(OwnPo ownPo);
 
-	class OwnProvider {
-		private static final String TABLE_NAME = OwnDao.TABLE_NAME;
-		private static final String ownId = TABLE_NAME + ".own_id=#{ownId}";
-		private static final String userId = TABLE_NAME + ".user_id=#{userId}";
-		private static final String fileId = TABLE_NAME + ".file_id=#{fileId}";
-		private static final String fileName = TABLE_NAME + ".file_name=#{fileName}";
-		private static final String sort = TABLE_NAME + ".sort=#{sort}";
-		private static final String description = TABLE_NAME + ".description like CONCAT(CONCAT('%', #{description}),'%')";
-		private static final String descriptionSet = TABLE_NAME + ".description=#{description}";
-		private static final String createTime = TABLE_NAME + ".create_time=#{createTime,jdbcType=TIMESTAMP}";
-		private static final String updateTime = TABLE_NAME + ".update_time=#{updateTime,jdbcType=TIMESTAMP}";
+	class OwnProviderUtil {
+		private String tableName = OwnDao.TABLE_NAME;
+		private String ownId = tableName + ".own_id=#{ownId}";
+		private String userId = tableName + ".user_id=#{userId}";
+		private String fileId = tableName + ".file_id=#{fileId}";
+		private String fileName = tableName + ".file_name=#{fileName}";
+		private String sort = tableName + ".sort=#{sort}";
+		private String description = tableName + ".description like CONCAT(CONCAT('%', #{description}),'%')";
+		private String descriptionSet = tableName + ".description=#{description}";
+		private String createTime = tableName + ".create_time=#{createTime,jdbcType=TIMESTAMP}";
+		private String updateTime = tableName + ".update_time=#{updateTime,jdbcType=TIMESTAMP}";
 
-		public static final String insert(OwnPo ownPo) {
+		public String insert(OwnPo ownPo) {
 			init(ownPo);
 			Date date = new Date();
 			ownPo.setCreateTime(date);
 			ownPo.setUpdateTime(date);
-			String string = "insert into " + TABLE_NAME + "(user_id,file_id,file_name,sort,description,create_time,update_time) " +
+
+			String string = "insert into " + tableName + "(user_id,file_id,file_name,sort,description,create_time,update_time) " +
 					"values(#{userId},#{fileId},#{fileName},#{sort},#{description},#{createTime,jdbcType=TIMESTAMP},#{updateTime,jdbcType=TIMESTAMP})";
 			return string;
 		}
 
-		public static final String delete(OwnQuery ownQuery) {
-			List<String> wheres = new LinkedList<>();
-			wheresAll(ownQuery, wheres);
-			StringBuilder sql = SqlUtil.createDeleteSql(TABLE_NAME, wheres);
-			String string = sql.toString();
-			return string;
+		public String delete(OwnPo ownPo) {
+			return ProviderUtil.delete(tableName, ownPo, this::wheresKey);
 		}
 
-		public static final String selectOne(OwnQuery ownQuery) {
+		public String selectOne(OwnPo ownPo) {
 			List<String> selects = new LinkedList<>();
-			selects.add(TABLE_NAME + ".own_id");
-			selects.add(TABLE_NAME + ".user_id");
-			selects.add(TABLE_NAME + ".file_id");
-			selects.add(TABLE_NAME + ".file_name");
-			selects.add(TABLE_NAME + ".sort");
-			selects.add(TABLE_NAME + ".description");
-			selects.add(TABLE_NAME + ".create_time");
-			selects.add(TABLE_NAME + ".update_time");
+			selects.add(tableName + ".own_id");
+			selects.add(tableName + ".user_id");
+			selects.add(tableName + ".file_id");
+			selects.add(tableName + ".file_name");
+			selects.add(tableName + ".sort");
+			selects.add(tableName + ".description");
+			selects.add(tableName + ".create_time");
+			selects.add(tableName + ".update_time");
 			selects.add(UserDao.TABLE_NAME + ".username");
 			selects.add(FileInfoDao.TABLE_NAME + ".md5");
 			selects.add(FileInfoDao.TABLE_NAME + ".file_length");
 			selects.add(FileInfoDao.TABLE_NAME + ".content_type");
-			List<String> wheres = new LinkedList<>();
-			wheres.add(TABLE_NAME + ".user_id=" + UserDao.TABLE_NAME + ".user_id");
-			wheres.add(TABLE_NAME + ".file_id=" + FileInfoDao.TABLE_NAME + ".file_id");
-			wheresKey(ownQuery, wheres);
-			StringBuilder sql = SqlUtil.createSelectSql(selects, TABLE_NAME + "," + UserDao.TABLE_NAME + "," + FileInfoDao.TABLE_NAME, wheres);
+
+			Set<String> wheres = new HashSet<>();
+			wheres.add(tableName + ".user_id=" + UserDao.TABLE_NAME + ".user_id");
+			wheres.add(tableName + ".file_id=" + FileInfoDao.TABLE_NAME + ".file_id");
+			wheresKey(ownPo, wheres);
+
+			StringBuilder sql = SqlUtil.createSelectSql(selects, tableName + "," + UserDao.TABLE_NAME + "," + FileInfoDao.TABLE_NAME, wheres);
 			String string = sql.append(" limit 1").toString();
 			return string;
 		}
 
-		public static final String selectSome(OwnQuery ownQuery) {
+		public String selectSome(OwnQuery ownQuery) {
 			SqlUtil.initPageQuery(ownQuery);
 			List<String> selects = new LinkedList<>();
-			selects.add(TABLE_NAME + ".own_id");
-			selects.add(TABLE_NAME + ".user_id");
-			selects.add(TABLE_NAME + ".file_id");
-			selects.add(TABLE_NAME + ".file_name");
-			selects.add(TABLE_NAME + ".sort");
-			selects.add(TABLE_NAME + ".description");
-			selects.add(TABLE_NAME + ".create_time");
-			selects.add(TABLE_NAME + ".update_time");
+			selects.add(tableName + ".own_id");
+			selects.add(tableName + ".user_id");
+			selects.add(tableName + ".file_id");
+			selects.add(tableName + ".file_name");
+			selects.add(tableName + ".sort");
+			selects.add(tableName + ".description");
+			selects.add(tableName + ".create_time");
+			selects.add(tableName + ".update_time");
 			selects.add(UserDao.TABLE_NAME + ".username");
 			selects.add(FileInfoDao.TABLE_NAME + ".md5");
 			selects.add(FileInfoDao.TABLE_NAME + ".file_length");
 			selects.add(FileInfoDao.TABLE_NAME + ".content_type");
-			List<String> wheres = new LinkedList<>();
-			wheres.add(TABLE_NAME + ".user_id=" + UserDao.TABLE_NAME + ".user_id");
-			wheres.add(TABLE_NAME + ".file_id=" + FileInfoDao.TABLE_NAME + ".file_id");
+
+			Set<String> wheres = new HashSet<>();
+			wheres.add(tableName + ".user_id=" + UserDao.TABLE_NAME + ".user_id");
+			wheres.add(tableName + ".file_id=" + FileInfoDao.TABLE_NAME + ".file_id");
 			wheresAll(ownQuery, wheres);
-			StringBuilder sql = SqlUtil.createSelectSql(selects, TABLE_NAME + "," + UserDao.TABLE_NAME + "," + FileInfoDao.TABLE_NAME, wheres);
+
+			StringBuilder sql = SqlUtil.createSelectSql(selects, tableName + "," + UserDao.TABLE_NAME + "," + FileInfoDao.TABLE_NAME, wheres);
 			String string = sql.append(" limit #{off},#{len}").toString();
 			return string;
 		}
 
-		public static final String selectCount(OwnQuery ownQuery) {
+		public String selectCount(OwnQuery ownQuery) {
 			SqlUtil.initPageQuery(ownQuery);
+
 			List<String> selects = new LinkedList<>();
 			selects.add("count(*)");
-			List<String> wheres = new LinkedList<>();
-			wheres.add(TABLE_NAME + ".user_id=" + UserDao.TABLE_NAME + ".user_id");
-			wheres.add(TABLE_NAME + ".file_id=" + FileInfoDao.TABLE_NAME + ".file_id");
+
+			Set<String> wheres = new HashSet<>();
+			wheres.add(tableName + ".user_id=" + UserDao.TABLE_NAME + ".user_id");
+			wheres.add(tableName + ".file_id=" + FileInfoDao.TABLE_NAME + ".file_id");
 			wheresAll(ownQuery, wheres);
-			StringBuilder sql = SqlUtil.createSelectSql(selects, TABLE_NAME + "," + UserDao.TABLE_NAME + "," + FileInfoDao.TABLE_NAME, wheres);
+
+			StringBuilder sql = SqlUtil.createSelectSql(selects, tableName + "," + UserDao.TABLE_NAME + "," + FileInfoDao.TABLE_NAME, wheres);
 			String string = sql.toString();
 			return string;
 		}
 
-		public static final String selectSort(OwnQuery ownQuery) {
+		public String selectSort(OwnQuery ownQuery) {
 			List<String> selects = new LinkedList<>();
 			selects.add("distinct sort");
-			List<String> wheres = new LinkedList<>();
+
+			Set<String> wheres = new HashSet<>();
 			wheresAll(ownQuery, wheres);
-			StringBuilder sql = SqlUtil.createSelectSql(selects, TABLE_NAME, wheres);
+
+			StringBuilder sql = SqlUtil.createSelectSql(selects, tableName, wheres);
 			String string = sql.toString();
 			return string;
 		}
 
-		public static final String update(OwnPo ownPo) {
+		public String update(OwnPo ownPo) {
 			init(ownPo);
 			ownPo.setCreateTime(null);
 			ownPo.setUpdateTime(new Date());
-			List<String> sets = new LinkedList<>();
-			sets(ownPo, sets);
-			if (sets.size() == 0) {
-				return "update " + TABLE_NAME + " set own_id=#{ownId} where false";
-			}
-			List<String> wheres = new LinkedList<>();
-			wheresKey(ownPo, wheres);
-			String string = SqlUtil.createUpdateSql(TABLE_NAME, sets, wheres).append(" limit 1").toString();
-			return string;
+
+			return ProviderUtil.update(tableName, ownPo, ownId, this::sets, this::wheresKey);
 		}
 
-		private static final void wheresAll(OwnQuery ownQuery, List<String> wheres) {
+		private void wheresAll(OwnQuery ownQuery, Set<String> wheres) {
 			if (ownQuery.getOwnId() > 0) {
 				wheres.add(ownId);
 			}
@@ -203,7 +199,7 @@ public interface OwnMapper {
 			}
 		}
 
-		private static final void wheresKey(OwnPo ownPo, List<String> wheres) {
+		private void wheresKey(OwnPo ownPo, Set<String> wheres) {
 			if (ownPo.getOwnId() > 0) {
 				wheres.add(ownId);
 			} else if (ownPo.getUserId() > 0 && ownPo.getFileId() > 0) {
@@ -212,7 +208,7 @@ public interface OwnMapper {
 			}
 		}
 
-		private static final void sets(OwnPo ownPo, List<String> sets) {
+		private void sets(OwnPo ownPo, Set<String> sets) {
 			if (ownPo.getUserId() > 0) {
 				sets.add(userId);
 			}
@@ -233,7 +229,7 @@ public interface OwnMapper {
 			}
 		}
 
-		private static final void init(OwnPo ownPo) {
+		private void init(OwnPo ownPo) {
 			if (ownPo.getFileName() != null) {
 				ownPo.setFileName(ownPo.getFileName().trim());
 			}

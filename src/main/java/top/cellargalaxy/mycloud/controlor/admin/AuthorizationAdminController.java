@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import top.cellargalaxy.mycloud.exception.GlobalException;
 import top.cellargalaxy.mycloud.model.po.AuthorizationPo;
 import top.cellargalaxy.mycloud.model.query.AuthorizationQuery;
 import top.cellargalaxy.mycloud.model.vo.Vo;
@@ -20,10 +19,10 @@ import top.cellargalaxy.mycloud.service.AuthorizationService;
  */
 @PreAuthorize("hasAuthority('ROOT')")
 @RestController
-@RequestMapping(AuthorizationApiController.URL)
-public class AuthorizationApiController {
+@RequestMapping(AuthorizationAdminController.URL)
+public class AuthorizationAdminController {
 	public static final String URL = "/admin/authorization";
-	private Logger logger = LoggerFactory.getLogger(AuthorizationApiController.class);
+	private Logger logger = LoggerFactory.getLogger(AuthorizationAdminController.class);
 	@Autowired
 	private AuthorizationService authorizationService;
 

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import top.cellargalaxy.mycloud.dao.OwnDao;
 import top.cellargalaxy.mycloud.model.bo.OwnBo;
 import top.cellargalaxy.mycloud.model.po.OwnPo;
+import top.cellargalaxy.mycloud.model.po.UserPo;
 import top.cellargalaxy.mycloud.model.query.OwnQuery;
 import top.cellargalaxy.mycloud.service.OwnService;
 
@@ -82,6 +83,55 @@ public class OwnServiceImpl implements OwnService {
 			return "所属空更新";
 		}
 		return null;
+	}
+
+	@Override
+	public String addOwn(UserPo userPo, OwnPo ownPo) {
+		ownPo.setOwnId(0);
+		ownPo.setUserId(userPo.getUserId());
+		return addOwn(ownPo);
+	}
+
+	@Override
+	public String removeOwn(UserPo userPo, OwnQuery ownQuery) {
+		ownQuery.setOwnId(0);
+		ownQuery.setUserId(userPo.getUserId());
+		return removeOwn(ownQuery);
+	}
+
+	@Override
+	public OwnBo getOwn(UserPo userPo, OwnQuery ownQuery) {
+		ownQuery.setOwnId(0);
+		ownQuery.setUserId(userPo.getUserId());
+		return getOwn(ownQuery);
+	}
+
+	@Override
+	public int getOwnCount(UserPo userPo, OwnQuery ownQuery) {
+		ownQuery.setOwnId(0);
+		ownQuery.setUserId(userPo.getUserId());
+		return getOwnCount(ownQuery);
+	}
+
+	@Override
+	public List<OwnBo> listOwn(UserPo userPo, OwnQuery ownQuery) {
+		ownQuery.setOwnId(0);
+		ownQuery.setUserId(userPo.getUserId());
+		return listOwn(ownQuery);
+	}
+
+	@Override
+	public List<String> listSort(UserPo userPo, OwnQuery ownQuery) {
+		ownQuery.setOwnId(0);
+		ownQuery.setUserId(userPo.getUserId());
+		return listSort(ownQuery);
+	}
+
+	@Override
+	public String changeOwn(UserPo userPo, OwnPo ownPo) {
+		ownPo.setOwnId(0);
+		ownPo.setUserId(userPo.getUserId());
+		return changeOwn(ownPo);
 	}
 
 	@Override

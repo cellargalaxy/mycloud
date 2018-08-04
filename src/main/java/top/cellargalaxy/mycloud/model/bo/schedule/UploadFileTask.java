@@ -16,10 +16,8 @@ public class UploadFileTask extends Task {
 	private final File file;
 	private final String contentType;
 
-	public UploadFileTask(OwnPo ownPo, File file, String contentType) {
-		super(new UserPo() {{
-			setUserId(ownPo.getUserId());
-		}}, TASK_SORT);
+	public UploadFileTask(UserPo userPo, OwnPo ownPo, File file, String contentType) {
+		super(userPo, TASK_SORT);
 		this.ownPo = ownPo;
 		this.file = file;
 		this.contentType = contentType;

@@ -34,13 +34,13 @@ public class UserCache implements UserDao {
 	@Caching(evict = {
 			@CacheEvict(key = "#p0.userId"),
 	})
-	public int delete(UserQuery userQuery) {
-		return userMapper.delete(userQuery);
+	public int delete(UserPo userPo) {
+		return userMapper.delete(userPo);
 	}
 
 	@Cacheable(key = "#p0.userId", condition = "#p0.userId>0")
-	public UserBo selectOne(UserQuery userQuery) {
-		return userMapper.selectOne(userQuery);
+	public UserBo selectOne(UserPo userPo) {
+		return userMapper.selectOne(userPo);
 	}
 
 	public List<UserBo> selectSome(UserQuery userQuery) {

@@ -34,13 +34,13 @@ public class AuthorizationCache implements AuthorizationDao {
 	@Caching(evict = {
 			@CacheEvict(key = "#p0.authorizationId"),
 	})
-	public int delete(AuthorizationQuery authorizationQuery) {
-		return authorizationMapper.delete(authorizationQuery);
+	public int delete(AuthorizationPo authorizationPo) {
+		return authorizationMapper.delete(authorizationPo);
 	}
 
 	@Cacheable(key = "#p0.authorizationId", condition = "#p0.authorizationId>0")
-	public AuthorizationBo selectOne(AuthorizationQuery authorizationQuery) {
-		return authorizationMapper.selectOne(authorizationQuery);
+	public AuthorizationBo selectOne(AuthorizationPo authorizationPo) {
+		return authorizationMapper.selectOne(authorizationPo);
 	}
 
 	public List<AuthorizationBo> selectSome(AuthorizationQuery authorizationQuery) {

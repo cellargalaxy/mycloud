@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import top.cellargalaxy.mycloud.exception.GlobalException;
 import top.cellargalaxy.mycloud.model.po.OwnPo;
 import top.cellargalaxy.mycloud.model.query.OwnQuery;
 import top.cellargalaxy.mycloud.model.vo.Vo;
@@ -20,10 +19,10 @@ import top.cellargalaxy.mycloud.service.OwnService;
  */
 @PreAuthorize("hasAuthority('ADMIN')")
 @RestController
-@RequestMapping(OwnApiController.URL)
-public class OwnApiController {
+@RequestMapping(OwnAdminController.URL)
+public class OwnAdminController {
 	public static final String URL = "/admin/own";
-	private Logger logger = LoggerFactory.getLogger(OwnApiController.class);
+	private Logger logger = LoggerFactory.getLogger(OwnAdminController.class);
 	@Autowired
 	private OwnService ownService;
 
@@ -43,7 +42,7 @@ public class OwnApiController {
 
 	@GetMapping("/getOwn")
 	public Vo getOwn(OwnQuery ownQuery) {
-		logger.info("ownQuery");
+		logger.info("getOwn");
 		return new Vo(null, ownService.getOwn(ownQuery));
 	}
 
@@ -53,7 +52,7 @@ public class OwnApiController {
 		return new Vo(null, ownService.getOwnCount(ownQuery));
 	}
 
-	@GetMapping("/  ")
+	@GetMapping("/listOwn")
 	public Vo listOwn(OwnQuery ownQuery) {
 		logger.info("listOwn");
 		return new Vo(null, ownService.listOwn(ownQuery));
@@ -67,15 +66,9 @@ public class OwnApiController {
 
 	@PostMapping("/changeOwn")
 	public Vo changeOwn(OwnPo ownPo) {
-		try {
-			String string = ownService.changeOwn(ownPo);
-			logger.info("changeOwn:{}", string);
-			return new Vo(string, null);
-		} catch (Exception e) {
-			e.printStackTrace();
-			GlobalException.add(e);
-			return new Vo(e);
-		}
+		String string = ownService.changeOwn(ownPo);
+		logger.info("changeOwn:{}", string);
+		return new Vo(string, null);
 	}
 
 	@GetMapping("/checkAddOwn")

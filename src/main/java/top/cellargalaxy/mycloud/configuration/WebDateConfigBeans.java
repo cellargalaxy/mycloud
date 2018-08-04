@@ -1,9 +1,9 @@
 package top.cellargalaxy.mycloud.configuration;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.core.convert.support.GenericConversionService;
-import org.springframework.stereotype.Component;
 import org.springframework.web.bind.support.ConfigurableWebBindingInitializer;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
 
@@ -16,7 +16,7 @@ import java.util.Date;
  * @author cellargalaxy
  * @time 2018/7/20
  */
-@Component
+@Configuration
 public class WebDateConfigBeans {
 	@Autowired
 	private RequestMappingHandlerAdapter handlerAdapter;

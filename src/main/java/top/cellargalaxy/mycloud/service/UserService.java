@@ -19,11 +19,15 @@ public interface UserService {
 
 	UserBo getUser(UserQuery userQuery);
 
+	UserBo getUser(UserPo userPo, UserQuery userQuery);
+
 	int getUserCount(UserQuery userQuery);
 
 	List<UserBo> listUser(UserQuery userQuery);
 
 	UserAuthorizationVo getUserAuthorization(UserQuery userQuery);
+
+	UserAuthorizationVo getUserAuthorization(UserPo userPo, UserQuery userQuery);
 
 	List<UserAuthorizationVo> listUserAuthorization(UserQuery userQuery);
 
@@ -32,6 +36,8 @@ public interface UserService {
 	List<UserOwnVo> listUserOwn(UserQuery userQuery);
 
 	String changeUser(UserPo userPo);
+
+	String changeUser(UserPo odUserPo, UserPo newUserPo);
 
 	String checkAddUser(UserPo userPo);
 

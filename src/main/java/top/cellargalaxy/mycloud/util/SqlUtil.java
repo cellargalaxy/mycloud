@@ -3,8 +3,8 @@ package top.cellargalaxy.mycloud.util;
 import top.cellargalaxy.mycloud.model.query.PageQuery;
 
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author cellargalaxy
@@ -27,19 +27,13 @@ public class SqlUtil {
 		pageQuery.setLen(len);
 	}
 
-	public static final StringBuilder createDeleteSql(String tableName, List<String> wheres) {
-		StringBuilder sql = new StringBuilder("delete from " + tableName + " where");
-		if (wheres == null) {
-			wheres = new LinkedList<>();
-		}
-		if (wheres.size() == 0) {
-			wheres.add("false");
-		}
-		addWhere(sql, wheres);
+	public static final StringBuilder createDeleteSql(String tableName, Set<String> wheres) {
+		StringBuilder sql = new StringBuilder("delete from " + tableName);
+		addWhere(sql, wheres, "false");
 		return sql;
 	}
 
-	public static final StringBuilder createSelectSql(List<String> selects, String tableName, List<String> wheres) {
+	public static final StringBuilder createSelectSql(List<String> selects, String tableName, Set<String> wheres) {
 		StringBuilder sql = new StringBuilder("select");
 		if (selects == null || selects.size() == 0) {
 			sql.append(" *");
@@ -52,41 +46,38 @@ public class SqlUtil {
 				sql.append(", " + iterator.next());
 			}
 		}
-		sql.append(" from " + tableName + " where");
-		if (wheres == null) {
-			wheres = new LinkedList<>();
-		}
-		if (wheres.size() == 0) {
-			wheres.add("true");
-		}
-		addWhere(sql, wheres);
+
+		sql.append(" from " + tableName);
+		addWhere(sql, wheres, "true");
 		return sql;
 	}
 
-	public static final StringBuilder createUpdateSql(String tableName, List<String> sets, List<String> wheres) {
+	public static final StringBuilder createUpdateSql(String tableName, Set<String> sets, String defaultSet, Set<String> wheres) {
 		StringBuilder sql = new StringBuilder("update " + tableName + " set");
-		Iterator<String> iterator = sets.iterator();
-		if (iterator.hasNext()) {
-			sql.append(" " + iterator.next());
+		if (sets == null || sets.size() == 0) {
+			sql.append(" " + defaultSet);
+		} else {
+			Iterator<String> iterator = sets.iterator();
+			if (iterator.hasNext()) {
+				sql.append(" " + iterator.next());
+			}
+			while (iterator.hasNext()) {
+				sql.append(", " + iterator.next());
+			}
 		}
-		while (iterator.hasNext()) {
-			sql.append(", " + iterator.next());
-		}
-		sql.append(" where");
-		if (wheres == null) {
-			wheres = new LinkedList<>();
-		}
-		if (wheres.size() == 0) {
-			wheres.add("false");
-		}
-		addWhere(sql, wheres);
+
+		addWhere(sql, wheres, "false");
 		return sql;
 	}
 
-	private static final void addWhere(StringBuilder sql, List<String> wheres) {
+	private static final void addWhere(StringBuilder sql, Set<String> wheres, String defaultWhere) {
+		if (wheres == null || wheres.size() == 0) {
+			sql.append(" where " + defaultWhere);
+			return;
+		}
 		Iterator<String> iterator = wheres.iterator();
 		if (iterator.hasNext()) {
-			sql.append(" " + iterator.next());
+			sql.append(" where " + iterator.next());
 		}
 		while (iterator.hasNext()) {
 			sql.append(" and " + iterator.next());

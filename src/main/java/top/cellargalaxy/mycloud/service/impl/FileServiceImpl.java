@@ -24,8 +24,8 @@ public class FileServiceImpl implements FileService {
 	private TaskSchedule taskSchedule;
 
 	@Override
-	public void addUploadFileTask(OwnPo ownPo, File file, String contentType) {
-		taskSchedule.addTask(new UploadFileTask(ownPo, file, contentType));
+	public void addUploadFileTask(UserPo userPo, OwnPo ownPo, File file, String contentType) {
+		taskSchedule.addTask(new UploadFileTask(userPo, ownPo, file, contentType));
 	}
 
 	@Override

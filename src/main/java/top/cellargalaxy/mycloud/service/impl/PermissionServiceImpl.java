@@ -111,7 +111,7 @@ public class PermissionServiceImpl implements PermissionService {
 		if (string != null) {
 			return string;
 		}
-		int i = permissionDao.upldate(permissionPo);
+		int i = permissionDao.update(permissionPo);
 		if (i == 0) {
 			return "权限空更新";
 		}

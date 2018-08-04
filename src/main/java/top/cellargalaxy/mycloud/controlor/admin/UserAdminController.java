@@ -5,7 +5,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import top.cellargalaxy.mycloud.exception.GlobalException;
 import top.cellargalaxy.mycloud.model.po.UserPo;
 import top.cellargalaxy.mycloud.model.query.UserQuery;
 import top.cellargalaxy.mycloud.model.vo.Vo;
@@ -17,10 +16,10 @@ import top.cellargalaxy.mycloud.service.UserService;
 @PreAuthorize("hasAuthority('USER')")
 @CrossOrigin
 @RestController
-@RequestMapping(UserApiController.URL)
-public class UserApiController {
+@RequestMapping(UserAdminController.URL)
+public class UserAdminController {
 	public static final String URL = "/admin/user";
-	private Logger logger = LoggerFactory.getLogger(UserApiController.class);
+	private Logger logger = LoggerFactory.getLogger(UserAdminController.class);
 	@Autowired
 	private UserService userService;
 

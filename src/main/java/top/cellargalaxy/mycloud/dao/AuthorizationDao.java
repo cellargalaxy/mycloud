@@ -1,8 +1,8 @@
 package top.cellargalaxy.mycloud.dao;
 
+import top.cellargalaxy.mycloud.model.bo.AuthorizationBo;
 import top.cellargalaxy.mycloud.model.po.AuthorizationPo;
 import top.cellargalaxy.mycloud.model.query.AuthorizationQuery;
-import top.cellargalaxy.mycloud.model.bo.AuthorizationBo;
 
 import java.util.List;
 
@@ -15,9 +15,9 @@ public interface AuthorizationDao {
 
 	int insert(AuthorizationPo authorizationPo);
 
-	int delete(AuthorizationQuery authorizationQuery);
+	int delete(AuthorizationPo authorizationPo);
 
-	AuthorizationBo selectOne(AuthorizationQuery authorizationQuery);
+	AuthorizationBo selectOne(AuthorizationPo authorizationPo);
 
 	List<AuthorizationBo> selectSome(AuthorizationQuery authorizationQuery);
 

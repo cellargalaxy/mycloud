@@ -1,9 +1,7 @@
 package top.cellargalaxy.mycloud.dao;
 
-import top.cellargalaxy.mycloud.model.po.BlockPo;
-import top.cellargalaxy.mycloud.model.query.BlockQuery;
 import top.cellargalaxy.mycloud.model.bo.BlockBo;
-import top.cellargalaxy.mycloud.util.StringUtil;
+import top.cellargalaxy.mycloud.model.po.BlockPo;
 
 /**
  * @author cellargalaxy
@@ -14,9 +12,9 @@ public interface BlockDao {
 
 	int insert(BlockPo blockPo);
 
-	int delete(BlockQuery blockQuery);
+	int delete(BlockPo blockPo);
 
-	BlockBo selectOne(BlockQuery blockQuery);
+	BlockBo selectOne(BlockPo blockPo);
 
 	int update(BlockPo blockPo);
 
