@@ -15,7 +15,8 @@ instance.interceptors.request.use(
     // 在发送请求之前做些什么
     config.data = qs.stringify(config.data);
     config.headers = {
-      'Content-Type': 'application/x-www-form-urlencoded'
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'Authorization':'eyJhbGciOiJIUzUxMiJ9.eyJ1c2VySWQiOjEsImNyZWF0ZVRpbWUiOjE1MzMwNTI4MDAwMDAsInVwZGF0ZVRpbWUiOjE1MzMwNTI4MDAwMDAsInBlcm1pc3Npb25zIjoiUk9PVCxBRE1JTixVU0VSIiwic3ViIjoibXljbG91ZCIsImV4cCI6MTUzMzIxMTU2OX0.lCuDy1JqBaIfqFk39hBtd8b8m8mvNlFVZ7ut2zuO3wGYp8cBxXToNwU2yg8xRm4WTgXoxSuZCNG--q4iY7GsqQ'
     };
     return config
   },
