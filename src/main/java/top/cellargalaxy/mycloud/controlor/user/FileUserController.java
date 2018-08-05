@@ -15,6 +15,7 @@ import top.cellargalaxy.mycloud.model.po.OwnPo;
 import top.cellargalaxy.mycloud.model.po.UserPo;
 import top.cellargalaxy.mycloud.model.vo.Vo;
 import top.cellargalaxy.mycloud.service.FileService;
+import top.cellargalaxy.mycloud.service.OwnService;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
@@ -32,6 +33,8 @@ public class FileUserController {
 	private Logger logger = LoggerFactory.getLogger(FileUserController.class);
 	@Autowired
 	private FileService fileService;
+	@Autowired
+	private OwnService ownService;
 
 	@Autowired
 	private MycloudConfiguration mycloudConfiguration;
@@ -44,14 +47,28 @@ public class FileUserController {
 			return new Vo("无上传文件", null);
 		}
 		try {
-			for (MultipartFile multipartFile : multipartFiles) {
+			OwnPo[] ownPos = new OwnPo[multipartFiles.length];
+			for (int i = 0; i < multipartFiles.length; i++) {
 				File file = new File(mycloudConfiguration.getTmpPath() + File.separator + UUID.randomUUID().toString());
-				multipartFile.transferTo(file);
-				ownPo.setFileName(multipartFile.getName());
-				fileService.addUploadFileTask(userPo, ownPo, file, multipartFile.getContentType());
+				multipartFiles[i].transferTo(file);
+
+				ownPos[i] = new OwnPo();
+				ownPos[i].setUserId(userPo.getUserId());
+				ownPos[i].setFileName(multipartFiles[i].getName());
+				ownPos[i].setSort(ownPo.getSort());
+				ownPos[i].setDescription(ownPo.getDescription());
+
+				String string = fileService.uploadFile(userPo, ownPos[i], file, multipartFiles[i].getContentType());
+				if (string != null) {
+					logger.info("uploadFile, result:{}, userPo:{}", string, userPo);
+					return new Vo(string, null);
+				}
 			}
 			logger.info("uploadFile, result:文件上传成功, userPo:{}", userPo);
-			return new Vo(null, null);
+			for (int i = 0; i < ownPos.length; i++) {
+				ownPos[i] = ownService.getOwn(ownPos[i]);
+			}
+			return new Vo(null, ownPos);
 		} catch (IOException e) {
 			e.printStackTrace();
 			GlobalException.add(e);
@@ -59,5 +76,29 @@ public class FileUserController {
 			return new Vo("文件上传异常", e);
 		}
 	}
+
+//	@PostMapping("/uploadFile")
+//	public Vo uploadFile(HttpServletRequest request, OwnPo ownPo, @RequestParam("files") MultipartFile[] multipartFiles) {
+//		UserPo userPo = (UserPo) request.getAttribute(UserUserController.USER_KEY);
+//		if (multipartFiles == null || multipartFiles.length == 0) {
+//			logger.info("uploadFile, result:无上传文件, userPo:{}", userPo);
+//			return new Vo("无上传文件", null);
+//		}
+//		try {
+//			for (MultipartFile multipartFile : multipartFiles) {
+//				File file = new File(mycloudConfiguration.getTmpPath() + File.separator + UUID.randomUUID().toString());
+//				multipartFile.transferTo(file);
+//				ownPo.setFileName(multipartFile.getName());
+//				fileService.addUploadFileTask(userPo, ownPo, file, multipartFile.getContentType());
+//			}
+//			logger.info("uploadFile, result:文件上传成功, userPo:{}", userPo);
+//			return new Vo(null, null);
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//			GlobalException.add(e);
+//			logger.info("uploadFile, result:文件上传异常, userPo:{}", userPo);
+//			return new Vo("文件上传异常", e);
+//		}
+//	}
 
 }

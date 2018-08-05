@@ -65,19 +65,19 @@ public interface PermissionMapper {
 		}
 
 		public String delete(PermissionPo permissionPo) {
-			return ProviderUtil.delete(tableName, permissionPo, this::wheresKey);
+			return ProviderUtil.delete(tableName, permissionPo, this::wheresKey).append(" limit 1").toString();
 		}
 
 		public String selectOne(PermissionPo permissionPo) {
-			return ProviderUtil.selectOne(tableName, permissionPo, this::wheresKey);
+			return ProviderUtil.selectOne(tableName, permissionPo, this::wheresKey).append(" limit 1").toString();
 		}
 
 		public String selectSome(PermissionQuery permissionQuery) {
-			return ProviderUtil.selectSome(tableName, permissionQuery, this::wheresAll);
+			return ProviderUtil.selectSome(tableName, permissionQuery, this::wheresAll).append(" limit #{off},#{len}").toString();
 		}
 
 		public String selectCount(PermissionQuery permissionQuery) {
-			return ProviderUtil.selectCount(tableName, permissionQuery, this::wheresAll);
+			return ProviderUtil.selectCount(tableName, permissionQuery, this::wheresAll).append(" limit #{off},#{len}").toString();
 		}
 
 		public String update(PermissionPo permissionPo) {
@@ -85,7 +85,7 @@ public interface PermissionMapper {
 			permissionPo.setCreateTime(null);
 			permissionPo.setUpdateTime(new Date());
 
-			return ProviderUtil.update(tableName, permissionPo, permissionId, this::sets, this::wheresKey);
+			return ProviderUtil.update(tableName, permissionPo, permissionId, this::sets, this::wheresKey).append(" limit 1").toString();
 		}
 
 		private void wheresAll(PermissionQuery permissionQuery, Set<String> wheres) {

@@ -9,7 +9,7 @@ import java.util.Objects;
  * @time 2018/7/16
  */
 public class FileInfoBo extends FileInfoPo {
-	private String url="https://i.loli.net/2018/04/10/5accdcbcb1738.jpg";
+	private String url;
 
 	public String getUrl() {
 		return url;

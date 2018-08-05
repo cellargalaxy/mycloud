@@ -14,9 +14,9 @@ import java.util.List;
 public interface OwnService {
 	String addOwn(OwnPo ownPo);
 
-	String removeOwn(OwnQuery ownQuery);
+	String removeOwn(OwnPo ownPo);
 
-	OwnBo getOwn(OwnQuery ownQuery);
+	OwnBo getOwn(OwnPo ownPo);
 
 	int getOwnCount(OwnQuery ownQuery);
 

@@ -4,7 +4,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import top.cellargalaxy.mycloud.dao.AuthorizationDao;
 import top.cellargalaxy.mycloud.dao.PermissionDao;
 import top.cellargalaxy.mycloud.model.bo.AuthorizationBo;
 import top.cellargalaxy.mycloud.model.bo.PermissionBo;
@@ -12,6 +11,7 @@ import top.cellargalaxy.mycloud.model.po.PermissionPo;
 import top.cellargalaxy.mycloud.model.query.AuthorizationQuery;
 import top.cellargalaxy.mycloud.model.query.PermissionQuery;
 import top.cellargalaxy.mycloud.model.vo.PermissionAuthorizationVo;
+import top.cellargalaxy.mycloud.service.AuthorizationService;
 import top.cellargalaxy.mycloud.service.PermissionService;
 import top.cellargalaxy.mycloud.util.SqlUtil;
 
@@ -28,7 +28,7 @@ public class PermissionServiceImpl implements PermissionService {
 	@Autowired
 	private PermissionDao permissionDao;
 	@Autowired
-	private AuthorizationDao authorizationDao;
+	private AuthorizationService authorizationService;
 
 	@Override
 	public String addPermission(PermissionPo permissionPo) {
@@ -81,7 +81,7 @@ public class PermissionServiceImpl implements PermissionService {
 		}
 		AuthorizationQuery authorizationQuery = new AuthorizationQuery();
 		authorizationQuery.setPermissionId(permissionBo.getPermissionId());
-		List<AuthorizationBo> authorizationBos = authorizationDao.selectSome(authorizationQuery);
+		List<AuthorizationBo> authorizationBos = authorizationService.listAuthorization(authorizationQuery);
 		return new PermissionAuthorizationVo(permissionBo, authorizationBos);
 	}
 
@@ -98,7 +98,7 @@ public class PermissionServiceImpl implements PermissionService {
 			authorizationQuery.setPermissionId(permissionBo.getPermissionId());
 			authorizationQuery.setPage(1);
 			authorizationQuery.setPageSize(SqlUtil.MAX_PAGE_SIZE);
-			List<AuthorizationBo> authorizationBos = authorizationDao.selectSome(authorizationQuery);
+			List<AuthorizationBo> authorizationBos = authorizationService.listAuthorization(authorizationQuery);
 			permissionAuthorizationVos.add(new PermissionAuthorizationVo(permissionBo, authorizationBos));
 		}
 		return permissionAuthorizationVos;
@@ -125,10 +125,8 @@ public class PermissionServiceImpl implements PermissionService {
 		if (string != null) {
 			return string;
 		}
-		PermissionQuery permissionQuery = new PermissionQuery();
-		permissionQuery.setPermissionId(permissionPo.getPermissionId());
-		PermissionPo permission = permissionDao.selectOne(permissionQuery);
-		if (permission != null) {
+		PermissionBo permissionBo = permissionDao.selectOne(permissionPo);
+		if (permissionBo != null) {
 			return "权限已存在";
 		}
 		return null;
@@ -141,10 +139,8 @@ public class PermissionServiceImpl implements PermissionService {
 		if (string != null) {
 			return string;
 		}
-		PermissionQuery permissionQuery = new PermissionQuery();
-		permissionQuery.setPermissionId(permissionPo.getPermissionId());
-		PermissionPo permission = permissionDao.selectOne(permissionQuery);
-		if (permission == null) {
+		PermissionBo permissionBo = permissionDao.selectOne(permissionPo);
+		if (permissionBo == null) {
 			return "权限不存在";
 		}
 		return null;

@@ -68,7 +68,7 @@ public interface AuthorizationMapper {
 		}
 
 		public String delete(AuthorizationPo authorizationPo) {
-			return ProviderUtil.delete(tableName, authorizationPo, this::wheresKey);
+			return ProviderUtil.delete(tableName, authorizationPo, this::wheresKey).append(" limit 1").toString();
 		}
 
 		public String selectOne(AuthorizationPo authorizationPo) {
@@ -133,7 +133,7 @@ public interface AuthorizationMapper {
 			authorizationPo.setCreateTime(null);
 			authorizationPo.setUpdateTime(new Date());
 
-			return ProviderUtil.update(tableName, authorizationPo, authorizationId, this::sets, this::wheresKey);
+			return ProviderUtil.update(tableName, authorizationPo, authorizationId, this::sets, this::wheresKey).append(" limit 1").toString();
 		}
 
 		private void wheresAll(AuthorizationQuery authorizationQuery, Set<String> wheres) {

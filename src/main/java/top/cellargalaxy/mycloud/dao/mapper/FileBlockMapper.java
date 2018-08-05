@@ -51,23 +51,23 @@ public interface FileBlockMapper {
 		}
 
 		public String delete(FileBlockPo fileBlockPo) {
-			return ProviderUtil.delete(tableName, fileBlockPo, this::wheresKey);
+			return ProviderUtil.delete(tableName, fileBlockPo, this::wheresKey).append(" limit 1").toString();
 		}
 
 		public String selectOne(FileBlockPo fileBlockPo) {
-			return ProviderUtil.selectOne(tableName, fileBlockPo, this::wheresKey);
+			return ProviderUtil.selectOne(tableName, fileBlockPo, this::wheresKey).append(" limit 1").toString();
 		}
 
 		public String selectSome(FileBlockQuery fileBlockQuery) {
-			return ProviderUtil.selectSome(tableName, fileBlockQuery, this::wheresAll);
+			return ProviderUtil.selectSome(tableName, fileBlockQuery, this::wheresAll).toString();
 		}
 
 		public String selectCount(FileBlockQuery fileBlockQuery) {
-			return ProviderUtil.selectCount(tableName, fileBlockQuery, this::wheresAll);
+			return ProviderUtil.selectCount(tableName, fileBlockQuery, this::wheresAll).toString();
 		}
 
 		public String update(FileBlockPo fileBlockPo) {
-			return ProviderUtil.update(tableName, fileBlockPo, fileId, this::sets, this::wheresKey);
+			return ProviderUtil.update(tableName, fileBlockPo, fileId, this::sets, this::wheresKey).append(" limit 1").toString();
 		}
 
 		private void wheresAll(FileBlockQuery fileBlockQuery, Set<String> wheres) {

@@ -66,19 +66,19 @@ public interface UserMapper {
 		}
 
 		public String delete(UserPo userPo) {
-			return ProviderUtil.delete(tableName, userPo, this::wheresKey);
+			return ProviderUtil.delete(tableName, userPo, this::wheresKey).append(" limit 1").toString();
 		}
 
 		public String selectOne(UserPo userPo) {
-			return ProviderUtil.selectOne(tableName, userPo, this::wheresKey);
+			return ProviderUtil.selectOne(tableName, userPo, this::wheresKey).append(" limit 1").toString();
 		}
 
 		public String selectSome(UserQuery userQuery) {
-			return ProviderUtil.selectSome(tableName, userQuery, this::wheresAll);
+			return ProviderUtil.selectSome(tableName, userQuery, this::wheresAll).append(" limit #{off},#{len}").toString();
 		}
 
 		public String selectCount(UserQuery userQuery) {
-			return ProviderUtil.selectCount(tableName, userQuery, this::wheresAll);
+			return ProviderUtil.selectCount(tableName, userQuery, this::wheresAll).append(" limit #{off},#{len}").toString();
 		}
 
 		public String update(UserPo userPo) {
@@ -86,7 +86,7 @@ public interface UserMapper {
 			userPo.setCreateTime(null);
 			userPo.setUpdateTime(new Date());
 
-			return ProviderUtil.update(tableName, userPo, userId, this::sets, this::wheresKey);
+			return ProviderUtil.update(tableName, userPo, userId, this::sets, this::wheresKey).append(" limit 1").toString();
 		}
 
 		private void wheresAll(UserQuery userQuery, Set<String> wheres) {

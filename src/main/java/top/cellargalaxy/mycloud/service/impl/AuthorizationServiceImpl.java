@@ -85,12 +85,8 @@ public class AuthorizationServiceImpl implements AuthorizationService {
 		if (string != null) {
 			return string;
 		}
-		AuthorizationQuery authorizationQuery = new AuthorizationQuery();
-		authorizationQuery.setAuthorizationId(authorizationPo.getAuthorizationId());
-		authorizationQuery.setUserId(authorizationPo.getUserId());
-		authorizationQuery.setPermissionId(authorizationPo.getPermissionId());
-		AuthorizationPo authorization = authorizationDao.selectOne(authorizationQuery);
-		if (authorization != null) {
+		AuthorizationBo authorizationBo = authorizationDao.selectOne(authorizationPo);
+		if (authorizationBo != null) {
 			return "授权已存在";
 		}
 		return null;
@@ -103,12 +99,8 @@ public class AuthorizationServiceImpl implements AuthorizationService {
 		if (string != null) {
 			return string;
 		}
-		AuthorizationQuery authorizationQuery = new AuthorizationQuery();
-		authorizationQuery.setAuthorizationId(authorizationPo.getAuthorizationId());
-		authorizationQuery.setUserId(authorizationPo.getUserId());
-		authorizationQuery.setPermissionId(authorizationPo.getPermissionId());
-		AuthorizationPo authorization = authorizationDao.selectOne(authorizationQuery);
-		if (authorization == null) {
+		AuthorizationBo authorizationBo = authorizationDao.selectOne(authorizationPo);
+		if (authorizationBo == null) {
 			return "授权不存在";
 		}
 		return null;

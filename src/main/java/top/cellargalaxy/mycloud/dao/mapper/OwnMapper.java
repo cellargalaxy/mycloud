@@ -82,7 +82,7 @@ public interface OwnMapper {
 		}
 
 		public String delete(OwnPo ownPo) {
-			return ProviderUtil.delete(tableName, ownPo, this::wheresKey);
+			return ProviderUtil.delete(tableName, ownPo, this::wheresKey).append(" limit 1").toString();
 		}
 
 		public String selectOne(OwnPo ownPo) {
@@ -169,7 +169,7 @@ public interface OwnMapper {
 			ownPo.setCreateTime(null);
 			ownPo.setUpdateTime(new Date());
 
-			return ProviderUtil.update(tableName, ownPo, ownId, this::sets, this::wheresKey);
+			return ProviderUtil.update(tableName, ownPo, ownId, this::sets, this::wheresKey).append(" limit 1").toString();
 		}
 
 		private void wheresAll(OwnQuery ownQuery, Set<String> wheres) {

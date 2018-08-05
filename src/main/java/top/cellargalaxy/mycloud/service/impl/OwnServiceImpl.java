@@ -4,12 +4,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import top.cellargalaxy.mycloud.configuration.MycloudConfiguration;
 import top.cellargalaxy.mycloud.dao.OwnDao;
 import top.cellargalaxy.mycloud.model.bo.OwnBo;
 import top.cellargalaxy.mycloud.model.po.OwnPo;
 import top.cellargalaxy.mycloud.model.po.UserPo;
 import top.cellargalaxy.mycloud.model.query.OwnQuery;
 import top.cellargalaxy.mycloud.service.OwnService;
+import top.cellargalaxy.mycloud.util.StringUtil;
 
 import java.util.List;
 
@@ -22,6 +24,8 @@ public class OwnServiceImpl implements OwnService {
 	private Logger logger = LoggerFactory.getLogger(OwnServiceImpl.class);
 	@Autowired
 	private OwnDao ownDao;
+	@Autowired
+	private MycloudConfiguration mycloudConfiguration;
 
 	@Override
 	public String addOwn(OwnPo ownPo) {
@@ -38,9 +42,9 @@ public class OwnServiceImpl implements OwnService {
 	}
 
 	@Override
-	public String removeOwn(OwnQuery ownQuery) {
-		logger.info("removeOwn:{}", ownQuery);
-		int i = ownDao.delete(ownQuery);
+	public String removeOwn(OwnPo ownPo) {
+		logger.info("removeOwn:{}", ownPo);
+		int i = ownDao.delete(ownPo);
 		if (i == 0) {
 			return "所属空删除";
 		}
@@ -48,9 +52,9 @@ public class OwnServiceImpl implements OwnService {
 	}
 
 	@Override
-	public OwnBo getOwn(OwnQuery ownQuery) {
-		logger.info("getOwn:{}", ownQuery);
-		return ownDao.selectOne(ownQuery);
+	public OwnBo getOwn(OwnPo ownPo) {
+		logger.info("getOwn:{}", ownPo);
+		return setUrl(ownDao.selectOne(ownPo));
 	}
 
 	@Override
@@ -62,7 +66,7 @@ public class OwnServiceImpl implements OwnService {
 	@Override
 	public List<OwnBo> listOwn(OwnQuery ownQuery) {
 		logger.info("listOwn:{}", ownQuery);
-		return ownDao.selectSome(ownQuery);
+		return setUrl(ownDao.selectSome(ownQuery));
 	}
 
 	@Override
@@ -141,12 +145,8 @@ public class OwnServiceImpl implements OwnService {
 		if (string != null) {
 			return string;
 		}
-		OwnQuery ownQuery = new OwnQuery();
-		ownQuery.setOwnId(ownPo.getOwnId());
-		ownQuery.setUserId(ownPo.getUserId());
-		ownQuery.setFileId(ownPo.getFileId());
-		OwnPo own = ownDao.selectOne(ownQuery);
-		if (own != null) {
+		OwnBo ownBo = ownDao.selectOne(ownPo);
+		if (ownBo != null) {
 			return "所属已存在";
 		}
 		return null;
@@ -159,14 +159,28 @@ public class OwnServiceImpl implements OwnService {
 		if (string != null) {
 			return string;
 		}
-		OwnQuery ownQuery = new OwnQuery();
-		ownQuery.setOwnId(ownPo.getOwnId());
-		ownQuery.setUserId(ownPo.getUserId());
-		ownQuery.setFileId(ownPo.getFileId());
-		OwnPo own = ownDao.selectOne(ownQuery);
-		if (own == null) {
+		OwnBo ownBo = ownDao.selectOne(ownPo);
+		if (ownBo == null) {
 			return "所属不存在";
 		}
 		return null;
+	}
+
+	private List<OwnBo> setUrl(List<OwnBo> ownBos) {
+		if (ownBos == null) {
+			return null;
+		}
+		for (OwnBo ownBo : ownBos) {
+			setUrl(ownBo);
+		}
+		return ownBos;
+	}
+
+	private OwnBo setUrl(OwnBo ownBo) {
+		if (ownBo == null) {
+			return null;
+		}
+		ownBo.setUrl(StringUtil.createUrl(mycloudConfiguration.getDomain(), ownBo.getMd5()));
+		return ownBo;
 	}
 }

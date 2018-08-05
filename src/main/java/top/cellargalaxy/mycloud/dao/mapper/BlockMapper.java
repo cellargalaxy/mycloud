@@ -46,15 +46,15 @@ public interface BlockMapper {
 		}
 
 		public String delete(BlockPo blockPo) {
-			return ProviderUtil.delete(tableName, blockPo, this::wheresKey);
+			return ProviderUtil.delete(tableName, blockPo, this::wheresKey).append(" limit 1").toString();
 		}
 
 		public String selectOne(BlockPo blockPo) {
-			return ProviderUtil.selectOne(tableName, blockPo, this::wheresKey);
+			return ProviderUtil.selectOne(tableName, blockPo, this::wheresKey).append(" limit 1").toString();
 		}
 
 		public String update(BlockPo blockPo) {
-			return ProviderUtil.update(tableName, blockPo, blockId, this::sets, this::wheresKey);
+			return ProviderUtil.update(tableName, blockPo, blockId, this::sets, this::wheresKey).append(" limit 1").toString();
 		}
 
 		private void wheresAll(BlockQuery blockQuery, Set<String> wheres) {

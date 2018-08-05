@@ -9,9 +9,13 @@ import top.cellargalaxy.mycloud.model.po.OwnPo;
 import top.cellargalaxy.mycloud.model.po.UserPo;
 import top.cellargalaxy.mycloud.model.query.FileInfoQuery;
 import top.cellargalaxy.mycloud.service.FileService;
+import top.cellargalaxy.mycloud.service.schedule.DownloadFileTaskExecute;
 import top.cellargalaxy.mycloud.service.schedule.TaskSchedule;
+import top.cellargalaxy.mycloud.service.schedule.UploadFileTaskExecute;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.List;
 
 /**
@@ -22,6 +26,10 @@ import java.util.List;
 public class FileServiceImpl implements FileService {
 	@Autowired
 	private TaskSchedule taskSchedule;
+	@Autowired
+	private UploadFileTaskExecute uploadFileTaskExecute;
+	@Autowired
+	private DownloadFileTaskExecute downloadFileTaskExecute;
 
 	@Override
 	public void addUploadFileTask(UserPo userPo, OwnPo ownPo, File file, String contentType) {
@@ -29,8 +37,18 @@ public class FileServiceImpl implements FileService {
 	}
 
 	@Override
+	public String uploadFile(UserPo userPo, OwnPo ownPo, File file, String contentType) throws IOException {
+		return uploadFileTaskExecute.uploadFile(ownPo, file, contentType);
+	}
+
+	@Override
 	public void addDownloadFileTask(UserPo userPo, FileInfoQuery fileInfoQuery, File file) {
 		taskSchedule.addTask(new DownloadFileTask(userPo, fileInfoQuery, file));
+	}
+
+	@Override
+	public String downloadFile(FileInfoQuery fileInfoQuery, OutputStream outputStream) throws IOException {
+		return downloadFileTaskExecute.downloadFile(fileInfoQuery, outputStream);
 	}
 
 	@Override

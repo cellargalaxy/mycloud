@@ -13,6 +13,7 @@ public class OwnBo extends OwnPo {
 	private String md5;
 	private long fileLength;
 	private String contentType;
+	private String url;
 
 	public String getUsername() {
 		return username;
@@ -46,14 +47,22 @@ public class OwnBo extends OwnPo {
 		this.contentType = contentType;
 	}
 
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
+
 	@Override
 	public String toString() {
 		return "OwnBo{" +
-				"super=" + super.toString() +
-				", username='" + username + '\'' +
+				"username='" + username + '\'' +
 				", md5='" + md5 + '\'' +
 				", fileLength=" + fileLength +
 				", contentType='" + contentType + '\'' +
+				", url='" + url + '\'' +
 				'}';
 	}
 
@@ -66,11 +75,13 @@ public class OwnBo extends OwnPo {
 		return fileLength == ownBo.fileLength &&
 				Objects.equals(username, ownBo.username) &&
 				Objects.equals(md5, ownBo.md5) &&
-				Objects.equals(contentType, ownBo.contentType);
+				Objects.equals(contentType, ownBo.contentType) &&
+				Objects.equals(url, ownBo.url);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(super.hashCode(), username, md5, fileLength, contentType);
+
+		return Objects.hash(super.hashCode(), username, md5, fileLength, contentType, url);
 	}
 }

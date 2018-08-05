@@ -15,10 +15,12 @@ public class MycloudConfiguration {
 	private int blobLength;
 	@Value("${secret:mycloud}")
 	private String secret;
-	@Value("${webUploadMaxFileSize:1000MB}")
+	@Value("${webUploadMaxFileSize:1024MB}")
 	private String webUploadMaxFileSize;
-	@Value("${webUploadMaxRequestSize:1000MB}")
+	@Value("${webUploadMaxRequestSize:1024MB}")
 	private String webUploadMaxRequestSize;
+	@Value("${domain:http://mycloud.cellargalaxy.top}")
+	private String domain;
 
 	public int getBlobLength() {
 		return blobLength;
@@ -54,5 +56,13 @@ public class MycloudConfiguration {
 
 	public void setWebUploadMaxRequestSize(String webUploadMaxRequestSize) {
 		this.webUploadMaxRequestSize = webUploadMaxRequestSize;
+	}
+
+	public String getDomain() {
+		return domain;
+	}
+
+	public void setDomain(String domain) {
+		this.domain = domain;
 	}
 }

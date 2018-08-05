@@ -69,19 +69,19 @@ public interface FileInfoMapper {
 		}
 
 		public String delete(FileInfoPo fileInfoPo) {
-			return ProviderUtil.delete(tableName, fileInfoPo, this::wheresKey);
+			return ProviderUtil.delete(tableName, fileInfoPo, this::wheresKey).append(" limit 1").toString();
 		}
 
 		public String selectOne(FileInfoPo fileInfoPo) {
-			return ProviderUtil.selectOne(tableName, fileInfoPo, this::wheresKey);
+			return ProviderUtil.selectOne(tableName, fileInfoPo, this::wheresKey).append(" limit 1").toString();
 		}
 
 		public String selectSome(FileInfoQuery fileInfoQuery) {
-			return ProviderUtil.selectSome(tableName, fileInfoQuery, this::wheresAll);
+			return ProviderUtil.selectSome(tableName, fileInfoQuery, this::wheresAll).append(" limit #{off},#{len}").toString();
 		}
 
 		public String selectCount(FileInfoQuery fileInfoQuery) {
-			return ProviderUtil.selectCount(tableName, fileInfoQuery, this::wheresAll);
+			return ProviderUtil.selectCount(tableName, fileInfoQuery, this::wheresAll).append(" limit #{off},#{len}").toString();
 		}
 
 		public String selectContentType() {
@@ -92,7 +92,7 @@ public interface FileInfoMapper {
 			init(fileInfoPo);
 			fileInfoPo.setCreateTime(null);
 
-			return ProviderUtil.update(tableName, fileInfoPo, fileId, this::sets, this::wheresKey);
+			return ProviderUtil.update(tableName, fileInfoPo, fileId, this::sets, this::wheresKey).append(" limit 1").toString();
 		}
 
 		private void wheresAll(FileInfoQuery fileInfoQuery, Set<String> wheres) {

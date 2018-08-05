@@ -5,8 +5,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import top.cellargalaxy.mycloud.dao.AuthorizationDao;
-import top.cellargalaxy.mycloud.dao.OwnDao;
 import top.cellargalaxy.mycloud.dao.UserDao;
 import top.cellargalaxy.mycloud.model.bo.AuthorizationBo;
 import top.cellargalaxy.mycloud.model.bo.OwnBo;
@@ -17,6 +15,8 @@ import top.cellargalaxy.mycloud.model.query.OwnQuery;
 import top.cellargalaxy.mycloud.model.query.UserQuery;
 import top.cellargalaxy.mycloud.model.vo.UserAuthorizationVo;
 import top.cellargalaxy.mycloud.model.vo.UserOwnVo;
+import top.cellargalaxy.mycloud.service.AuthorizationService;
+import top.cellargalaxy.mycloud.service.OwnService;
 import top.cellargalaxy.mycloud.service.UserService;
 import top.cellargalaxy.mycloud.util.SqlUtil;
 
@@ -33,9 +33,9 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	private UserDao userDao;
 	@Autowired
-	private AuthorizationDao authorizationDao;
+	private AuthorizationService authorizationService;
 	@Autowired
-	private OwnDao ownDao;
+	private OwnService ownService;
 
 	@Override
 	public String addUser(UserPo userPo) {
@@ -98,7 +98,7 @@ public class UserServiceImpl implements UserService {
 		}
 		AuthorizationQuery authorizationQuery = new AuthorizationQuery();
 		authorizationQuery.setUserId(userBo.getUserId());
-		List<AuthorizationBo> authorizationBos = authorizationDao.selectSome(authorizationQuery);
+		List<AuthorizationBo> authorizationBos = authorizationService.listAuthorization(authorizationQuery);
 		return new UserAuthorizationVo(userBo, authorizationBos);
 	}
 
@@ -122,7 +122,7 @@ public class UserServiceImpl implements UserService {
 			authorizationQuery.setUserId(userBo.getUserId());
 			authorizationQuery.setPage(1);
 			authorizationQuery.setPageSize(SqlUtil.MAX_PAGE_SIZE);
-			List<AuthorizationBo> authorizationBos = authorizationDao.selectSome(authorizationQuery);
+			List<AuthorizationBo> authorizationBos = authorizationService.listAuthorization(authorizationQuery);
 			userAuthorizationVos.add(new UserAuthorizationVo(userBo, authorizationBos));
 		}
 		return userAuthorizationVos;
@@ -137,7 +137,7 @@ public class UserServiceImpl implements UserService {
 		}
 		OwnQuery ownQuery = new OwnQuery();
 		ownQuery.setUserId(userBo.getUserId());
-		List<OwnBo> ownBos = ownDao.selectSome(ownQuery);
+		List<OwnBo> ownBos = ownService.listOwn(ownQuery);
 		return new UserOwnVo(userBo, ownBos);
 	}
 
@@ -154,7 +154,7 @@ public class UserServiceImpl implements UserService {
 			ownQuery.setUserId(userBo.getUserId());
 			ownQuery.setPage(1);
 			ownQuery.setPageSize(SqlUtil.MAX_PAGE_SIZE);
-			List<OwnBo> ownBos = ownDao.selectSome(ownQuery);
+			List<OwnBo> ownBos = ownService.listOwn(ownQuery);
 			userOwnVos.add(new UserOwnVo(userBo, ownBos));
 		}
 		return userOwnVos;
@@ -192,11 +192,8 @@ public class UserServiceImpl implements UserService {
 		if (string != null) {
 			return string;
 		}
-		UserQuery userQuery = new UserQuery();
-		userQuery.setUserId(userPo.getUserId());
-		userQuery.setUsername(userPo.getUsername());
-		UserPo user = userDao.selectOne(userQuery);
-		if (user != null) {
+		UserBo userBo = userDao.selectOne(userPo);
+		if (userBo != null) {
 			return "账号已存在";
 		}
 		return null;
@@ -209,11 +206,8 @@ public class UserServiceImpl implements UserService {
 		if (string != null) {
 			return string;
 		}
-		UserQuery userQuery = new UserQuery();
-		userQuery.setUserId(userPo.getUserId());
-		userQuery.setUsername(userPo.getUsername());
-		UserPo user = userDao.selectOne(userQuery);
-		if (user == null) {
+		UserBo userBo = userDao.selectOne(userPo);
+		if (userBo == null) {
 			return "账号不存在";
 		}
 		return null;
