@@ -136,8 +136,8 @@ public class SecurityServiceImpl implements SecurityService {
 				}
 			}};
 		} catch (Exception e) {
-			e.printStackTrace();
-			logger.info("checkToken:token解析失败");
+//			e.printStackTrace();
+			logger.info("checkToken:token解析失败:" + e);
 			return null;
 		}
 	}

@@ -81,7 +81,7 @@ public interface FileInfoMapper {
 		}
 
 		public String selectCount(FileInfoQuery fileInfoQuery) {
-			return ProviderUtil.selectCount(tableName, fileInfoQuery, this::wheresAll).append(" limit #{off},#{len}").toString();
+			return ProviderUtil.selectCount(tableName, fileInfoQuery, this::wheresAll).append(" order by create_time desc limit #{off},#{len}").toString();
 		}
 
 		public String selectContentType() {

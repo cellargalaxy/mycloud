@@ -77,7 +77,7 @@ DROP TABLE IF EXISTS `file_block`;
 CREATE TABLE `file_block` (
   `file_id` int(11) NOT NULL COMMENT '文件id',
   `block_id` int(11) NOT NULL COMMENT '数据块id',
-  KEY `idx_file_id` (`file_id`)
+  PRIMARY KEY (`file_id`,`block_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -91,29 +91,6 @@ LOCK TABLES `file_block` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `file_data`
---
-
-DROP TABLE IF EXISTS `file_data`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `file_data` (
-  `file_id` int(11) NOT NULL COMMENT '文件id',
-  `file_data` mediumblob NOT NULL COMMENT '文件数据',
-  PRIMARY KEY (`file_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `file_data`
---
-
-LOCK TABLES `file_data` WRITE;
-/*!40000 ALTER TABLE `file_data` DISABLE KEYS */;
-/*!40000 ALTER TABLE `file_data` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `file_info`
 --
 
@@ -124,7 +101,7 @@ CREATE TABLE `file_info` (
   `file_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '文件id',
   `md5` char(32) NOT NULL COMMENT 'MD5',
   `file_length` bigint(20) NOT NULL COMMENT '文件长度',
-  `content_type` varchar(16) NOT NULL COMMENT '文件类型',
+  `content_type` varchar(32) NOT NULL COMMENT '文件类型',
   `create_time` datetime NOT NULL COMMENT '创建时间',
   PRIMARY KEY (`file_id`),
   UNIQUE KEY `uk_md5` (`md5`) USING BTREE,

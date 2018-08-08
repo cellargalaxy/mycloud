@@ -4,6 +4,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import top.cellargalaxy.mycloud.dao.FileBlockDao;
 import top.cellargalaxy.mycloud.model.bo.FileBlockBo;
 import top.cellargalaxy.mycloud.model.po.FileBlockPo;
@@ -15,6 +17,7 @@ import java.util.List;
 /**
  * Created by cellargalaxy on 18-8-5.
  */
+@Transactional
 @Service
 public class FileBlockServiceImpl implements FileBlockService {
 	private Logger logger = LoggerFactory.getLogger(FileBlockServiceImpl.class);
@@ -30,6 +33,7 @@ public class FileBlockServiceImpl implements FileBlockService {
 		}
 		int i = fileBlockDao.insert(fileBlockPo);
 		if (i == 0) {
+			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
 			return "文件块空新增";
 		}
 		return null;
@@ -40,6 +44,7 @@ public class FileBlockServiceImpl implements FileBlockService {
 		logger.info("removeFileBlock:{}", fileBlockPo);
 		int i = fileBlockDao.delete(fileBlockPo);
 		if (i == 0) {
+			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
 			return "文件块空删除";
 		}
 		return null;
@@ -72,6 +77,7 @@ public class FileBlockServiceImpl implements FileBlockService {
 		}
 		int i = fileBlockDao.update(fileBlockPo);
 		if (i == 0) {
+			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
 			return "文件块空更新";
 		}
 		return null;

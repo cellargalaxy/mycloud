@@ -45,8 +45,8 @@ public interface OwnDao {
 	}
 
 	static String checkUpdate(OwnPo ownPo) {
-		if (ownPo.getOwnId() < 1) {
-			return "所属id不得为空";
+		if (ownPo.getOwnId() < 1 && (ownPo.getUserId() < 1 || ownPo.getFileId() < 1)) {
+			return "所属id或者userId与fileId组合不得为空";
 		}
 		return null;
 	}

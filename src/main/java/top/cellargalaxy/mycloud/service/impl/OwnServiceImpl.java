@@ -4,6 +4,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import top.cellargalaxy.mycloud.configuration.MycloudConfiguration;
 import top.cellargalaxy.mycloud.dao.OwnDao;
 import top.cellargalaxy.mycloud.model.bo.OwnBo;
@@ -19,6 +21,7 @@ import java.util.List;
  * @author cellargalaxy
  * @time 2018/7/17
  */
+@Transactional
 @Service
 public class OwnServiceImpl implements OwnService {
 	private Logger logger = LoggerFactory.getLogger(OwnServiceImpl.class);
@@ -36,6 +39,7 @@ public class OwnServiceImpl implements OwnService {
 		}
 		int i = ownDao.insert(ownPo);
 		if (i == 0) {
+			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
 			return "权限空新增";
 		}
 		return null;
@@ -46,6 +50,7 @@ public class OwnServiceImpl implements OwnService {
 		logger.info("removeOwn:{}", ownPo);
 		int i = ownDao.delete(ownPo);
 		if (i == 0) {
+			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
 			return "所属空删除";
 		}
 		return null;
@@ -84,6 +89,7 @@ public class OwnServiceImpl implements OwnService {
 		}
 		int i = ownDao.update(ownPo);
 		if (i == 0) {
+			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
 			return "所属空更新";
 		}
 		return null;

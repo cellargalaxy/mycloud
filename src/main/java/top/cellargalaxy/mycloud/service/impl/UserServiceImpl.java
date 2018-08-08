@@ -1,10 +1,12 @@
 package top.cellargalaxy.mycloud.service.impl;
 
-import org.apache.commons.codec.digest.DigestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import top.cellargalaxy.mycloud.dao.UserDao;
 import top.cellargalaxy.mycloud.model.bo.AuthorizationBo;
 import top.cellargalaxy.mycloud.model.bo.OwnBo;
@@ -27,9 +29,12 @@ import java.util.List;
  * @author cellargalaxy
  * @time 2018/7/17
  */
+@Transactional
 @Service
 public class UserServiceImpl implements UserService {
 	private Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
+	private final String passwordHead = "{bcrypt}";
+	private final BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 	@Autowired
 	private UserDao userDao;
 	@Autowired
@@ -45,10 +50,11 @@ public class UserServiceImpl implements UserService {
 			return string;
 		}
 		if (userPo.getUserPassword() != null) {
-			userPo.setUserPassword(DigestUtils.md5Hex(userPo.getUserPassword()));
+			userPo.setUserPassword(passwordHead + bCryptPasswordEncoder.encode(userPo.getUserPassword()));
 		}
 		int i = userDao.insert(userPo);
 		if (i == 0) {
+			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
 			return "用户空新增";
 		}
 		return null;
@@ -59,6 +65,7 @@ public class UserServiceImpl implements UserService {
 		logger.info("removeUser:{}", userQuery);
 		int i = userDao.delete(userQuery);
 		if (i == 0) {
+			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
 			return "用户空删除";
 		}
 		return null;
@@ -168,10 +175,11 @@ public class UserServiceImpl implements UserService {
 			return string;
 		}
 		if (userPo.getUserPassword() != null) {
-			userPo.setUserPassword(DigestUtils.md5Hex(userPo.getUserPassword()));
+			userPo.setUserPassword(passwordHead + bCryptPasswordEncoder.encode(userPo.getUserPassword()));
 		}
 		int i = userDao.update(userPo);
 		if (i == 0) {
+			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
 			return "用户空更新";
 		}
 		return null;

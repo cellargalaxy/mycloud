@@ -4,10 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import top.cellargalaxy.mycloud.model.po.UserPo;
 import top.cellargalaxy.mycloud.model.query.UserQuery;
 import top.cellargalaxy.mycloud.model.vo.Vo;
@@ -47,13 +44,6 @@ public class UserUserController {
 		UserPo userPo = (UserPo) request.getAttribute(UserUserController.USER_KEY);
 		String string = userService.changeUser(userPo, userQuery);
 		logger.info("changeUser:{}, userPo:{}", string, userPo);
-		return new Vo(string, null);
-	}
-
-	@GetMapping("/checkAddUser")
-	public Vo checkAddUser(UserPo userPo) {
-		String string = userService.checkAddUser(userPo);
-		logger.info("checkAddUser:{}", string);
 		return new Vo(string, null);
 	}
 

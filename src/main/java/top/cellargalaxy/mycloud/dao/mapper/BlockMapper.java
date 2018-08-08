@@ -17,8 +17,8 @@ import static org.apache.ibatis.type.JdbcType.BLOB;
  */
 @Mapper
 public interface BlockMapper {
-	@Options(useGeneratedKeys = true, keyProperty = "blockId")
-	@SelectProvider(type = BlockProviderUtil.class, method = "insert")
+	@Options(useGeneratedKeys = true, keyProperty = "blockId", keyColumn = "blockId")
+	@InsertProvider(type = BlockProviderUtil.class, method = "insert")
 	int insert(BlockPo blockPo);
 
 	@DeleteProvider(type = BlockProviderUtil.class, method = "delete")

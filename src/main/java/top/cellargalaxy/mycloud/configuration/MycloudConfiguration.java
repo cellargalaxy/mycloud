@@ -19,7 +19,7 @@ public class MycloudConfiguration {
 	private String webUploadMaxFileSize;
 	@Value("${webUploadMaxRequestSize:1024MB}")
 	private String webUploadMaxRequestSize;
-	@Value("${domain:http://mycloud.cellargalaxy.top}")
+	@Value("${domain:http://127.0.0.1:8080}")
 	private String domain;
 
 	public int getBlobLength() {

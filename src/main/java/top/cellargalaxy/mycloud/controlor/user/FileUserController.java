@@ -4,10 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import top.cellargalaxy.mycloud.configuration.MycloudConfiguration;
 import top.cellargalaxy.mycloud.exception.GlobalException;
@@ -54,7 +51,7 @@ public class FileUserController {
 
 				ownPos[i] = new OwnPo();
 				ownPos[i].setUserId(userPo.getUserId());
-				ownPos[i].setFileName(multipartFiles[i].getName());
+				ownPos[i].setFileName(multipartFiles[i].getOriginalFilename());
 				ownPos[i].setSort(ownPo.getSort());
 				ownPos[i].setDescription(ownPo.getDescription());
 

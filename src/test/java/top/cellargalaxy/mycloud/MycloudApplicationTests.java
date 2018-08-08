@@ -25,9 +25,11 @@ public class MycloudApplicationTests {
 	private OwnDao ownDao;
 	@Autowired
 	private UserService userService;
+	@Autowired
+	private BlockDao blockDao;
 
 	@Test
 	public void test() throws Exception {
-		new UserServiceImplTest(userService).pageUserAuthorization();
+		new BlockDaoTest(blockDao).insert();
 	}
 }

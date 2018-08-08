@@ -4,15 +4,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import top.cellargalaxy.mycloud.configuration.MycloudConfiguration;
 import top.cellargalaxy.mycloud.dao.FileInfoDao;
 import top.cellargalaxy.mycloud.model.bo.FileBlockBo;
 import top.cellargalaxy.mycloud.model.bo.FileInfoBo;
 import top.cellargalaxy.mycloud.model.bo.OwnBo;
-import top.cellargalaxy.mycloud.model.po.BlockPo;
-import top.cellargalaxy.mycloud.model.po.FileBlockPo;
-import top.cellargalaxy.mycloud.model.po.FileInfoPo;
-import top.cellargalaxy.mycloud.model.po.UserPo;
+import top.cellargalaxy.mycloud.model.po.*;
 import top.cellargalaxy.mycloud.model.query.BlockQuery;
 import top.cellargalaxy.mycloud.model.query.FileBlockQuery;
 import top.cellargalaxy.mycloud.model.query.FileInfoQuery;
@@ -35,6 +34,7 @@ import java.util.List;
  * @author cellargalaxy
  * @time 2018/7/20
  */
+@Transactional
 @Service
 public class FileInfoServiceImpl implements FileInfoService {
 	private Logger logger = LoggerFactory.getLogger(FileInfoServiceImpl.class);
@@ -60,6 +60,7 @@ public class FileInfoServiceImpl implements FileInfoService {
 		int i = fileInfoDao.insert(fileInfoPo);
 		if (i == 0) {
 			file.delete();
+			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
 			return "文件信息空新增";
 		}
 
@@ -75,6 +76,7 @@ public class FileInfoServiceImpl implements FileInfoService {
 				string = blockService.addBlock(blockPo);
 				if (string != null) {
 					file.delete();
+					TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
 					return string;
 				}
 				blockIds[blockIndex] = blockPo.getBlockId();
@@ -90,6 +92,7 @@ public class FileInfoServiceImpl implements FileInfoService {
 			string = fileBlockService.addFileBlock(fileBlockPo);
 			if (string != null) {
 				file.delete();
+				TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
 				return string;
 			}
 		}
@@ -103,6 +106,7 @@ public class FileInfoServiceImpl implements FileInfoService {
 		logger.info("removeFileInfo:{}", fileInfoQuery);
 		int i = fileInfoDao.delete(fileInfoQuery);
 		if (i == 0) {
+			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
 			return "文件信息空删除";
 		}
 
@@ -111,6 +115,7 @@ public class FileInfoServiceImpl implements FileInfoService {
 		List<FileBlockBo> fileBlockBos = fileBlockService.listFileBlock(fileBlockQuery);
 		String string = fileBlockService.removeFileBlock(fileBlockQuery);
 		if (string != null) {
+			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
 			return string;
 		}
 
@@ -119,6 +124,17 @@ public class FileInfoServiceImpl implements FileInfoService {
 			blockQuery.setBlockId(fileBlockBo.getBlockId());
 			string = blockService.removeBlock(blockQuery);
 			if (string != null) {
+				return string;
+			}
+		}
+
+		OwnQuery ownQuery = new OwnQuery();
+		ownQuery.setFileId(fileInfoQuery.getFileId());
+		List<OwnBo> ownBos = ownService.listOwn(ownQuery);
+		for (OwnBo ownBo : ownBos) {
+			string = ownService.removeOwn(ownBo);
+			if (string != null) {
+				TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
 				return string;
 			}
 		}
@@ -195,6 +211,7 @@ public class FileInfoServiceImpl implements FileInfoService {
 		}
 		int i = fileInfoDao.update(fileInfoPo);
 		if (i == 0) {
+			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
 			return "文件信息空更新";
 		}
 		return null;
@@ -208,7 +225,7 @@ public class FileInfoServiceImpl implements FileInfoService {
 		}
 		FileInfoBo fileInfoBo = fileInfoDao.selectOne(fileInfoPo);
 		if (fileInfoBo != null) {
-			return "文件已存在";
+			return "文件已存在,MD5:"+fileInfoBo.getMd5();
 		}
 		return null;
 	}

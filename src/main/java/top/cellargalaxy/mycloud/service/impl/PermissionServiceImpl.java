@@ -4,6 +4,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import top.cellargalaxy.mycloud.dao.PermissionDao;
 import top.cellargalaxy.mycloud.model.bo.AuthorizationBo;
 import top.cellargalaxy.mycloud.model.bo.PermissionBo;
@@ -22,6 +24,7 @@ import java.util.List;
  * @author cellargalaxy
  * @time 2018/7/17
  */
+@Transactional
 @Service
 public class PermissionServiceImpl implements PermissionService {
 	private Logger logger = LoggerFactory.getLogger(PermissionServiceImpl.class);
@@ -39,6 +42,7 @@ public class PermissionServiceImpl implements PermissionService {
 		}
 		int i = permissionDao.insert(permissionPo);
 		if (i == 0) {
+			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
 			return "权限空新增";
 		}
 		return null;
@@ -49,6 +53,7 @@ public class PermissionServiceImpl implements PermissionService {
 		logger.info("removePermission:{}", permissionQuery);
 		int i = permissionDao.delete(permissionQuery);
 		if (i == 0) {
+			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
 			return "权限空删除";
 		}
 		return null;
@@ -113,6 +118,7 @@ public class PermissionServiceImpl implements PermissionService {
 		}
 		int i = permissionDao.update(permissionPo);
 		if (i == 0) {
+			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
 			return "权限空更新";
 		}
 		return null;

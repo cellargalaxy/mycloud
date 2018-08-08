@@ -13,8 +13,7 @@ import top.cellargalaxy.mycloud.service.UserService;
 /**
  * Created by cellargalaxy on 18-7-19.
  */
-@PreAuthorize("hasAuthority('USER')")
-@CrossOrigin
+@PreAuthorize("hasAuthority('ADMIN')")
 @RestController
 @RequestMapping(UserAdminController.URL)
 public class UserAdminController {
@@ -23,6 +22,7 @@ public class UserAdminController {
 	@Autowired
 	private UserService userService;
 
+	@PreAuthorize("hasAuthority('ROOT')")
 	@PostMapping("/addUser")
 	public Vo addUser(UserPo userPo) {
 		String string = userService.addUser(userPo);
@@ -30,6 +30,7 @@ public class UserAdminController {
 		return new Vo(string, null);
 	}
 
+	@PreAuthorize("hasAuthority('ROOT')")
 	@PostMapping("/removeUser")
 	public Vo removeUser(UserQuery userQuery) {
 		String string = userService.removeUser(userQuery);
@@ -79,6 +80,7 @@ public class UserAdminController {
 		return new Vo(null, userService.listUserOwn(userQuery));
 	}
 
+	@PreAuthorize("hasAuthority('ROOT')")
 	@PostMapping("/changeUser")
 	public Vo changeUser(UserQuery userQuery) {
 		String string = userService.changeUser(userQuery);

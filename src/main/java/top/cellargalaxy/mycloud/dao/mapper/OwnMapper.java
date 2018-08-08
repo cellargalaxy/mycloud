@@ -132,7 +132,7 @@ public interface OwnMapper {
 			wheresAll(ownQuery, wheres);
 
 			StringBuilder sql = SqlUtil.createSelectSql(selects, tableName + "," + UserDao.TABLE_NAME + "," + FileInfoDao.TABLE_NAME, wheres);
-			String string = sql.append(" limit #{off},#{len}").toString();
+			String string = sql.append(" order by create_time desc limit #{off},#{len}").toString();
 			return string;
 		}
 
