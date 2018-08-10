@@ -51,6 +51,10 @@ public class PermissionCache implements PermissionDao {
 		return permissionMapper.selectCount(permissionQuery);
 	}
 
+	public List<PermissionBo> selectAll() {
+		return permissionMapper.selectAll();
+	}
+
 	@Caching(evict = {
 			@CacheEvict(key = "#p0.permissionId"),
 	})

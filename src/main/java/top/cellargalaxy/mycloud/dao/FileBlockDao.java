@@ -10,20 +10,8 @@ import java.util.List;
  * @author cellargalaxy
  * @time 2018/7/16
  */
-public interface FileBlockDao {
+public interface FileBlockDao extends AbstractDao<FileBlockPo, FileBlockBo, FileBlockQuery> {
 	String TABLE_NAME = "file_block";
-
-	int insert(FileBlockPo fileBlockPo);
-
-	int delete(FileBlockPo fileBlockPo);
-
-	FileBlockBo selectOne(FileBlockPo fileBlockPo);
-
-	List<FileBlockBo> selectSome(FileBlockQuery fileBlockQuery);
-
-	int selectCount(FileBlockQuery fileBlockQuery);
-
-	int update(FileBlockPo fileBlockPo);
 
 	static String checkInsert(FileBlockPo fileBlockPo) {
 		if (fileBlockPo.getFileId() < 1) {

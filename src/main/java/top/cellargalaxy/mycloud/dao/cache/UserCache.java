@@ -51,6 +51,10 @@ public class UserCache implements UserDao {
 		return userMapper.selectCount(userQuery);
 	}
 
+	public List<UserBo> selectAll() {
+		return userMapper.selectAll();
+	}
+
 	@Caching(evict = {
 			@CacheEvict(key = "#p0.userId"),
 	})

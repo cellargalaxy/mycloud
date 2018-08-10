@@ -11,22 +11,10 @@ import java.util.List;
  * @author cellargalaxy
  * @time 2018/7/16
  */
-public interface OwnDao {
+public interface OwnDao extends AbstractDao<OwnPo, OwnBo, OwnQuery> {
 	String TABLE_NAME = "own";
 
-	int insert(OwnPo ownPo);
-
-	int delete(OwnPo ownPo);
-
-	OwnBo selectOne(OwnPo ownPo);
-
-	List<OwnBo> selectSome(OwnQuery ownQuery);
-
-	int selectCount(OwnQuery ownQuery);
-
 	List<String> selectSort(OwnQuery ownQuery);
-
-	int update(OwnPo ownPo);
 
 	static String checkInsert(OwnPo ownPo) {
 		if (ownPo.getUserId() < 0) {

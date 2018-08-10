@@ -41,9 +41,9 @@ public class AuthorizationServiceImpl implements AuthorizationService {
 	}
 
 	@Override
-	public String removeAuthorization(AuthorizationQuery authorizationQuery) {
-		logger.info("removeAuthorization:{}", authorizationQuery);
-		int i = authorizationDao.delete(authorizationQuery);
+	public String removeAuthorization(AuthorizationPo authorizationPo) {
+		logger.info("removeAuthorization:{}", authorizationPo);
+		int i = authorizationDao.delete(authorizationPo);
 		if (i == 0) {
 			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
 			return "授权空删除";
@@ -52,9 +52,9 @@ public class AuthorizationServiceImpl implements AuthorizationService {
 	}
 
 	@Override
-	public AuthorizationBo getAuthorization(AuthorizationQuery authorizationQuery) {
-		logger.info("getAuthorization:{}", authorizationQuery);
-		return authorizationDao.selectOne(authorizationQuery);
+	public AuthorizationBo getAuthorization(AuthorizationPo authorizationPo) {
+		logger.info("getAuthorization:{}", authorizationPo);
+		return authorizationDao.selectOne(authorizationPo);
 	}
 
 	@Override

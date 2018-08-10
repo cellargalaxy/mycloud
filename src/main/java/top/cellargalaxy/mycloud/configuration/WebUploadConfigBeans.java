@@ -15,11 +15,11 @@ public class WebUploadConfigBeans {
 	@Bean
 	MultipartConfigElement multipartConfigElement(MycloudConfiguration mycloudConfiguration) {
 		MultipartConfigFactory factory = new MultipartConfigFactory();
-		File file = new File(mycloudConfiguration.getTmpPath());
-		if (!file.exists()) {
-			file.mkdirs();
+		File folder = new File(mycloudConfiguration.getMycloudTmpPath());
+		if (!folder.exists()) {
+			folder.mkdirs();
 		}
-		factory.setLocation(mycloudConfiguration.getTmpPath());
+		factory.setLocation(mycloudConfiguration.getMycloudTmpPath());
 
 		factory.setMaxFileSize(mycloudConfiguration.getWebUploadMaxFileSize());
 		factory.setMaxRequestSize(mycloudConfiguration.getWebUploadMaxRequestSize());

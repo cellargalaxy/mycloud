@@ -1,6 +1,7 @@
 package top.cellargalaxy.mycloud.dao.mapper;
 
 import org.apache.ibatis.annotations.*;
+import top.cellargalaxy.mycloud.dao.AbstractDao;
 import top.cellargalaxy.mycloud.dao.UserDao;
 import top.cellargalaxy.mycloud.model.bo.UserBo;
 import top.cellargalaxy.mycloud.model.po.UserPo;
@@ -18,12 +19,12 @@ import static org.apache.ibatis.type.JdbcType.TIMESTAMP;
  * Created by cellargalaxy on 18-7-12.
  */
 @Mapper
-public interface UserMapper {
-	@InsertProvider(type = UserProviderUtil.class, method = "insert")
+public interface UserMapper extends AbstractDao<UserPo, UserBo, UserQuery> {
+	@InsertProvider(type = UserProvider.class, method = "insert")
 	@Options(useGeneratedKeys = true, keyProperty = "userId")
 	int insert(UserPo userPo);
 
-	@DeleteProvider(type = UserProviderUtil.class, method = "delete")
+	@DeleteProvider(type = UserProvider.class, method = "delete")
 	int delete(UserPo userPo);
 
 	@Results(id = "userResult", value = {
@@ -33,20 +34,24 @@ public interface UserMapper {
 			@Result(property = "createTime", column = "create_time", javaType = Date.class, jdbcType = TIMESTAMP),
 			@Result(property = "updateTime", column = "update_time", javaType = Date.class, jdbcType = TIMESTAMP)
 	})
-	@SelectProvider(type = UserProviderUtil.class, method = "selectOne")
+	@SelectProvider(type = UserProvider.class, method = "selectOne")
 	UserBo selectOne(UserPo userPo);
 
 	@ResultMap(value = "userResult")
-	@SelectProvider(type = UserProviderUtil.class, method = "selectSome")
+	@SelectProvider(type = UserProvider.class, method = "selectSome")
 	List<UserBo> selectSome(UserQuery userQuery);
 
-	@SelectProvider(type = UserProviderUtil.class, method = "selectCount")
+	@SelectProvider(type = UserProvider.class, method = "selectCount")
 	int selectCount(UserQuery userQuery);
 
-	@UpdateProvider(type = UserProviderUtil.class, method = "update")
+	@ResultMap(value = "userResult")
+	@SelectProvider(type = UserProvider.class, method = "selectAll")
+	List<UserBo> selectAll();
+
+	@UpdateProvider(type = UserProvider.class, method = "update")
 	int update(UserPo userPo);
 
-	class UserProviderUtil {
+	class UserProvider /*implements AbstractProvider<UserPo, UserQuery>*/ {
 		private String tableName = UserDao.TABLE_NAME;
 		private String userId = tableName + ".user_id=#{userId}";
 		private String username = tableName + ".username=#{username}";
@@ -79,6 +84,10 @@ public interface UserMapper {
 
 		public String selectCount(UserQuery userQuery) {
 			return ProviderUtil.selectCount(tableName, userQuery, this::wheresAll).append(" limit #{off},#{len}").toString();
+		}
+
+		public String selectAll() {
+			return ProviderUtil.selectAll(tableName).toString();
 		}
 
 		public String update(UserPo userPo) {

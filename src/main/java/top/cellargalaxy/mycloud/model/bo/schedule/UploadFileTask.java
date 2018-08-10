@@ -17,7 +17,7 @@ public class UploadFileTask extends Task {
 	private final String contentType;
 
 	public UploadFileTask(UserPo userPo, OwnPo ownPo, File file, String contentType) {
-		super(userPo, TASK_SORT);
+		super(userPo, TASK_SORT, "添加所属: " + ownPo + ", 上传文件: " + file + ", 文件类型: " + contentType);
 		this.ownPo = ownPo;
 		this.file = file;
 		this.contentType = contentType;
@@ -33,11 +33,6 @@ public class UploadFileTask extends Task {
 
 	public String getContentType() {
 		return contentType;
-	}
-
-	@Override
-	public String getTaskDetail() {
-		return "添加所属: " + ownPo + "\n上传文件: " + file + "\n文件类型: " + contentType;
 	}
 
 	@Override

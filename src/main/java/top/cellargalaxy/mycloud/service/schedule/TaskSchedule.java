@@ -1,14 +1,16 @@
 package top.cellargalaxy.mycloud.service.schedule;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import top.cellargalaxy.mycloud.exception.GlobalException;
 import top.cellargalaxy.mycloud.model.bo.schedule.Task;
+import top.cellargalaxy.mycloud.service.TaskService;
 
+import java.util.Collection;
 import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedTransferQueue;
 
@@ -18,52 +20,62 @@ import java.util.concurrent.LinkedTransferQueue;
  */
 @Component
 public class TaskSchedule {
-	public static final int MAX_FINISH_TASKS_LIST = 1000;
+	private Logger logger = LoggerFactory.getLogger(TaskSchedule.class);
 	private final BlockingQueue<Task> waitTasks = new LinkedTransferQueue<>();
 	private Task currentTask;
-	private final LinkedList<Task> finishTasks = new LinkedList<>();
+	@Autowired
+	private TaskService taskService;
 
 	@Autowired
 	private TaskExecuteFactory taskExecuteFactory;
 
 	@Scheduled(fixedDelay = 1000 * 5)
-	public void uploadFileSchedule() {
+	public void schedule() {
 		while (true) {
+			String string = null;
 			try (Task task = getWaitTask()) {
 				currentTask = task;
 				TaskExecute taskExecute = taskExecuteFactory.getTaskExecute(currentTask.getTaskSort());
-				taskExecute.executeTask(currentTask);
-				addFinishTask(currentTask, Task.SUCCESS_STATUS);
-				currentTask = null;
+				string = taskExecute.executeTask(currentTask);
 			} catch (Exception e) {
-				e.printStackTrace();
+				logger.info("schedule:执行任务异常:{}", e.getMessage());
 				GlobalException.add(e, 0, "未知异常");
-				if (currentTask != null) {
-					addFinishTask(currentTask, Task.FAIL_STATUS);
-				}
+				addFinishTask(currentTask, Task.FAIL_STATUS);
 			}
+			if (string != null) {
+				currentTask.setMassage(string);
+				addFinishTask(currentTask, Task.FAIL_STATUS);
+			} else {
+				addFinishTask(currentTask, Task.SUCCESS_STATUS);
+			}
+			currentTask = null;
 		}
 	}
 
-	public void addTask(Task task) {
+	public String addWaitTask(Task task) {
+		logger.info("addWaitTask:{}", task);
 		if (task == null) {
-			return;
+			return "任务不得为空";
 		}
 		task.setStatus(Task.WAIT_STATUS);
+		String string = taskService.addTask(task);
+		if (string != null) {
+			return string;
+		}
 		waitTasks.add(task);
+		return null;
 	}
 
 	//这样应该会有并发问题
-	public Task removeTask(String taskId) {
-		if (taskId == null) {
-			return null;
-		}
+	public Task removeWaitTask(int taskId) {
+		logger.info("removeWaitTask:{}", taskId);
 		Iterator<Task> iterator = waitTasks.iterator();
 		while (iterator.hasNext()) {
 			Task task = iterator.next();
-			if (task.equals(taskId)) {
+			if (task.getTaskId() == taskId) {
 				iterator.remove();
 				task.setStatus(Task.CANCEL_STATUS);
+				taskService.changeTask(task);
 				return task;
 			}
 		}
@@ -73,36 +85,23 @@ public class TaskSchedule {
 	private Task getWaitTask() throws InterruptedException {
 		Task task = waitTasks.take();
 		task.setStatus(Task.EXECUTION_STATUS);
+		logger.info("getWaitTask:{}", task);
 		return task;
 	}
 
 	private void addFinishTask(Task task, int status) {
+		logger.info("addFinishTask:{}, status:{}", task, status);
 		if (task == null) {
 			return;
 		}
-		if (finishTasks.size() == MAX_FINISH_TASKS_LIST) {
-			finishTasks.poll();
-		}
 		task.setStatus(status);
-		finishTasks.add(task);
+		taskService.changeTask(task);
 	}
 
 	//并发问题
-	public List<Task> listWaitTask(int off, int len) {
-		List<Task> tasks = new LinkedList<>();
-		Iterator<Task> iterator = waitTasks.iterator();
-		for (int i = 0; iterator.hasNext() && i < off; i++) {
-			iterator.next();
-		}
-		for (int i = 0; iterator.hasNext() && i < len; i++) {
-			tasks.add(iterator.next());
-		}
-		return tasks;
-	}
-
-	//并发问题
-	public List<Task> listFinishTask(int off, int len) {
-		return finishTasks.subList(off, off + len);
+	public Collection<Task> listWaitTask() {
+		logger.info("listWaitTask");
+		return waitTasks;
 	}
 
 	public BlockingQueue<Task> getWaitTasks() {
@@ -111,9 +110,5 @@ public class TaskSchedule {
 
 	public Task getCurrentTask() {
 		return currentTask;
-	}
-
-	public List<Task> getFinishTasks() {
-		return finishTasks;
 	}
 }

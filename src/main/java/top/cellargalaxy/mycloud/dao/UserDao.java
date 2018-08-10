@@ -10,20 +10,8 @@ import java.util.List;
 /**
  * Created by cellargalaxy on 18-7-12.
  */
-public interface UserDao {
+public interface UserDao extends AbstractDao<UserPo, UserBo, UserQuery> {
 	String TABLE_NAME = "user";
-
-	int insert(UserPo userPo);
-
-	int delete(UserPo userPo);
-
-	UserBo selectOne(UserPo userPo);
-
-	List<UserBo> selectSome(UserQuery userQuery);
-
-	int selectCount(UserQuery userQuery);
-
-	int update(UserPo userPo);
 
 	static String checkInsert(UserPo userPo) {
 		if (StringUtil.isBlank(userPo.getUsername())) {

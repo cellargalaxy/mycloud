@@ -53,6 +53,10 @@ public class OwnCache implements OwnDao {
 		return ownMapper.selectCount(ownQuery);
 	}
 
+	public List<OwnBo> selectAll() {
+		return ownMapper.selectAll();
+	}
+
 	@Cacheable(key = "'selectSort'+#p0.userId", condition = "#p0.userId>0")
 	public List<String> selectSort(OwnQuery ownQuery) {
 		return ownMapper.selectSort(ownQuery);

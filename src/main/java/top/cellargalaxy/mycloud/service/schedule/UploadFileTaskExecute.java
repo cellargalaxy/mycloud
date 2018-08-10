@@ -1,8 +1,9 @@
 package top.cellargalaxy.mycloud.service.schedule;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import top.cellargalaxy.mycloud.model.bo.schedule.Task;
 import top.cellargalaxy.mycloud.model.bo.schedule.UploadFileTask;
 import top.cellargalaxy.mycloud.model.po.FileInfoPo;
 import top.cellargalaxy.mycloud.model.po.OwnPo;
@@ -19,6 +20,7 @@ import java.io.IOException;
  */
 @Service
 public class UploadFileTaskExecute implements TaskExecute<UploadFileTask> {
+	private Logger logger = LoggerFactory.getLogger(UploadFileTaskExecute.class);
 	public static final String TASK_SORT = UploadFileTask.TASK_SORT;
 	@Autowired
 	private FileInfoService fileInfoService;
@@ -26,7 +28,8 @@ public class UploadFileTaskExecute implements TaskExecute<UploadFileTask> {
 	private OwnService ownService;
 
 	@Override
-	public void executeTask(UploadFileTask uploadFileTask) throws Exception {
+	public String executeTask(UploadFileTask uploadFileTask) throws Exception {
+		logger.info("executeTask:{}", uploadFileTask);
 		File file = uploadFileTask.getFile();
 
 		String contentType = uploadFileTask.getContentType();
@@ -34,14 +37,13 @@ public class UploadFileTaskExecute implements TaskExecute<UploadFileTask> {
 
 		String string = uploadFile(ownPo, file, contentType);
 		if (string != null) {
-			uploadFileTask.setStatus(Task.FAIL_STATUS);
-			uploadFileTask.setMassage(string);
-		} else {
-			uploadFileTask.setStatus(Task.SUCCESS_STATUS);
+			return string;
 		}
+		return null;
 	}
 
 	public String uploadFile(OwnPo ownPo, File file, String contentType) throws IOException {
+		logger.info("uploadFile, OwnPo:{}, file:{}, contentType:{}", ownPo, file, contentType);
 		String md5 = StreamUtil.md5Hex(file);
 		long fileLength = file.length();
 

@@ -1,6 +1,7 @@
 package top.cellargalaxy.mycloud.dao.mapper;
 
 import org.apache.ibatis.annotations.*;
+import top.cellargalaxy.mycloud.dao.AbstractDao;
 import top.cellargalaxy.mycloud.dao.FileBlockDao;
 import top.cellargalaxy.mycloud.model.bo.FileBlockBo;
 import top.cellargalaxy.mycloud.model.po.FileBlockPo;
@@ -15,31 +16,35 @@ import java.util.Set;
  * @time 2018/7/16
  */
 @Mapper
-public interface FileBlockMapper {
-	@InsertProvider(type = FileBlockProviderUtil.class, method = "insert")
+public interface FileBlockMapper extends AbstractDao<FileBlockPo, FileBlockBo, FileBlockQuery> {
+	@InsertProvider(type = FileBlockProvider.class, method = "insert")
 	int insert(FileBlockPo fileBlockPo);
 
-	@DeleteProvider(type = FileBlockProviderUtil.class, method = "delete")
+	@DeleteProvider(type = FileBlockProvider.class, method = "delete")
 	int delete(FileBlockPo fileBlockPo);
 
 	@Results(id = "fileBlockResult", value = {
 			@Result(property = "fileId", column = "file_id", id = true),
 			@Result(property = "blockId", column = "block_id")
 	})
-	@SelectProvider(type = FileBlockProviderUtil.class, method = "selectOne")
+	@SelectProvider(type = FileBlockProvider.class, method = "selectOne")
 	FileBlockBo selectOne(FileBlockPo fileBlockPo);
 
 	@ResultMap(value = "fileBlockResult")
-	@SelectProvider(type = FileBlockProviderUtil.class, method = "selectSome")
+	@SelectProvider(type = FileBlockProvider.class, method = "selectSome")
 	List<FileBlockBo> selectSome(FileBlockQuery fileBlockQuery);
 
-	@SelectProvider(type = FileBlockProviderUtil.class, method = "selectCount")
+	@SelectProvider(type = FileBlockProvider.class, method = "selectCount")
 	int selectCount(FileBlockQuery fileBlockQuery);
 
-	@UpdateProvider(type = FileBlockProviderUtil.class, method = "update")
+	@ResultMap(value = "fileBlockResult")
+	@SelectProvider(type = FileBlockProvider.class, method = "selectAll")
+	List<FileBlockBo> selectAll();
+
+	@UpdateProvider(type = FileBlockProvider.class, method = "update")
 	int update(FileBlockPo fileBlockPo);
 
-	class FileBlockProviderUtil {
+	class FileBlockProvider /*implements AbstractProvider<FileBlockPo, FileBlockQuery>*/ {
 		private String tableName = FileBlockDao.TABLE_NAME;
 		private String fileId = tableName + ".file_id=#{fileId}";
 		private String blockId = tableName + ".block_id=#{blockId}";
@@ -64,6 +69,10 @@ public interface FileBlockMapper {
 
 		public String selectCount(FileBlockQuery fileBlockQuery) {
 			return ProviderUtil.selectCount(tableName, fileBlockQuery, this::wheresAll).toString();
+		}
+
+		public String selectAll() {
+			return ProviderUtil.selectAll(tableName).toString();
 		}
 
 		public String update(FileBlockPo fileBlockPo) {

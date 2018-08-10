@@ -51,6 +51,10 @@ public class FileBlockCache implements FileBlockDao {
 		return fileBlockMapper.selectCount(fileBlockQuery);
 	}
 
+	public List<FileBlockBo> selectAll() {
+		return fileBlockMapper.selectAll();
+	}
+
 	@Caching(evict = {
 			@CacheEvict(key = "#p0.fileId"),
 	})

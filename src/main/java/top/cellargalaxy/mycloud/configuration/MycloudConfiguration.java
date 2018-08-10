@@ -2,6 +2,7 @@ package top.cellargalaxy.mycloud.configuration;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import top.cellargalaxy.mycloud.util.StringUtil;
 
 import java.io.File;
 
@@ -21,6 +22,14 @@ public class MycloudConfiguration {
 	private String webUploadMaxRequestSize;
 	@Value("${domain:http://drive.cellargalaxy.top}")
 	private String domain;
+	@Value("${mycloudPath:}")
+	private String mycloudPath;
+	@Value("${mycloudTmpPath:}")
+	private String mycloudTmpPath;
+	@Value("${mycloudDrivePath:}")
+	private String mycloudDrivePath;
+	@Value("${taskDetailLength:1024}")
+	private int taskDetailLength;
 
 	public int getBlobLength() {
 		return blobLength;
@@ -38,8 +47,37 @@ public class MycloudConfiguration {
 		this.secret = secret;
 	}
 
-	public String getTmpPath() {
-		return System.getProperty("user.dir") + File.separator + ".mycloud";
+	public String getMycloudPath() {
+		if (!StringUtil.isBlank(mycloudPath)) {
+			return mycloudPath;
+		}
+		return System.getProperty("user.dir") + File.separator + "mycloud";
+	}
+
+	public void setMycloudPath(String mycloudPath) {
+		this.mycloudPath = mycloudPath;
+	}
+
+	public String getMycloudTmpPath() {
+		if (!StringUtil.isBlank(mycloudTmpPath)) {
+			return mycloudTmpPath;
+		}
+		return getMycloudPath() + File.separator + "tmp";
+	}
+
+	public void setMycloudTmpPath(String mycloudTmpPath) {
+		this.mycloudTmpPath = mycloudTmpPath;
+	}
+
+	public String getMycloudDrivePath() {
+		if (!StringUtil.isBlank(mycloudDrivePath)) {
+			return mycloudDrivePath;
+		}
+		return getMycloudPath() + File.separator + "drive";
+	}
+
+	public void setMycloudDrivePath(String mycloudDrivePath) {
+		this.mycloudDrivePath = mycloudDrivePath;
 	}
 
 	public String getWebUploadMaxFileSize() {
@@ -64,5 +102,13 @@ public class MycloudConfiguration {
 
 	public void setDomain(String domain) {
 		this.domain = domain;
+	}
+
+	public int getTaskDetailLength() {
+		return taskDetailLength;
+	}
+
+	public void setTaskDetailLength(int taskDetailLength) {
+		this.taskDetailLength = taskDetailLength;
 	}
 }

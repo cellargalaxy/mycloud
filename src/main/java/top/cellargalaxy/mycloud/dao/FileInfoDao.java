@@ -11,22 +11,10 @@ import java.util.List;
  * @author cellargalaxy
  * @time 2018/7/3
  */
-public interface FileInfoDao {
+public interface FileInfoDao extends AbstractDao<FileInfoPo,FileInfoBo,FileInfoQuery> {
 	String TABLE_NAME = "file_info";
 
-	int insert(FileInfoPo fileInfoPo);
-
-	int delete(FileInfoPo fileInfoPo);
-
-	FileInfoBo selectOne(FileInfoPo fileInfoPo);
-
-	List<FileInfoBo> selectSome(FileInfoQuery fileInfoQuery);
-
-	int selectCount(FileInfoQuery fileInfoQuery);
-
 	List<String> selectContentType();
-
-	int update(FileInfoPo fileInfoPo);
 
 	static String checkInsert(FileInfoPo fileInfoPo) {
 		if (StringUtil.isBlank(fileInfoPo.getMd5())) {

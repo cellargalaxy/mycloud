@@ -5,18 +5,17 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import top.cellargalaxy.mycloud.exception.GlobalException;
 import top.cellargalaxy.mycloud.model.vo.ExceptionInfoVo;
-import top.cellargalaxy.mycloud.service.LogService;
+import top.cellargalaxy.mycloud.service.ExceptionLogService;
 
-import java.util.List;
-import java.util.concurrent.BlockingQueue;
+import java.util.Collection;
 
 /**
  * @author cellargalaxy
  * @time 2018/7/20
  */
 @Service
-public class LogServiceImpl implements LogService {
-	private Logger logger = LoggerFactory.getLogger(LogServiceImpl.class);
+public class ExceptionLogServiceImpl implements ExceptionLogService {
+	private Logger logger = LoggerFactory.getLogger(ExceptionLogServiceImpl.class);
 
 	@Override
 	public String clearExceptionInfo() {
@@ -32,7 +31,7 @@ public class LogServiceImpl implements LogService {
 	}
 
 	@Override
-	public List<ExceptionInfoVo> listExceptionInfo() {
+	public Collection<ExceptionInfoVo> listExceptionInfo() {
 		logger.info("listExceptionInfo");
 		return GlobalException.get();
 	}

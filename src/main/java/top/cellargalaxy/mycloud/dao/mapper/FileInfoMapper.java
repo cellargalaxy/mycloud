@@ -1,6 +1,7 @@
 package top.cellargalaxy.mycloud.dao.mapper;
 
 import org.apache.ibatis.annotations.*;
+import top.cellargalaxy.mycloud.dao.AbstractDao;
 import top.cellargalaxy.mycloud.dao.FileInfoDao;
 import top.cellargalaxy.mycloud.model.bo.FileInfoBo;
 import top.cellargalaxy.mycloud.model.po.FileInfoPo;
@@ -20,12 +21,12 @@ import static org.apache.ibatis.type.JdbcType.TIMESTAMP;
  * @time 2018/7/3
  */
 @Mapper
-public interface FileInfoMapper {
-	@InsertProvider(type = FileInfoProviderUtil.class, method = "insert")
+public interface FileInfoMapper extends AbstractDao<FileInfoPo, FileInfoBo, FileInfoQuery> {
+	@InsertProvider(type = FileInfoProvider.class, method = "insert")
 	@Options(useGeneratedKeys = true, keyProperty = "fileId")
 	int insert(FileInfoPo fileInfoPo);
 
-	@DeleteProvider(type = FileInfoProviderUtil.class, method = "delete")
+	@DeleteProvider(type = FileInfoProvider.class, method = "delete")
 	int delete(FileInfoPo fileInfoPo);
 
 	@Results(id = "fileInfoResult", value = {
@@ -35,23 +36,27 @@ public interface FileInfoMapper {
 			@Result(property = "contentType", column = "content_type"),
 			@Result(property = "createTime", column = "create_time", javaType = Date.class, jdbcType = TIMESTAMP)
 	})
-	@SelectProvider(type = FileInfoProviderUtil.class, method = "selectOne")
+	@SelectProvider(type = FileInfoProvider.class, method = "selectOne")
 	FileInfoBo selectOne(FileInfoPo fileInfoPo);
 
 	@ResultMap(value = "fileInfoResult")
-	@SelectProvider(type = FileInfoProviderUtil.class, method = "selectSome")
+	@SelectProvider(type = FileInfoProvider.class, method = "selectSome")
 	List<FileInfoBo> selectSome(FileInfoQuery fileInfoQuery);
 
-	@SelectProvider(type = FileInfoProviderUtil.class, method = "selectCount")
+	@SelectProvider(type = FileInfoProvider.class, method = "selectCount")
 	int selectCount(FileInfoQuery fileInfoQuery);
 
-	@SelectProvider(type = FileInfoProviderUtil.class, method = "selectContentType")
+	@ResultMap(value = "fileInfoResult")
+	@SelectProvider(type = FileInfoProvider.class, method = "selectAll")
+	List<FileInfoBo> selectAll();
+
+	@SelectProvider(type = FileInfoProvider.class, method = "selectContentType")
 	List<String> selectContentType();
 
-	@UpdateProvider(type = FileInfoProviderUtil.class, method = "update")
+	@UpdateProvider(type = FileInfoProvider.class, method = "update")
 	int update(FileInfoPo fileInfoPo);
 
-	class FileInfoProviderUtil {
+	class FileInfoProvider /*implements AbstractProvider<FileInfoPo, FileInfoQuery>*/ {
 		private String tableName = FileInfoDao.TABLE_NAME;
 		private String fileId = tableName + ".file_id=#{fileId}";
 		private String md5 = tableName + ".md5=#{md5}";
@@ -82,6 +87,10 @@ public interface FileInfoMapper {
 
 		public String selectCount(FileInfoQuery fileInfoQuery) {
 			return ProviderUtil.selectCount(tableName, fileInfoQuery, this::wheresAll).append(" order by create_time desc limit #{off},#{len}").toString();
+		}
+
+		public String selectAll() {
+			return ProviderUtil.selectAll(tableName).toString();
 		}
 
 		public String selectContentType() {

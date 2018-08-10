@@ -48,6 +48,10 @@ public class ProviderUtil {
 		return SqlUtil.createSelectSql(selects, tableName, wheres);
 	}
 
+	public static final StringBuilder selectAll(String tableName) {
+		return SqlUtil.createSelectSql(null, tableName, null);
+	}
+
 	public static final <Po> StringBuilder update(String tableName, Po po, String defaultSet, BiConsumer<Po, Set<String>> setsFunc, BiConsumer<Po, Set<String>> wheresKeyFunc) {
 		Set<String> sets = new HashSet<>();
 		setsFunc.accept(po, sets);

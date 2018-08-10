@@ -11,6 +11,8 @@ import top.cellargalaxy.mycloud.model.bo.BlockBo;
 import top.cellargalaxy.mycloud.model.po.BlockPo;
 import top.cellargalaxy.mycloud.model.query.BlockQuery;
 
+import java.util.List;
+
 /**
  * @author cellargalaxy
  * @time 2018/7/16
@@ -34,6 +36,18 @@ public class BlockCache implements BlockDao {
 	@Cacheable(key = "#p0.blockId", condition = "#p0.blockId>0")
 	public BlockBo selectOne(BlockPo blockPo) {
 		return blockMapper.selectOne(blockPo);
+	}
+
+	public List<BlockBo> selectSome(BlockQuery blockQuery) {
+		return blockMapper.selectSome(blockQuery);
+	}
+
+	public int selectCount(BlockQuery blockQuery) {
+		return blockMapper.selectCount(blockQuery);
+	}
+
+	public List<BlockBo> selectAll() {
+		return blockMapper.selectAll();
 	}
 
 	@CacheEvict(key = "#p0.blockId")

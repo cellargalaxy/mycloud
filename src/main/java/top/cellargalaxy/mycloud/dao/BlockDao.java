@@ -2,21 +2,14 @@ package top.cellargalaxy.mycloud.dao;
 
 import top.cellargalaxy.mycloud.model.bo.BlockBo;
 import top.cellargalaxy.mycloud.model.po.BlockPo;
+import top.cellargalaxy.mycloud.model.query.BlockQuery;
 
 /**
  * @author cellargalaxy
  * @time 2018/7/16
  */
-public interface BlockDao {
+public interface BlockDao extends AbstractDao<BlockPo,BlockBo,BlockQuery> {
 	String TABLE_NAME = "block";
-
-	int insert(BlockPo blockPo);
-
-	int delete(BlockPo blockPo);
-
-	BlockBo selectOne(BlockPo blockPo);
-
-	int update(BlockPo blockPo);
 
 	static String checkInsert(BlockPo blockPo) {
 		if (blockPo.getBlock() == null) {

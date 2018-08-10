@@ -46,7 +46,10 @@ public class FileUserController {
 		try {
 			OwnPo[] ownPos = new OwnPo[multipartFiles.length];
 			for (int i = 0; i < multipartFiles.length; i++) {
-				File file = new File(mycloudConfiguration.getTmpPath() + File.separator + UUID.randomUUID().toString());
+				File file = new File(mycloudConfiguration.getMycloudTmpPath() + File.separator + UUID.randomUUID().toString());
+				if (file.getParentFile() != null && !file.getParentFile().exists()) {
+					file.getParentFile().mkdirs();
+				}
 				multipartFiles[i].transferTo(file);
 
 				ownPos[i] = new OwnPo();
@@ -83,7 +86,7 @@ public class FileUserController {
 //		}
 //		try {
 //			for (MultipartFile multipartFile : multipartFiles) {
-//				File file = new File(mycloudConfiguration.getTmpPath() + File.separator + UUID.randomUUID().toString());
+//				File file = new File(mycloudConfiguration.getMycloudPath() + File.separator + UUID.randomUUID().toString());
 //				multipartFile.transferTo(file);
 //				ownPo.setFileName(multipartFile.getName());
 //				fileService.addUploadFileTask(userPo, ownPo, file, multipartFile.getContentType());

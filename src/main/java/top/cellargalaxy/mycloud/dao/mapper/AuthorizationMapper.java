@@ -1,6 +1,7 @@
 package top.cellargalaxy.mycloud.dao.mapper;
 
 import org.apache.ibatis.annotations.*;
+import top.cellargalaxy.mycloud.dao.AbstractDao;
 import top.cellargalaxy.mycloud.dao.AuthorizationDao;
 import top.cellargalaxy.mycloud.dao.PermissionDao;
 import top.cellargalaxy.mycloud.dao.UserDao;
@@ -19,7 +20,7 @@ import static org.apache.ibatis.type.JdbcType.TIMESTAMP;
  * @time 2018/7/12
  */
 @Mapper
-public interface AuthorizationMapper {
+public interface AuthorizationMapper extends AbstractDao<AuthorizationPo, AuthorizationBo, AuthorizationQuery> {
 	@Options(useGeneratedKeys = true, keyProperty = "authorizationId")
 	@InsertProvider(type = AuthorizationProvider.class, method = "insert")
 	int insert(AuthorizationPo authorizationPo);
@@ -46,10 +47,14 @@ public interface AuthorizationMapper {
 	@SelectProvider(type = AuthorizationProvider.class, method = "selectCount")
 	int selectCount(AuthorizationQuery authorizationQuery);
 
+	@ResultMap(value = "authorizationResult")
+	@SelectProvider(type = AuthorizationProvider.class, method = "selectAll")
+	List<AuthorizationBo> selectAll();
+
 	@UpdateProvider(type = AuthorizationProvider.class, method = "update")
 	int update(AuthorizationPo authorizationPo);
 
-	class AuthorizationProvider {
+	class AuthorizationProvider /*implements AbstractProvider<AuthorizationPo, AuthorizationQuery>*/ {
 		private String tableName = AuthorizationDao.TABLE_NAME;
 		private String authorizationId = tableName + ".authorization_id=#{authorizationId}";
 		private String userId = tableName + ".user_id=#{userId}";
@@ -123,6 +128,25 @@ public interface AuthorizationMapper {
 			wheres.add(tableName + ".user_id=" + UserDao.TABLE_NAME + ".user_id");
 			wheres.add(tableName + ".permission_id=" + PermissionDao.TABLE_NAME + ".permission_id");
 			wheresAll(authorizationQuery, wheres);
+
+			StringBuilder sql = SqlUtil.createSelectSql(selects, tableName + "," + UserDao.TABLE_NAME + "," + PermissionDao.TABLE_NAME, wheres);
+			String string = sql.toString();
+			return string;
+		}
+
+		public String selectAll() {
+			List<String> selects = new LinkedList<>();
+			selects.add(tableName + ".authorization_id");
+			selects.add(tableName + ".user_id");
+			selects.add(tableName + ".permission_id");
+			selects.add(tableName + ".create_time");
+			selects.add(tableName + ".update_time");
+			selects.add(UserDao.TABLE_NAME + ".username");
+			selects.add(PermissionDao.TABLE_NAME + ".permission_mark");
+
+			Set<String> wheres = new HashSet<>();
+			wheres.add(tableName + ".user_id=" + UserDao.TABLE_NAME + ".user_id");
+			wheres.add(tableName + ".permission_id=" + PermissionDao.TABLE_NAME + ".permission_id");
 
 			StringBuilder sql = SqlUtil.createSelectSql(selects, tableName + "," + UserDao.TABLE_NAME + "," + PermissionDao.TABLE_NAME, wheres);
 			String string = sql.toString();

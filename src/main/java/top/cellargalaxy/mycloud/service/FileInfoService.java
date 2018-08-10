@@ -17,15 +17,17 @@ import java.util.List;
 public interface FileInfoService {
 	String addFileInfo(FileInfoPo fileInfoPo, File file) throws IOException;
 
-	String removeFileInfo(FileInfoQuery fileInfoQuery);
+	String removeFileInfo(FileInfoPo fileInfoPo);
 
-	FileInfoBo getFileInfo(FileInfoQuery fileInfoQuery);
+	FileInfoBo getFileInfo(FileInfoPo fileInfoPo);
 
 	FileInfoBo getFileInfo(UserPo userPo, FileInfoQuery fileInfoQuery);
 
 	int getFileInfoCount(FileInfoQuery fileInfoQuery);
 
 	List<FileInfoBo> listFileInfo(FileInfoQuery fileInfoQuery);
+
+	List<FileInfoBo> listAllFileInfo();
 
 	FileInfoOwnVo getFileInfoOwn(FileInfoQuery fileInfoQuery);
 

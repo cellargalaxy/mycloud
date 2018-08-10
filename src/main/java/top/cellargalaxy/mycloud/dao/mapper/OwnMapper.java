@@ -1,6 +1,7 @@
 package top.cellargalaxy.mycloud.dao.mapper;
 
 import org.apache.ibatis.annotations.*;
+import top.cellargalaxy.mycloud.dao.AbstractDao;
 import top.cellargalaxy.mycloud.dao.FileInfoDao;
 import top.cellargalaxy.mycloud.dao.OwnDao;
 import top.cellargalaxy.mycloud.dao.UserDao;
@@ -20,12 +21,12 @@ import static org.apache.ibatis.type.JdbcType.TIMESTAMP;
  * @time 2018/7/16
  */
 @Mapper
-public interface OwnMapper {
-	@InsertProvider(type = OwnProviderUtil.class, method = "insert")
+public interface OwnMapper extends AbstractDao<OwnPo, OwnBo, OwnQuery> {
+	@InsertProvider(type = OwnProvider.class, method = "insert")
 	@Options(useGeneratedKeys = true, keyProperty = "ownId")
 	int insert(OwnPo ownPo);
 
-	@DeleteProvider(type = OwnProviderUtil.class, method = "delete")
+	@DeleteProvider(type = OwnProvider.class, method = "delete")
 	int delete(OwnPo ownPo);
 
 	@Results(id = "ownResult", value = {
@@ -42,23 +43,27 @@ public interface OwnMapper {
 			@Result(property = "fileLength", column = "file_length"),
 			@Result(property = "contentType", column = "content_type")
 	})
-	@SelectProvider(type = OwnProviderUtil.class, method = "selectOne")
+	@SelectProvider(type = OwnProvider.class, method = "selectOne")
 	OwnBo selectOne(OwnPo ownPo);
 
 	@ResultMap(value = "ownResult")
-	@SelectProvider(type = OwnProviderUtil.class, method = "selectSome")
+	@SelectProvider(type = OwnProvider.class, method = "selectSome")
 	List<OwnBo> selectSome(OwnQuery ownQuery);
 
-	@SelectProvider(type = OwnProviderUtil.class, method = "selectCount")
+	@SelectProvider(type = OwnProvider.class, method = "selectCount")
 	int selectCount(OwnQuery ownQuery);
 
-	@SelectProvider(type = OwnProviderUtil.class, method = "selectSort")
+	@ResultMap(value = "ownResult")
+	@SelectProvider(type = OwnProvider.class, method = "selectAll")
+	List<OwnBo> selectAll();
+
+	@SelectProvider(type = OwnProvider.class, method = "selectSort")
 	List<String> selectSort(OwnQuery ownQuery);
 
-	@UpdateProvider(type = OwnProviderUtil.class, method = "update")
+	@UpdateProvider(type = OwnProvider.class, method = "update")
 	int update(OwnPo ownPo);
 
-	class OwnProviderUtil {
+	class OwnProvider /*implements AbstractProvider<OwnPo, OwnQuery>*/ {
 		private String tableName = OwnDao.TABLE_NAME;
 		private String ownId = tableName + ".own_id=#{ownId}";
 		private String userId = tableName + ".user_id=#{userId}";
@@ -146,6 +151,30 @@ public interface OwnMapper {
 			wheres.add(tableName + ".user_id=" + UserDao.TABLE_NAME + ".user_id");
 			wheres.add(tableName + ".file_id=" + FileInfoDao.TABLE_NAME + ".file_id");
 			wheresAll(ownQuery, wheres);
+
+			StringBuilder sql = SqlUtil.createSelectSql(selects, tableName + "," + UserDao.TABLE_NAME + "," + FileInfoDao.TABLE_NAME, wheres);
+			String string = sql.toString();
+			return string;
+		}
+
+		public String selectAll() {
+			List<String> selects = new LinkedList<>();
+			selects.add(tableName + ".own_id");
+			selects.add(tableName + ".user_id");
+			selects.add(tableName + ".file_id");
+			selects.add(tableName + ".file_name");
+			selects.add(tableName + ".sort");
+			selects.add(tableName + ".description");
+			selects.add(tableName + ".create_time");
+			selects.add(tableName + ".update_time");
+			selects.add(UserDao.TABLE_NAME + ".username");
+			selects.add(FileInfoDao.TABLE_NAME + ".md5");
+			selects.add(FileInfoDao.TABLE_NAME + ".file_length");
+			selects.add(FileInfoDao.TABLE_NAME + ".content_type");
+
+			Set<String> wheres = new HashSet<>();
+			wheres.add(tableName + ".user_id=" + UserDao.TABLE_NAME + ".user_id");
+			wheres.add(tableName + ".file_id=" + FileInfoDao.TABLE_NAME + ".file_id");
 
 			StringBuilder sql = SqlUtil.createSelectSql(selects, tableName + "," + UserDao.TABLE_NAME + "," + FileInfoDao.TABLE_NAME, wheres);
 			String string = sql.toString();

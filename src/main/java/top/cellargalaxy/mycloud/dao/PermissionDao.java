@@ -11,20 +11,8 @@ import java.util.List;
  * @author cellargalaxy
  * @time 2018/7/12
  */
-public interface PermissionDao {
+public interface PermissionDao extends AbstractDao<PermissionPo, PermissionBo, PermissionQuery> {
 	String TABLE_NAME = "permission";
-
-	int insert(PermissionPo permissionPo);
-
-	int delete(PermissionPo permissionPo);
-
-	PermissionBo selectOne(PermissionPo permissionPo);
-
-	List<PermissionBo> selectSome(PermissionQuery permissionQuery);
-
-	int selectCount(PermissionQuery permissionQuery);
-
-	int update(PermissionPo permissionPo);
 
 	static String checkInsert(PermissionPo permissionPo) {
 		if (permissionPo.getPermissionId() < 1) {

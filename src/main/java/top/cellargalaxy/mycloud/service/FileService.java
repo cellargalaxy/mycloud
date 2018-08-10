@@ -1,14 +1,12 @@
 package top.cellargalaxy.mycloud.service;
 
-import top.cellargalaxy.mycloud.model.bo.schedule.Task;
+import top.cellargalaxy.mycloud.model.po.FileInfoPo;
 import top.cellargalaxy.mycloud.model.po.OwnPo;
 import top.cellargalaxy.mycloud.model.po.UserPo;
-import top.cellargalaxy.mycloud.model.query.FileInfoQuery;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.List;
 
 /**
  * @author cellargalaxy
@@ -19,15 +17,9 @@ public interface FileService {
 
 	String uploadFile(UserPo userPo, OwnPo ownPo, File file, String contentType) throws IOException;
 
-	void addDownloadFileTask(UserPo userPo, FileInfoQuery fileInfoQuery, File file);
+	void addDownloadFileTask(UserPo userPo, FileInfoPo fileInfoPo, File file);
 
-	String downloadFile(FileInfoQuery fileInfoQuery, OutputStream outputStream) throws IOException;
+	String downloadFile(FileInfoPo fileInfoPo, OutputStream outputStream) throws IOException;
 
-	Task removeTask(String taskId);
-
-	List<Task> listWaitTask(int off, int len);
-
-	Task getCurrentTask();
-
-	List<Task> listFinishTask(int off, int len);
+	String restoreAllFileToLocal(UserPo userPo);
 }

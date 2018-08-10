@@ -15,9 +15,9 @@ import java.util.List;
 public interface UserService {
 	String addUser(UserPo userPo);
 
-	String removeUser(UserQuery userQuery);
+	String removeUser(UserPo userPo);
 
-	UserBo getUser(UserQuery userQuery);
+	UserBo getUser(UserPo userPo);
 
 	UserBo getUser(UserPo userPo, UserQuery userQuery);
 

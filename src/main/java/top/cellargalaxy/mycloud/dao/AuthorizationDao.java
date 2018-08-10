@@ -10,20 +10,8 @@ import java.util.List;
  * @author cellargalaxy
  * @time 2018/7/12
  */
-public interface AuthorizationDao {
+public interface AuthorizationDao extends AbstractDao<AuthorizationPo,AuthorizationBo,AuthorizationQuery> {
 	String TABLE_NAME = "authorization";
-
-	int insert(AuthorizationPo authorizationPo);
-
-	int delete(AuthorizationPo authorizationPo);
-
-	AuthorizationBo selectOne(AuthorizationPo authorizationPo);
-
-	List<AuthorizationBo> selectSome(AuthorizationQuery authorizationQuery);
-
-	int selectCount(AuthorizationQuery authorizationQuery);
-
-	int update(AuthorizationPo authorizationPo);
 
 	static String checkInsert(AuthorizationPo authorizationPo) {
 		if (authorizationPo.getUserId() < 1) {

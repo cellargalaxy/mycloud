@@ -1,6 +1,7 @@
 package top.cellargalaxy.mycloud.dao.mapper;
 
 import org.apache.ibatis.annotations.*;
+import top.cellargalaxy.mycloud.dao.AbstractDao;
 import top.cellargalaxy.mycloud.dao.PermissionDao;
 import top.cellargalaxy.mycloud.model.bo.PermissionBo;
 import top.cellargalaxy.mycloud.model.po.PermissionPo;
@@ -19,11 +20,11 @@ import static org.apache.ibatis.type.JdbcType.TIMESTAMP;
  * @time 2018/7/12
  */
 @Mapper
-public interface PermissionMapper {
-	@InsertProvider(type = PermissionProviderUtil.class, method = "insert")
+public interface PermissionMapper extends AbstractDao<PermissionPo, PermissionBo, PermissionQuery> {
+	@InsertProvider(type = PermissionProvider.class, method = "insert")
 	int insert(PermissionPo permissionPo);
 
-	@DeleteProvider(type = PermissionProviderUtil.class, method = "delete")
+	@DeleteProvider(type = PermissionProvider.class, method = "delete")
 	int delete(PermissionPo permissionPo);
 
 	@Results(id = "permissionResult", value = {
@@ -32,20 +33,24 @@ public interface PermissionMapper {
 			@Result(property = "createTime", column = "create_time", javaType = Date.class, jdbcType = TIMESTAMP),
 			@Result(property = "updateTime", column = "update_time", javaType = Date.class, jdbcType = TIMESTAMP)
 	})
-	@SelectProvider(type = PermissionProviderUtil.class, method = "selectOne")
+	@SelectProvider(type = PermissionProvider.class, method = "selectOne")
 	PermissionBo selectOne(PermissionPo permissionPo);
 
 	@ResultMap(value = "permissionResult")
-	@SelectProvider(type = PermissionProviderUtil.class, method = "selectSome")
+	@SelectProvider(type = PermissionProvider.class, method = "selectSome")
 	List<PermissionBo> selectSome(PermissionQuery permissionQuery);
 
-	@SelectProvider(type = PermissionProviderUtil.class, method = "selectCount")
+	@SelectProvider(type = PermissionProvider.class, method = "selectCount")
 	int selectCount(PermissionQuery permissionQuery);
 
-	@UpdateProvider(type = PermissionProviderUtil.class, method = "update")
+	@ResultMap(value = "permissionResult")
+	@SelectProvider(type = PermissionProvider.class, method = "selectAll")
+	List<PermissionBo> selectAll();
+
+	@UpdateProvider(type = PermissionProvider.class, method = "update")
 	int update(PermissionPo permissionPo);
 
-	class PermissionProviderUtil {
+	class PermissionProvider /*implements AbstractProvider<PermissionPo, PermissionQuery>*/ {
 		private String tableName = PermissionDao.TABLE_NAME;
 		private String permissionId = tableName + ".permission_id=#{permissionId}";
 		private String permissionMark = tableName + ".permission_mark like CONCAT(CONCAT('%', #{permissionMark}),'%')";
@@ -78,6 +83,10 @@ public interface PermissionMapper {
 
 		public String selectCount(PermissionQuery permissionQuery) {
 			return ProviderUtil.selectCount(tableName, permissionQuery, this::wheresAll).append(" limit #{off},#{len}").toString();
+		}
+
+		public String selectAll() {
+			return ProviderUtil.selectAll(tableName).toString();
 		}
 
 		public String update(PermissionPo permissionPo) {

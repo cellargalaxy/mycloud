@@ -3,8 +3,11 @@ package top.cellargalaxy.mycloud.exception;
 import top.cellargalaxy.mycloud.model.vo.ExceptionInfoVo;
 import top.cellargalaxy.mycloud.util.ExceptionUtil;
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.LinkedList;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.PriorityBlockingQueue;
 
 /**
  * @author cellargalaxy
@@ -12,7 +15,7 @@ import java.util.LinkedList;
  */
 public class GlobalException {
 	public static final int MAX_EXCEPTION_INFO_SIZE = 100;
-	private static final LinkedList<ExceptionInfoVo> EXCEPTION_INFO_VOS = new LinkedList<>();
+	private static final LinkedBlockingQueue<ExceptionInfoVo> EXCEPTION_INFO_VOS=new LinkedBlockingQueue <>(MAX_EXCEPTION_INFO_SIZE);
 
 	static {
 		add(new RuntimeException("测试异常"));
@@ -28,17 +31,19 @@ public class GlobalException {
 
 	public static final synchronized void add(Exception exception, int status, String massage) {
 		ExceptionInfoVo exceptionInfoVo = new ExceptionInfoVo(exception, ExceptionUtil.printException(exception), status, massage, new Date());
-		if (EXCEPTION_INFO_VOS.size() >= MAX_EXCEPTION_INFO_SIZE) {
-			EXCEPTION_INFO_VOS.removeLast();
+		try {
+			EXCEPTION_INFO_VOS.add(exceptionInfoVo);
+		}catch (Exception e){
+			EXCEPTION_INFO_VOS.poll();
+			EXCEPTION_INFO_VOS.offer(exceptionInfoVo);
 		}
-		EXCEPTION_INFO_VOS.addFirst(exceptionInfoVo);
 	}
 
 	public static final synchronized void clear() {
 		EXCEPTION_INFO_VOS.clear();
 	}
 
-	public static final LinkedList<ExceptionInfoVo> get() {
+	public static final Collection<ExceptionInfoVo> get() {
 		return EXCEPTION_INFO_VOS;
 	}
 }

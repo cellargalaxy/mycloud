@@ -13,9 +13,9 @@ import java.util.List;
 public interface AuthorizationService {
 	String addAuthorization(AuthorizationPo authorizationPo);
 
-	String removeAuthorization(AuthorizationQuery authorizationQuery);
+	String removeAuthorization(AuthorizationPo authorizationPo);
 
-	AuthorizationBo getAuthorization(AuthorizationQuery authorizationQuery);
+	AuthorizationBo getAuthorization(AuthorizationPo authorizationPo);
 
 	int getAuthorizationCount(AuthorizationQuery authorizationQuery);
 

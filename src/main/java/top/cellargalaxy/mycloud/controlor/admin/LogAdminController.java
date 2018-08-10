@@ -6,8 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import top.cellargalaxy.mycloud.model.vo.Vo;
-import top.cellargalaxy.mycloud.service.LogService;
-import top.cellargalaxy.mycloud.service.impl.LogServiceImpl;
+import top.cellargalaxy.mycloud.service.ExceptionLogService;
+import top.cellargalaxy.mycloud.service.impl.ExceptionLogServiceImpl;
 
 /**
  * @author cellargalaxy
@@ -18,26 +18,26 @@ import top.cellargalaxy.mycloud.service.impl.LogServiceImpl;
 @RequestMapping(LogAdminController.URL)
 public class LogAdminController {
 	public static final String URL = "/admin/log";
-	private Logger logger = LoggerFactory.getLogger(LogServiceImpl.class);
+	private Logger logger = LoggerFactory.getLogger(ExceptionLogServiceImpl.class);
 	@Autowired
-	private LogService logService;
+	private ExceptionLogService exceptionLogService;
 
 	@PostMapping("/clearExceptionInfo")
 	public Vo clearExceptionInfo() {
 		logger.info("clearExceptionInfo");
-		return new Vo(null, logService.clearExceptionInfo());
+		return new Vo(null, exceptionLogService.clearExceptionInfo());
 	}
 
 	@GetMapping("/getExceptionInfoCount")
 	public Vo getExceptionInfoCount() {
 		logger.info("getExceptionInfoCount");
-		return new Vo(null, logService.getExceptionInfoCount());
+		return new Vo(null, exceptionLogService.getExceptionInfoCount());
 	}
 
 	@GetMapping("/listExceptionInfo")
 	public Vo listExceptionInfo() {
 		logger.info("listExceptionInfo");
-		return new Vo(null, logService.listExceptionInfo());
+		return new Vo(null, exceptionLogService.listExceptionInfo());
 	}
 
 

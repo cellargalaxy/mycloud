@@ -52,66 +52,67 @@ public class FileInfoServiceImpl implements FileInfoService {
 	@Override
 	public String addFileInfo(FileInfoPo fileInfoPo, File file) throws IOException {
 		logger.info("addFileInfo, fileInfoPo:{}, file:{}", fileInfoPo, file);
-		String string = checkAddFileInfo(fileInfoPo);
-		if (string != null) {
-			file.delete();
-			return string;
-		}
-		int i = fileInfoDao.insert(fileInfoPo);
-		if (i == 0) {
-			file.delete();
-			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-			return "文件信息空新增";
-		}
+		try {
+			String string = checkAddFileInfo(fileInfoPo);
+			if (string != null) {
+				return string;
+			}
+			int i = fileInfoDao.insert(fileInfoPo);
+			if (i == 0) {
+				TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+				return "文件信息空新增";
+			}
 
-		//写数据块
-		int[] blockIds;
-		try (FileBlocks fileBlocks = new FileBlocks(file, mycloudConfiguration.getBlobLength())) {
-			blockIds = new int[fileBlocks.getBlockCount()];
-			int blockIndex = 0;
-			byte[] block;
-			while ((block = fileBlocks.next()) != null) {
-				BlockPo blockPo = new BlockPo();
-				blockPo.setBlock(block);
-				string = blockService.addBlock(blockPo);
+			//写数据块
+			int[] blockIds;
+			try (FileBlocks fileBlocks = new FileBlocks(file, mycloudConfiguration.getBlobLength())) {
+				blockIds = new int[fileBlocks.getBlockCount()];
+				int blockIndex = 0;
+				byte[] block;
+				while ((block = fileBlocks.next()) != null) {
+					BlockPo blockPo = new BlockPo();
+					blockPo.setBlock(block);
+					string = blockService.addBlock(blockPo);
+					if (string != null) {
+						TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+						return string;
+					}
+					blockIds[blockIndex] = blockPo.getBlockId();
+					blockIndex++;
+				}
+			}
+
+			//添加文件信息与数据块对应数据
+			for (int blockId : blockIds) {
+				FileBlockPo fileBlockPo = new FileBlockPo();
+				fileBlockPo.setFileId(fileInfoPo.getFileId());
+				fileBlockPo.setBlockId(blockId);
+				string = fileBlockService.addFileBlock(fileBlockPo);
 				if (string != null) {
-					file.delete();
 					TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
 					return string;
 				}
-				blockIds[blockIndex] = blockPo.getBlockId();
-				blockIndex++;
 			}
-		}
 
-		//添加文件信息与数据块对应数据
-		for (int blockId : blockIds) {
-			FileBlockPo fileBlockPo = new FileBlockPo();
-			fileBlockPo.setFileId(fileInfoPo.getFileId());
-			fileBlockPo.setBlockId(blockId);
-			string = fileBlockService.addFileBlock(fileBlockPo);
-			if (string != null) {
+			return null;
+		} finally {
+			if (file != null) {
 				file.delete();
-				TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-				return string;
 			}
 		}
-
-		file.delete();
-		return null;
 	}
 
 	@Override
-	public String removeFileInfo(FileInfoQuery fileInfoQuery) {
-		logger.info("removeFileInfo:{}", fileInfoQuery);
-		int i = fileInfoDao.delete(fileInfoQuery);
+	public String removeFileInfo(FileInfoPo fileInfoPo) {
+		logger.info("removeFileInfo:{}", fileInfoPo);
+		int i = fileInfoDao.delete(fileInfoPo);
 		if (i == 0) {
 			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
 			return "文件信息空删除";
 		}
 
 		FileBlockQuery fileBlockQuery = new FileBlockQuery();
-		fileBlockQuery.setFileId(fileInfoQuery.getFileId());
+		fileBlockQuery.setFileId(fileInfoPo.getFileId());
 		List<FileBlockBo> fileBlockBos = fileBlockService.listFileBlock(fileBlockQuery);
 		String string = fileBlockService.removeFileBlock(fileBlockQuery);
 		if (string != null) {
@@ -129,7 +130,7 @@ public class FileInfoServiceImpl implements FileInfoService {
 		}
 
 		OwnQuery ownQuery = new OwnQuery();
-		ownQuery.setFileId(fileInfoQuery.getFileId());
+		ownQuery.setFileId(fileInfoPo.getFileId());
 		List<OwnBo> ownBos = ownService.listOwn(ownQuery);
 		for (OwnBo ownBo : ownBos) {
 			string = ownService.removeOwn(ownBo);
@@ -142,9 +143,9 @@ public class FileInfoServiceImpl implements FileInfoService {
 	}
 
 	@Override
-	public FileInfoBo getFileInfo(FileInfoQuery fileInfoQuery) {
-		logger.info("getFileInfo:{}", fileInfoQuery);
-		return setUrl(fileInfoDao.selectOne(fileInfoQuery));
+	public FileInfoBo getFileInfo(FileInfoPo fileInfoPo) {
+		logger.info("getFileInfo:{}", fileInfoPo);
+		return setUrl(fileInfoDao.selectOne(fileInfoPo));
 	}
 
 	@Override
@@ -162,6 +163,12 @@ public class FileInfoServiceImpl implements FileInfoService {
 	public List<FileInfoBo> listFileInfo(FileInfoQuery fileInfoQuery) {
 		logger.info("listFileInfo:{}", fileInfoQuery);
 		return setUrl(fileInfoDao.selectSome(fileInfoQuery));
+	}
+
+	@Override
+	public List<FileInfoBo> listAllFileInfo() {
+		logger.info("listAllFileInfo");
+		return setUrl(fileInfoDao.selectAll());
 	}
 
 	@Override
@@ -225,7 +232,7 @@ public class FileInfoServiceImpl implements FileInfoService {
 		}
 		FileInfoBo fileInfoBo = fileInfoDao.selectOne(fileInfoPo);
 		if (fileInfoBo != null) {
-			return "文件已存在,MD5:"+fileInfoBo.getMd5();
+			return "文件已存在,MD5:" + fileInfoBo.getMd5();
 		}
 		return null;
 	}

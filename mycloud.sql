@@ -1,13 +1,13 @@
--- MySQL dump 10.13  Distrib 5.7.22, for Linux (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.11, for Win64 (x86_64)
 --
 -- Host: 127.0.0.1    Database: mycloud
 -- ------------------------------------------------------
--- Server version	5.7.22-0ubuntu0.16.04.1-log
+-- Server version	8.0.11
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
+ SET NAMES utf8 ;
 /*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
 /*!40103 SET TIME_ZONE='+00:00' */;
 /*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
@@ -21,7 +21,7 @@
 
 DROP TABLE IF EXISTS `authorization`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `authorization` (
   `authorization_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '授权id',
   `user_id` int(11) NOT NULL COMMENT '用户id',
@@ -31,7 +31,7 @@ CREATE TABLE `authorization` (
   PRIMARY KEY (`authorization_id`),
   KEY `idx_user_id` (`user_id`),
   KEY `idx_permission_id` (`permission_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -50,12 +50,12 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `block`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `block` (
   `block_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '数据块id',
   `block` blob NOT NULL COMMENT '数据块',
   PRIMARY KEY (`block_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -73,12 +73,12 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `file_block`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `file_block` (
   `file_id` int(11) NOT NULL COMMENT '文件id',
   `block_id` int(11) NOT NULL COMMENT '数据块id',
   PRIMARY KEY (`file_id`,`block_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -96,7 +96,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `file_info`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `file_info` (
   `file_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '文件id',
   `md5` char(32) NOT NULL COMMENT 'MD5',
@@ -106,7 +106,7 @@ CREATE TABLE `file_info` (
   PRIMARY KEY (`file_id`),
   UNIQUE KEY `uk_md5` (`md5`) USING BTREE,
   KEY `idx_content_type` (`content_type`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -124,7 +124,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `own`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `own` (
   `own_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '所属id',
   `user_id` int(11) NOT NULL COMMENT '用户id',
@@ -137,7 +137,7 @@ CREATE TABLE `own` (
   PRIMARY KEY (`own_id`),
   KEY `idx_user_id_sort` (`user_id`,`sort`),
   KEY `idx_file_id` (`file_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -155,14 +155,14 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `permission`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `permission` (
   `permission_id` int(11) NOT NULL COMMENT '权限id',
   `permission_mark` varchar(256) NOT NULL COMMENT '权限备注',
   `create_time` datetime NOT NULL COMMENT '创建时间',
   `update_time` datetime NOT NULL COMMENT '更新时间',
   PRIMARY KEY (`permission_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -176,12 +176,44 @@ INSERT INTO `permission` VALUES (1,'ROOT','2018-08-01 00:00:00','2018-08-01 00:0
 UNLOCK TABLES;
 
 --
+-- Table structure for table `task`
+--
+
+DROP TABLE IF EXISTS `task`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `task` (
+  `task_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '任务id',
+  `user_id` int(11) NOT NULL COMMENT '账号id',
+  `create_time` datetime NOT NULL COMMENT '任务创建时间',
+  `task_sort` varchar(32) NOT NULL COMMENT '任务分类',
+  `status` tinyint(4) NOT NULL COMMENT '任务状态',
+  `massage` varchar(256) DEFAULT NULL COMMENT '任务结果',
+  `finish_time` datetime DEFAULT NULL COMMENT '任务完成时间',
+  `task_detail` varchar(1024) DEFAULT NULL COMMENT '任务细节',
+  PRIMARY KEY (`task_id`),
+  KEY `idx_user_id` (`user_id`),
+  KEY `idx_task_sort` (`task_sort`),
+  KEY `idx_status` (`status`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `task`
+--
+
+LOCK TABLES `task` WRITE;
+/*!40000 ALTER TABLE `task` DISABLE KEYS */;
+/*!40000 ALTER TABLE `task` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `user`
 --
 
 DROP TABLE IF EXISTS `user`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `user` (
   `user_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '用户id',
   `username` varchar(32) NOT NULL COMMENT '用户名',
@@ -190,7 +222,7 @@ CREATE TABLE `user` (
   `update_time` datetime NOT NULL COMMENT '更新时间',
   PRIMARY KEY (`user_id`),
   UNIQUE KEY `uk_username` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -212,4 +244,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-08-01 00:00:00
+-- Dump completed on 2018-08-10 10:12:54

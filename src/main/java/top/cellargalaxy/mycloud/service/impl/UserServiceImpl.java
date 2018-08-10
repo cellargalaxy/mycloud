@@ -61,9 +61,9 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public String removeUser(UserQuery userQuery) {
-		logger.info("removeUser:{}", userQuery);
-		int i = userDao.delete(userQuery);
+	public String removeUser(UserPo userPo) {
+		logger.info("removeUser:{}", userPo);
+		int i = userDao.delete(userPo);
 		if (i == 0) {
 			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
 			return "用户空删除";
@@ -72,9 +72,9 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public UserBo getUser(UserQuery userQuery) {
-		logger.info("getUser:{}", userQuery);
-		return userDao.selectOne(userQuery);
+	public UserBo getUser(UserPo userPo) {
+		logger.info("getUser:{}", userPo);
+		return userDao.selectOne(userPo);
 	}
 
 	@Override

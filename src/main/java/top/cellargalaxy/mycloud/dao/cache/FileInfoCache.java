@@ -53,6 +53,10 @@ public class FileInfoCache implements FileInfoDao {
 		return fileInfoMapper.selectCount(fileInfoQuery);
 	}
 
+	public List<FileInfoBo> selectAll() {
+		return fileInfoMapper.selectAll();
+	}
+
 	@Cacheable(key = "'selectContentType'")
 	public List<String> selectContentType() {
 		return fileInfoMapper.selectContentType();

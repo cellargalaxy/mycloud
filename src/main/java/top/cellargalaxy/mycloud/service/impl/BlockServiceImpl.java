@@ -23,7 +23,7 @@ public class BlockServiceImpl implements BlockService {
 
 	@Override
 	public String addBlock(BlockPo blockPo) {
-		logger.info("addBlock:{}", blockPo);
+		logger.debug("addBlock:{}", blockPo);
 		String string = checkAddBlock(blockPo);
 		if (string != null) {
 			return string;
@@ -38,7 +38,7 @@ public class BlockServiceImpl implements BlockService {
 
 	@Override
 	public String removeBlock(BlockPo blockPo) {
-		logger.info("removeBlock:{}", blockPo);
+		logger.debug("removeBlock:{}", blockPo);
 		int i = blockDao.delete(blockPo);
 		if (i == 0) {
 			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
@@ -55,7 +55,7 @@ public class BlockServiceImpl implements BlockService {
 
 	@Override
 	public String changeBlock(BlockPo blockPo) {
-		logger.info("changeBlock:{}", blockPo);
+		logger.debug("changeBlock:{}", blockPo);
 		String string = checkChangeBlock(blockPo);
 		if (string != null) {
 			return string;
@@ -70,13 +70,13 @@ public class BlockServiceImpl implements BlockService {
 
 	@Override
 	public String checkAddBlock(BlockPo blockPo) {
-		logger.info("checkAddBlock:{}", blockPo);
+		logger.debug("checkAddBlock:{}", blockPo);
 		return BlockDao.checkInsert(blockPo);
 	}
 
 	@Override
 	public String checkChangeBlock(BlockPo blockPo) {
-		logger.info("checkChangeBlock:{}", blockPo);
+		logger.debug("checkChangeBlock:{}", blockPo);
 		return BlockDao.checkUpdate(blockPo);
 	}
 }

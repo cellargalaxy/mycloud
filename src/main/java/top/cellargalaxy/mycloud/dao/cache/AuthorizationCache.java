@@ -51,6 +51,10 @@ public class AuthorizationCache implements AuthorizationDao {
 		return authorizationMapper.selectCount(authorizationQuery);
 	}
 
+	public List<AuthorizationBo> selectAll() {
+		return authorizationMapper.selectAll();
+	}
+
 	@Caching(evict = {
 			@CacheEvict(key = "#p0.authorizationId"),
 	})
