@@ -30,6 +30,8 @@ public class MycloudConfiguration {
 	private String mycloudDrivePath;
 	@Value("${taskDetailLength:1024}")
 	private int taskDetailLength;
+	@Value("${toLocal:false}")
+	private boolean restoreFileToLocal;
 
 	public int getBlobLength() {
 		return blobLength;
@@ -110,5 +112,13 @@ public class MycloudConfiguration {
 
 	public void setTaskDetailLength(int taskDetailLength) {
 		this.taskDetailLength = taskDetailLength;
+	}
+
+	public boolean isRestoreFileToLocal() {
+		return restoreFileToLocal;
+	}
+
+	public void setRestoreFileToLocal(boolean restoreFileToLocal) {
+		this.restoreFileToLocal = restoreFileToLocal;
 	}
 }

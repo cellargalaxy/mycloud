@@ -35,4 +35,19 @@ public class FileAdminController {
 		logger.info("restoreAllFileToLocal:{}", string);
 		return new Vo(string, null);
 	}
+
+	@PostMapping("/startRestoreAllFileToLocal")
+	public Vo startRestoreAllFileToLocal(HttpServletRequest request) {
+		UserPo userPo = (UserPo) request.getAttribute(UserUserController.USER_KEY);
+		String string = fileService.startRestoreAllFileToLocal(userPo);
+		logger.info("startRestoreAllFileToLocal:{}", string);
+		return new Vo(string, null);
+	}
+
+	@PostMapping("/stopRestoreAllFileToLocal")
+	public Vo stopRestoreAllFileToLocal() {
+		String string = fileService.stopRestoreAllFileToLocal();
+		logger.info("stopRestoreAllFileToLocal:{}", string);
+		return new Vo(string, null);
+	}
 }

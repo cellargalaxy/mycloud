@@ -14,6 +14,7 @@ import top.cellargalaxy.mycloud.service.FileInfoService;
 import top.cellargalaxy.mycloud.service.FileService;
 import top.cellargalaxy.mycloud.service.TaskService;
 import top.cellargalaxy.mycloud.service.schedule.DownloadFileTaskExecute;
+import top.cellargalaxy.mycloud.service.schedule.RestoreFileToLocalSchedule;
 import top.cellargalaxy.mycloud.service.schedule.UploadFileTaskExecute;
 
 import java.io.File;
@@ -37,6 +38,8 @@ public class FileServiceImpl implements FileService {
 	private FileInfoService fileInfoService;
 	@Autowired
 	private MycloudConfiguration mycloudConfiguration;
+	@Autowired
+	private RestoreFileToLocalSchedule restoreFileToLocalSchedule;
 
 	@Override
 	public void addUploadFileTask(UserPo userPo, OwnPo ownPo, File file, String contentType) {
@@ -64,6 +67,20 @@ public class FileServiceImpl implements FileService {
 		for (FileInfoBo fileInfoBo : fileInfoBos) {
 			addDownloadFileTask(userPo, fileInfoBo, new File(mycloudConfiguration.getMycloudDrivePath() + File.separator + fileInfoBo.getMd5()));
 		}
+		return null;
+	}
+
+	@Override
+	public String startRestoreAllFileToLocal(UserPo userPo) {
+		restoreFileToLocalSchedule.setUserPo(userPo);
+		mycloudConfiguration.setRestoreFileToLocal(true);
+		return null;
+	}
+
+	@Override
+	public String stopRestoreAllFileToLocal() {
+		mycloudConfiguration.setRestoreFileToLocal(false);
+		restoreFileToLocalSchedule.setUserPo(null);
 		return null;
 	}
 }

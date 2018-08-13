@@ -22,4 +22,8 @@ public interface FileService {
 	String downloadFile(FileInfoPo fileInfoPo, OutputStream outputStream) throws IOException;
 
 	String restoreAllFileToLocal(UserPo userPo);
+
+	String startRestoreAllFileToLocal(UserPo userPo);
+
+	String stopRestoreAllFileToLocal();
 }
