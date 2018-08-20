@@ -7,23 +7,28 @@ import top.cellargalaxy.mycloud.model.po.UserPo;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.Map;
 
 /**
  * @author cellargalaxy
  * @time 2018/7/17
  */
 public interface FileService {
-	void addUploadFileTask(UserPo userPo, OwnPo ownPo, File file, String contentType);
+	Map getDriveInfo();
 
-	String uploadFile(UserPo userPo, OwnPo ownPo, File file, String contentType) throws IOException;
-
-	void addDownloadFileTask(UserPo userPo, FileInfoPo fileInfoPo, File file);
+	String uploadFile(OwnPo ownPo, File file, String contentType) throws IOException;
 
 	String downloadFile(FileInfoPo fileInfoPo, OutputStream outputStream) throws IOException;
+
+	String removeFile(FileInfoPo fileInfoPo);
+
+	File createLocalFile(FileInfoPo fileInfoPo);
 
 	String restoreAllFileToLocal(UserPo userPo);
 
 	String startRestoreAllFileToLocal(UserPo userPo);
 
 	String stopRestoreAllFileToLocal();
+
+	String deleteAllFileFromLocal();
 }

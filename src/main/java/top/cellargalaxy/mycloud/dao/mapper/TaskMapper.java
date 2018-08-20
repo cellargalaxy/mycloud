@@ -63,7 +63,7 @@ public interface TaskMapper extends AbstractDao<TaskPo, TaskBo, TaskQuery> {
 		private String taskSort = tableName + ".task_sort=#{taskSort}";
 		private String status = tableName + ".status=#{status}";
 		private String massage = tableName + ".massage=#{massage}";
-		private String finishTime = tableName + ".finish_time=#{finishTime}";
+		private String finishTime = tableName + ".finish_time>=#{finishTime}";
 		private String taskDetail = tableName + ".task_detail=#{taskDetail}";
 
 		public String insert(TaskPo taskPo) {

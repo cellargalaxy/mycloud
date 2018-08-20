@@ -6,8 +6,6 @@ import top.cellargalaxy.mycloud.model.po.UserPo;
 import top.cellargalaxy.mycloud.model.query.FileInfoQuery;
 import top.cellargalaxy.mycloud.model.vo.FileInfoOwnVo;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.List;
 
 /**
@@ -15,7 +13,7 @@ import java.util.List;
  * @time 2018/7/20
  */
 public interface FileInfoService {
-	String addFileInfo(FileInfoPo fileInfoPo, File file) throws IOException;
+	String addFileInfo(FileInfoPo fileInfoPo);
 
 	String removeFileInfo(FileInfoPo fileInfoPo);
 

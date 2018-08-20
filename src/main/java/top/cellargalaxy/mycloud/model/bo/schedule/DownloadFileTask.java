@@ -4,6 +4,7 @@ import top.cellargalaxy.mycloud.model.po.FileInfoPo;
 import top.cellargalaxy.mycloud.model.po.UserPo;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.Objects;
 
 /**
@@ -16,7 +17,7 @@ public class DownloadFileTask extends Task {
 	private final File file;
 
 	public DownloadFileTask(UserPo userPo, FileInfoPo fileInfoPo, File file) {
-		super(userPo, TASK_SORT,"查询下载文件: " + fileInfoPo + ", 写入文件到: " + file);
+		super(userPo, TASK_SORT);
 		this.fileInfoPo = fileInfoPo;
 		this.file = file;
 	}
@@ -52,5 +53,13 @@ public class DownloadFileTask extends Task {
 	public int hashCode() {
 
 		return Objects.hash(super.hashCode(), fileInfoPo, file);
+	}
+
+	@Override
+	public String serializationTaskDetail() {
+		return serialization2Json(new HashMap<String, Object>() {{
+			put("fileInfoPo", fileInfoPo);
+			put("file", file);
+		}});
 	}
 }

@@ -4,6 +4,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.web.firewall.RequestRejectedException;
+import org.springframework.validation.BindException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -32,6 +34,12 @@ public class ExceptionController {
 	public Vo httpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException e) {
 		logger.info("httpRequestMethodNotSupportedException:http方法不支持:{}", e.getMessage());
 		return new Vo("http方法不支持:" + e.getMessage(), null);
+	}
+
+	@ExceptionHandler(BindException.class)
+	public Vo bindException(BindException e) {
+		logger.info("bindException:非法参数:{}", e.getMessage());
+		return new Vo("非法参数:" + e.getMessage(), null);
 	}
 
 	@ExceptionHandler(MultipartException.class)

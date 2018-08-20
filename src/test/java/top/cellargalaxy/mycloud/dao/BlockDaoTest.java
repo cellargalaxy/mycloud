@@ -14,8 +14,8 @@ public class BlockDaoTest {
 
 	@Test
 	public void insert() {
-		byte[] bytes={0,1,2,3,4,5,6,7,8,9};
-		BlockPo blockPo=new BlockPo();
+		byte[] bytes = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+		BlockPo blockPo = new BlockPo();
 		blockPo.setBlock(bytes);
 		System.out.println(blockDao.insert(blockPo));
 	}

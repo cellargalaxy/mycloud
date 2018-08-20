@@ -45,7 +45,7 @@ public class OwnDaoTest {
 		OwnQuery ownQuery = new OwnQuery();
 		ownQuery.setUserId(1);
 		System.out.println();
-		for (OwnBo ownBo: ownDao.selectSome(ownQuery)) {
+		for (OwnBo ownBo : ownDao.selectSome(ownQuery)) {
 			System.out.println(ownBo);
 		}
 		System.out.println();

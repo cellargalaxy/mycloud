@@ -58,7 +58,7 @@ public class FileUserController {
 				ownPos[i].setSort(ownPo.getSort());
 				ownPos[i].setDescription(ownPo.getDescription());
 
-				String string = fileService.uploadFile(userPo, ownPos[i], file, multipartFiles[i].getContentType());
+				String string = fileService.uploadFile(ownPos[i], file, multipartFiles[i].getContentType());
 				if (string != null) {
 					logger.info("uploadFile, result:{}, userPo:{}", string, userPo);
 					return new Vo(string, null);
@@ -76,29 +76,4 @@ public class FileUserController {
 			return new Vo("文件上传异常", e);
 		}
 	}
-
-//	@PostMapping("/uploadFile")
-//	public Vo uploadFile(HttpServletRequest request, OwnPo ownPo, @RequestParam("files") MultipartFile[] multipartFiles) {
-//		UserPo userPo = (UserPo) request.getAttribute(UserUserController.USER_KEY);
-//		if (multipartFiles == null || multipartFiles.length == 0) {
-//			logger.info("uploadFile, result:无上传文件, userPo:{}", userPo);
-//			return new Vo("无上传文件", null);
-//		}
-//		try {
-//			for (MultipartFile multipartFile : multipartFiles) {
-//				File file = new File(mycloudConfiguration.getMycloudPath() + File.separator + UUID.randomUUID().toString());
-//				multipartFile.transferTo(file);
-//				ownPo.setFileName(multipartFile.getName());
-//				fileService.addUploadFileTask(userPo, ownPo, file, multipartFile.getContentType());
-//			}
-//			logger.info("uploadFile, result:文件上传成功, userPo:{}", userPo);
-//			return new Vo(null, null);
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//			GlobalException.add(e);
-//			logger.info("uploadFile, result:文件上传异常, userPo:{}", userPo);
-//			return new Vo("文件上传异常", e);
-//		}
-//	}
-
 }

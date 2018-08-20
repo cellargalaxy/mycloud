@@ -13,17 +13,20 @@ public class TaskExecuteFactory {
 	private UploadFileTaskExecute uploadFileTaskExecute;
 	@Autowired
 	private DownloadFileTaskExecute downloadFileTaskExecute;
+	@Autowired
+	private RemoveFileTaskExecute removeFileTaskExecute;
 
 	public TaskExecute getTaskExecute(String taskSort) {
 		if (taskSort == null) {
 			return null;
-		}
-		if (taskSort.equals(UploadFileTaskExecute.TASK_SORT)) {
+		} else if (taskSort.equals(UploadFileTaskExecute.TASK_SORT)) {
 			return uploadFileTaskExecute;
-		}
-		if (taskSort.equals(DownloadFileTaskExecute.TASK_SORT)) {
+		} else if (taskSort.equals(DownloadFileTaskExecute.TASK_SORT)) {
 			return downloadFileTaskExecute;
+		} else if (taskSort.equals(RemoveFileTaskExecute.TASK_SORT)) {
+			return removeFileTaskExecute;
+		} else {
+			return null;
 		}
-		return null;
 	}
 }

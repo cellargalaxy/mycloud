@@ -5,22 +5,28 @@ import org.springframework.stereotype.Service;
 import top.cellargalaxy.mycloud.configuration.MycloudConfiguration;
 import top.cellargalaxy.mycloud.model.bo.FileInfoBo;
 import top.cellargalaxy.mycloud.model.bo.schedule.DownloadFileTask;
-import top.cellargalaxy.mycloud.model.bo.schedule.UploadFileTask;
 import top.cellargalaxy.mycloud.model.po.FileInfoPo;
 import top.cellargalaxy.mycloud.model.po.OwnPo;
 import top.cellargalaxy.mycloud.model.po.UserPo;
-import top.cellargalaxy.mycloud.model.query.FileInfoQuery;
 import top.cellargalaxy.mycloud.service.FileInfoService;
 import top.cellargalaxy.mycloud.service.FileService;
 import top.cellargalaxy.mycloud.service.TaskService;
 import top.cellargalaxy.mycloud.service.schedule.DownloadFileTaskExecute;
-import top.cellargalaxy.mycloud.service.schedule.RestoreFileToLocalSchedule;
+import top.cellargalaxy.mycloud.service.schedule.RemoveFileTaskExecute;
+import top.cellargalaxy.mycloud.service.schedule.TaskSynchronizeSchedule;
 import top.cellargalaxy.mycloud.service.schedule.UploadFileTaskExecute;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.lang.management.ManagementFactory;
+
+import com.sun.management.OperatingSystemMXBean;
+
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author cellargalaxy
@@ -29,31 +35,42 @@ import java.util.List;
 @Service
 public class FileServiceImpl implements FileService {
 	@Autowired
+	private FileInfoService fileInfoService;
+	@Autowired
 	private TaskService taskService;
+	@Autowired
+	private TaskSynchronizeSchedule taskSynchronizeSchedule;
 	@Autowired
 	private UploadFileTaskExecute uploadFileTaskExecute;
 	@Autowired
 	private DownloadFileTaskExecute downloadFileTaskExecute;
 	@Autowired
-	private FileInfoService fileInfoService;
+	private RemoveFileTaskExecute removeFileTaskExecute;
 	@Autowired
 	private MycloudConfiguration mycloudConfiguration;
-	@Autowired
-	private RestoreFileToLocalSchedule restoreFileToLocalSchedule;
 
 	@Override
-	public void addUploadFileTask(UserPo userPo, OwnPo ownPo, File file, String contentType) {
-		taskService.addWaitTask(new UploadFileTask(userPo, ownPo, file, contentType));
+	public Map getDriveInfo() {
+		File file = new File(mycloudConfiguration.getMycloudDrivePath());
+		OperatingSystemMXBean operatingSystemMXBean = (OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean();
+		return new HashMap() {{
+			put("freeSpace", file.getFreeSpace());
+			put("totalSpace", file.getTotalSpace());
+			put("usableSpace", file.getUsableSpace());
+			put("systemCpuLoad", operatingSystemMXBean.getSystemCpuLoad());
+			put("processCpuTime", operatingSystemMXBean.getProcessCpuTime());
+			put("processCpuLoad", operatingSystemMXBean.getProcessCpuLoad());
+			put("freeSwapSpaceSize", operatingSystemMXBean.getFreeSwapSpaceSize());
+			put("totalSwapSpaceSize", operatingSystemMXBean.getTotalSwapSpaceSize());
+			put("freePhysicalMemorySize", operatingSystemMXBean.getFreePhysicalMemorySize());
+			put("totalPhysicalMemorySize", operatingSystemMXBean.getTotalPhysicalMemorySize());
+			put("committedVirtualMemorySize", operatingSystemMXBean.getCommittedVirtualMemorySize());
+		}};
 	}
 
 	@Override
-	public String uploadFile(UserPo userPo, OwnPo ownPo, File file, String contentType) throws IOException {
+	public String uploadFile(OwnPo ownPo, File file, String contentType) throws IOException {
 		return uploadFileTaskExecute.uploadFile(ownPo, file, contentType);
-	}
-
-	@Override
-	public void addDownloadFileTask(UserPo userPo, FileInfoPo fileInfoPo, File file) {
-		taskService.addWaitTask(new DownloadFileTask(userPo, fileInfoPo, file));
 	}
 
 	@Override
@@ -62,17 +79,30 @@ public class FileServiceImpl implements FileService {
 	}
 
 	@Override
+	public String removeFile(FileInfoPo fileInfoPo) {
+		return removeFileTaskExecute.removeFileInfo(fileInfoPo);
+	}
+
+	@Override
+	public File createLocalFile(FileInfoPo fileInfoPo) {
+		return new File(mycloudConfiguration.getMycloudDrivePath() + File.separator + fileInfoPo.getMd5());
+	}
+
+	@Override
 	public String restoreAllFileToLocal(UserPo userPo) {
 		List<FileInfoBo> fileInfoBos = fileInfoService.listAllFileInfo();
 		for (FileInfoBo fileInfoBo : fileInfoBos) {
-			addDownloadFileTask(userPo, fileInfoBo, new File(mycloudConfiguration.getMycloudDrivePath() + File.separator + fileInfoBo.getMd5()));
+			taskService.addWaitTask(new DownloadFileTask(userPo, fileInfoBo, createLocalFile(fileInfoBo)));
 		}
 		return null;
 	}
 
 	@Override
 	public String startRestoreAllFileToLocal(UserPo userPo) {
-		restoreFileToLocalSchedule.setUserPo(userPo);
+		Date date = new Date();
+		restoreAllFileToLocal(userPo);
+		taskSynchronizeSchedule.setUserPo(userPo);
+		taskSynchronizeSchedule.setFlushTime(date);
 		mycloudConfiguration.setRestoreFileToLocal(true);
 		return null;
 	}
@@ -80,7 +110,25 @@ public class FileServiceImpl implements FileService {
 	@Override
 	public String stopRestoreAllFileToLocal() {
 		mycloudConfiguration.setRestoreFileToLocal(false);
-		restoreFileToLocalSchedule.setUserPo(null);
+		taskSynchronizeSchedule.setUserPo(null);
 		return null;
 	}
+
+	@Override
+	public String deleteAllFileFromLocal() {
+		File folder = new File(mycloudConfiguration.getMycloudDrivePath());
+		File[] files = folder.listFiles();
+		if (files != null) {
+			for (File file : files) {
+				if (!file.delete()) {
+					return "删除失败:" + file;
+				}
+			}
+		}
+		if (!folder.delete()) {
+			return "删除失败:" + folder;
+		}
+		return null;
+	}
+
 }

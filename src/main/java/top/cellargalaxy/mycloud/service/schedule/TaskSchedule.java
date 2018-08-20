@@ -7,6 +7,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import top.cellargalaxy.mycloud.exception.GlobalException;
 import top.cellargalaxy.mycloud.model.bo.schedule.Task;
+import top.cellargalaxy.mycloud.model.po.TaskPo;
 import top.cellargalaxy.mycloud.service.TaskService;
 
 import java.util.Collection;
@@ -29,27 +30,25 @@ public class TaskSchedule {
 	@Autowired
 	private TaskExecuteFactory taskExecuteFactory;
 
-	@Scheduled(fixedDelay = 1000 * 5)
+	@Scheduled(fixedDelay = 1000 * 1)
 	public void schedule() {
-		while (true) {
-			String string = null;
-			try (Task task = getWaitTask()) {
-				currentTask = task;
-				TaskExecute taskExecute = taskExecuteFactory.getTaskExecute(currentTask.getTaskSort());
-				string = taskExecute.executeTask(currentTask);
-			} catch (Exception e) {
-				logger.info("schedule:执行任务异常:{}", e.getMessage());
-				GlobalException.add(e, 0, "未知异常");
-				addFinishTask(currentTask, Task.FAIL_STATUS);
-			}
-			if (string != null) {
-				currentTask.setMassage(string);
-				addFinishTask(currentTask, Task.FAIL_STATUS);
-			} else {
-				addFinishTask(currentTask, Task.SUCCESS_STATUS);
-			}
-			currentTask = null;
+		String string = null;
+		try (Task task = getWaitTask()) {
+			currentTask = task;
+			TaskExecute taskExecute = taskExecuteFactory.getTaskExecute(currentTask.getTaskSort());
+			string = taskExecute.executeTask(currentTask);
+		} catch (Exception e) {
+			logger.info("schedule:执行任务异常:{}", e.getMessage());
+			GlobalException.add(e, 0, "未知异常");
+			addFinishTask(currentTask, Task.FAIL_STATUS);
 		}
+		if (string != null) {
+			currentTask.setMassage(string);
+			addFinishTask(currentTask, Task.FAIL_STATUS);
+		} else {
+			addFinishTask(currentTask, Task.SUCCESS_STATUS);
+		}
+		currentTask = null;
 	}
 
 	public String addWaitTask(Task task) {
@@ -58,10 +57,6 @@ public class TaskSchedule {
 			return "任务不得为空";
 		}
 		task.setStatus(Task.WAIT_STATUS);
-		String string = taskService.addTask(task);
-		if (string != null) {
-			return string;
-		}
 		waitTasks.add(task);
 		return null;
 	}
@@ -74,8 +69,7 @@ public class TaskSchedule {
 			Task task = iterator.next();
 			if (task.getTaskId() == taskId) {
 				iterator.remove();
-				task.setStatus(Task.CANCEL_STATUS);
-				taskService.changeTask(task);
+				addFinishTask(task, TaskPo.CANCEL_STATUS);
 				return task;
 			}
 		}
@@ -91,11 +85,8 @@ public class TaskSchedule {
 
 	private void addFinishTask(Task task, int status) {
 		logger.info("addFinishTask:{}, status:{}", task, status);
-		if (task == null) {
-			return;
-		}
 		task.setStatus(status);
-		taskService.changeTask(task);
+		taskService.addTask(task);
 	}
 
 	//并发问题

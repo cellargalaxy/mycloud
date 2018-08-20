@@ -10,7 +10,7 @@ import java.util.List;
  * @author cellargalaxy
  * @time 2018/7/12
  */
-public interface AuthorizationDao extends AbstractDao<AuthorizationPo,AuthorizationBo,AuthorizationQuery> {
+public interface AuthorizationDao extends AbstractDao<AuthorizationPo, AuthorizationBo, AuthorizationQuery> {
 	String TABLE_NAME = "authorization";
 
 	static String checkInsert(AuthorizationPo authorizationPo) {

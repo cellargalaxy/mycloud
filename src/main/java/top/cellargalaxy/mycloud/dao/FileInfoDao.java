@@ -11,7 +11,7 @@ import java.util.List;
  * @author cellargalaxy
  * @time 2018/7/3
  */
-public interface FileInfoDao extends AbstractDao<FileInfoPo,FileInfoBo,FileInfoQuery> {
+public interface FileInfoDao extends AbstractDao<FileInfoPo, FileInfoBo, FileInfoQuery> {
 	String TABLE_NAME = "file_info";
 
 	List<String> selectContentType();

@@ -6,7 +6,7 @@ import top.cellargalaxy.mycloud.model.po.BlockPo;
  * @author cellargalaxy
  * @time 2018/7/5
  */
-public class BlockQuery extends BlockPo implements PageQuery{
+public class BlockQuery extends BlockPo implements PageQuery {
 	@Override
 	public int getPageSize() {
 		return 0;

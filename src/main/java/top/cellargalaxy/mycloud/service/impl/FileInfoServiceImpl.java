@@ -43,63 +43,21 @@ public class FileInfoServiceImpl implements FileInfoService {
 	@Autowired
 	private OwnService ownService;
 	@Autowired
-	private FileBlockService fileBlockService;
-	@Autowired
-	private BlockService blockService;
-	@Autowired
 	private MycloudConfiguration mycloudConfiguration;
 
 	@Override
-	public String addFileInfo(FileInfoPo fileInfoPo, File file) throws IOException {
-		logger.info("addFileInfo, fileInfoPo:{}, file:{}", fileInfoPo, file);
-		try {
-			String string = checkAddFileInfo(fileInfoPo);
-			if (string != null) {
-				return string;
-			}
-			int i = fileInfoDao.insert(fileInfoPo);
-			if (i == 0) {
-				TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-				return "文件信息空新增";
-			}
-
-			//写数据块
-			int[] blockIds;
-			try (FileBlocks fileBlocks = new FileBlocks(file, mycloudConfiguration.getBlobLength())) {
-				blockIds = new int[fileBlocks.getBlockCount()];
-				int blockIndex = 0;
-				byte[] block;
-				while ((block = fileBlocks.next()) != null) {
-					BlockPo blockPo = new BlockPo();
-					blockPo.setBlock(block);
-					string = blockService.addBlock(blockPo);
-					if (string != null) {
-						TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-						return string;
-					}
-					blockIds[blockIndex] = blockPo.getBlockId();
-					blockIndex++;
-				}
-			}
-
-			//添加文件信息与数据块对应数据
-			for (int blockId : blockIds) {
-				FileBlockPo fileBlockPo = new FileBlockPo();
-				fileBlockPo.setFileId(fileInfoPo.getFileId());
-				fileBlockPo.setBlockId(blockId);
-				string = fileBlockService.addFileBlock(fileBlockPo);
-				if (string != null) {
-					TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-					return string;
-				}
-			}
-
-			return null;
-		} finally {
-			if (file != null) {
-				file.delete();
-			}
+	public String addFileInfo(FileInfoPo fileInfoPo) {
+		logger.info("addFileInfo, fileInfoPo:{}", fileInfoPo);
+		String string = checkAddFileInfo(fileInfoPo);
+		if (string != null) {
+			return string;
 		}
+		int i = fileInfoDao.insert(fileInfoPo);
+		if (i == 0) {
+			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+			return "文件信息空新增";
+		}
+		return null;
 	}
 
 	@Override
@@ -109,35 +67,6 @@ public class FileInfoServiceImpl implements FileInfoService {
 		if (i == 0) {
 			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
 			return "文件信息空删除";
-		}
-
-		FileBlockQuery fileBlockQuery = new FileBlockQuery();
-		fileBlockQuery.setFileId(fileInfoPo.getFileId());
-		List<FileBlockBo> fileBlockBos = fileBlockService.listFileBlock(fileBlockQuery);
-		String string = fileBlockService.removeFileBlock(fileBlockQuery);
-		if (string != null) {
-			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-			return string;
-		}
-
-		for (FileBlockBo fileBlockBo : fileBlockBos) {
-			BlockQuery blockQuery = new BlockQuery();
-			blockQuery.setBlockId(fileBlockBo.getBlockId());
-			string = blockService.removeBlock(blockQuery);
-			if (string != null) {
-				return string;
-			}
-		}
-
-		OwnQuery ownQuery = new OwnQuery();
-		ownQuery.setFileId(fileInfoPo.getFileId());
-		List<OwnBo> ownBos = ownService.listOwn(ownQuery);
-		for (OwnBo ownBo : ownBos) {
-			string = ownService.removeOwn(ownBo);
-			if (string != null) {
-				TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-				return string;
-			}
 		}
 		return null;
 	}

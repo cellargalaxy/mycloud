@@ -12,6 +12,7 @@ import java.util.Set;
  */
 public class SqlUtil {
 	public static final int MAX_PAGE_SIZE = 100;
+
 	public static final void initPageQuery(PageQuery pageQuery) {
 		int off = (pageQuery.getPage() - 1) * pageQuery.getPageSize();//[0,00)
 		int len = pageQuery.getPageSize();//[0,MAX_PAGE_SIZE]

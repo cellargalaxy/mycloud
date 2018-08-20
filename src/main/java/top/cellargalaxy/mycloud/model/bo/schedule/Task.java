@@ -1,14 +1,14 @@
 package top.cellargalaxy.mycloud.model.bo.schedule;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import top.cellargalaxy.mycloud.exception.GlobalException;
 import top.cellargalaxy.mycloud.model.po.TaskPo;
 import top.cellargalaxy.mycloud.model.po.UserPo;
 import top.cellargalaxy.mycloud.model.vo.TaskVo;
 
 import java.io.Closeable;
-import java.io.IOException;
-import java.io.Serializable;
 import java.util.Date;
-import java.util.UUID;
 
 /**
  * @author cellargalaxy
@@ -16,15 +16,27 @@ import java.util.UUID;
  */
 public abstract class Task extends TaskVo implements Closeable {
 	private static final long serialVersionUID = 7062287537522505438L;
+	protected static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 	private final UserPo userPo;
 
-	public Task(UserPo userPo, String taskSort, String taskDetail) {
-		super(taskDetail);
+	public Task(UserPo userPo, String taskSort) {
 		this.userPo = userPo;
 		setUserId(userPo.getUserId());
 		setTaskSort(taskSort);
 		setCreateTime(new Date());
 		setStatus(TaskPo.WAIT_STATUS);
+	}
+
+	public abstract String serializationTaskDetail();
+
+	protected static final String serialization2Json(Object object) {
+		try {
+			return OBJECT_MAPPER.writeValueAsString(object);
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+			GlobalException.add(e);
+		}
+		return "{}";
 	}
 
 	public UserPo getUserPo() {
@@ -34,5 +46,6 @@ public abstract class Task extends TaskVo implements Closeable {
 	@Override
 	public void close() {
 		setFinishTime(new Date());
+		setTaskDetail(serializationTaskDetail());
 	}
 }

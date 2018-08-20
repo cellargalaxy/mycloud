@@ -13,25 +13,25 @@ import java.io.File;
 @Component
 public class MycloudConfiguration {
 	@Value("${blobLength:65535}")
-	private int blobLength;
+	private volatile int blobLength;
 	@Value("${secret:mycloud}")
-	private String secret;
+	private volatile String secret;
 	@Value("${webUploadMaxFileSize:1024MB}")
-	private String webUploadMaxFileSize;
+	private volatile String webUploadMaxFileSize;
 	@Value("${webUploadMaxRequestSize:1024MB}")
-	private String webUploadMaxRequestSize;
+	private volatile String webUploadMaxRequestSize;
 	@Value("${domain:http://drive.cellargalaxy.top}")
-	private String domain;
+	private volatile String domain;
 	@Value("${mycloudPath:}")
-	private String mycloudPath;
+	private volatile String mycloudPath;
 	@Value("${mycloudTmpPath:}")
-	private String mycloudTmpPath;
+	private volatile String mycloudTmpPath;
 	@Value("${mycloudDrivePath:}")
-	private String mycloudDrivePath;
+	private volatile String mycloudDrivePath;
 	@Value("${taskDetailLength:1024}")
-	private int taskDetailLength;
-	@Value("${toLocal:false}")
-	private boolean restoreFileToLocal;
+	private volatile int taskDetailLength;
+	@Value("${restoreFileToLocal:false}")
+	private volatile boolean restoreFileToLocal;
 
 	public int getBlobLength() {
 		return blobLength;

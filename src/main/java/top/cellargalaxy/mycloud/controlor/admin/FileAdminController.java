@@ -4,10 +4,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import top.cellargalaxy.mycloud.controlor.user.UserUserController;
+import top.cellargalaxy.mycloud.model.po.FileInfoPo;
+import top.cellargalaxy.mycloud.model.po.TaskPo;
 import top.cellargalaxy.mycloud.model.po.UserPo;
 import top.cellargalaxy.mycloud.model.vo.Vo;
 import top.cellargalaxy.mycloud.service.FileService;
@@ -27,6 +30,19 @@ public class FileAdminController {
 
 	@Autowired
 	private FileService fileService;
+
+	@GetMapping("/getDriveInfo")
+	public Vo getDriveInfo() {
+		logger.info("restoreAllFileToLocal");
+		return new Vo(null, fileService.getDriveInfo());
+	}
+
+	@PostMapping("/removeFile")
+	public Vo removeFileTask(FileInfoPo fileInfoPo) {
+		String string = fileService.removeFile(fileInfoPo);
+		logger.info("removeFile:{}", string);
+		return new Vo(string, null);
+	}
 
 	@PostMapping("/restoreAllFileToLocal")
 	public Vo restoreAllFileToLocal(HttpServletRequest request) {
@@ -48,6 +64,13 @@ public class FileAdminController {
 	public Vo stopRestoreAllFileToLocal() {
 		String string = fileService.stopRestoreAllFileToLocal();
 		logger.info("stopRestoreAllFileToLocal:{}", string);
+		return new Vo(string, null);
+	}
+
+	@PostMapping("/deleteAllFileFromLocal")
+	public Vo deleteAllFileFromLocal() {
+		String string = fileService.deleteAllFileFromLocal();
+		logger.info("deleteAllFileFromLocal:{}", string);
 		return new Vo(string, null);
 	}
 }

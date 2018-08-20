@@ -39,9 +39,6 @@ public class DownloadFileTaskExecute implements TaskExecute<DownloadFileTask> {
 		logger.info("executeTask:{}", downloadFileTask);
 		FileInfoPo fileInfoPo = downloadFileTask.getFileInfoPo();
 		File file = downloadFileTask.getFile();
-		if (file.getParentFile() != null && !file.getParentFile().exists()) {
-			file.getParentFile().mkdirs();
-		}
 
 		return downloadFile(fileInfoPo, file);
 	}
@@ -52,6 +49,9 @@ public class DownloadFileTaskExecute implements TaskExecute<DownloadFileTask> {
 			return string;
 		}
 
+		if (file.getParentFile() != null && !file.getParentFile().exists()) {
+			file.getParentFile().mkdirs();
+		}
 		if (file.exists() && fileInfoPo.getMd5().equals(StreamUtil.md5Hex(file))) {
 			return null;
 		}

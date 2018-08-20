@@ -47,7 +47,7 @@ public interface BlockMapper extends AbstractDao<BlockPo, BlockBo, BlockQuery> {
 	@UpdateProvider(type = BlockProvider.class, method = "update")
 	int update(BlockPo blockPo);
 
-	class BlockProvider /*implements AbstractProvider<BlockPo,BlockQuery>*/{
+	class BlockProvider /*implements AbstractProvider<BlockPo,BlockQuery>*/ {
 		private String tableName = BlockDao.TABLE_NAME;
 		private String blockId = tableName + ".block_id=#{blockId}";
 		private String block = tableName + ".block=#{block}";

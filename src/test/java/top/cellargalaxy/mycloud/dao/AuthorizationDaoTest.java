@@ -24,14 +24,14 @@ public class AuthorizationDaoTest {
 
 	@Test
 	public void delete() {
-		AuthorizationQuery authorizationQuery=new AuthorizationQuery();
+		AuthorizationQuery authorizationQuery = new AuthorizationQuery();
 		authorizationQuery.setAuthorizationId(3);
 		assertEquals(1, authorizationDao.delete(authorizationQuery));
 	}
 
 	@Test
 	public void selectOne() {
-		AuthorizationQuery authorizationQuery=new AuthorizationQuery();
+		AuthorizationQuery authorizationQuery = new AuthorizationQuery();
 		authorizationQuery.setAuthorizationId(1);
 		System.out.println();
 		System.out.println(authorizationDao.selectOne(authorizationQuery));
@@ -40,10 +40,10 @@ public class AuthorizationDaoTest {
 
 	@Test
 	public void selectSome() {
-		AuthorizationQuery authorizationQuery=new AuthorizationQuery();
+		AuthorizationQuery authorizationQuery = new AuthorizationQuery();
 		authorizationQuery.setUserId(1);
 		System.out.println();
-		for (AuthorizationBo authorizationBo: authorizationDao.selectSome(authorizationQuery)) {
+		for (AuthorizationBo authorizationBo : authorizationDao.selectSome(authorizationQuery)) {
 			System.out.println(authorizationBo);
 		}
 		System.out.println();
@@ -51,7 +51,7 @@ public class AuthorizationDaoTest {
 
 	@Test
 	public void update() {
-		AuthorizationPo authorizationPo=new AuthorizationPo();
+		AuthorizationPo authorizationPo = new AuthorizationPo();
 		authorizationPo.setAuthorizationId(1);
 		authorizationPo.setUserId(2);
 		assertEquals(1, authorizationDao.update(authorizationPo));

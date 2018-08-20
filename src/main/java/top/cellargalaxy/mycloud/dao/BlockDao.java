@@ -8,7 +8,7 @@ import top.cellargalaxy.mycloud.model.query.BlockQuery;
  * @author cellargalaxy
  * @time 2018/7/16
  */
-public interface BlockDao extends AbstractDao<BlockPo,BlockBo,BlockQuery> {
+public interface BlockDao extends AbstractDao<BlockPo, BlockBo, BlockQuery> {
 	String TABLE_NAME = "block";
 
 	static String checkInsert(BlockPo blockPo) {

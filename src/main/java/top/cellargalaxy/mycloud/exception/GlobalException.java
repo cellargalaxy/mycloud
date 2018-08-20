@@ -15,7 +15,7 @@ import java.util.concurrent.PriorityBlockingQueue;
  */
 public class GlobalException {
 	public static final int MAX_EXCEPTION_INFO_SIZE = 100;
-	private static final LinkedBlockingQueue<ExceptionInfoVo> EXCEPTION_INFO_VOS=new LinkedBlockingQueue <>(MAX_EXCEPTION_INFO_SIZE);
+	private static final LinkedBlockingQueue<ExceptionInfoVo> EXCEPTION_INFO_VOS = new LinkedBlockingQueue<>(MAX_EXCEPTION_INFO_SIZE);
 
 	static {
 		add(new RuntimeException("测试异常"));
@@ -33,7 +33,7 @@ public class GlobalException {
 		ExceptionInfoVo exceptionInfoVo = new ExceptionInfoVo(exception, ExceptionUtil.printException(exception), status, massage, new Date());
 		try {
 			EXCEPTION_INFO_VOS.add(exceptionInfoVo);
-		}catch (Exception e){
+		} catch (Exception e) {
 			EXCEPTION_INFO_VOS.poll();
 			EXCEPTION_INFO_VOS.offer(exceptionInfoVo);
 		}

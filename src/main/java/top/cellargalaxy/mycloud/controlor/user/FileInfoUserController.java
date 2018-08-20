@@ -31,6 +31,6 @@ public class FileInfoUserController {
 	public Vo getFileInfo(HttpServletRequest request, FileInfoQuery fileInfoQuery) {
 		UserPo userPo = (UserPo) request.getAttribute(UserUserController.USER_KEY);
 		logger.info("getFileInfo:{}", userPo);
-		return new Vo(null, fileInfoService.getFileInfo(userPo,fileInfoQuery));
+		return new Vo(null, fileInfoService.getFileInfo(userPo, fileInfoQuery));
 	}
 }

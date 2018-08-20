@@ -29,9 +29,8 @@ CREATE TABLE `authorization` (
   `create_time` datetime NOT NULL COMMENT '创建时间',
   `update_time` datetime NOT NULL COMMENT '更新时间',
   PRIMARY KEY (`authorization_id`),
-  KEY `idx_user_id` (`user_id`),
-  KEY `idx_permission_id` (`permission_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  UNIQUE KEY `uk_user_id_permission_id` (`user_id`,`permission_id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -55,7 +54,7 @@ CREATE TABLE `block` (
   `block_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '数据块id',
   `block` blob NOT NULL COMMENT '数据块',
   PRIMARY KEY (`block_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -78,7 +77,7 @@ CREATE TABLE `file_block` (
   `file_id` int(11) NOT NULL COMMENT '文件id',
   `block_id` int(11) NOT NULL COMMENT '数据块id',
   PRIMARY KEY (`file_id`,`block_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -106,7 +105,7 @@ CREATE TABLE `file_info` (
   PRIMARY KEY (`file_id`),
   UNIQUE KEY `uk_md5` (`md5`) USING BTREE,
   KEY `idx_content_type` (`content_type`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -137,7 +136,7 @@ CREATE TABLE `own` (
   PRIMARY KEY (`own_id`),
   KEY `idx_user_id_sort` (`user_id`,`sort`),
   KEY `idx_file_id` (`file_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -161,8 +160,9 @@ CREATE TABLE `permission` (
   `permission_mark` varchar(256) NOT NULL COMMENT '权限备注',
   `create_time` datetime NOT NULL COMMENT '创建时间',
   `update_time` datetime NOT NULL COMMENT '更新时间',
-  PRIMARY KEY (`permission_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  PRIMARY KEY (`permission_id`),
+  UNIQUE KEY `uk_permission_mark` (`permission_mark`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -222,7 +222,7 @@ CREATE TABLE `user` (
   `update_time` datetime NOT NULL COMMENT '更新时间',
   PRIMARY KEY (`user_id`),
   UNIQUE KEY `uk_username` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --

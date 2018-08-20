@@ -1,10 +1,19 @@
 package top.cellargalaxy.mycloud.service;
 
 import top.cellargalaxy.mycloud.model.bo.TaskBo;
+import top.cellargalaxy.mycloud.model.bo.schedule.DownloadFileTask;
+import top.cellargalaxy.mycloud.model.bo.schedule.RemoveFileTask;
 import top.cellargalaxy.mycloud.model.bo.schedule.Task;
+import top.cellargalaxy.mycloud.model.bo.schedule.UploadFileTask;
+import top.cellargalaxy.mycloud.model.po.FileInfoPo;
+import top.cellargalaxy.mycloud.model.po.OwnPo;
 import top.cellargalaxy.mycloud.model.po.TaskPo;
+import top.cellargalaxy.mycloud.model.po.UserPo;
 import top.cellargalaxy.mycloud.model.query.TaskQuery;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.Collection;
 import java.util.List;
 
