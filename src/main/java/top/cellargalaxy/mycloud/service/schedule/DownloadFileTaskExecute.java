@@ -44,7 +44,7 @@ public class DownloadFileTaskExecute implements TaskExecute<DownloadFileTask> {
 	}
 
 	public String downloadFile(FileInfoPo fileInfoPo, File file) throws IOException {
-		logger.info("downloadFile:{}, {}", fileInfoPo,file);
+		logger.info("downloadFile:{}, {}", fileInfoPo, file);
 		String string = getFileInfo(fileInfoPo);
 		if (string != null) {
 			return string;
