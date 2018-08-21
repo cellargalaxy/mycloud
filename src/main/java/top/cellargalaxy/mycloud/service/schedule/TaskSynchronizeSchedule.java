@@ -13,6 +13,7 @@ import top.cellargalaxy.mycloud.model.bo.schedule.RemoveFileTask;
 import top.cellargalaxy.mycloud.model.bo.schedule.UploadFileTask;
 import top.cellargalaxy.mycloud.model.po.FileInfoPo;
 import top.cellargalaxy.mycloud.model.po.OwnPo;
+import top.cellargalaxy.mycloud.model.po.TaskPo;
 import top.cellargalaxy.mycloud.model.po.UserPo;
 import top.cellargalaxy.mycloud.model.query.TaskQuery;
 import top.cellargalaxy.mycloud.service.FileInfoService;
@@ -47,6 +48,7 @@ public class TaskSynchronizeSchedule {
 		if (mycloudConfiguration.isRestoreFileToLocal()) {
 			final Date date = new Date();
 			final List<TaskBo> tasks = taskService.listTask(new TaskQuery() {{
+				setStatus(TaskPo.SUCCESS_STATUS);
 				setFinishTime(flushTime);
 			}});
 			flushTime = date;
