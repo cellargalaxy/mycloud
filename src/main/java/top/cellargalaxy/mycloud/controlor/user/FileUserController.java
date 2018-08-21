@@ -58,7 +58,7 @@ public class FileUserController {
 				ownPos[i].setSort(ownPo.getSort());
 				ownPos[i].setDescription(ownPo.getDescription());
 
-				String string = fileService.uploadFile(ownPos[i], file, multipartFiles[i].getContentType());
+				String string = fileService.executeUploadFileTask(userPo, ownPos[i], file, multipartFiles[i].getContentType());
 				if (string != null) {
 					logger.info("uploadFile, result:{}, userPo:{}", string, userPo);
 					return new Vo(string, null);

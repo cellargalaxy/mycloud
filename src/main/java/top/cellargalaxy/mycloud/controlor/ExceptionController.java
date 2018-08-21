@@ -14,6 +14,8 @@ import org.springframework.web.multipart.MultipartException;
 import top.cellargalaxy.mycloud.exception.GlobalException;
 import top.cellargalaxy.mycloud.model.vo.Vo;
 
+import java.io.IOException;
+
 /**
  * @author cellargalaxy
  * @time 2018/8/1
@@ -46,6 +48,15 @@ public class ExceptionController {
 	public Vo multipartException(MultipartException e) {
 		logger.info("multipartException:文件上传异常:{}", e.getMessage());
 		return new Vo("multipartException:文件上传异常:" + e.getMessage(), null);
+	}
+
+	@ExceptionHandler(IOException.class)
+	public Vo ioException(IOException e) {
+		logger.info("ioException:IO异常:{}", e.getMessage());
+		if (!e.toString().startsWith("org.apache.catalina.connector.ClientAbortException: java.io.IOException:")) {
+			GlobalException.add(e);
+		}
+		return new Vo("ioException:IO异常:" + e.getMessage(), null);
 	}
 
 	@ExceptionHandler(Exception.class)

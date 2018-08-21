@@ -189,7 +189,7 @@ CREATE TABLE `task` (
   `task_sort` varchar(32) NOT NULL COMMENT '任务分类',
   `status` tinyint(4) NOT NULL COMMENT '任务状态',
   `massage` varchar(256) DEFAULT NULL COMMENT '任务结果',
-  `finish_time` datetime DEFAULT NULL COMMENT '任务完成时间',
+  `finish_time` datetime NOT NULL COMMENT '任务完成时间',
   `task_detail` varchar(1024) DEFAULT NULL COMMENT '任务细节',
   PRIMARY KEY (`task_id`),
   KEY `idx_user_id` (`user_id`),

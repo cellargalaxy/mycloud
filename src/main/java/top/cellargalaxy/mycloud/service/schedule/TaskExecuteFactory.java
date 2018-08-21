@@ -15,16 +15,20 @@ public class TaskExecuteFactory {
 	private DownloadFileTaskExecute downloadFileTaskExecute;
 	@Autowired
 	private RemoveFileTaskExecute removeFileTaskExecute;
+	@Autowired
+	private SynchronizeTaskExecute synchronizeTaskExecute;
 
 	public TaskExecute getTaskExecute(String taskSort) {
 		if (taskSort == null) {
 			return null;
-		} else if (taskSort.equals(UploadFileTaskExecute.TASK_SORT)) {
+		} else if (UploadFileTaskExecute.TASK_SORT.equals(taskSort)) {
 			return uploadFileTaskExecute;
-		} else if (taskSort.equals(DownloadFileTaskExecute.TASK_SORT)) {
+		} else if (DownloadFileTaskExecute.TASK_SORT.equals(taskSort)) {
 			return downloadFileTaskExecute;
-		} else if (taskSort.equals(RemoveFileTaskExecute.TASK_SORT)) {
+		} else if (RemoveFileTaskExecute.TASK_SORT.equals(taskSort)) {
 			return removeFileTaskExecute;
+		} else if (SynchronizeTaskExecute.TASK_SORT.equals(taskSort)) {
+			return synchronizeTaskExecute;
 		} else {
 			return null;
 		}

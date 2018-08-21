@@ -25,8 +25,8 @@ import java.util.List;
  */
 @Service
 public class DownloadFileTaskExecute implements TaskExecute<DownloadFileTask> {
-	private Logger logger = LoggerFactory.getLogger(DownloadFileTaskExecute.class);
 	public static final String TASK_SORT = DownloadFileTask.TASK_SORT;
+	private Logger logger = LoggerFactory.getLogger(DownloadFileTaskExecute.class);
 	@Autowired
 	private FileBlockService fileBlockService;
 	@Autowired
@@ -44,6 +44,7 @@ public class DownloadFileTaskExecute implements TaskExecute<DownloadFileTask> {
 	}
 
 	public String downloadFile(FileInfoPo fileInfoPo, File file) throws IOException {
+		logger.info("downloadFile:{}, {}", fileInfoPo,file);
 		String string = getFileInfo(fileInfoPo);
 		if (string != null) {
 			return string;
@@ -56,12 +57,13 @@ public class DownloadFileTaskExecute implements TaskExecute<DownloadFileTask> {
 			return null;
 		}
 
-		try (OutputStream outputStream = new BufferedOutputStream(new FileOutputStream(file))) {
+		try (OutputStream outputStream = StreamUtil.getOutputStream(file)) {
 			return doDownloadFile(fileInfoPo, outputStream);
 		}
 	}
 
 	public String downloadFile(FileInfoPo fileInfoPo, OutputStream outputStream) throws IOException {
+		logger.info("downloadFile:{}", fileInfoPo);
 		String string = getFileInfo(fileInfoPo);
 		if (string != null) {
 			return string;
@@ -70,7 +72,12 @@ public class DownloadFileTaskExecute implements TaskExecute<DownloadFileTask> {
 	}
 
 	private String getFileInfo(FileInfoPo fileInfoPo) {
-		logger.info("downloadFile:{}", fileInfoPo);
+		if (fileInfoPo.getFileId() > 0
+				&& fileInfoPo.getMd5() != null
+				&& fileInfoPo.getContentType() != null
+				&& fileInfoPo.getFileLength() > 0) {
+			return null;
+		}
 		FileInfoBo fileInfoBo = fileInfoService.getFileInfo(fileInfoPo);
 		if (fileInfoBo == null) {
 			return "查找不到文件";
@@ -83,8 +90,6 @@ public class DownloadFileTaskExecute implements TaskExecute<DownloadFileTask> {
 	}
 
 	private String doDownloadFile(FileInfoPo fileInfoPo, OutputStream outputStream) throws IOException {
-		logger.info("downloadFile:{}", fileInfoPo);
-
 		FileBlockQuery fileBlockQuery = new FileBlockQuery();
 		fileBlockQuery.setFileId(fileInfoPo.getFileId());
 		List<FileBlockBo> fileBlockBos = fileBlockService.listFileBlock(fileBlockQuery);

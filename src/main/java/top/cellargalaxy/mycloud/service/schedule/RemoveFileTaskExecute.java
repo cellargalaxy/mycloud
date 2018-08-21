@@ -24,8 +24,8 @@ import java.util.List;
  */
 @Service
 public class RemoveFileTaskExecute implements TaskExecute<RemoveFileTask> {
-	private Logger logger = LoggerFactory.getLogger(RemoveFileTaskExecute.class);
 	public static final String TASK_SORT = RemoveFileTask.TASK_SORT;
+	private Logger logger = LoggerFactory.getLogger(RemoveFileTaskExecute.class);
 	@Autowired
 	private FileInfoService fileInfoService;
 	@Autowired
@@ -44,6 +44,7 @@ public class RemoveFileTaskExecute implements TaskExecute<RemoveFileTask> {
 	}
 
 	public String removeFileInfo(FileInfoPo fileInfoPo) {
+		logger.info("removeFileInfo:{}", fileInfoPo);
 		fileInfoService.removeFileInfo(fileInfoPo);
 
 		FileBlockQuery fileBlockQuery = new FileBlockQuery();

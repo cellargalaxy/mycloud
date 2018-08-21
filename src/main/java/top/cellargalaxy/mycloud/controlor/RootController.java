@@ -14,6 +14,7 @@ import top.cellargalaxy.mycloud.service.FileService;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.OutputStream;
 
 /**
  * Created by cellargalaxy on 18-8-5.
@@ -40,7 +41,8 @@ public class RootController {
 		}
 		response.setContentLength((int) fileInfoPo.getFileLength());
 		response.setContentType(fileInfoPo.getContentType());
-		fileService.downloadFile(fileInfoQuery, response.getOutputStream());
-		response.getOutputStream().close();
+		try (OutputStream outputStream = response.getOutputStream()) {
+			fileService.downloadFile(fileInfoQuery, outputStream);
+		}
 	}
 }

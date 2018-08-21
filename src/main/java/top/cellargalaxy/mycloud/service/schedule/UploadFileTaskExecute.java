@@ -29,8 +29,8 @@ import java.io.IOException;
 @Transactional
 @Service
 public class UploadFileTaskExecute implements TaskExecute<UploadFileTask> {
-	private Logger logger = LoggerFactory.getLogger(UploadFileTaskExecute.class);
 	public static final String TASK_SORT = UploadFileTask.TASK_SORT;
+	private Logger logger = LoggerFactory.getLogger(UploadFileTaskExecute.class);
 	@Autowired
 	private FileInfoService fileInfoService;
 	@Autowired
@@ -53,8 +53,8 @@ public class UploadFileTaskExecute implements TaskExecute<UploadFileTask> {
 	}
 
 	public String uploadFile(OwnPo ownPo, File file, String contentType) throws IOException {
+		logger.info("uploadFile, OwnPo:{}, file:{}, contentType:{}", ownPo, file, contentType);
 		try {
-			logger.info("uploadFile, OwnPo:{}, file:{}, contentType:{}", ownPo, file, contentType);
 			String md5 = StreamUtil.md5Hex(file);
 			long fileLength = file.length();
 

@@ -26,6 +26,8 @@ public interface TaskService {
 
 	String removeWaitTask(TaskPo taskPo);
 
+	String executeTask(Task task);
+
 	Task getCurrentTask();
 
 	Collection<Task> listWaitTask();

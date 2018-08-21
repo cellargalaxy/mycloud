@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import top.cellargalaxy.mycloud.exception.GlobalException;
+import top.cellargalaxy.mycloud.model.bo.schedule.SynchronizeTask;
 import top.cellargalaxy.mycloud.model.bo.schedule.Task;
 import top.cellargalaxy.mycloud.model.po.TaskPo;
 import top.cellargalaxy.mycloud.service.TaskService;
@@ -30,15 +31,26 @@ public class TaskSchedule {
 	@Autowired
 	private TaskExecuteFactory taskExecuteFactory;
 
-	@Scheduled(fixedDelay = 1000 * 1)
+	@Scheduled(fixedDelay = 1000 * 5)
 	public void schedule() {
+		try {
+			currentTask = getWaitTask();
+			logger.info("schedule:{}, result:{}", currentTask, executeTask(currentTask));
+		} catch (InterruptedException e) {
+			logger.info("schedule:执行任务异常:{}", e.getMessage());
+			GlobalException.add(e, 0, "未知异常");
+			addFinishTask(currentTask, Task.FAIL_STATUS);
+		}
+	}
+
+	public String executeTask(Task currentTask) {
+		logger.info("executeTask:{}", currentTask);
 		String string = null;
-		try (Task task = getWaitTask()) {
-			currentTask = task;
+		try (Task task = currentTask) {
 			TaskExecute taskExecute = taskExecuteFactory.getTaskExecute(currentTask.getTaskSort());
 			string = taskExecute.executeTask(currentTask);
 		} catch (Exception e) {
-			logger.info("schedule:执行任务异常:{}", e.getMessage());
+			logger.info("executeTask:执行任务异常:{}", e.getMessage());
 			GlobalException.add(e, 0, "未知异常");
 			addFinishTask(currentTask, Task.FAIL_STATUS);
 		}
@@ -48,7 +60,7 @@ public class TaskSchedule {
 		} else {
 			addFinishTask(currentTask, Task.SUCCESS_STATUS);
 		}
-		currentTask = null;
+		return string;
 	}
 
 	public String addWaitTask(Task task) {
@@ -79,12 +91,13 @@ public class TaskSchedule {
 	private Task getWaitTask() throws InterruptedException {
 		Task task = waitTasks.take();
 		task.setStatus(Task.EXECUTION_STATUS);
-		logger.info("getWaitTask:{}", task);
 		return task;
 	}
 
 	private void addFinishTask(Task task, int status) {
-		logger.info("addFinishTask:{}, status:{}", task, status);
+		if (task == null || !task.isPersistent()) {
+			return;
+		}
 		task.setStatus(status);
 		taskService.addTask(task);
 	}

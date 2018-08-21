@@ -35,26 +35,37 @@ public class TaskServiceImpl implements TaskService {
 
 	@Override
 	public String addWaitTask(Task task) {
+		logger.info("addWaitTask:{}", task);
 		return taskSchedule.addWaitTask(task);
 	}
 
 	@Override
 	public String removeWaitTask(TaskPo taskPo) {
+		logger.info("removeWaitTask:{}", taskPo);
 		return taskSchedule.removeWaitTask(taskPo.getTaskId()) == null ? "等待任务空删除" : null;
 	}
 
 	@Override
+	public String executeTask(Task task) {
+		logger.info("executeTask:{}", task);
+		return taskSchedule.executeTask(task);
+	}
+
+	@Override
 	public Task getCurrentTask() {
+		logger.info("getCurrentTask");
 		return taskSchedule.getCurrentTask();
 	}
 
 	@Override
 	public Collection<Task> listWaitTask() {
+		logger.info("listWaitTask");
 		return taskSchedule.listWaitTask();
 	}
 
 	@Override
 	public int getWaitTaskCount() {
+		logger.info("getWaitTaskCount");
 		return taskSchedule.listWaitTask().size();
 	}
 
@@ -107,6 +118,7 @@ public class TaskServiceImpl implements TaskService {
 
 	@Override
 	public String changeTask(TaskPo taskPo) {
+		logger.info("changeTask:{}", taskPo);
 		String string = checkChangeTask(taskPo);
 		if (string != null) {
 			return string;

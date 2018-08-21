@@ -18,9 +18,23 @@ public interface FileService {
 
 	String uploadFile(OwnPo ownPo, File file, String contentType) throws IOException;
 
+	String executeUploadFileTask(UserPo userPo, OwnPo ownPo, File file, String contentType);
+
+	void addUploadFileTask(UserPo userPo, OwnPo ownPo, File file, String contentType);
+
+	String downloadFile(FileInfoPo fileInfoPo, File file) throws IOException;
+
 	String downloadFile(FileInfoPo fileInfoPo, OutputStream outputStream) throws IOException;
 
+	String executeDownloadFileTask(UserPo userPo, FileInfoPo fileInfoPo, File file);
+
+	void addDownloadFileTask(UserPo userPo, FileInfoPo fileInfoPo, File file);
+
 	String removeFile(FileInfoPo fileInfoPo);
+
+	String executeRemoveFileTask(UserPo userPo, FileInfoPo fileInfoPo);
+
+	void addRemoveFileTask(UserPo userPo, FileInfoPo fileInfoPo);
 
 	File createLocalFile(FileInfoPo fileInfoPo);
 

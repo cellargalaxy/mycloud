@@ -9,6 +9,7 @@ import top.cellargalaxy.mycloud.model.vo.TaskVo;
 
 import java.io.Closeable;
 import java.util.Date;
+import java.util.Objects;
 
 /**
  * @author cellargalaxy
@@ -18,9 +19,11 @@ public abstract class Task extends TaskVo implements Closeable {
 	private static final long serialVersionUID = 7062287537522505438L;
 	protected static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 	private final UserPo userPo;
+	private boolean persistent;
 
 	public Task(UserPo userPo, String taskSort) {
 		this.userPo = userPo;
+		persistent = true;
 		setUserId(userPo.getUserId());
 		setTaskSort(taskSort);
 		setCreateTime(new Date());
@@ -31,7 +34,9 @@ public abstract class Task extends TaskVo implements Closeable {
 
 	protected static final String serialization2Json(Object object) {
 		try {
-			return OBJECT_MAPPER.writeValueAsString(object);
+			if (object != null) {
+				return OBJECT_MAPPER.writeValueAsString(object);
+			}
 		} catch (JsonProcessingException e) {
 			e.printStackTrace();
 			GlobalException.add(e);
@@ -41,6 +46,39 @@ public abstract class Task extends TaskVo implements Closeable {
 
 	public UserPo getUserPo() {
 		return userPo;
+	}
+
+	public boolean isPersistent() {
+		return persistent;
+	}
+
+	public void setPersistent(boolean persistent) {
+		this.persistent = persistent;
+	}
+
+	@Override
+	public String toString() {
+		return "Task{" +
+				"super=" + super.toString() +
+				", userPo=" + userPo +
+				", persistent=" + persistent +
+				'}';
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		if (!super.equals(o)) return false;
+		Task task = (Task) o;
+		return persistent == task.persistent &&
+				Objects.equals(userPo, task.userPo);
+	}
+
+	@Override
+	public int hashCode() {
+
+		return Objects.hash(super.hashCode(), userPo, persistent);
 	}
 
 	@Override

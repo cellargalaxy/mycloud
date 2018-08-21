@@ -26,7 +26,7 @@ public class FileBlockServiceImpl implements FileBlockService {
 
 	@Override
 	public String addFileBlock(FileBlockPo fileBlockPo) {
-		logger.info("addFileBlock:{}", fileBlockPo);
+		logger.debug("addFileBlock:{}", fileBlockPo);
 		String string = checkAddFileBlock(fileBlockPo);
 		if (string != null) {
 			return string;
@@ -41,7 +41,7 @@ public class FileBlockServiceImpl implements FileBlockService {
 
 	@Override
 	public String removeFileBlock(FileBlockPo fileBlockPo) {
-		logger.info("removeFileBlock:{}", fileBlockPo);
+		logger.debug("removeFileBlock:{}", fileBlockPo);
 		int i = fileBlockDao.delete(fileBlockPo);
 		if (i == 0) {
 			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
@@ -52,25 +52,25 @@ public class FileBlockServiceImpl implements FileBlockService {
 
 	@Override
 	public FileBlockBo getFileBlock(FileBlockPo fileBlockPo) {
-		logger.info("getFileBlock:{}", fileBlockPo);
+		logger.debug("getFileBlock:{}", fileBlockPo);
 		return fileBlockDao.selectOne(fileBlockPo);
 	}
 
 	@Override
 	public List<FileBlockBo> listFileBlock(FileBlockQuery fileBlockQuery) {
-		logger.info("listFileBlock:{}", fileBlockQuery);
+		logger.debug("listFileBlock:{}", fileBlockQuery);
 		return fileBlockDao.selectSome(fileBlockQuery);
 	}
 
 	@Override
 	public int getFileBlockCount(FileBlockQuery fileBlockQuery) {
-		logger.info("getFileBlockCount:{}", fileBlockQuery);
+		logger.debug("getFileBlockCount:{}", fileBlockQuery);
 		return fileBlockDao.selectCount(fileBlockQuery);
 	}
 
 	@Override
 	public String changeFileBlock(FileBlockPo fileBlockPo) {
-		logger.info("changeFileBlock:{}", fileBlockPo);
+		logger.debug("changeFileBlock:{}", fileBlockPo);
 		String string = checkChangeFileBlock(fileBlockPo);
 		if (string != null) {
 			return string;
@@ -85,7 +85,7 @@ public class FileBlockServiceImpl implements FileBlockService {
 
 	@Override
 	public String checkAddFileBlock(FileBlockPo fileBlockPo) {
-		logger.info("checkAddFileBlock:{}", fileBlockPo);
+		logger.debug("checkAddFileBlock:{}", fileBlockPo);
 		String string = FileBlockDao.checkInsert(fileBlockPo);
 		if (string != null) {
 			return string;
@@ -99,7 +99,7 @@ public class FileBlockServiceImpl implements FileBlockService {
 
 	@Override
 	public String checkChangeFileBlock(FileBlockPo fileBlockPo) {
-		logger.info("checkChangeFileBlock:{}", fileBlockPo);
+		logger.debug("checkChangeFileBlock:{}", fileBlockPo);
 		return FileBlockDao.checkUpdate(fileBlockPo);
 	}
 }
