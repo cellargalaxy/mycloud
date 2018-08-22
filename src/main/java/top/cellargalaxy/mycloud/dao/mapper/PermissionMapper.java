@@ -29,7 +29,7 @@ public interface PermissionMapper extends AbstractDao<PermissionPo, PermissionBo
 
 	@Results(id = "permissionResult", value = {
 			@Result(property = "permissionId", column = "permission_id", id = true),
-			@Result(property = "permissionMark", column = "permission_mark"),
+			@Result(property = "permissionName", column = "permission_name"),
 			@Result(property = "createTime", column = "create_time", javaType = Date.class, jdbcType = TIMESTAMP),
 			@Result(property = "updateTime", column = "update_time", javaType = Date.class, jdbcType = TIMESTAMP)
 	})
@@ -53,8 +53,8 @@ public interface PermissionMapper extends AbstractDao<PermissionPo, PermissionBo
 	class PermissionProvider /*implements AbstractProvider<PermissionPo, PermissionQuery>*/ {
 		private String tableName = PermissionDao.TABLE_NAME;
 		private String permissionId = tableName + ".permission_id=#{permissionId}";
-		private String permissionMark = tableName + ".permission_mark like CONCAT(CONCAT('%', #{permissionMark}),'%')";
-		private String permissionMarkSet = tableName + ".permission_mark=#{permissionMark}";
+		private String permissionName = tableName + ".permission_name like CONCAT(CONCAT('%', #{permissionName}),'%')";
+		private String permissionNameSet = tableName + ".permission_name=#{permissionName}";
 		private String createTime = tableName + ".create_time=#{createTime,jdbcType=TIMESTAMP}";
 		private String updateTime = tableName + ".update_time=#{updateTime,jdbcType=TIMESTAMP}";
 
@@ -64,8 +64,8 @@ public interface PermissionMapper extends AbstractDao<PermissionPo, PermissionBo
 			permissionPo.setCreateTime(date);
 			permissionPo.setUpdateTime(date);
 
-			String string = "insert into " + tableName + "(permission_id,permission_mark,create_time,update_time) " +
-					"values(#{permissionId},#{permissionMark},#{createTime,jdbcType=TIMESTAMP},#{updateTime,jdbcType=TIMESTAMP})";
+			String string = "insert into " + tableName + "(permission_id,permission_name,create_time,update_time) " +
+					"values(#{permissionId},#{permissionName},#{createTime,jdbcType=TIMESTAMP},#{updateTime,jdbcType=TIMESTAMP})";
 			return string;
 		}
 
@@ -101,8 +101,8 @@ public interface PermissionMapper extends AbstractDao<PermissionPo, PermissionBo
 			if (permissionQuery.getPermissionId() > 0) {
 				wheres.add(permissionId);
 			}
-			if (!StringUtil.isBlank(permissionQuery.getPermissionMark())) {
-				wheres.add(permissionMark);
+			if (!StringUtil.isBlank(permissionQuery.getPermissionName())) {
+				wheres.add(permissionName);
 			}
 			if (permissionQuery.getCreateTime() != null) {
 				wheres.add(createTime);
@@ -119,8 +119,8 @@ public interface PermissionMapper extends AbstractDao<PermissionPo, PermissionBo
 		}
 
 		private void sets(PermissionPo permissionPo, Set<String> sets) {
-			if (!StringUtil.isBlank(permissionPo.getPermissionMark())) {
-				sets.add(permissionMarkSet);
+			if (!StringUtil.isBlank(permissionPo.getPermissionName())) {
+				sets.add(permissionNameSet);
 			}
 			if (permissionPo.getUpdateTime() != null) {
 				sets.add(updateTime);
@@ -128,8 +128,8 @@ public interface PermissionMapper extends AbstractDao<PermissionPo, PermissionBo
 		}
 
 		private void init(PermissionPo permissionPo) {
-			if (permissionPo.getPermissionMark() != null) {
-				permissionPo.setPermissionMark(permissionPo.getPermissionMark().trim());
+			if (permissionPo.getPermissionName() != null) {
+				permissionPo.setPermissionName(permissionPo.getPermissionName().trim());
 			}
 		}
 	}

@@ -157,11 +157,11 @@ DROP TABLE IF EXISTS `permission`;
  SET character_set_client = utf8mb4 ;
 CREATE TABLE `permission` (
   `permission_id` int(11) NOT NULL COMMENT '权限id',
-  `permission_mark` varchar(256) NOT NULL COMMENT '权限备注',
+  `permission_name` varchar(256) NOT NULL COMMENT '权限名',
   `create_time` datetime NOT NULL COMMENT '创建时间',
   `update_time` datetime NOT NULL COMMENT '更新时间',
   PRIMARY KEY (`permission_id`),
-  UNIQUE KEY `uk_permission_mark` (`permission_mark`) USING BTREE
+  UNIQUE KEY `uk_permission_name` (`permission_name`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 

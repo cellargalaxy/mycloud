@@ -24,40 +24,41 @@ public class AuthorizationCache implements AuthorizationDao {
 	@Autowired
 	private AuthorizationMapper authorizationMapper;
 
+	@Cacheable(key = "'selectOne'+#p0", condition = "true")
+	public AuthorizationBo selectOne(AuthorizationPo authorizationPo) {
+		return authorizationMapper.selectOne(authorizationPo);
+	}
+
+	@Cacheable(key = "'selectSome'+#p0", condition = "true")
+	public List<AuthorizationBo> selectSome(AuthorizationQuery authorizationQuery) {
+		return authorizationMapper.selectSome(authorizationQuery);
+	}
+
+	@Cacheable(key = "'selectCount'+#p0", condition = "true")
+	public int selectCount(AuthorizationQuery authorizationQuery) {
+		return authorizationMapper.selectCount(authorizationQuery);
+	}
+
+	@Cacheable(key = "'selectAll'", condition = "true")
+	public List<AuthorizationBo> selectAll() {
+		return authorizationMapper.selectAll();
+	}
+
+	//
 	@Caching(evict = {
-			@CacheEvict(key = "#p0.authorizationId"),
+			@CacheEvict(key = "'selectAll'"),
 	})
 	public int insert(AuthorizationPo authorizationPo) {
 		return authorizationMapper.insert(authorizationPo);
 	}
 
 	@Caching(evict = {
-			@CacheEvict(key = "#p0.authorizationId"),
+			@CacheEvict(key = "'selectAll'"),
 	})
 	public int delete(AuthorizationPo authorizationPo) {
 		return authorizationMapper.delete(authorizationPo);
 	}
 
-	@Cacheable(key = "#p0.authorizationId", condition = "#p0.authorizationId>0")
-	public AuthorizationBo selectOne(AuthorizationPo authorizationPo) {
-		return authorizationMapper.selectOne(authorizationPo);
-	}
-
-	public List<AuthorizationBo> selectSome(AuthorizationQuery authorizationQuery) {
-		return authorizationMapper.selectSome(authorizationQuery);
-	}
-
-	public int selectCount(AuthorizationQuery authorizationQuery) {
-		return authorizationMapper.selectCount(authorizationQuery);
-	}
-
-	public List<AuthorizationBo> selectAll() {
-		return authorizationMapper.selectAll();
-	}
-
-	@Caching(evict = {
-			@CacheEvict(key = "#p0.authorizationId"),
-	})
 	public int update(AuthorizationPo authorizationPo) {
 		return authorizationMapper.update(authorizationPo);
 	}

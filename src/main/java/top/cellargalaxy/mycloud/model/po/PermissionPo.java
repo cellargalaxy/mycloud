@@ -10,7 +10,7 @@ import java.util.Objects;
 public class PermissionPo implements Serializable {
 	private static final long serialVersionUID = 5548266485951275822L;
 	private int permissionId;
-	private String permissionMark;
+	private String permissionName;
 	private Date createTime;
 	private Date updateTime;
 
@@ -22,12 +22,12 @@ public class PermissionPo implements Serializable {
 		this.permissionId = permissionId;
 	}
 
-	public String getPermissionMark() {
-		return permissionMark;
+	public String getPermissionName() {
+		return permissionName;
 	}
 
-	public void setPermissionMark(String permissionMark) {
-		this.permissionMark = permissionMark;
+	public void setPermissionName(String permissionName) {
+		this.permissionName = permissionName;
 	}
 
 	public Date getCreateTime() {
@@ -50,7 +50,7 @@ public class PermissionPo implements Serializable {
 	public String toString() {
 		return "PermissionPo{" +
 				"permissionId=" + permissionId +
-				", permissionMark='" + permissionMark + '\'' +
+				", permissionName='" + permissionName + '\'' +
 				", createTime=" + createTime +
 				", updateTime=" + updateTime +
 				'}';
@@ -62,13 +62,13 @@ public class PermissionPo implements Serializable {
 		if (o == null || getClass() != o.getClass()) return false;
 		PermissionPo that = (PermissionPo) o;
 		return permissionId == that.permissionId &&
-				Objects.equals(permissionMark, that.permissionMark) &&
+				Objects.equals(permissionName, that.permissionName) &&
 				Objects.equals(createTime, that.createTime) &&
 				Objects.equals(updateTime, that.updateTime);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(permissionId, permissionMark, createTime, updateTime);
+		return Objects.hash(permissionId, permissionName, createTime, updateTime);
 	}
 }

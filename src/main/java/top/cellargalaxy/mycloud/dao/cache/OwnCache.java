@@ -24,47 +24,49 @@ public class OwnCache implements OwnDao {
 	@Autowired
 	private OwnMapper ownMapper;
 
+	@Cacheable(key = "'selectOne'+#p0", condition = "true")
+	public OwnBo selectOne(OwnPo ownPo) {
+		return ownMapper.selectOne(ownPo);
+	}
+
+	@Cacheable(key = "'selectSome'+#p0", condition = "true")
+	public List<OwnBo> selectSome(OwnQuery ownQuery) {
+		return ownMapper.selectSome(ownQuery);
+	}
+
+	@Cacheable(key = "'selectCount'+#p0", condition = "true")
+	public int selectCount(OwnQuery ownQuery) {
+		return ownMapper.selectCount(ownQuery);
+	}
+
+	@Cacheable(key = "'selectAll'", condition = "true")
+	public List<OwnBo> selectAll() {
+		return ownMapper.selectAll();
+	}
+
+	@Cacheable(key = "'selectSort'+#p0", condition = "true")
+	public List<String> selectSort(OwnQuery ownQuery) {
+		return ownMapper.selectSort(ownQuery);
+	}
+
+	//
 	@Caching(evict = {
-			@CacheEvict(key = "#p0.ownId"),
-			@CacheEvict(key = "'selectSort'+#p0.userId"),
+			@CacheEvict(key = "'selectAll'"),
 	})
 	public int insert(OwnPo ownPo) {
 		return ownMapper.insert(ownPo);
 	}
 
 	@Caching(evict = {
-			@CacheEvict(key = "#p0.ownId"),
-			@CacheEvict(key = "'selectSort'+#p0.userId"),
+			@CacheEvict(key = "'selectAll'"),
 	})
 	public int delete(OwnPo ownPo) {
 		return ownMapper.delete(ownPo);
 	}
 
-	@Cacheable(key = "#p0.ownId", condition = "#p0.ownId>0")
-	public OwnBo selectOne(OwnPo ownPo) {
-		return ownMapper.selectOne(ownPo);
-	}
-
-	public List<OwnBo> selectSome(OwnQuery ownQuery) {
-		return ownMapper.selectSome(ownQuery);
-	}
-
-	public int selectCount(OwnQuery ownQuery) {
-		return ownMapper.selectCount(ownQuery);
-	}
-
-	public List<OwnBo> selectAll() {
-		return ownMapper.selectAll();
-	}
-
-	@Cacheable(key = "'selectSort'+#p0.userId", condition = "#p0.userId>0")
-	public List<String> selectSort(OwnQuery ownQuery) {
-		return ownMapper.selectSort(ownQuery);
-	}
 
 	@Caching(evict = {
-			@CacheEvict(key = "#p0.ownId"),
-			@CacheEvict(key = "'selectSort'+#p0.userId"),
+			@CacheEvict(key = "'selectAll'"),
 	})
 	public int update(OwnPo ownPo) {
 		return ownMapper.update(ownPo);

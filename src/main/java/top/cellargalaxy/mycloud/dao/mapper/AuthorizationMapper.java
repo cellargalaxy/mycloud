@@ -35,7 +35,7 @@ public interface AuthorizationMapper extends AbstractDao<AuthorizationPo, Author
 			@Result(property = "createTime", column = "create_time", javaType = Date.class, jdbcType = TIMESTAMP),
 			@Result(property = "updateTime", column = "update_time", javaType = Date.class, jdbcType = TIMESTAMP),
 			@Result(property = "username", column = "username"),
-			@Result(property = "permissionMark", column = "permission_mark")
+			@Result(property = "permissionName", column = "permission_name")
 	})
 	@SelectProvider(type = AuthorizationProvider.class, method = "selectOne")
 	AuthorizationBo selectOne(AuthorizationPo authorizationPo);
@@ -84,7 +84,7 @@ public interface AuthorizationMapper extends AbstractDao<AuthorizationPo, Author
 			selects.add(tableName + ".create_time");
 			selects.add(tableName + ".update_time");
 			selects.add(UserDao.TABLE_NAME + ".username");
-			selects.add(PermissionDao.TABLE_NAME + ".permission_mark");
+			selects.add(PermissionDao.TABLE_NAME + ".permission_name");
 
 			Set<String> wheres = new HashSet<>();
 			wheres.add(tableName + ".user_id=" + UserDao.TABLE_NAME + ".user_id");
@@ -106,7 +106,7 @@ public interface AuthorizationMapper extends AbstractDao<AuthorizationPo, Author
 			selects.add(tableName + ".create_time");
 			selects.add(tableName + ".update_time");
 			selects.add(UserDao.TABLE_NAME + ".username");
-			selects.add(PermissionDao.TABLE_NAME + ".permission_mark");
+			selects.add(PermissionDao.TABLE_NAME + ".permission_name");
 
 			Set<String> wheres = new HashSet<>();
 			wheres.add(tableName + ".user_id=" + UserDao.TABLE_NAME + ".user_id");
@@ -142,7 +142,7 @@ public interface AuthorizationMapper extends AbstractDao<AuthorizationPo, Author
 			selects.add(tableName + ".create_time");
 			selects.add(tableName + ".update_time");
 			selects.add(UserDao.TABLE_NAME + ".username");
-			selects.add(PermissionDao.TABLE_NAME + ".permission_mark");
+			selects.add(PermissionDao.TABLE_NAME + ".permission_name");
 
 			Set<String> wheres = new HashSet<>();
 			wheres.add(tableName + ".user_id=" + UserDao.TABLE_NAME + ".user_id");

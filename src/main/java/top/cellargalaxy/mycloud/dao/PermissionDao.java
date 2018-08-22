@@ -5,8 +5,6 @@ import top.cellargalaxy.mycloud.model.po.PermissionPo;
 import top.cellargalaxy.mycloud.model.query.PermissionQuery;
 import top.cellargalaxy.mycloud.util.StringUtil;
 
-import java.util.List;
-
 /**
  * @author cellargalaxy
  * @time 2018/7/12
@@ -18,7 +16,7 @@ public interface PermissionDao extends AbstractDao<PermissionPo, PermissionBo, P
 		if (permissionPo.getPermissionId() < 1) {
 			return "权限id不得为空";
 		}
-		if (StringUtil.isBlank(permissionPo.getPermissionMark())) {
+		if (StringUtil.isBlank(permissionPo.getPermissionName())) {
 			return "权限描述不得为空";
 		}
 		return null;

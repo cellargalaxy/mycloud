@@ -16,7 +16,7 @@ public class PermissionDaoTest {
 	public void insert() {
 		PermissionPo permissionPo = new PermissionPo();
 		permissionPo.setPermissionId(1);
-		permissionPo.setPermissionMark("权限mark");
+		permissionPo.setPermissionName("权限mark");
 		assertEquals(1, permissionDao.insert(permissionPo));
 	}
 

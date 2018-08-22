@@ -24,40 +24,41 @@ public class FileBlockCache implements FileBlockDao {
 	@Autowired
 	private FileBlockMapper fileBlockMapper;
 
+	@Cacheable(key = "'selectOne'+#p0", condition = "true")
+	public FileBlockBo selectOne(FileBlockPo fileBlockPo) {
+		return fileBlockMapper.selectOne(fileBlockPo);
+	}
+
+	@Cacheable(key = "'selectSome'+#p0", condition = "true")
+	public List<FileBlockBo> selectSome(FileBlockQuery fileBlockQuery) {
+		return fileBlockMapper.selectSome(fileBlockQuery);
+	}
+
+	@Cacheable(key = "'selectCount'+#p0", condition = "true")
+	public int selectCount(FileBlockQuery fileBlockQuery) {
+		return fileBlockMapper.selectCount(fileBlockQuery);
+	}
+
+	@Cacheable(key = "'selectAll'", condition = "true")
+	public List<FileBlockBo> selectAll() {
+		return fileBlockMapper.selectAll();
+	}
+
+	//
 	@Caching(evict = {
-			@CacheEvict(key = "#p0.fileId"),
+			@CacheEvict(key = "'selectAll'"),
 	})
 	public int insert(FileBlockPo fileBlockPo) {
 		return fileBlockMapper.insert(fileBlockPo);
 	}
 
 	@Caching(evict = {
-			@CacheEvict(key = "#p0.fileId"),
+			@CacheEvict(key = "'selectAll'"),
 	})
 	public int delete(FileBlockPo fileBlockPo) {
 		return fileBlockMapper.delete(fileBlockPo);
 	}
 
-	@Cacheable(key = "#p0.fileId", condition = "#p0.fileId>0")
-	public FileBlockBo selectOne(FileBlockPo fileBlockPo) {
-		return fileBlockMapper.selectOne(fileBlockPo);
-	}
-
-	public List<FileBlockBo> selectSome(FileBlockQuery fileBlockQuery) {
-		return fileBlockMapper.selectSome(fileBlockQuery);
-	}
-
-	public int selectCount(FileBlockQuery fileBlockQuery) {
-		return fileBlockMapper.selectCount(fileBlockQuery);
-	}
-
-	public List<FileBlockBo> selectAll() {
-		return fileBlockMapper.selectAll();
-	}
-
-	@Caching(evict = {
-			@CacheEvict(key = "#p0.fileId"),
-	})
 	public int update(FileBlockPo fileBlockPo) {
 		return fileBlockMapper.update(fileBlockPo);
 	}

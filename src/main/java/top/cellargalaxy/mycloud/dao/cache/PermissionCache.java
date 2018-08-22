@@ -24,40 +24,41 @@ public class PermissionCache implements PermissionDao {
 	@Autowired
 	private PermissionMapper permissionMapper;
 
+	@Cacheable(key = "'selectOne'+#p0", condition = "true")
+	public PermissionBo selectOne(PermissionPo permissionPo) {
+		return permissionMapper.selectOne(permissionPo);
+	}
+
+	@Cacheable(key = "'selectSome'+#p0", condition = "true")
+	public List<PermissionBo> selectSome(PermissionQuery permissionQuery) {
+		return permissionMapper.selectSome(permissionQuery);
+	}
+
+	@Cacheable(key = "'selectCount'+#p0", condition = "true")
+	public int selectCount(PermissionQuery permissionQuery) {
+		return permissionMapper.selectCount(permissionQuery);
+	}
+
+	@Cacheable(key = "'selectAll'", condition = "true")
+	public List<PermissionBo> selectAll() {
+		return permissionMapper.selectAll();
+	}
+
+	//
 	@Caching(evict = {
-			@CacheEvict(key = "#p0.permissionId"),
+			@CacheEvict(key = "'selectAll'"),
 	})
 	public int insert(PermissionPo permissionPo) {
 		return permissionMapper.insert(permissionPo);
 	}
 
 	@Caching(evict = {
-			@CacheEvict(key = "#p0.permissionId"),
+			@CacheEvict(key = "'selectAll'"),
 	})
 	public int delete(PermissionPo permissionPo) {
 		return permissionMapper.delete(permissionPo);
 	}
 
-	@Cacheable(key = "#p0.permissionId", condition = "#p0.permissionId>0")
-	public PermissionBo selectOne(PermissionPo permissionPo) {
-		return permissionMapper.selectOne(permissionPo);
-	}
-
-	public List<PermissionBo> selectSome(PermissionQuery permissionQuery) {
-		return permissionMapper.selectSome(permissionQuery);
-	}
-
-	public int selectCount(PermissionQuery permissionQuery) {
-		return permissionMapper.selectCount(permissionQuery);
-	}
-
-	public List<PermissionBo> selectAll() {
-		return permissionMapper.selectAll();
-	}
-
-	@Caching(evict = {
-			@CacheEvict(key = "#p0.permissionId"),
-	})
 	public int update(PermissionPo permissionPo) {
 		return permissionMapper.update(permissionPo);
 	}

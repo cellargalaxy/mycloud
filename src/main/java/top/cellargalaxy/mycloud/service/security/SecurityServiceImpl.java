@@ -62,7 +62,7 @@ public class SecurityServiceImpl implements SecurityService {
 				setCreateTime(userAuthorizationVo.getUser().getCreateTime());
 				setUpdateTime(userAuthorizationVo.getUser().getUpdateTime());
 				for (AuthorizationBo authorization : userAuthorizationVo.getAuthorizations()) {
-					getPermissions().add(authorization.getPermissionMark());
+					getPermissions().add(authorization.getPermissionName());
 				}
 			}};
 		}

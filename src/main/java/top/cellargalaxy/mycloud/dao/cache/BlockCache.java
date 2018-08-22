@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Repository;
 import top.cellargalaxy.mycloud.dao.BlockDao;
 import top.cellargalaxy.mycloud.dao.mapper.BlockMapper;
@@ -23,34 +24,41 @@ public class BlockCache implements BlockDao {
 	@Autowired
 	private BlockMapper blockMapper;
 
-	@CacheEvict(key = "#p0.blockId")
-	public int insert(BlockPo blockPo) {
-		return blockMapper.insert(blockPo);
-	}
-
-	@CacheEvict(key = "#p0.blockId")
-	public int delete(BlockPo blockPo) {
-		return blockMapper.delete(blockPo);
-	}
-
-	@Cacheable(key = "#p0.blockId", condition = "#p0.blockId>0")
+	@Cacheable(key = "'selectOne'+#p0.blockId", condition = "true")
 	public BlockBo selectOne(BlockPo blockPo) {
 		return blockMapper.selectOne(blockPo);
 	}
 
+	@Cacheable(key = "'selectOne'+#p0.blockId", condition = "true")
 	public List<BlockBo> selectSome(BlockQuery blockQuery) {
 		return blockMapper.selectSome(blockQuery);
 	}
 
+	@Cacheable(key = "'selectOne'+#p0.blockId", condition = "true")
 	public int selectCount(BlockQuery blockQuery) {
 		return blockMapper.selectCount(blockQuery);
 	}
 
+	@Cacheable(key = "'selectAll'", condition = "true")
 	public List<BlockBo> selectAll() {
 		return blockMapper.selectAll();
 	}
 
-	@CacheEvict(key = "#p0.blockId")
+	//
+	@Caching(evict = {
+			@CacheEvict(key = "'selectAll'"),
+	})
+	public int insert(BlockPo blockPo) {
+		return blockMapper.insert(blockPo);
+	}
+
+	@Caching(evict = {
+			@CacheEvict(key = "'selectAll'"),
+	})
+	public int delete(BlockPo blockPo) {
+		return blockMapper.delete(blockPo);
+	}
+
 	public int update(BlockPo blockPo) {
 		return blockMapper.update(blockPo);
 	}

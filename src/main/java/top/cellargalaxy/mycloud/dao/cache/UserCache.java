@@ -24,40 +24,41 @@ public class UserCache implements UserDao {
 	@Autowired
 	private UserMapper userMapper;
 
+	@Cacheable(key = "'selectOne'+#p0", condition = "true")
+	public UserBo selectOne(UserPo userPo) {
+		return userMapper.selectOne(userPo);
+	}
+
+	@Cacheable(key = "'selectSome'+#p0", condition = "true")
+	public List<UserBo> selectSome(UserQuery userQuery) {
+		return userMapper.selectSome(userQuery);
+	}
+
+	@Cacheable(key = "'selectCount'+#p0", condition = "true")
+	public int selectCount(UserQuery userQuery) {
+		return userMapper.selectCount(userQuery);
+	}
+
+	@Cacheable(key = "'selectAll'", condition = "true")
+	public List<UserBo> selectAll() {
+		return userMapper.selectAll();
+	}
+
+	//
 	@Caching(evict = {
-			@CacheEvict(key = "#p0.userId"),
+			@CacheEvict(key = "'selectAll'"),
 	})
 	public int insert(UserPo userPo) {
 		return userMapper.insert(userPo);
 	}
 
 	@Caching(evict = {
-			@CacheEvict(key = "#p0.userId"),
+			@CacheEvict(key = "'selectAll'"),
 	})
 	public int delete(UserPo userPo) {
 		return userMapper.delete(userPo);
 	}
 
-	@Cacheable(key = "#p0.userId", condition = "#p0.userId>0")
-	public UserBo selectOne(UserPo userPo) {
-		return userMapper.selectOne(userPo);
-	}
-
-	public List<UserBo> selectSome(UserQuery userQuery) {
-		return userMapper.selectSome(userQuery);
-	}
-
-	public int selectCount(UserQuery userQuery) {
-		return userMapper.selectCount(userQuery);
-	}
-
-	public List<UserBo> selectAll() {
-		return userMapper.selectAll();
-	}
-
-	@Caching(evict = {
-			@CacheEvict(key = "#p0.userId"),
-	})
 	public int update(UserPo userPo) {
 		return userMapper.update(userPo);
 	}

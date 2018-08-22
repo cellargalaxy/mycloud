@@ -24,40 +24,41 @@ public class TaskCache implements TaskDao {
 	@Autowired
 	private TaskMapper taskMapper;
 
+	@Cacheable(key = "'selectOne'+#p0", condition = "true")
+	public TaskBo selectOne(TaskPo taskPo) {
+		return taskMapper.selectOne(taskPo);
+	}
+
+	@Cacheable(key = "'selectSome'+#p0", condition = "true")
+	public List<TaskBo> selectSome(TaskQuery taskQuery) {
+		return taskMapper.selectSome(taskQuery);
+	}
+
+	@Cacheable(key = "'selectCount'+#p0", condition = "true")
+	public int selectCount(TaskQuery taskQuery) {
+		return taskMapper.selectCount(taskQuery);
+	}
+
+	@Cacheable(key = "'selectAll'", condition = "true")
+	public List<TaskBo> selectAll() {
+		return taskMapper.selectAll();
+	}
+
+	//
 	@Caching(evict = {
-			@CacheEvict(key = "#p0.taskId"),
+			@CacheEvict(key = "'selectAll'"),
 	})
 	public int insert(TaskPo taskPo) {
 		return taskMapper.insert(taskPo);
 	}
 
 	@Caching(evict = {
-			@CacheEvict(key = "#p0.taskId"),
+			@CacheEvict(key = "'selectAll'"),
 	})
 	public int delete(TaskPo taskPo) {
 		return taskMapper.delete(taskPo);
 	}
 
-	@Cacheable(key = "#p0.taskId", condition = "#p0.taskId>0")
-	public TaskBo selectOne(TaskPo taskPo) {
-		return taskMapper.selectOne(taskPo);
-	}
-
-	public List<TaskBo> selectSome(TaskQuery taskQuery) {
-		return taskMapper.selectSome(taskQuery);
-	}
-
-	public int selectCount(TaskQuery taskQuery) {
-		return taskMapper.selectCount(taskQuery);
-	}
-
-	public List<TaskBo> selectAll() {
-		return taskMapper.selectAll();
-	}
-
-	@Caching(evict = {
-			@CacheEvict(key = "#p0.taskId"),
-	})
 	public int update(TaskPo taskPo) {
 		return taskMapper.update(taskPo);
 	}

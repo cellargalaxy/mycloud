@@ -10,7 +10,7 @@ import java.util.Objects;
  */
 public class AuthorizationBo extends AuthorizationPo {
 	private String username;
-	private String permissionMark;
+	private String permissionName;
 
 	public String getUsername() {
 		return username;
@@ -20,12 +20,12 @@ public class AuthorizationBo extends AuthorizationPo {
 		this.username = username;
 	}
 
-	public String getPermissionMark() {
-		return permissionMark;
+	public String getPermissionName() {
+		return permissionName;
 	}
 
-	public void setPermissionMark(String permissionMark) {
-		this.permissionMark = permissionMark;
+	public void setPermissionName(String permissionName) {
+		this.permissionName = permissionName;
 	}
 
 	@Override
@@ -33,7 +33,7 @@ public class AuthorizationBo extends AuthorizationPo {
 		return "AuthorizationBo{" +
 				"super=" + super.toString() +
 				", username='" + username + '\'' +
-				", permissionMark='" + permissionMark + '\'' +
+				", permissionName='" + permissionName + '\'' +
 				'}';
 	}
 
@@ -44,11 +44,11 @@ public class AuthorizationBo extends AuthorizationPo {
 		if (!super.equals(o)) return false;
 		AuthorizationBo that = (AuthorizationBo) o;
 		return Objects.equals(username, that.username) &&
-				Objects.equals(permissionMark, that.permissionMark);
+				Objects.equals(permissionName, that.permissionName);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(super.hashCode(), username, permissionMark);
+		return Objects.hash(super.hashCode(), username, permissionName);
 	}
 }
