@@ -1,5 +1,7 @@
 package top.cellargalaxy.mycloud.dao.cache;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
@@ -21,38 +23,43 @@ import java.util.List;
 @Repository
 @CacheConfig(cacheNames = "fileInfo")
 public class FileInfoCache implements FileInfoDao {
+	private Logger logger = LoggerFactory.getLogger(FileInfoCache.class);
 	@Autowired
 	private FileInfoMapper fileInfoMapper;
 
-	@Cacheable(key = "'selectOne'+#p0.md5!=null?#p0.md5:#p0.fileId", condition = "#p0.md5!=null||#p0.fileId>0")
+	@Cacheable(key = "'selectOne'+(#p0.md5!=null?#p0.md5:#p0.fileId)", condition = "true")
 	public FileInfoBo selectOne(FileInfoPo fileInfoPo) {
+		logger.info("selectOne:{}", fileInfoPo);
 		return fileInfoMapper.selectOne(fileInfoPo);
 	}
 
 	public List<FileInfoBo> selectSome(FileInfoQuery fileInfoQuery) {
+		logger.info("selectSome:{}", fileInfoQuery);
 		return fileInfoMapper.selectSome(fileInfoQuery);
 	}
 
 	public int selectCount(FileInfoQuery fileInfoQuery) {
+		logger.info("selectCount:{}", fileInfoQuery);
 		return fileInfoMapper.selectCount(fileInfoQuery);
 	}
 
 	public List<FileInfoBo> selectAll() {
+		logger.info("selectAll");
 		return fileInfoMapper.selectAll();
 	}
 
 	@Cacheable(key = "'selectContentType'", condition = "true")
 	public List<String> selectContentType() {
+		logger.info("selectContentType");
 		return fileInfoMapper.selectContentType();
 	}
 
 	//
 	@Caching(evict = {
-			@CacheEvict(key = "'selectOne'+#p0.fileId"),
-			@CacheEvict(key = "'selectOne'+#p0.md5"),
 			@CacheEvict(key = "'selectContentType'"),
 	})
 	public int insert(FileInfoPo fileInfoPo) {
+		logger.info("insert:{}", fileInfoPo);
 		return fileInfoMapper.insert(fileInfoPo);
 	}
 
@@ -62,6 +69,7 @@ public class FileInfoCache implements FileInfoDao {
 			@CacheEvict(key = "'selectContentType'"),
 	})
 	public int delete(FileInfoPo fileInfoPo) {
+		logger.info("delete:{}", fileInfoPo);
 		return fileInfoMapper.delete(fileInfoPo);
 	}
 
@@ -71,6 +79,7 @@ public class FileInfoCache implements FileInfoDao {
 			@CacheEvict(key = "'selectContentType'"),
 	})
 	public int update(FileInfoPo fileInfoPo) {
+		logger.info("update:{}", fileInfoPo);
 		return fileInfoMapper.update(fileInfoPo);
 	}
 }

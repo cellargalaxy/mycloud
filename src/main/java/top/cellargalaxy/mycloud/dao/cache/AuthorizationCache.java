@@ -1,5 +1,7 @@
 package top.cellargalaxy.mycloud.dao.cache;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
@@ -21,26 +23,31 @@ import java.util.List;
 @Repository
 @CacheConfig(cacheNames = "authorization")
 public class AuthorizationCache implements AuthorizationDao {
+	private Logger logger = LoggerFactory.getLogger(AuthorizationCache.class);
 	@Autowired
 	private AuthorizationMapper authorizationMapper;
 
-	@Cacheable(key = "'selectOne'+#p0", condition = "true")
+	@Cacheable(key = "'selectOne'+(#p0.authorizationId>0?#p0.authorizationId:(#p0.userId+'-'+#p0.permissionId))", condition = "true")
 	public AuthorizationBo selectOne(AuthorizationPo authorizationPo) {
+		logger.info("selectOne:{}", authorizationPo);
 		return authorizationMapper.selectOne(authorizationPo);
 	}
 
 	@Cacheable(key = "'selectSome'+#p0", condition = "true")
 	public List<AuthorizationBo> selectSome(AuthorizationQuery authorizationQuery) {
+		logger.info("selectSome:{}", authorizationQuery);
 		return authorizationMapper.selectSome(authorizationQuery);
 	}
 
 	@Cacheable(key = "'selectCount'+#p0", condition = "true")
 	public int selectCount(AuthorizationQuery authorizationQuery) {
+		logger.info("selectCount:{}", authorizationQuery);
 		return authorizationMapper.selectCount(authorizationQuery);
 	}
 
 	@Cacheable(key = "'selectAll'", condition = "true")
 	public List<AuthorizationBo> selectAll() {
+		logger.info("selectAll");
 		return authorizationMapper.selectAll();
 	}
 
@@ -49,17 +56,27 @@ public class AuthorizationCache implements AuthorizationDao {
 			@CacheEvict(key = "'selectAll'"),
 	})
 	public int insert(AuthorizationPo authorizationPo) {
+		logger.info("insert:{}", authorizationPo);
 		return authorizationMapper.insert(authorizationPo);
 	}
 
 	@Caching(evict = {
+			@CacheEvict(key = "'selectOne'+#p0.authorizationId"),
+			@CacheEvict(key = "'selectOne'+(#p0.userId+'-'+#p0.permissionId)"),
 			@CacheEvict(key = "'selectAll'"),
 	})
 	public int delete(AuthorizationPo authorizationPo) {
+		logger.info("delete:{}", authorizationPo);
 		return authorizationMapper.delete(authorizationPo);
 	}
 
+	@Caching(evict = {
+			@CacheEvict(key = "'selectOne'+#p0.authorizationId"),
+			@CacheEvict(key = "'selectOne'+(#p0.userId+'-'+#p0.permissionId)"),
+			@CacheEvict(key = "'selectAll'"),
+	})
 	public int update(AuthorizationPo authorizationPo) {
+		logger.info("update:{}", authorizationPo);
 		return authorizationMapper.update(authorizationPo);
 	}
 }

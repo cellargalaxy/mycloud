@@ -72,11 +72,11 @@ public class FileServiceImpl implements FileService {
 		}};
 	}
 
-	@Override
-	public String uploadFile(OwnPo ownPo, File file, String contentType) throws IOException {
-		logger.info("uploadFile:{}, {}, {}", ownPo, file, contentType);
-		return uploadFileTaskExecute.uploadFile(ownPo, file, contentType);
-	}
+//	@Override
+//	public String uploadFile(OwnPo ownPo, File file, String contentType) throws IOException {
+//		logger.info("uploadFile:{}, {}, {}", ownPo, file, contentType);
+//		return uploadFileTaskExecute.uploadFile(ownPo, file, contentType);
+//	}
 
 	@Override
 	public String executeUploadFileTask(UserPo userPo, OwnPo ownPo, File file, String contentType) {
@@ -116,11 +116,11 @@ public class FileServiceImpl implements FileService {
 		taskService.addWaitTask(new DownloadFileTask(userPo, fileInfoPo, file));
 	}
 
-	@Override
-	public String removeFile(FileInfoPo fileInfoPo) {
-		logger.info("removeFile:{}", fileInfoPo);
-		return removeFileTaskExecute.removeFileInfo(fileInfoPo);
-	}
+//	@Override
+//	public String removeFile(FileInfoPo fileInfoPo) {
+//		logger.info("removeFile:{}", fileInfoPo);
+//		return removeFileTaskExecute.removeFileInfo(fileInfoPo);
+//	}
 
 	@Override
 	public String executeRemoveFileTask(UserPo userPo, FileInfoPo fileInfoPo) {

@@ -14,7 +14,7 @@ import java.util.List;
 public interface PermissionService {
 	String addPermission(PermissionPo permissionPo);
 
-	String removePermission(PermissionQuery permissionQuery);
+	String removePermission(PermissionPo permissionPo);
 
 	PermissionBo getPermission(PermissionQuery permissionQuery);
 

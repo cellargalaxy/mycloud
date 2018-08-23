@@ -38,8 +38,9 @@ public class FileAdminController {
 	}
 
 	@PostMapping("/removeFile")
-	public Vo removeFileTask(FileInfoPo fileInfoPo) {
-		String string = fileService.removeFile(fileInfoPo);
+	public Vo removeFileTask(HttpServletRequest request, FileInfoPo fileInfoPo) {
+		UserPo userPo = (UserPo) request.getAttribute(UserUserController.USER_KEY);
+		String string = fileService.executeRemoveFileTask(userPo, fileInfoPo);
 		logger.info("removeFile:{}", string);
 		return new Vo(string, null);
 	}

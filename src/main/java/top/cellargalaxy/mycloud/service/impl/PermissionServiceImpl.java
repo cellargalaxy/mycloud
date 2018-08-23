@@ -49,9 +49,9 @@ public class PermissionServiceImpl implements PermissionService {
 	}
 
 	@Override
-	public String removePermission(PermissionQuery permissionQuery) {
-		logger.info("removePermission:{}", permissionQuery);
-		int i = permissionDao.delete(permissionQuery);
+	public String removePermission(PermissionPo permissionPo) {
+		logger.info("removePermission:{}", permissionPo);
+		int i = permissionDao.delete(permissionPo);
 		if (i == 0) {
 			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
 			return "权限空删除";

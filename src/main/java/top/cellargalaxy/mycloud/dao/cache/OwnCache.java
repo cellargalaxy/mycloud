@@ -1,5 +1,7 @@
 package top.cellargalaxy.mycloud.dao.cache;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
@@ -21,31 +23,37 @@ import java.util.List;
 @Repository
 @CacheConfig(cacheNames = "own")
 public class OwnCache implements OwnDao {
+	private Logger logger = LoggerFactory.getLogger(OwnCache.class);
 	@Autowired
 	private OwnMapper ownMapper;
 
-	@Cacheable(key = "'selectOne'+#p0", condition = "true")
+	@Cacheable(key = "'selectOne'+(#p0.ownId>0?#p0.ownId:(#p0.userId+'-'+#p0.fileId))", condition = "true")
 	public OwnBo selectOne(OwnPo ownPo) {
+		logger.info("selectOne:{}", ownPo);
 		return ownMapper.selectOne(ownPo);
 	}
 
 	@Cacheable(key = "'selectSome'+#p0", condition = "true")
 	public List<OwnBo> selectSome(OwnQuery ownQuery) {
+		logger.info("selectSome:{}", ownQuery);
 		return ownMapper.selectSome(ownQuery);
 	}
 
 	@Cacheable(key = "'selectCount'+#p0", condition = "true")
 	public int selectCount(OwnQuery ownQuery) {
+		logger.info("selectCount:{}", ownQuery);
 		return ownMapper.selectCount(ownQuery);
 	}
 
 	@Cacheable(key = "'selectAll'", condition = "true")
 	public List<OwnBo> selectAll() {
+		logger.info("selectAll");
 		return ownMapper.selectAll();
 	}
 
 	@Cacheable(key = "'selectSort'+#p0", condition = "true")
 	public List<String> selectSort(OwnQuery ownQuery) {
+		logger.info("selectSort:{}", ownQuery);
 		return ownMapper.selectSort(ownQuery);
 	}
 
@@ -54,21 +62,27 @@ public class OwnCache implements OwnDao {
 			@CacheEvict(key = "'selectAll'"),
 	})
 	public int insert(OwnPo ownPo) {
+		logger.info("insert:{}", ownPo);
 		return ownMapper.insert(ownPo);
 	}
 
 	@Caching(evict = {
+			@CacheEvict(key = "'selectOne'+#p0.ownId"),
+			@CacheEvict(key = "'selectOne'+(#p0.userId+'-'+#p0.fileId)"),
 			@CacheEvict(key = "'selectAll'"),
 	})
 	public int delete(OwnPo ownPo) {
+		logger.info("delete:{}", ownPo);
 		return ownMapper.delete(ownPo);
 	}
 
-
 	@Caching(evict = {
+			@CacheEvict(key = "'selectOne'+#p0.ownId"),
+			@CacheEvict(key = "'selectOne'+(#p0.userId+'-'+#p0.fileId)"),
 			@CacheEvict(key = "'selectAll'"),
 	})
 	public int update(OwnPo ownPo) {
+		logger.info("update:{}", ownPo);
 		return ownMapper.update(ownPo);
 	}
 }

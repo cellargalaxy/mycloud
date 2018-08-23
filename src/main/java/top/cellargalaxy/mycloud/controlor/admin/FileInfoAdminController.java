@@ -23,12 +23,13 @@ public class FileInfoAdminController {
 	@Autowired
 	private FileInfoService fileInfoService;
 
-	@PostMapping("/removeFileInfo")
-	public Vo removeFileInfo(FileInfoQuery fileInfoQuery) {
-		String string = fileInfoService.removeFileInfo(fileInfoQuery);
-		logger.info("removeFileInfo:{}", string);
-		return new Vo(string, null);
-	}
+	//不允许直接删除fileInfo，要在fileContriller里删除，修改同理
+//	@PostMapping("/removeFileInfo")
+//	public Vo removeFileInfo(FileInfoQuery fileInfoQuery) {
+//		String string = fileInfoService.removeFileInfo(fileInfoQuery);
+//		logger.info("removeFileInfo:{}", string);
+//		return new Vo(string, null);
+//	}
 
 	@GetMapping("/getFileInfo")
 	public Vo getFileInfo(FileInfoQuery fileInfoQuery) {
@@ -66,12 +67,12 @@ public class FileInfoAdminController {
 		return new Vo(null, fileInfoService.listContentType());
 	}
 
-	@PostMapping("/changeFileInfo")
-	public Vo changeFileInfo(FileInfoPo fileInfoPo) {
-		String string = fileInfoService.changeFileInfo(fileInfoPo);
-		logger.info("changeFileInfo:{}", string);
-		return new Vo(string, null);
-	}
+//	@PostMapping("/changeFileInfo")
+//	public Vo changeFileInfo(FileInfoPo fileInfoPo) {
+//		String string = fileInfoService.changeFileInfo(fileInfoPo);
+//		logger.info("changeFileInfo:{}", string);
+//		return new Vo(string, null);
+//	}
 
 	@GetMapping("/checkAddFileInfo")
 	public Vo checkAddFileInfo(FileInfoPo fileInfoPo) {

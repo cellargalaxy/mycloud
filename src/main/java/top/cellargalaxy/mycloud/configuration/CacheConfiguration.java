@@ -37,7 +37,7 @@ public class CacheConfiguration {
 		Map<String, RedisCacheConfiguration> redisCacheConfigurationMap = new HashMap<>();
 		redisCacheConfigurationMap.put("block", createRedisCacheConfigurationWithTtl(year));
 		redisCacheConfigurationMap.put("fileBlock", createRedisCacheConfigurationWithTtl(year));
-		redisCacheConfigurationMap.put("fileInfo", createRedisCacheConfigurationWithTtl(hour));
+		redisCacheConfigurationMap.put("fileInfo", createRedisCacheConfigurationWithTtl(minute));
 		redisCacheConfigurationMap.put("task", createRedisCacheConfigurationWithTtl(minute));
 		redisCacheConfigurationMap.put("own", createRedisCacheConfigurationWithTtl(minute));
 		redisCacheConfigurationMap.put("user", createRedisCacheConfigurationWithTtl(minute));

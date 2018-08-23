@@ -1,5 +1,7 @@
 package top.cellargalaxy.mycloud.dao.cache;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
@@ -21,26 +23,31 @@ import java.util.List;
 @Repository
 @CacheConfig(cacheNames = "block")
 public class BlockCache implements BlockDao {
+	private Logger logger = LoggerFactory.getLogger(BlockCache.class);
 	@Autowired
 	private BlockMapper blockMapper;
 
 	@Cacheable(key = "'selectOne'+#p0.blockId", condition = "true")
 	public BlockBo selectOne(BlockPo blockPo) {
+		logger.debug("selectOne:{}", blockPo);
 		return blockMapper.selectOne(blockPo);
 	}
 
 	@Cacheable(key = "'selectOne'+#p0.blockId", condition = "true")
 	public List<BlockBo> selectSome(BlockQuery blockQuery) {
+		logger.debug("selectSome:{}", blockQuery);
 		return blockMapper.selectSome(blockQuery);
 	}
 
 	@Cacheable(key = "'selectOne'+#p0.blockId", condition = "true")
 	public int selectCount(BlockQuery blockQuery) {
+		logger.debug("selectCount:{}", blockQuery);
 		return blockMapper.selectCount(blockQuery);
 	}
 
 	@Cacheable(key = "'selectAll'", condition = "true")
 	public List<BlockBo> selectAll() {
+		logger.debug("selectAll");
 		return blockMapper.selectAll();
 	}
 
@@ -49,6 +56,7 @@ public class BlockCache implements BlockDao {
 			@CacheEvict(key = "'selectAll'"),
 	})
 	public int insert(BlockPo blockPo) {
+		logger.debug("insert:{}", blockPo);
 		return blockMapper.insert(blockPo);
 	}
 
@@ -56,10 +64,15 @@ public class BlockCache implements BlockDao {
 			@CacheEvict(key = "'selectAll'"),
 	})
 	public int delete(BlockPo blockPo) {
+		logger.debug("delete:{}", blockPo);
 		return blockMapper.delete(blockPo);
 	}
 
+	@Caching(evict = {
+			@CacheEvict(key = "'selectAll'"),
+	})
 	public int update(BlockPo blockPo) {
+		logger.debug("update:{}", blockPo);
 		return blockMapper.update(blockPo);
 	}
 }

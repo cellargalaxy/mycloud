@@ -16,7 +16,8 @@ import java.util.Map;
 public interface FileService {
 	Map getDriveInfo();
 
-	String uploadFile(OwnPo ownPo, File file, String contentType) throws IOException;
+	//不允许上传文件而没有task日志
+//	String uploadFile(OwnPo ownPo, File file, String contentType) throws IOException;
 
 	String executeUploadFileTask(UserPo userPo, OwnPo ownPo, File file, String contentType);
 
@@ -30,7 +31,8 @@ public interface FileService {
 
 	void addDownloadFileTask(UserPo userPo, FileInfoPo fileInfoPo, File file);
 
-	String removeFile(FileInfoPo fileInfoPo);
+	//不允许删除文件而没有task日志
+//	String removeFile(FileInfoPo fileInfoPo);
 
 	String executeRemoveFileTask(UserPo userPo, FileInfoPo fileInfoPo);
 

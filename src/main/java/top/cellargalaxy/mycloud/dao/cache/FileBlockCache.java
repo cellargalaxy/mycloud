@@ -1,5 +1,7 @@
 package top.cellargalaxy.mycloud.dao.cache;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
@@ -21,45 +23,59 @@ import java.util.List;
 @Repository
 @CacheConfig(cacheNames = "fileBlock")
 public class FileBlockCache implements FileBlockDao {
+	private Logger logger = LoggerFactory.getLogger(FileBlockCache.class);
 	@Autowired
 	private FileBlockMapper fileBlockMapper;
 
-	@Cacheable(key = "'selectOne'+#p0", condition = "true")
+	@Cacheable(key = "'selectOne'+(#p0.fileId+'-'+#p0.blockId)", condition = "true")
 	public FileBlockBo selectOne(FileBlockPo fileBlockPo) {
+		logger.debug("selectOne:{}", fileBlockPo);
 		return fileBlockMapper.selectOne(fileBlockPo);
 	}
 
 	@Cacheable(key = "'selectSome'+#p0", condition = "true")
 	public List<FileBlockBo> selectSome(FileBlockQuery fileBlockQuery) {
+		logger.debug("selectSome:{}", fileBlockQuery);
 		return fileBlockMapper.selectSome(fileBlockQuery);
 	}
 
 	@Cacheable(key = "'selectCount'+#p0", condition = "true")
 	public int selectCount(FileBlockQuery fileBlockQuery) {
+		logger.debug("selectCount:{}", fileBlockQuery);
 		return fileBlockMapper.selectCount(fileBlockQuery);
 	}
 
 	@Cacheable(key = "'selectAll'", condition = "true")
 	public List<FileBlockBo> selectAll() {
+		logger.debug("selectAll");
 		return fileBlockMapper.selectAll();
 	}
 
 	//
 	@Caching(evict = {
+			@CacheEvict(key = "'selectOne'+(#p0.fileId+'-'+#p0.blockId)"),
 			@CacheEvict(key = "'selectAll'"),
 	})
 	public int insert(FileBlockPo fileBlockPo) {
+		logger.debug("insert:{}", fileBlockPo);
 		return fileBlockMapper.insert(fileBlockPo);
 	}
 
 	@Caching(evict = {
+			@CacheEvict(key = "'selectOne'+(#p0.fileId+'-'+#p0.blockId)"),
 			@CacheEvict(key = "'selectAll'"),
 	})
 	public int delete(FileBlockPo fileBlockPo) {
+		logger.debug("delete:{}", fileBlockPo);
 		return fileBlockMapper.delete(fileBlockPo);
 	}
 
+	@Caching(evict = {
+			@CacheEvict(key = "'selectOne'+(#p0.fileId+'-'+#p0.blockId)"),
+			@CacheEvict(key = "'selectAll'"),
+	})
 	public int update(FileBlockPo fileBlockPo) {
+		logger.debug("update:{}", fileBlockPo);
 		return fileBlockMapper.update(fileBlockPo);
 	}
 }
