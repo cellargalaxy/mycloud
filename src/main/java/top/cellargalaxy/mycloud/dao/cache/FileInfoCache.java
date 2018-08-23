@@ -24,22 +24,19 @@ public class FileInfoCache implements FileInfoDao {
 	@Autowired
 	private FileInfoMapper fileInfoMapper;
 
-	@Cacheable(key = "'selectOne'+#p0", condition = "true")
+	@Cacheable(key = "'selectOne'+#p0.md5!=null?#p0.md5:#p0.fileId", condition = "#p0.md5!=null||#p0.fileId>0")
 	public FileInfoBo selectOne(FileInfoPo fileInfoPo) {
 		return fileInfoMapper.selectOne(fileInfoPo);
 	}
 
-	@Cacheable(key = "'selectSome'+#p0", condition = "true")
 	public List<FileInfoBo> selectSome(FileInfoQuery fileInfoQuery) {
 		return fileInfoMapper.selectSome(fileInfoQuery);
 	}
 
-	@Cacheable(key = "'selectCount'+#p0", condition = "true")
 	public int selectCount(FileInfoQuery fileInfoQuery) {
 		return fileInfoMapper.selectCount(fileInfoQuery);
 	}
 
-	@Cacheable(key = "'selectAll'", condition = "true")
 	public List<FileInfoBo> selectAll() {
 		return fileInfoMapper.selectAll();
 	}
@@ -51,7 +48,8 @@ public class FileInfoCache implements FileInfoDao {
 
 	//
 	@Caching(evict = {
-			@CacheEvict(key = "'selectAll'"),
+			@CacheEvict(key = "'selectOne'+#p0.fileId"),
+			@CacheEvict(key = "'selectOne'+#p0.md5"),
 			@CacheEvict(key = "'selectContentType'"),
 	})
 	public int insert(FileInfoPo fileInfoPo) {
@@ -59,7 +57,8 @@ public class FileInfoCache implements FileInfoDao {
 	}
 
 	@Caching(evict = {
-			@CacheEvict(key = "'selectAll'"),
+			@CacheEvict(key = "'selectOne'+#p0.fileId"),
+			@CacheEvict(key = "'selectOne'+#p0.md5"),
 			@CacheEvict(key = "'selectContentType'"),
 	})
 	public int delete(FileInfoPo fileInfoPo) {
@@ -67,6 +66,8 @@ public class FileInfoCache implements FileInfoDao {
 	}
 
 	@Caching(evict = {
+			@CacheEvict(key = "'selectOne'+#p0.fileId"),
+			@CacheEvict(key = "'selectOne'+#p0.md5"),
 			@CacheEvict(key = "'selectContentType'"),
 	})
 	public int update(FileInfoPo fileInfoPo) {
