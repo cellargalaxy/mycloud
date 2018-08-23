@@ -1,0 +1,68 @@
+spring:
+  datasource:
+    druid:
+      url: jdbc:mysql://${MYCLOUD_MYSQL_IP_PORT}/${MYCLOUD_MYSQL_DATABASE_NAME:mycloud}?useUnicode=true&characterEncoding=UTF8&useSSL=false
+      driver-class-name: com.mysql.jdbc.Driver
+      username: ${MYCLOUD_MYSQL_USERNAME:root}
+      password: ${MYCLOUD_MYSQL_PASSWORD}
+#      初始化大小，最小，最大
+      initial-size: 2
+      min-idle: 2
+      max-active: 5
+#      获取连接等待超时的时间
+      max-wait: 60000
+      validation-query-timeout: 28000
+      test-while-idle: true
+      validation-query: SELECT'x'
+      filters: stat,wall,slf4j
+      test-on-borrow: false
+      pool-prepared-statements: false
+      test-on-return: false
+#      间隔多久检测需要关闭的空闲连接，单位毫秒
+      time-between-eviction-runs-millis: 28000
+      stat-view-servlet:
+        enabled: true
+        reset-enable: false
+        url-pattern: /druid/*
+#        有security的jwt就不需要设账号密码了
+#        login-username:
+#        login-password:
+#        allow:
+#        deny:
+      web-stat-filter:
+        enabled: true
+        url-pattern: /*
+        exclusions: '*.js,*.gif,*.jpg,*.bmp,*.png,*.css,*.ico,/druid/*'
+  jackson:
+    serialization:
+#    json返回时间戳
+      write-dates-as-timestamps: true
+  cache:
+    type: REDIS
+  redis:
+    host: ${MYCLOUD_REDIS_IP}
+    port: ${MYCLOUD_REDIS_PORT:6379}
+    database: 0
+    password: ${MYCLOUD_REDIS_PASSWORD}
+    jedis:
+      pool:
+        max-idle: 8
+        min-idle: 1
+blobLength: ${MYCLOUD_BLOB_LENGTH:65535}
+taskDetailLength: ${MYCLOUD_TASH_DETAIL_LENGTH:1024}
+webUploadMaxFileSize: ${MYCLOUD_WEB_UPLOAD_MAX_FILE_SIZE:1024MB}
+webUploadMaxRequestSize: ${MYCLOUD_WEB_UPLOAD_MAX_REQUEST_SIZE:1024MB}
+mycloudPath: ${MYCLOUD_PATH:}
+mycloudTmpPath: ${MYCLOUD_TMP_PATH:}
+mycloudDrivePath: ${MYCLOUD_DRIVE_PATH:}
+domain: ${MYCLOUD_DOMAIN}
+restoreFileToLocal: ${MYCLOUD_RESTORE_FILE_TO_LOCAL:false}
+secret: ${MYCLOUD_SECRET}
+
+#logging:
+#  level:
+#    top:
+#      cellargalaxy:
+#        mycloud:
+#          dao:
+#            '*': DEBUG

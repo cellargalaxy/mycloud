@@ -1,0 +1,62 @@
+version: '2'
+services:
+    mysql_mycloud:
+        image: mysql:5.7.21
+        container_name: mysql_mycloud
+        volumes:
+            - mysql_mycloud:/var/lib/mysql
+            - ./mysql.cnf:/etc/mysql/my.cnf
+            - ./mycloud.sql:/docker-entrypoint-initdb.d/mycloud.sql
+        restart: always
+        environment:
+            MYSQL_DATABASE: mycloud
+            MYSQL_ROOT_PASSWORD: mysqlPw123456
+            
+    redis_mycloud:
+        image: redis:latest
+        container_name: redis_mycloud
+        restart: always
+        expose:
+            - "6379"
+        volumes:
+            - redis_mycloud:/data
+            - ./redis.conf:/etc/redis/redis.conf
+        command: redis-server /etc/redis/redis.conf --requirepass redisPw
+    
+    mycloud:
+        image: frolvlad/alpine-oraclejdk8:slim
+        depends_on:
+            - mysql_mycloud
+            - redis_mycloud
+        restart: always
+        environment:
+            MYCLOUD_MYSQL_IP_PORT: mysql_mycloud:3306
+            MYCLOUD_MYSQL_DATABASE_NAME: mycloud
+            MYCLOUD_MYSQL_USERNAME: root
+            MYCLOUD_MYSQL_PASSWORD: mysqlPw123456
+            
+            MYCLOUD_REDIS_IP: redis_mycloud
+            MYCLOUD_REDIS_PORT: 6379
+            MYCLOUD_REDIS_PASSWORD: redisPw
+            
+            MYCLOUD_DOMAIN: http://drive.cellargalaxy.top
+            MYCLOUD_SECRET: mycloud
+            MYCLOUD_RESTORE_FILE_TO_LOCAL: 'false'
+            
+            MYCLOUD_BLOB_LENGTH: 65535
+            MYCLOUD_TASH_DETAIL_LENGTH: 1024
+            MYCLOUD_WEB_UPLOAD_MAX_FILE_SIZE: 1024MB
+            MYCLOUD_WEB_UPLOAD_MAX_REQUEST_SIZE: 1024MB
+            MYCLOUD_PATH: /root/mycloud
+            MYCLOUD_TMP_PATH: /root/mycloud/tmp
+            MYCLOUD_DRIVE_PATH: /root/mycloud/drive
+        volumes:
+            - ./mycloud.jar:/root/mycloud.jar
+            - mycloud:/root/mycloud
+        command: java -jar /root/mycloud.jar
+        ports:
+            - "80:8080"
+volumes:
+    mysql_mycloud:
+    redis_mycloud:
+    mycloud:

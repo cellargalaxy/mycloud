@@ -1,0 +1,15 @@
+version: '2'
+services:
+    mysql_mycloud:
+        image: mysql:5.7.21
+        container_name: mysql_mycloud
+        volumes:
+            - mysql_mycloud:/var/lib/mysql
+            - ./mysql.cnf:/etc/mysql/my.cnf
+            - ./mycloud.sql:/docker-entrypoint-initdb.d/mycloud.sql
+        restart: always
+        environment:
+            MYSQL_DATABASE: mycloud
+            MYSQL_ROOT_PASSWORD: mysqlPw123456
+volumes:
+    mysql_mycloud:
