@@ -1,117 +1,99 @@
 # 我的文件服务器 mycloud
 
 ## 关于mycloud
-自用，主要用来做图床，以及做文件服务器。
+自用，但支持多用户。主要用来做图床，随便做文件服务器。
 
-其实文件服务器部分的功能是由tomcat自带的文件服务功能实现的。mycloud的作用只是负责文件的上传、备份和恢复。
+其实文件服务器部分的功能是由nginx或者tomcat提供。
+
+mycloud的作用只是负责文件的上传、备份和恢复。
+
+但通过docker能方便一口气安装
 
 ## 如何使用
-1.首先配置一个tomcat文件服务，这里就不详细怎么配置了，可以去看[tomcat 创建虚拟目录(文件服务器)](http://langmnm.iteye.com/blog/2073489 "tomcat 创建虚拟目录(文件服务器)")
+需要先自行安装docker和docker-compose，[参考](https://yeasy.gitbooks.io/docker_practice/ "参考")
 
-2.假设你的配置是这样子的
-```xml
-<?xml version='1.0' encoding='utf-8'?>
-<Context docBase="/root/drive" path="/drive"></Context>
+获取项目的docker目录及其下面的全部文件，并进入
+
+```shell
+git clone https://github.com/cellargalaxy/mycloud.git
+cd mycloud/docker
 ```
-当然，由于这是起文件服务器的作用，用其他例如nginx来代替也是可以的
 
-3.配置mycloud的`application.properties`文件，需要进行配置的有
+### 第一种使用方式：单机版，会通过docker把mysql，reids，mycloud和nginx都装上
 
-（1）数据库的url，账号和密码
+需要先在配置文件`all.yml`里，给`MYCLOUD_SECRET`字段设置个jwt的密匙，其余按喜好修改
 
-（2）设置一个口令`token`作为登录的使用api的密码啥的
+然后构建，就会创建名为mycloud，redis_mycloud，nginx_mycloud和mysql_mycloud的容器
 
-（3）设置`fileDriveRootPath`，即tomcat服务器配置的`/root/drive`
+```shell
+./all.sh
+```
 
-（4）设置`fileServerRootPath`，即tomcat服务器配置的`/drive`
+mycloud默认暴露端口为18088，nginx默认暴露端口为18089
 
-其余的可以不进行配置
+mycloud的管理员账号默认为mycloud，密码默认为mycloud
 
-4.创建数据库
-请看[sql.txt](https://github.com/cellargalaxy/mycloud/blob/master/src/main/resources/sql.txt "sql.txt")
+如果浏览器打开`http://hostname:18088/login?username=mycloud&password=mycloud`
 
+显示的是如下东西，那么mycloud就安装成功了
+
+```aidl
+{
+    "data":"eyJhbGciOiJIUzUxMiJ9.eyJ1c2VySWQiOjEsImNyZWF0ZVRpbWUiOjE1MzMwODE2MDAwMDAsInVwZGF0ZVRpbWUiOjE1MzMwODE2MDAwMDAsInBlcm1pc3Npb25zIjoiUk9PVCxBRE1JTixVU0VSIiwic3ViIjoibXljbG91ZCIsImV4cCI6MTUzNTEwMTYwNX0.o7uQ5E6EBy6_yn8CjYFJSCvG2HwRLUILDtJZ0Ci7dnrHeDFPrE6PJbLu7C2ljVU6LRjBHg1buux3omhCAWU7GQ",
+    "massage":null,
+    "status":1
+}
+```
+
+如果浏览器打开`http://hostname:18089`显示的是404，那nginx也安装成功了
+
+404的原因是mycloud默认不会把文件下载到本地，可以在web页面设置把文件同步到本地
+
+### 第二种使用方式：集群，需要先单独安装一个主mysql，再安装reids，mycloud和nginx，从mysql按需安装
+
+1. 安装主mysql，mysql_master.yml文件的`MYSQL_ROOT_PASSWORD`字段设置个密码，其余按喜好修改
+
+然后构建主mysql容器
+
+```shell
+./mysql_master.sh
+```
+
+默认会往外暴露3306端口用于连接，all.yml是不会往外暴露端口的
+
+默认会创建一个名叫mycloud的数据库，并初始化数据
+
+自行测试是否安装成功
+
+2. 安装reids，mycloud和nginx，cluster.yml文件设置刚刚安装好的主mysql的ip端口，密码，以及mycloud的jwt的密匙，其余按喜好修改
+
+然后构建reids，mycloud和nginx
+
+```shell
+./cluster.sh
+```
+
+测试方法同上
+
+3. 安装从mysql，从mysql用于备份，给master_mysql.yml文件的`MYSQL_ROOT_PASSWORD`字段设置个密码，其余按喜好修改
+
+然后构建从mysql容器
+
+```shell
+./mysql_slave.sh
+```
+
+情况同主mysql
 
 ## api
-
-目前只暴露了两个接口，一个是上传文件的接口，一个是按日期来查询文件的接口
-
-#### 上传文件接口请求
-post，url: `api/uploadFile`
-
-参数：
-
-`token`token口令，必选("mycloud")
-
-`file`需要上传的文件，必选(file)
-
-`date`文件的上传日期，可选，不设置则是默认当日("2017-7-7")
-
-`description`对文件的描述，可选("smoe description")
-
-`status`是否把文件备份到数据库，可选，值为1是表示备份到数据库，为空或者其余数值表示不备份到数据库(1)
-
-***应当知道，由于数据库是以文件名和上传日期为主码，所以当多次上传同样的文件名和日期的文件时，磁盘文件和数据库备份都是使后文件覆盖前文件。鉴于是自己使用，文件量不多，也是没毛病的。***
-
-***还有，文件上传大小默认限制为1000MB以内。但是由于数据库的blob大小最大为16MB，所以虽然大于16MB的文件可以上传，但是就算在上传时`stauts`设置为`1`也好，文件也不会备份到数据库。***
-
-#### 上传文件接口响应
-```json
-{
-    success : 0 | 1, //0表示上传失败;1表示上传成功
-    message : "提示的信息",
-    url     : "图片地址" //上传成功时才返回
-}
-```
-
-#### 按日期来查询文件接口请求
-get，url `api/inquireByDate`
-
-参数：
-
-`token`token口令，必选("mycloud")
-
-`date`所查询的文件上传日期，必选("2017-7-7")
-
-#### 按日期来查询文件接口响应
-```json
-{
-    "result": true, 
-    "data": [
-        {
-            "filename": "xxx1.jpg", 
-            "date": "2012-02-02", 
-            "description": "description", 
-            "fileLength": 123456, 
-            "fileSha256": "SHA256", 
-            "url": "http://url"
-        }, 
-        {
-            "filename": "xxx2.jpg", 
-            "date": "2012-02-02", 
-            "description": "description", 
-            "fileLength": 123456, 
-            "fileSha256": "SHA256", 
-            "url": "http://url"
-        }
-    ]
-}
-```
-
-
-## 效果
-[![](http://drive.cellargalaxy.top/201712/05/选区_001.png)](http://drive.cellargalaxy.top/201712/05/选区_001.png)
-
-[![](http://drive.cellargalaxy.top/201712/05/mycloud后台管理.png)](http://drive.cellargalaxy.top/201712/05/mycloud后台管理.png)
+只有一个了，文件的直链接口：`配置文件的域名+文件的MD5`
 
 ## 更新日志
+2018-8-24
 
-2018-1-10
+完全改版，不用模板引擎只做接口
 
-添加文件自动任务，每隔一个小时跟数据库同步一次
-
-2018-1-18
-
-整理了一下,修理了个js上传的bug,添加了显示文件大小
+支持多用户，文件分块，jwt验证，任务日志，集群任务同步，redis缓存，异常栈在线查看
 
 2018-1-22
 
@@ -120,3 +102,11 @@ get，url `api/inquireByDate`
 自动同步修改为启动延时十分钟，然后隔3个小时同步一次
 
 修复自动同步的逻辑bug
+
+2018-1-18
+
+整理了一下,修理了个js上传的bug,添加了显示文件大小
+
+2018-1-10
+
+添加文件自动任务，每隔一个小时跟数据库同步一次

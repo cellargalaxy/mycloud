@@ -10,7 +10,7 @@ services:
         restart: always
         environment:
             MYSQL_DATABASE: mycloud
-            MYSQL_ROOT_PASSWORD: mysql123
+            MYSQL_ROOT_PASSWORD:
         ports:
          - "3306:3306"
 volumes:
