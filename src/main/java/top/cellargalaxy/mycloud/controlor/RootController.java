@@ -15,6 +15,7 @@ import top.cellargalaxy.mycloud.service.FileService;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.Date;
 
 /**
  * Created by cellargalaxy on 18-8-5.
@@ -24,6 +25,7 @@ import java.io.OutputStream;
 public class RootController {
 	public static final String URL = "";
 	private Logger logger = LoggerFactory.getLogger(RootController.class);
+	private static final long expires = 1000 * 60 * 60 * 24 * 30 * 12 * 10;
 	@Autowired
 	private FileService fileService;
 	@Autowired
@@ -39,6 +41,7 @@ public class RootController {
 		if (fileInfoPo == null) {
 			return;
 		}
+		response.setHeader("expires", new Date(System.currentTimeMillis() + expires).toString());
 		response.setContentLength((int) fileInfoPo.getFileLength());
 		response.setContentType(fileInfoPo.getContentType());
 		try (OutputStream outputStream = response.getOutputStream()) {
