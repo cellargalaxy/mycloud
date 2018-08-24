@@ -31,7 +31,7 @@ public class TaskSchedule {
 	@Autowired
 	private TaskExecuteFactory taskExecuteFactory;
 
-	@Scheduled(fixedDelay = 1000 * 5)
+	@Scheduled(fixedDelay = 1000)
 	public void schedule() {
 		try {
 			currentTask = getWaitTask();
