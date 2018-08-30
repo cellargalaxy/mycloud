@@ -1,17 +1,18 @@
 version: '2'
 services:
-    mysql_slave_mycloud:
-        image: mysql:5.7.21
-        container_name: mysql_slave_mycloud
-        volumes:
-            - mysql_mycloud:/var/lib/mysql
-            - ./mysql_slave.cnf:/etc/mysql/my.cnf
-            - ./mycloud.sql:/docker-entrypoint-initdb.d/mycloud.sql
-        restart: always
-        environment:
-            MYSQL_DATABASE: mycloud
-            MYSQL_ROOT_PASSWORD:
-        ports:
-         - "3306:3306"
+  mysql_slave_mycloud:
+    image: mysql:5.7.21
+    container_name: mysql_slave_mycloud
+    volumes:
+      - mysql_slave_mycloud:/var/lib/mysql
+      - ./mysql_slave.cnf:/etc/mysql/my.cnf
+      - ./mycloud.sql:/docker-entrypoint-initdb.d/mycloud.sql
+    restart: always
+    environment:
+      MYSQL_DATABASE: mycloud
+      MYSQL_ROOT_PASSWORD: mysqlpw123
+    ports:
+      - "3306:3306"
+
 volumes:
-    mysql_mycloud:
+  mysql_slave_mycloud:

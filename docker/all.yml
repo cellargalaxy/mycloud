@@ -1,75 +1,62 @@
 version: '2'
 services:
-    mysql_mycloud:
-        image: mysql:5.7.21
-        container_name: mysql_mycloud
-        volumes:
-            - mysql_mycloud:/var/lib/mysql
-            - ./all_mysql.cnf:/etc/mysql/my.cnf
-            - ./mycloud.sql:/docker-entrypoint-initdb.d/mycloud.sql
-        restart: always
-        environment:
-            MYSQL_DATABASE: mycloud
-            MYSQL_ROOT_PASSWORD: mysqlpw123
-            
-    redis_mycloud:
-        image: redis:latest
-        container_name: redis_mycloud
-        restart: always
-        volumes:
-            - redis_mycloud:/data
-            - ./redis.conf:/etc/redis/redis.conf
-        command: redis-server /etc/redis/redis.conf --requirepass redispw
-        
-    mycloud:
-        image: frolvlad/alpine-oraclejdk8:slim
-        container_name: mycloud
-        depends_on:
-            - mysql_mycloud
-            - redis_mycloud
-        restart: always
-        environment:
-            MYCLOUD_MYSQL_IP_PORT: mysql_mycloud:3306
-            MYCLOUD_MYSQL_DATABASE_NAME: mycloud
-            MYCLOUD_MYSQL_USERNAME: root
-            MYCLOUD_MYSQL_PASSWORD: mysqlpw123
-            
-            MYCLOUD_REDIS_IP: redis_mycloud
-            MYCLOUD_REDIS_PORT: 6379
-            MYCLOUD_REDIS_PASSWORD: redispw
-            
-            MYCLOUD_DOMAIN: http://drive.cellargalaxy.top
-            MYCLOUD_SECRET: 
-            MYCLOUD_RESTORE_FILE_TO_LOCAL: 'false'
-            
-            MYCLOUD_BLOB_LENGTH: 65535
-            MYCLOUD_TASH_DETAIL_LENGTH: 1024
-            MYCLOUD_WEB_UPLOAD_MAX_FILE_SIZE: 1024MB
-            MYCLOUD_WEB_UPLOAD_MAX_REQUEST_SIZE: 1024MB
-            MYCLOUD_PATH: /root/mycloud
-            MYCLOUD_TMP_PATH: /root/mycloud/tmp
-            MYCLOUD_DRIVE_PATH: /root/mycloud/drive
-        volumes:
-            - ./mycloud.jar:/root/mycloud.jar
-            - mycloud:/root/mycloud
-        command: java -jar /root/mycloud.jar
-        ports:
-            - 18088:8080
-            
-    nginx:
-        image: nginx:1.15.2
-        container_name: nginx_mycloud
-        restart: always
-        ports:
-            - 18089:80
-        volumes:
-            - nginx_myclou_conf:/etc/nginx/conf.d
-            - ./nginx.conf:/etc/nginx/conf.d/default.conf
-            - nginx_myclou_log:/var/log/nginx
-            - mycloud:/usr/share/nginx/mycloud
+  mysql_mycloud_all:
+    image: mysql:5.7.21
+    container_name: mysql_mycloud_all
+    volumes:
+      - mysql_mycloud_all:/var/lib/mysql
+      - ./all_mysql.cnf:/etc/mysql/my.cnf
+      - ./mycloud.sql:/docker-entrypoint-initdb.d/mycloud.sql
+    restart: always
+    environment:
+      MYSQL_DATABASE: mycloud
+      MYSQL_ROOT_PASSWORD: mysqlpw123
+
+  redis_mycloud_all:
+    image: redis:latest
+    container_name: redis_mycloud_all
+    restart: always
+    volumes:
+      - redis_mycloud_all:/data
+      - ./redis.conf:/etc/redis/redis.conf
+    command: redis-server /etc/redis/redis.conf --requirepass redispw
+
+  mycloud_all:
+    image: frolvlad/alpine-oraclejdk8:slim
+    container_name: mycloud_all
+    depends_on:
+      - mysql_mycloud_all
+      - redis_mycloud_all
+    restart: always
+    environment:
+      MYCLOUD_MYSQL_IP_PORT: mysql_mycloud_all:3306
+      MYCLOUD_MYSQL_DATABASE_NAME: mycloud
+      MYCLOUD_MYSQL_USERNAME: root
+      MYCLOUD_MYSQL_PASSWORD: mysqlpw123
+
+      MYCLOUD_REDIS_IP: redis_mycloud_all
+      MYCLOUD_REDIS_PORT: 6379
+      MYCLOUD_REDIS_PASSWORD: redispw
+
+      MYCLOUD_DOMAIN: http://drive.cellargalaxy.top
+      MYCLOUD_SECRET: MYCLOUD_SECRET
+      MYCLOUD_LOCAL_FILE_MAX_SPACE: 104857600
+
+      MYCLOUD_BLOB_LENGTH: 65535
+      MYCLOUD_TASH_DETAIL_LENGTH: 1024
+      MYCLOUD_WEB_UPLOAD_MAX_FILE_SIZE: 1024MB
+      MYCLOUD_WEB_UPLOAD_MAX_REQUEST_SIZE: 1024MB
+      MYCLOUD_PATH: /root/mycloud
+      MYCLOUD_TMP_PATH: /root/mycloud/tmp
+      MYCLOUD_DRIVE_PATH: /root/mycloud/drive
+    volumes:
+      - ./mycloud.jar:/root/mycloud.jar
+      - mycloud_all:/root/mycloud
+    command: java -jar /root/mycloud.jar
+    ports:
+      - 18088:8080
+
 volumes:
-    mysql_mycloud:
-    redis_mycloud:
-    mycloud:
-    nginx_myclou_conf:
-    nginx_myclou_log:
+  mysql_mycloud_all:
+  redis_mycloud_all:
+  mycloud_all:
