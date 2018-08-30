@@ -1,0 +1,15 @@
+version: '2'
+services:
+  redis_mycloud:
+    image: redis:latest
+    container_name: redis_mycloud
+    restart: always
+    volumes:
+      - redis_mycloud:/data
+      - ./redis.conf:/etc/redis/redis.conf
+    command: redis-server /etc/redis/redis.conf --requirepass redispw
+    ports:
+      - 6379:6379
+
+volumes:
+  redis_mycloud:
