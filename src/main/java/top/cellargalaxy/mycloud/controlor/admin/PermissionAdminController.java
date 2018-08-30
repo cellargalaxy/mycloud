@@ -19,7 +19,7 @@ import top.cellargalaxy.mycloud.service.PermissionService;
 @RequestMapping(PermissionAdminController.URL)
 public class PermissionAdminController {
 	public static final String URL = "/admin/permission";
-	private Logger logger = LoggerFactory.getLogger(PermissionAdminController.class);
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	@Autowired
 	private PermissionService permissionService;
 

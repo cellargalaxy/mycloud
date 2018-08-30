@@ -23,7 +23,7 @@ import java.util.List;
 @Repository
 @CacheConfig(cacheNames = "user")
 public class UserCache implements UserDao {
-	private Logger logger = LoggerFactory.getLogger(UserCache.class);
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	@Autowired
 	private UserMapper userMapper;
 

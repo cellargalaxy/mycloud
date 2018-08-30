@@ -8,25 +8,17 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import top.cellargalaxy.mycloud.configuration.MycloudConfiguration;
 import top.cellargalaxy.mycloud.dao.FileInfoDao;
-import top.cellargalaxy.mycloud.model.bo.FileBlockBo;
 import top.cellargalaxy.mycloud.model.bo.FileInfoBo;
 import top.cellargalaxy.mycloud.model.bo.OwnBo;
 import top.cellargalaxy.mycloud.model.po.*;
-import top.cellargalaxy.mycloud.model.query.BlockQuery;
-import top.cellargalaxy.mycloud.model.query.FileBlockQuery;
 import top.cellargalaxy.mycloud.model.query.FileInfoQuery;
 import top.cellargalaxy.mycloud.model.query.OwnQuery;
 import top.cellargalaxy.mycloud.model.vo.FileInfoOwnVo;
-import top.cellargalaxy.mycloud.service.BlockService;
-import top.cellargalaxy.mycloud.service.FileBlockService;
 import top.cellargalaxy.mycloud.service.FileInfoService;
 import top.cellargalaxy.mycloud.service.OwnService;
-import top.cellargalaxy.mycloud.util.FileBlocks;
 import top.cellargalaxy.mycloud.util.SqlUtil;
 import top.cellargalaxy.mycloud.util.StringUtil;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -37,7 +29,7 @@ import java.util.List;
 @Transactional
 @Service
 public class FileInfoServiceImpl implements FileInfoService {
-	private Logger logger = LoggerFactory.getLogger(FileInfoServiceImpl.class);
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	@Autowired
 	private FileInfoDao fileInfoDao;
 	@Autowired
@@ -155,6 +147,7 @@ public class FileInfoServiceImpl implements FileInfoService {
 
 	@Override
 	public String checkAddFileInfo(FileInfoPo fileInfoPo) {
+		logger.info("checkAddFileInfo:{}", fileInfoPo);
 		String string = FileInfoDao.checkInsert(fileInfoPo);
 		if (string != null) {
 			return string;
@@ -168,6 +161,7 @@ public class FileInfoServiceImpl implements FileInfoService {
 
 	@Override
 	public String checkChangeFileInfo(FileInfoPo fileInfoPo) {
+		logger.info("checkChangeFileInfo:{}", fileInfoPo);
 		String string = FileInfoDao.checkUpdate(fileInfoPo);
 		if (string != null) {
 			return string;

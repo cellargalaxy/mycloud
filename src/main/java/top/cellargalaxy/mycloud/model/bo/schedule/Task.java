@@ -19,12 +19,20 @@ public abstract class Task extends TaskVo implements Closeable {
 	private static final long serialVersionUID = 7062287537522505438L;
 	protected static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 	private final UserPo userPo;
-	private boolean persistent;
+	private final boolean persistent;
 
 	public Task(UserPo userPo, String taskSort) {
 		this.userPo = userPo;
 		persistent = true;
 		setUserId(userPo.getUserId());
+		setTaskSort(taskSort);
+		setCreateTime(new Date());
+		setStatus(TaskPo.WAIT_STATUS);
+	}
+
+	public Task(String taskSort) {
+		userPo = null;
+		persistent = false;
 		setTaskSort(taskSort);
 		setCreateTime(new Date());
 		setStatus(TaskPo.WAIT_STATUS);
@@ -50,10 +58,6 @@ public abstract class Task extends TaskVo implements Closeable {
 
 	public boolean isPersistent() {
 		return persistent;
-	}
-
-	public void setPersistent(boolean persistent) {
-		this.persistent = persistent;
 	}
 
 	@Override

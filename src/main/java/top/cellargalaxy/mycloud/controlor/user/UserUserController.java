@@ -21,7 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 public class UserUserController {
 	public static final String URL = "/user/user";
 	public static final String USER_KEY = "user";
-	private Logger logger = LoggerFactory.getLogger(FileUserController.class);
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	@Autowired
 	private UserService userService;
 

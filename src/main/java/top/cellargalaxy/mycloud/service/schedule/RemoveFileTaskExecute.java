@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import top.cellargalaxy.mycloud.model.bo.FileBlockBo;
 import top.cellargalaxy.mycloud.model.bo.OwnBo;
 import top.cellargalaxy.mycloud.model.bo.schedule.RemoveFileTask;
@@ -22,10 +23,11 @@ import java.util.List;
  * @author cellargalaxy
  * @time 2018/8/20
  */
+@Transactional
 @Service
 public class RemoveFileTaskExecute implements TaskExecute<RemoveFileTask> {
 	public static final String TASK_SORT = RemoveFileTask.TASK_SORT;
-	private Logger logger = LoggerFactory.getLogger(RemoveFileTaskExecute.class);
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	@Autowired
 	private FileInfoService fileInfoService;
 	@Autowired
@@ -45,24 +47,36 @@ public class RemoveFileTaskExecute implements TaskExecute<RemoveFileTask> {
 
 	public String removeFileInfo(FileInfoPo fileInfoPo) {
 		logger.info("removeFileInfo:{}", fileInfoPo);
-		fileInfoService.removeFileInfo(fileInfoPo);
+		String string = fileInfoService.removeFileInfo(fileInfoPo);
+		if (string != null) {
+			return string;
+		}
 
 		FileBlockQuery fileBlockQuery = new FileBlockQuery();
 		fileBlockQuery.setFileId(fileInfoPo.getFileId());
 		List<FileBlockBo> fileBlockBos = fileBlockService.listFileBlock(fileBlockQuery);
-		fileBlockService.removeFileBlock(fileBlockQuery);
+		string = fileBlockService.removeFileBlock(fileBlockQuery);
+		if (string != null) {
+			return string;
+		}
 
 		for (FileBlockBo fileBlockBo : fileBlockBos) {
 			BlockQuery blockQuery = new BlockQuery();
 			blockQuery.setBlockId(fileBlockBo.getBlockId());
-			blockService.removeBlock(blockQuery);
+			string = blockService.removeBlock(blockQuery);
+			if (string != null) {
+				return string;
+			}
 		}
 
 		OwnQuery ownQuery = new OwnQuery();
 		ownQuery.setFileId(fileInfoPo.getFileId());
 		List<OwnBo> ownBos = ownService.listOwn(ownQuery);
 		for (OwnBo ownBo : ownBos) {
-			ownService.removeOwn(ownBo);
+			string = ownService.removeOwn(ownBo);
+			if (string != null) {
+				return string;
+			}
 		}
 		return null;
 	}

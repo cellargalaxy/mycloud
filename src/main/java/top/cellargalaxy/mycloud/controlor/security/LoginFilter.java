@@ -9,7 +9,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import org.springframework.web.filter.GenericFilterBean;
 import top.cellargalaxy.mycloud.service.security.SecurityService;
 
 import javax.servlet.FilterChain;
@@ -26,7 +25,7 @@ import java.util.Map;
  * @time 2018/7/30
  */
 public class LoginFilter extends AbstractAuthenticationProcessingFilter {
-	private final Logger logger = LoggerFactory.getLogger(LoginFilter.class);
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	public static final String USERNAME_KEY = "username";
 	public static final String PASSWORD_KEY = "password";
 	public static final String TOKEN_KEY = "Authorization";

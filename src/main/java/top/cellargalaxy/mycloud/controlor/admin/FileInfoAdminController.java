@@ -19,7 +19,7 @@ import top.cellargalaxy.mycloud.service.FileInfoService;
 @RequestMapping(FileInfoAdminController.URL)
 public class FileInfoAdminController {
 	public static final String URL = "/admin/fileInfo";
-	private Logger logger = LoggerFactory.getLogger(FileInfoAdminController.class);
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	@Autowired
 	private FileInfoService fileInfoService;
 

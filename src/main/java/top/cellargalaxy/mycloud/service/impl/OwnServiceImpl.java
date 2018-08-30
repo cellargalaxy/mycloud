@@ -24,7 +24,7 @@ import java.util.List;
 @Transactional
 @Service
 public class OwnServiceImpl implements OwnService {
-	private Logger logger = LoggerFactory.getLogger(OwnServiceImpl.class);
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	@Autowired
 	private OwnDao ownDao;
 	@Autowired

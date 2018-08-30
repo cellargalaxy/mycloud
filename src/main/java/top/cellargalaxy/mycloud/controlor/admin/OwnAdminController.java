@@ -19,7 +19,7 @@ import top.cellargalaxy.mycloud.service.OwnService;
 @RequestMapping(OwnAdminController.URL)
 public class OwnAdminController {
 	public static final String URL = "/admin/own";
-	private Logger logger = LoggerFactory.getLogger(OwnAdminController.class);
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	@Autowired
 	private OwnService ownService;
 

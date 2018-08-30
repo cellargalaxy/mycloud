@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import top.cellargalaxy.mycloud.controlor.user.UserUserController;
 import top.cellargalaxy.mycloud.model.po.FileInfoPo;
-import top.cellargalaxy.mycloud.model.po.TaskPo;
 import top.cellargalaxy.mycloud.model.po.UserPo;
 import top.cellargalaxy.mycloud.model.vo.Vo;
-import top.cellargalaxy.mycloud.service.FileService;
+import top.cellargalaxy.mycloud.service.ExecuteService;
+import top.cellargalaxy.mycloud.service.LocalFileService;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -26,52 +26,31 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping(FileAdminController.URL)
 public class FileAdminController {
 	public static final String URL = "/admin/file";
-	private Logger logger = LoggerFactory.getLogger(FileInfoAdminController.class);
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	@Autowired
-	private FileService fileService;
+	private ExecuteService executeService;
+	@Autowired
+	private LocalFileService localFileService;
 
 	@GetMapping("/getDriveInfo")
 	public Vo getDriveInfo() {
-		logger.info("restoreAllFileToLocal");
-		return new Vo(null, fileService.getDriveInfo());
+		logger.info("getDriveInfo");
+		return new Vo(null, localFileService.getDriveInfo());
 	}
 
 	@PostMapping("/removeFile")
-	public Vo removeFileTask(HttpServletRequest request, FileInfoPo fileInfoPo) {
+	public Vo removeFileTask(HttpServletRequest request, FileInfoPo fileInfoPo) throws Exception {
 		UserPo userPo = (UserPo) request.getAttribute(UserUserController.USER_KEY);
-		String string = fileService.executeRemoveFileTask(userPo, fileInfoPo);
+		String string = executeService.executeRemoveFileTask(userPo, fileInfoPo);
 		logger.info("removeFile:{}", string);
 		return new Vo(string, null);
 	}
 
-	@PostMapping("/restoreAllFileToLocal")
-	public Vo restoreAllFileToLocal(HttpServletRequest request) {
-		UserPo userPo = (UserPo) request.getAttribute(UserUserController.USER_KEY);
-		String string = fileService.restoreAllFileToLocal(userPo);
-		logger.info("restoreAllFileToLocal:{}", string);
-		return new Vo(string, null);
-	}
-
-	@PostMapping("/startRestoreAllFileToLocal")
-	public Vo startRestoreAllFileToLocal(HttpServletRequest request) {
-		UserPo userPo = (UserPo) request.getAttribute(UserUserController.USER_KEY);
-		String string = fileService.startRestoreAllFileToLocal(userPo);
-		logger.info("startRestoreAllFileToLocal:{}", string);
-		return new Vo(string, null);
-	}
-
-	@PostMapping("/stopRestoreAllFileToLocal")
-	public Vo stopRestoreAllFileToLocal() {
-		String string = fileService.stopRestoreAllFileToLocal();
-		logger.info("stopRestoreAllFileToLocal:{}", string);
-		return new Vo(string, null);
-	}
-
-	@PostMapping("/deleteAllFileFromLocal")
-	public Vo deleteAllFileFromLocal() {
-		String string = fileService.deleteAllFileFromLocal();
-		logger.info("deleteAllFileFromLocal:{}", string);
+	@PostMapping("/removeAllLocalFile")
+	public Vo removeAllLocalFile() {
+		String string = localFileService.removeAllLocalFile();
+		logger.info("removeAllLocalFile:{}", string);
 		return new Vo(string, null);
 	}
 }

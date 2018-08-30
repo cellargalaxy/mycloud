@@ -23,7 +23,7 @@ import java.util.List;
 @Repository
 @CacheConfig(cacheNames = "block")
 public class BlockCache implements BlockDao {
-	private Logger logger = LoggerFactory.getLogger(BlockCache.class);
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	@Autowired
 	private BlockMapper blockMapper;
 

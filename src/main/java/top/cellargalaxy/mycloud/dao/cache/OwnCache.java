@@ -23,7 +23,7 @@ import java.util.List;
 @Repository
 @CacheConfig(cacheNames = "own")
 public class OwnCache implements OwnDao {
-	private Logger logger = LoggerFactory.getLogger(OwnCache.class);
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	@Autowired
 	private OwnMapper ownMapper;
 
@@ -59,6 +59,8 @@ public class OwnCache implements OwnDao {
 
 	//
 	@Caching(evict = {
+			@CacheEvict(key = "'selectOne'+#p0.ownId"),
+			@CacheEvict(key = "'selectOne'+(#p0.userId+'-'+#p0.fileId)"),
 			@CacheEvict(key = "'selectAll'"),
 	})
 	public int insert(OwnPo ownPo) {

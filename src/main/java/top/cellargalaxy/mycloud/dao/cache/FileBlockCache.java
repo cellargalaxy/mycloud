@@ -23,7 +23,7 @@ import java.util.List;
 @Repository
 @CacheConfig(cacheNames = "fileBlock")
 public class FileBlockCache implements FileBlockDao {
-	private Logger logger = LoggerFactory.getLogger(FileBlockCache.class);
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	@Autowired
 	private FileBlockMapper fileBlockMapper;
 

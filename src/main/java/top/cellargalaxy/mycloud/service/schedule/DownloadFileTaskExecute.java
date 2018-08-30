@@ -14,6 +14,7 @@ import top.cellargalaxy.mycloud.model.query.FileBlockQuery;
 import top.cellargalaxy.mycloud.service.BlockService;
 import top.cellargalaxy.mycloud.service.FileBlockService;
 import top.cellargalaxy.mycloud.service.FileInfoService;
+import top.cellargalaxy.mycloud.service.LocalFileService;
 import top.cellargalaxy.mycloud.util.StreamUtil;
 
 import java.io.*;
@@ -26,13 +27,15 @@ import java.util.List;
 @Service
 public class DownloadFileTaskExecute implements TaskExecute<DownloadFileTask> {
 	public static final String TASK_SORT = DownloadFileTask.TASK_SORT;
-	private Logger logger = LoggerFactory.getLogger(DownloadFileTaskExecute.class);
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	@Autowired
 	private FileBlockService fileBlockService;
 	@Autowired
 	private FileInfoService fileInfoService;
 	@Autowired
 	private BlockService blockService;
+	@Autowired
+	private LocalFileService localFileService;
 
 	@Override
 	public String executeTask(DownloadFileTask downloadFileTask) throws Exception {
@@ -90,6 +93,15 @@ public class DownloadFileTaskExecute implements TaskExecute<DownloadFileTask> {
 	}
 
 	private String doDownloadFile(FileInfoPo fileInfoPo, OutputStream outputStream) throws IOException {
+		File localFile = localFileService.getLocalFile(fileInfoPo);
+		if (localFile != null && localFile.exists()) {
+			try (InputStream inputStream = StreamUtil.getInputStream(localFile)) {
+				StreamUtil.stream(inputStream, outputStream);
+			}
+			return null;
+		}
+
+		localFile = localFileService.createLocalFile(fileInfoPo);
 		FileBlockQuery fileBlockQuery = new FileBlockQuery();
 		fileBlockQuery.setFileId(fileInfoPo.getFileId());
 		List<FileBlockBo> fileBlockBos = fileBlockService.listFileBlock(fileBlockQuery);
@@ -97,12 +109,19 @@ public class DownloadFileTaskExecute implements TaskExecute<DownloadFileTask> {
 			return "查找不到文件";
 		}
 
-		for (FileBlockBo fileBlockBo : fileBlockBos) {
-			BlockQuery blockQuery = new BlockQuery();
-			blockQuery.setBlockId(fileBlockBo.getBlockId());
-			BlockBo blockBo = blockService.getBlock(blockQuery);
-			outputStream.write(blockBo.getBlock());
+		try (OutputStream localFileOutputStream = StreamUtil.getOutputStream(localFile)) {
+			for (FileBlockBo fileBlockBo : fileBlockBos) {
+				BlockQuery blockQuery = new BlockQuery();
+				blockQuery.setBlockId(fileBlockBo.getBlockId());
+				BlockBo blockBo = blockService.getBlock(blockQuery);
+				outputStream.write(blockBo.getBlock());
+				localFileOutputStream.write(blockBo.getBlock());
+			}
+		} catch (Exception e) {
+			localFile.delete();
+			throw e;
 		}
+		localFileService.addLocalFile(localFile);
 		return null;
 	}
 }

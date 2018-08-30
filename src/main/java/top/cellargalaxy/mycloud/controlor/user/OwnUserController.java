@@ -21,7 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping(OwnUserController.URL)
 public class OwnUserController {
 	public static final String URL = "/user/own";
-	private Logger logger = LoggerFactory.getLogger(FileUserController.class);
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	@Autowired
 	private OwnService ownService;
 

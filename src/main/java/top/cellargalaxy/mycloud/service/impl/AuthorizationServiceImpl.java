@@ -21,7 +21,7 @@ import java.util.List;
 @Transactional
 @Service
 public class AuthorizationServiceImpl implements AuthorizationService {
-	private Logger logger = LoggerFactory.getLogger(AuthorizationServiceImpl.class);
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	@Autowired
 	private AuthorizationDao authorizationDao;
 

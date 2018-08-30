@@ -42,4 +42,46 @@ public class StreamUtil {
 	public static final InputStream getInputStream(File file) throws FileNotFoundException {
 		return new BufferedInputStream(new FileInputStream(file));
 	}
+
+	public static final void stream(InputStream inputStream, OutputStream outputStream) throws IOException {
+		byte[] bytes = new byte[1024];
+		int len;
+		while ((len = inputStream.read(bytes, 0, bytes.length)) != -1) {
+			outputStream.write(bytes, 0, len);
+		}
+	}
+
+	public static final long getFolderLength(File folder) {
+		long length = 0;
+		File[] files = folder.listFiles();
+		if (files != null) {
+			for (File file : files) {
+				if (file.isDirectory()) {
+					length += getFolderLength(file);
+				} else {
+					length += file.length();
+				}
+			}
+		}
+		return length;
+	}
+
+	public static final boolean deleteFolder(File folder) {
+		deleteFileInFolder(folder);
+		return folder.delete();
+	}
+
+	public static final boolean deleteFileInFolder(File folder) {
+		File[] files = folder.listFiles();
+		if (files != null) {
+			for (File file : files) {
+				if (file.isDirectory()) {
+					deleteFileInFolder(file);
+				}
+				file.delete();
+			}
+		}
+		files = folder.listFiles();
+		return files == null || files.length == 0;
+	}
 }

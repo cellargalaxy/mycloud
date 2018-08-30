@@ -18,7 +18,7 @@ import top.cellargalaxy.mycloud.service.UserService;
 @RequestMapping(UserAdminController.URL)
 public class UserAdminController {
 	public static final String URL = "/admin/user";
-	private Logger logger = LoggerFactory.getLogger(UserAdminController.class);
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	@Autowired
 	private UserService userService;
 

@@ -32,7 +32,7 @@ import java.util.List;
 @Transactional
 @Service
 public class UserServiceImpl implements UserService {
-	private Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	private final String passwordHead = "{bcrypt}";
 	private final BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 	@Autowired

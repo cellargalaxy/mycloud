@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import top.cellargalaxy.mycloud.exception.GlobalException;
-import top.cellargalaxy.mycloud.model.bo.schedule.SynchronizeTask;
 import top.cellargalaxy.mycloud.model.bo.schedule.Task;
 import top.cellargalaxy.mycloud.model.po.TaskPo;
 import top.cellargalaxy.mycloud.service.TaskService;
@@ -22,7 +21,7 @@ import java.util.concurrent.LinkedTransferQueue;
  */
 @Component
 public class TaskSchedule {
-	private Logger logger = LoggerFactory.getLogger(TaskSchedule.class);
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	private final BlockingQueue<Task> waitTasks = new LinkedTransferQueue<>();
 	private Task currentTask;
 	@Autowired
@@ -35,24 +34,23 @@ public class TaskSchedule {
 	public void schedule() {
 		try {
 			currentTask = getWaitTask();
-			logger.info("schedule:{}, result:{}", currentTask, executeTask(currentTask));
-		} catch (InterruptedException e) {
+			logger.info("schedule:{}", currentTask);
+			logger.info("schedule:result:{}", executeTask(currentTask));
+		} catch (Exception e) {
 			logger.info("schedule:执行任务异常:{}", e.getMessage());
 			GlobalException.add(e, 0, "未知异常");
 			addFinishTask(currentTask, Task.FAIL_STATUS);
+		} finally {
+			currentTask = null;
 		}
 	}
 
-	public String executeTask(Task currentTask) {
+	public String executeTask(Task currentTask) throws Exception {
 		logger.info("executeTask:{}", currentTask);
-		String string = null;
+		String string;
 		try (Task task = currentTask) {
 			TaskExecute taskExecute = taskExecuteFactory.getTaskExecute(currentTask.getTaskSort());
 			string = taskExecute.executeTask(currentTask);
-		} catch (Exception e) {
-			logger.info("executeTask:执行任务异常:{}", e.getMessage());
-			GlobalException.add(e, 0, "未知异常");
-			addFinishTask(currentTask, Task.FAIL_STATUS);
 		}
 		if (string != null) {
 			currentTask.setMassage(string);
@@ -88,6 +86,12 @@ public class TaskSchedule {
 		return null;
 	}
 
+	//并发问题
+	public Collection<Task> listWaitTask() {
+		logger.info("listWaitTask");
+		return waitTasks;
+	}
+
 	private Task getWaitTask() throws InterruptedException {
 		Task task = waitTasks.take();
 		task.setStatus(Task.EXECUTION_STATUS);
@@ -100,12 +104,6 @@ public class TaskSchedule {
 		}
 		task.setStatus(status);
 		taskService.addTask(task);
-	}
-
-	//并发问题
-	public Collection<Task> listWaitTask() {
-		logger.info("listWaitTask");
-		return waitTasks;
 	}
 
 	public BlockingQueue<Task> getWaitTasks() {

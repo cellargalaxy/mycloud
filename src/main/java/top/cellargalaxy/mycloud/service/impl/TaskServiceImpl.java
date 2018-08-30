@@ -25,7 +25,7 @@ import java.util.List;
 @Transactional
 @Service
 public class TaskServiceImpl implements TaskService {
-	private Logger logger = LoggerFactory.getLogger(TaskServiceImpl.class);
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	@Autowired
 	private TaskDao taskDao;
 	@Autowired
@@ -46,7 +46,7 @@ public class TaskServiceImpl implements TaskService {
 	}
 
 	@Override
-	public String executeTask(Task task) {
+	public String executeTask(Task task) throws Exception {
 		logger.info("executeTask:{}", task);
 		return taskSchedule.executeTask(task);
 	}

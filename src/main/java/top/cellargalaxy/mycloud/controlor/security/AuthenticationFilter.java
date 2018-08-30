@@ -28,7 +28,7 @@ import java.util.List;
  * @time 2018/7/30
  */
 public class AuthenticationFilter extends GenericFilterBean {
-	private final Logger logger = LoggerFactory.getLogger(AuthenticationFilter.class);
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	private final SecurityService securityService;
 
 	public AuthenticationFilter(SecurityService securityService) {

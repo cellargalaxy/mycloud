@@ -23,7 +23,7 @@ import java.util.List;
 @Repository
 @CacheConfig(cacheNames = "fileInfo")
 public class FileInfoCache implements FileInfoDao {
-	private Logger logger = LoggerFactory.getLogger(FileInfoCache.class);
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	@Autowired
 	private FileInfoMapper fileInfoMapper;
 
@@ -56,6 +56,8 @@ public class FileInfoCache implements FileInfoDao {
 
 	//
 	@Caching(evict = {
+			@CacheEvict(key = "'selectOne'+#p0.fileId"),
+			@CacheEvict(key = "'selectOne'+#p0.md5"),
 			@CacheEvict(key = "'selectContentType'"),
 	})
 	public int insert(FileInfoPo fileInfoPo) {

@@ -15,7 +15,7 @@ import java.util.Collection;
  */
 @Service
 public class ExceptionLogServiceImpl implements ExceptionLogService {
-	private Logger logger = LoggerFactory.getLogger(ExceptionLogServiceImpl.class);
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	@Override
 	public String clearExceptionInfo() {

@@ -23,7 +23,7 @@ import java.util.List;
 @Repository
 @CacheConfig(cacheNames = "permission")
 public class PermissionCache implements PermissionDao {
-	private Logger logger = LoggerFactory.getLogger(PermissionCache.class);
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	@Autowired
 	private PermissionMapper permissionMapper;
 
@@ -53,6 +53,8 @@ public class PermissionCache implements PermissionDao {
 
 	//
 	@Caching(evict = {
+			@CacheEvict(key = "'selectOne'+#p0.permissionName"),
+			@CacheEvict(key = "'selectOne'+#p0.permissionId"),
 			@CacheEvict(key = "'selectAll'"),
 	})
 	public int insert(PermissionPo permissionPo) {

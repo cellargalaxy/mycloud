@@ -19,7 +19,7 @@ import top.cellargalaxy.mycloud.service.AuthorizationService;
 @RequestMapping(AuthorizationAdminController.URL)
 public class AuthorizationAdminController {
 	public static final String URL = "/admin/authorization";
-	private Logger logger = LoggerFactory.getLogger(AuthorizationAdminController.class);
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	@Autowired
 	private AuthorizationService authorizationService;
 

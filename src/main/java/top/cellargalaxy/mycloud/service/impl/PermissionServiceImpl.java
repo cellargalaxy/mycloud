@@ -27,7 +27,7 @@ import java.util.List;
 @Transactional
 @Service
 public class PermissionServiceImpl implements PermissionService {
-	private Logger logger = LoggerFactory.getLogger(PermissionServiceImpl.class);
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	@Autowired
 	private PermissionDao permissionDao;
 	@Autowired

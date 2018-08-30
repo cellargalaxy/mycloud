@@ -7,7 +7,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import top.cellargalaxy.mycloud.model.vo.Vo;
 import top.cellargalaxy.mycloud.service.ExceptionLogService;
-import top.cellargalaxy.mycloud.service.impl.ExceptionLogServiceImpl;
 
 /**
  * @author cellargalaxy
@@ -18,7 +17,7 @@ import top.cellargalaxy.mycloud.service.impl.ExceptionLogServiceImpl;
 @RequestMapping(LogAdminController.URL)
 public class LogAdminController {
 	public static final String URL = "/admin/log";
-	private Logger logger = LoggerFactory.getLogger(ExceptionLogServiceImpl.class);
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	@Autowired
 	private ExceptionLogService exceptionLogService;
 

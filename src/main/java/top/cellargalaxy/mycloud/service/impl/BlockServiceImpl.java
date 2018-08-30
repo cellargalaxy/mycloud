@@ -17,7 +17,7 @@ import top.cellargalaxy.mycloud.service.BlockService;
 @Transactional
 @Service
 public class BlockServiceImpl implements BlockService {
-	private Logger logger = LoggerFactory.getLogger(BlockServiceImpl.class);
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	@Autowired
 	private BlockDao blockDao;
 

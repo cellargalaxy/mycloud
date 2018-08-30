@@ -5,17 +5,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import top.cellargalaxy.mycloud.configuration.MycloudConfiguration;
 import top.cellargalaxy.mycloud.model.bo.schedule.UploadFileTask;
 import top.cellargalaxy.mycloud.model.po.BlockPo;
 import top.cellargalaxy.mycloud.model.po.FileBlockPo;
 import top.cellargalaxy.mycloud.model.po.FileInfoPo;
 import top.cellargalaxy.mycloud.model.po.OwnPo;
-import top.cellargalaxy.mycloud.service.BlockService;
-import top.cellargalaxy.mycloud.service.FileBlockService;
-import top.cellargalaxy.mycloud.service.FileInfoService;
-import top.cellargalaxy.mycloud.service.OwnService;
+import top.cellargalaxy.mycloud.service.*;
 import top.cellargalaxy.mycloud.util.FileBlocks;
 import top.cellargalaxy.mycloud.util.StreamUtil;
 
@@ -30,7 +26,7 @@ import java.io.IOException;
 @Service
 public class UploadFileTaskExecute implements TaskExecute<UploadFileTask> {
 	public static final String TASK_SORT = UploadFileTask.TASK_SORT;
-	private Logger logger = LoggerFactory.getLogger(UploadFileTaskExecute.class);
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	@Autowired
 	private FileInfoService fileInfoService;
 	@Autowired
@@ -40,7 +36,15 @@ public class UploadFileTaskExecute implements TaskExecute<UploadFileTask> {
 	@Autowired
 	private FileBlockService fileBlockService;
 	@Autowired
-	private MycloudConfiguration mycloudConfiguration;
+	private LocalFileService localFileService;
+
+	private final int blobLength;
+
+	@Autowired
+	public UploadFileTaskExecute(MycloudConfiguration mycloudConfiguration) {
+		blobLength = mycloudConfiguration.getBlobLength();
+		logger.info("UploadFileTaskExecute:{}", blobLength);
+	}
 
 	@Override
 	public String executeTask(UploadFileTask uploadFileTask) throws Exception {
@@ -65,13 +69,12 @@ public class UploadFileTaskExecute implements TaskExecute<UploadFileTask> {
 
 			String string = fileInfoService.addFileInfo(fileInfoPo);
 			if (string != null) {
-				TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
 				return string;
 			}
 
 			//写数据块
 			int[] blockIds;
-			try (FileBlocks fileBlocks = new FileBlocks(file, mycloudConfiguration.getBlobLength())) {
+			try (FileBlocks fileBlocks = new FileBlocks(file, blobLength)) {
 				blockIds = new int[fileBlocks.getBlockCount()];
 				int blockIndex = 0;
 				byte[] block;
@@ -80,7 +83,6 @@ public class UploadFileTaskExecute implements TaskExecute<UploadFileTask> {
 					blockPo.setBlock(block);
 					string = blockService.addBlock(blockPo);
 					if (string != null) {
-						TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
 						return string;
 					}
 					blockIds[blockIndex] = blockPo.getBlockId();
@@ -95,7 +97,6 @@ public class UploadFileTaskExecute implements TaskExecute<UploadFileTask> {
 				fileBlockPo.setBlockId(blockId);
 				string = fileBlockService.addFileBlock(fileBlockPo);
 				if (string != null) {
-					TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
 					return string;
 				}
 			}
@@ -103,9 +104,15 @@ public class UploadFileTaskExecute implements TaskExecute<UploadFileTask> {
 			ownPo.setFileId(fileInfoPo.getFileId());
 			string = ownService.addOwn(ownPo);
 			if (string != null) {
-				TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
 				return string;
 			}
+
+			File localFile = localFileService.createLocalFile(fileInfoPo);
+			if (localFile.getParentFile() != null && !localFile.getParentFile().exists()) {
+				localFile.getParentFile().mkdirs();
+			}
+			file.renameTo(localFile);
+			logger.info("uploadFile:addLocalFile:{}", localFileService.addLocalFile(localFile));
 			return null;
 		} finally {
 			if (file != null) {

@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import top.cellargalaxy.mycloud.model.po.FileInfoPo;
 import top.cellargalaxy.mycloud.model.query.FileInfoQuery;
 import top.cellargalaxy.mycloud.service.FileInfoService;
-import top.cellargalaxy.mycloud.service.FileService;
+import top.cellargalaxy.mycloud.service.ExecuteService;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -24,28 +24,30 @@ import java.util.Date;
 @RequestMapping(RootController.URL)
 public class RootController {
 	public static final String URL = "";
-	private Logger logger = LoggerFactory.getLogger(RootController.class);
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	private static final long expires = 1000 * 60 * 60 * 24 * 30 * 12 * 10;
 	@Autowired
-	private FileService fileService;
+	private ExecuteService executeService;
 	@Autowired
 	private FileInfoService fileInfoService;
 
 	@GetMapping("/{md5}")
 	public void download(HttpServletResponse response, @PathVariable("md5") String md5) throws IOException {
 		logger.info("download:{}", md5);
+		response.reset();
 		FileInfoQuery fileInfoQuery = new FileInfoQuery() {{
 			setMd5(md5);
 		}};
 		FileInfoPo fileInfoPo = fileInfoService.getFileInfo(fileInfoQuery);
 		if (fileInfoPo == null) {
+			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
 			return;
 		}
 		response.setHeader("expires", new Date(System.currentTimeMillis() + expires).toString());
 		response.setContentLength((int) fileInfoPo.getFileLength());
 		response.setContentType(fileInfoPo.getContentType());
 		try (OutputStream outputStream = response.getOutputStream()) {
-			fileService.downloadFile(fileInfoQuery, outputStream);
+			executeService.downloadFile(fileInfoQuery, outputStream);
 		}
 	}
 }

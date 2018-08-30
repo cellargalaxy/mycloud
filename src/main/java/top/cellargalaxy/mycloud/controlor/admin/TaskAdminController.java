@@ -12,7 +12,6 @@ import top.cellargalaxy.mycloud.model.po.TaskPo;
 import top.cellargalaxy.mycloud.model.query.TaskQuery;
 import top.cellargalaxy.mycloud.model.vo.Vo;
 import top.cellargalaxy.mycloud.service.TaskService;
-import top.cellargalaxy.mycloud.service.impl.ExceptionLogServiceImpl;
 
 /**
  * @author cellargalaxy
@@ -23,7 +22,7 @@ import top.cellargalaxy.mycloud.service.impl.ExceptionLogServiceImpl;
 @RequestMapping(TaskAdminController.URL)
 public class TaskAdminController {
 	public static final String URL = "/admin/task";
-	private Logger logger = LoggerFactory.getLogger(ExceptionLogServiceImpl.class);
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	@Autowired
 	private TaskService taskService;
 

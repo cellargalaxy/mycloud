@@ -23,7 +23,7 @@ import java.util.List;
 @Repository
 @CacheConfig(cacheNames = "task")
 public class TaskCache implements TaskDao {
-	private Logger logger = LoggerFactory.getLogger(TaskCache.class);
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	@Autowired
 	private TaskMapper taskMapper;
 
@@ -53,6 +53,7 @@ public class TaskCache implements TaskDao {
 
 	//
 	@Caching(evict = {
+			@CacheEvict(key = "'selectOne'+#p0.taskId"),
 			@CacheEvict(key = "'selectAll'"),
 	})
 	public int insert(TaskPo taskPo) {

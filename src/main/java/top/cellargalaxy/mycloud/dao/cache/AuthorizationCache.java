@@ -23,7 +23,7 @@ import java.util.List;
 @Repository
 @CacheConfig(cacheNames = "authorization")
 public class AuthorizationCache implements AuthorizationDao {
-	private Logger logger = LoggerFactory.getLogger(AuthorizationCache.class);
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	@Autowired
 	private AuthorizationMapper authorizationMapper;
 
@@ -53,6 +53,8 @@ public class AuthorizationCache implements AuthorizationDao {
 
 	//
 	@Caching(evict = {
+			@CacheEvict(key = "'selectOne'+#p0.authorizationId"),
+			@CacheEvict(key = "'selectOne'+(#p0.userId+'-'+#p0.permissionId)"),
 			@CacheEvict(key = "'selectAll'"),
 	})
 	public int insert(AuthorizationPo authorizationPo) {

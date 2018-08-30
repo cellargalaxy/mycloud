@@ -20,7 +20,7 @@ import java.util.List;
 @Transactional
 @Service
 public class FileBlockServiceImpl implements FileBlockService {
-	private Logger logger = LoggerFactory.getLogger(FileBlockServiceImpl.class);
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	@Autowired
 	private FileBlockDao fileBlockDao;
 

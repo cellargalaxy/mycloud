@@ -11,12 +11,11 @@ import top.cellargalaxy.mycloud.exception.GlobalException;
 import top.cellargalaxy.mycloud.model.po.OwnPo;
 import top.cellargalaxy.mycloud.model.po.UserPo;
 import top.cellargalaxy.mycloud.model.vo.Vo;
-import top.cellargalaxy.mycloud.service.FileService;
+import top.cellargalaxy.mycloud.service.ExecuteService;
 import top.cellargalaxy.mycloud.service.OwnService;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
-import java.io.IOException;
 import java.util.UUID;
 
 /**
@@ -27,9 +26,9 @@ import java.util.UUID;
 @RequestMapping(FileUserController.URL)
 public class FileUserController {
 	public static final String URL = "/user/file";
-	private Logger logger = LoggerFactory.getLogger(FileUserController.class);
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	@Autowired
-	private FileService fileService;
+	private ExecuteService executeService;
 	@Autowired
 	private OwnService ownService;
 
@@ -58,7 +57,12 @@ public class FileUserController {
 				ownPos[i].setSort(ownPo.getSort());
 				ownPos[i].setDescription(ownPo.getDescription());
 
-				String string = fileService.executeUploadFileTask(userPo, ownPos[i], file, multipartFiles[i].getContentType());
+				//如果文件太大，计算MD5时间会很长。所以如果大文件提交为任务
+				if (file.length() > 1024 * 1024 * 10) {
+					executeService.addUploadFileTask(userPo, ownPos[i], file, multipartFiles[i].getContentType());
+					continue;
+				}
+				String string = executeService.executeUploadFileTask(userPo, ownPos[i], file, multipartFiles[i].getContentType());
 				if (string != null) {
 					logger.info("uploadFile, result:{}, userPo:{}", string, userPo);
 					return new Vo(string, null);
@@ -69,11 +73,12 @@ public class FileUserController {
 				ownPos[i] = ownService.getOwn(ownPos[i]);
 			}
 			return new Vo(null, ownPos);
-		} catch (IOException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			GlobalException.add(e);
 			logger.info("uploadFile, result:文件上传异常, userPo:{}", userPo);
-			return new Vo("文件上传异常", e);
+			return new Vo("文件上传异常", e.getMessage());
+		} finally {
 		}
 	}
 }

@@ -12,26 +12,26 @@ import java.io.File;
  */
 @Component
 public class MycloudConfiguration {
-	@Value("${blobLength:65535}")
+	@Value("${blobLength}")
 	private volatile int blobLength;
-	@Value("${secret:mycloud}")
+	@Value("${secret}")
 	private volatile String secret;
-	@Value("${webUploadMaxFileSize:1024MB}")
+	@Value("${webUploadMaxFileSize}")
 	private volatile String webUploadMaxFileSize;
-	@Value("${webUploadMaxRequestSize:1024MB}")
+	@Value("${webUploadMaxRequestSize}")
 	private volatile String webUploadMaxRequestSize;
-	@Value("${domain:http://drive.cellargalaxy.top}")
+	@Value("${domain}")
 	private volatile String domain;
-	@Value("${mycloudPath:}")
+	@Value("${mycloudPath}")
 	private volatile String mycloudPath;
-	@Value("${mycloudTmpPath:}")
+	@Value("${mycloudTmpPath}")
 	private volatile String mycloudTmpPath;
-	@Value("${mycloudDrivePath:}")
+	@Value("${mycloudDrivePath}")
 	private volatile String mycloudDrivePath;
-	@Value("${taskDetailLength:1024}")
+	@Value("${taskDetailLength}")
 	private volatile int taskDetailLength;
-	@Value("${restoreFileToLocal:false}")
-	private volatile boolean restoreFileToLocal;
+	@Value("${localFileMaxSpace}")
+	private volatile int localFileMaxSpace;
 
 	public int getBlobLength() {
 		return blobLength;
@@ -114,11 +114,11 @@ public class MycloudConfiguration {
 		this.taskDetailLength = taskDetailLength;
 	}
 
-	public boolean isRestoreFileToLocal() {
-		return restoreFileToLocal;
+	public int getLocalFileMaxSpace() {
+		return localFileMaxSpace;
 	}
 
-	public void setRestoreFileToLocal(boolean restoreFileToLocal) {
-		this.restoreFileToLocal = restoreFileToLocal;
+	public void setLocalFileMaxSpace(int localFileMaxSpace) {
+		this.localFileMaxSpace = localFileMaxSpace;
 	}
 }

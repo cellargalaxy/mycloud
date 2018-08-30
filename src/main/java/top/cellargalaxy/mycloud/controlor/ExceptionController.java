@@ -21,7 +21,7 @@ import java.io.IOException;
  */
 @RestControllerAdvice
 public class ExceptionController {
-	private Logger logger = LoggerFactory.getLogger(ExceptionController.class);
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	@ResponseStatus(HttpStatus.UNAUTHORIZED)
 	@ExceptionHandler(AccessDeniedException.class)

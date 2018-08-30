@@ -26,7 +26,7 @@ import java.util.Set;
  */
 @Service
 public class SecurityServiceImpl implements SecurityService {
-	private Logger logger = LoggerFactory.getLogger(SecurityServiceImpl.class);
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	public static final int EXPIRATION_TIME = 1000 * 60 * 60 * 6;
 	public static final String USER_ID_KEY = "userId";
 	public static final String CREATE_TIME_KEY = "createTime";
