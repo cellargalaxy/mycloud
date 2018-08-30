@@ -1,19 +1,8 @@
 version: '2'
 services:
-  redis_mycloud_cluster:
-    image: redis:latest
-    container_name: redis_mycloud_cluster
-    restart: always
-    volumes:
-      - redis_mycloud_cluster:/data
-      - ./redis.conf:/etc/redis/redis.conf
-    command: redis-server /etc/redis/redis.conf --requirepass redispw
-
   mycloud_cluster:
     image: frolvlad/alpine-oraclejdk8:slim
     container_name: mycloud_cluster
-    depends_on:
-      - redis_mycloud_cluster
     restart: always
     environment:
       MYCLOUD_MYSQL_IP_PORT: 10.0.2.15:3306
@@ -21,7 +10,7 @@ services:
       MYCLOUD_MYSQL_USERNAME: root
       MYCLOUD_MYSQL_PASSWORD: mysqlpw123
 
-      MYCLOUD_REDIS_IP: redis_mycloud_cluster
+      MYCLOUD_REDIS_IP: 10.0.2.15
       MYCLOUD_REDIS_PORT: 6379
       MYCLOUD_REDIS_PASSWORD: redispw
 
@@ -44,5 +33,4 @@ services:
       - 18088:8080
 
 volumes:
-  redis_mycloud_cluster:
   mycloud_cluster:
