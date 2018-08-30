@@ -31,7 +31,7 @@ public class MycloudConfiguration {
 	@Value("${taskDetailLength}")
 	private volatile int taskDetailLength;
 	@Value("${localFileMaxSpace}")
-	private volatile int localFileMaxSpace;
+	private volatile long localFileMaxSpace;
 
 	public int getBlobLength() {
 		return blobLength;
@@ -114,11 +114,11 @@ public class MycloudConfiguration {
 		this.taskDetailLength = taskDetailLength;
 	}
 
-	public int getLocalFileMaxSpace() {
+	public long getLocalFileMaxSpace() {
 		return localFileMaxSpace;
 	}
 
-	public void setLocalFileMaxSpace(int localFileMaxSpace) {
+	public void setLocalFileMaxSpace(long localFileMaxSpace) {
 		this.localFileMaxSpace = localFileMaxSpace;
 	}
 }

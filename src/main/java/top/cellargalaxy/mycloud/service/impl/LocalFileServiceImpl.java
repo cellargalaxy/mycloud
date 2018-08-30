@@ -24,7 +24,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class LocalFileServiceImpl implements LocalFileService {
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	private final File driveFolder;
-	private final int localFileMaxSpace;
+	private final long localFileMaxSpace;
 	private final ConcurrentHashMap<String, Integer> fileWeightMap = new ConcurrentHashMap<>();
 
 	@Autowired
