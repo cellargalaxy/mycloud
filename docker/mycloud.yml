@@ -1,0 +1,36 @@
+version: '2'
+services:
+  mycloud:
+    image: frolvlad/alpine-oraclejdk8:slim
+    container_name: mycloud
+    restart: always
+    environment:
+      MYCLOUD_MYSQL_IP_PORT: 10.0.2.15:3306
+      MYCLOUD_MYSQL_DATABASE_NAME: mycloud
+      MYCLOUD_MYSQL_USERNAME: root
+      MYCLOUD_MYSQL_PASSWORD: mysqlpw123
+
+      MYCLOUD_REDIS_IP: 10.0.2.15
+      MYCLOUD_REDIS_PORT: 6379
+      MYCLOUD_REDIS_PASSWORD: redispw
+
+      MYCLOUD_DOMAIN: http://drive.cellargalaxy.top
+      MYCLOUD_SECRET: MYCLOUD_SECRET
+      MYCLOUD_LOCAL_FILE_MAX_SPACE: 104857600
+
+      MYCLOUD_BLOB_LENGTH: 65535
+      MYCLOUD_TASH_DETAIL_LENGTH: 1024
+      MYCLOUD_WEB_UPLOAD_MAX_FILE_SIZE: 1024MB
+      MYCLOUD_WEB_UPLOAD_MAX_REQUEST_SIZE: 1024MB
+      MYCLOUD_PATH: /root/mycloud
+      MYCLOUD_TMP_PATH: /root/mycloud/tmp
+      MYCLOUD_DRIVE_PATH: /root/mycloud/drive
+    volumes:
+      - ./mycloud.jar:/root/mycloud.jar
+      - mycloud:/root/mycloud
+    command: java -jar /root/mycloud.jar
+    ports:
+      - 18088:8080
+
+volumes:
+  mycloud:
