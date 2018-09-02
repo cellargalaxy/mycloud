@@ -4,7 +4,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import top.cellargalaxy.mycloud.configuration.MycloudConfiguration;
 import top.cellargalaxy.mycloud.exception.GlobalException;
@@ -12,7 +15,6 @@ import top.cellargalaxy.mycloud.model.po.OwnPo;
 import top.cellargalaxy.mycloud.model.po.UserPo;
 import top.cellargalaxy.mycloud.model.vo.Vo;
 import top.cellargalaxy.mycloud.service.ExecuteService;
-import top.cellargalaxy.mycloud.service.OwnService;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
@@ -29,8 +31,6 @@ public class FileUserController {
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	@Autowired
 	private ExecuteService executeService;
-	@Autowired
-	private OwnService ownService;
 
 	@Autowired
 	private MycloudConfiguration mycloudConfiguration;
@@ -57,28 +57,15 @@ public class FileUserController {
 				ownPos[i].setSort(ownPo.getSort());
 				ownPos[i].setDescription(ownPo.getDescription());
 
-				//如果文件太大，计算MD5时间会很长。所以如果大文件提交为任务
-				if (file.length() > 1024 * 1024 * 10) {
-					executeService.addUploadFileTask(userPo, ownPos[i], file, multipartFiles[i].getContentType());
-					continue;
-				}
-				String string = executeService.executeUploadFileTask(userPo, ownPos[i], file, multipartFiles[i].getContentType());
-				if (string != null) {
-					logger.info("uploadFile, result:{}, userPo:{}", string, userPo);
-					return new Vo(string, null);
-				}
+				executeService.addUploadFileTask(userPo, ownPos[i], file, multipartFiles[i].getContentType());
 			}
 			logger.info("uploadFile, result:文件上传成功, userPo:{}", userPo);
-			for (int i = 0; i < ownPos.length; i++) {
-				ownPos[i] = ownService.getOwn(ownPos[i]);
-			}
-			return new Vo(null, ownPos);
+			return new Vo(null, null);
 		} catch (Exception e) {
-			e.printStackTrace();
+//			e.printStackTrace();
 			GlobalException.add(e);
 			logger.info("uploadFile, result:文件上传异常, userPo:{}", userPo);
 			return new Vo("文件上传异常", e.getMessage());
-		} finally {
 		}
 	}
 }

@@ -55,7 +55,7 @@ webUploadMaxRequestSize: ${MYCLOUD_WEB_UPLOAD_MAX_REQUEST_SIZE:1024MB}
 mycloudPath: ${MYCLOUD_PATH:}
 mycloudTmpPath: ${MYCLOUD_TMP_PATH:}
 mycloudDrivePath: ${MYCLOUD_DRIVE_PATH:}
-domain: ${MYCLOUD_DOMAIN}
+domain: ${MYCLOUD_DOMAIN:}
 localFileMaxSpace: ${MYCLOUD_LOCAL_FILE_MAX_SPACE:104857600}
 secret: ${MYCLOUD_SECRET}
 
