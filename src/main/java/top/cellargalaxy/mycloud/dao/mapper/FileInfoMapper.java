@@ -82,11 +82,11 @@ public interface FileInfoMapper extends AbstractDao<FileInfoPo, FileInfoBo, File
 		}
 
 		public String selectSome(FileInfoQuery fileInfoQuery) {
-			return ProviderUtil.selectSome(tableName, fileInfoQuery, this::wheresAll).append(" limit #{off},#{len}").toString();
+			return ProviderUtil.selectSome(tableName, fileInfoQuery, this::wheresAll).append(" order by create_time desc limit #{off},#{len}").toString();
 		}
 
 		public String selectCount(FileInfoQuery fileInfoQuery) {
-			return ProviderUtil.selectCount(tableName, fileInfoQuery, this::wheresAll).append(" order by create_time desc limit #{off},#{len}").toString();
+			return ProviderUtil.selectCount(tableName, fileInfoQuery, this::wheresAll).toString();
 		}
 
 		public String selectAll() {

@@ -82,7 +82,7 @@ public interface PermissionMapper extends AbstractDao<PermissionPo, PermissionBo
 		}
 
 		public String selectCount(PermissionQuery permissionQuery) {
-			return ProviderUtil.selectCount(tableName, permissionQuery, this::wheresAll).append(" limit #{off},#{len}").toString();
+			return ProviderUtil.selectCount(tableName, permissionQuery, this::wheresAll).toString();
 		}
 
 		public String selectAll() {

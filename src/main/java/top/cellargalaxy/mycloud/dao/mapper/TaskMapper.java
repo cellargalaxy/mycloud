@@ -84,7 +84,7 @@ public interface TaskMapper extends AbstractDao<TaskPo, TaskBo, TaskQuery> {
 		}
 
 		public String selectCount(TaskQuery taskQuery) {
-			return ProviderUtil.selectCount(tableName, taskQuery, this::wheresAll).append(" limit #{off},#{len}").toString();
+			return ProviderUtil.selectCount(tableName, taskQuery, this::wheresAll).toString();
 		}
 
 		public String selectAll() {

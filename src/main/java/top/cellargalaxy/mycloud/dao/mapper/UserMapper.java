@@ -83,7 +83,7 @@ public interface UserMapper extends AbstractDao<UserPo, UserBo, UserQuery> {
 		}
 
 		public String selectCount(UserQuery userQuery) {
-			return ProviderUtil.selectCount(tableName, userQuery, this::wheresAll).append(" limit #{off},#{len}").toString();
+			return ProviderUtil.selectCount(tableName, userQuery, this::wheresAll).toString();
 		}
 
 		public String selectAll() {
