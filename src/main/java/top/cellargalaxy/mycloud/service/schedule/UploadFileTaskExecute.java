@@ -61,6 +61,10 @@ public class UploadFileTaskExecute implements TaskExecute<UploadFileTask> {
 		try {
 			String md5 = StreamUtil.md5Hex(file);
 			long fileLength = file.length();
+			String mimeType = StreamUtil.getMimeType(file);
+			if (mimeType != null && !mimeType.equals("application/octet-stream")) {
+				contentType = mimeType;
+			}
 
 			FileInfoPo fileInfoPo = new FileInfoPo();
 			fileInfoPo.setContentType(contentType);

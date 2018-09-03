@@ -1,14 +1,20 @@
 package top.cellargalaxy.mycloud.util;
 
+import eu.medsea.mimeutil.MimeUtil;
 import org.apache.commons.codec.digest.DigestUtils;
 
 import java.io.*;
+import java.util.Collection;
 
 /**
  * @author cellargalaxy
  * @time 2018/7/5
  */
 public class StreamUtil {
+	static {
+		MimeUtil.registerMimeDetector("eu.medsea.mimeutil.detector.MagicMimeMimeDetector");
+	}
+
 	public static final String md5Hex(File file) throws IOException {
 		try (InputStream inputStream = getInputStream(file)) {
 			return DigestUtils.md5Hex(inputStream);
@@ -83,5 +89,13 @@ public class StreamUtil {
 		}
 		files = folder.listFiles();
 		return files == null || files.length == 0;
+	}
+
+	public static final String getMimeType(File file) {
+		if (file == null || !file.exists()) {
+			return null;
+		}
+		Collection mimeType = MimeUtil.getMimeTypes(file);
+		return mimeType != null ? mimeType.toString() : null;
 	}
 }
