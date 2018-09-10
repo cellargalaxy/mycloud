@@ -114,7 +114,7 @@ public interface TaskMapper extends AbstractDao<TaskPo, TaskBo, TaskQuery> {
 			wheresAll(taskQuery, wheres);
 
 			StringBuilder sql = SqlUtil.createSelectSql(selects, tableName + "," + UserDao.TABLE_NAME, wheres);
-			String string = sql.append(" order by " + tableName + ".create_time limit #{off},#{len} ").toString();
+			String string = sql.append(" order by " + tableName + ".create_time desc limit #{off},#{len} ").toString();
 			return string;
 		}
 
