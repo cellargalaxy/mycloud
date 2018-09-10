@@ -97,6 +97,7 @@ public interface TaskMapper extends AbstractDao<TaskPo, TaskBo, TaskQuery> {
 		}
 
 		public String selectSome(TaskQuery taskQuery) {
+			SqlUtil.initPageQuery(taskQuery);
 			List<String> selects = new LinkedList<>();
 			selects.add(tableName + ".task_id");
 			selects.add(tableName + ".user_id");
