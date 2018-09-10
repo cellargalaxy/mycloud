@@ -3,15 +3,15 @@ package top.cellargalaxy.mycloud.dao.mapper;
 import org.apache.ibatis.annotations.*;
 import top.cellargalaxy.mycloud.dao.AbstractDao;
 import top.cellargalaxy.mycloud.dao.TaskDao;
+import top.cellargalaxy.mycloud.dao.UserDao;
 import top.cellargalaxy.mycloud.model.bo.TaskBo;
 import top.cellargalaxy.mycloud.model.po.TaskPo;
 import top.cellargalaxy.mycloud.model.query.TaskQuery;
 import top.cellargalaxy.mycloud.util.ProviderUtil;
+import top.cellargalaxy.mycloud.util.SqlUtil;
 import top.cellargalaxy.mycloud.util.StringUtil;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import static org.apache.ibatis.type.JdbcType.TIMESTAMP;
 
@@ -76,11 +76,45 @@ public interface TaskMapper extends AbstractDao<TaskPo, TaskBo, TaskQuery> {
 		}
 
 		public String selectOne(TaskPo taskPo) {
-			return ProviderUtil.selectOne(tableName, taskPo, this::wheresKey).append(" limit 1").toString();
+			List<String> selects = new LinkedList<>();
+			selects.add(tableName + ".task_id");
+			selects.add(tableName + ".user_id");
+			selects.add(tableName + ".create_time");
+			selects.add(tableName + ".task_sort");
+			selects.add(tableName + ".status");
+			selects.add(tableName + ".massage");
+			selects.add(tableName + ".finish_time");
+			selects.add(tableName + ".task_detail");
+			selects.add(UserDao.TABLE_NAME + ".username");
+
+			Set<String> wheres = new HashSet<>();
+			wheres.add(tableName + ".user_id=" + UserDao.TABLE_NAME + ".user_id");
+			wheresKey(taskPo, wheres);
+
+			StringBuilder sql = SqlUtil.createSelectSql(selects, tableName + "," + UserDao.TABLE_NAME, wheres);
+			String string = sql.append(" limit 1").toString();
+			return string;
 		}
 
 		public String selectSome(TaskQuery taskQuery) {
-			return ProviderUtil.selectSome(tableName, taskQuery, this::wheresAll).append(" limit #{off},#{len}").toString();
+			List<String> selects = new LinkedList<>();
+			selects.add(tableName + ".task_id");
+			selects.add(tableName + ".user_id");
+			selects.add(tableName + ".create_time");
+			selects.add(tableName + ".task_sort");
+			selects.add(tableName + ".status");
+			selects.add(tableName + ".massage");
+			selects.add(tableName + ".finish_time");
+			selects.add(tableName + ".task_detail");
+			selects.add(UserDao.TABLE_NAME + ".username");
+
+			Set<String> wheres = new HashSet<>();
+			wheres.add(tableName + ".user_id=" + UserDao.TABLE_NAME + ".user_id");
+			wheresAll(taskQuery, wheres);
+
+			StringBuilder sql = SqlUtil.createSelectSql(selects, tableName + "," + UserDao.TABLE_NAME, wheres);
+			String string = sql.append(" limit #{off},#{len}").toString();
+			return string;
 		}
 
 		public String selectCount(TaskQuery taskQuery) {
