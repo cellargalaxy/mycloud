@@ -15,10 +15,6 @@ public class GlobalException {
 	public static final int MAX_EXCEPTION_INFO_SIZE = 100;
 	private static final LinkedBlockingQueue<ExceptionInfoVo> EXCEPTION_INFO_VOS = new LinkedBlockingQueue<>(MAX_EXCEPTION_INFO_SIZE);
 
-	static {
-		add(new RuntimeException("测试异常"));
-	}
-
 	public static final void add(Exception exception) {
 		add(exception, 0, null);
 	}
