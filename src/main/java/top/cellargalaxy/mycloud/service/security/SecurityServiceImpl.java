@@ -33,9 +33,14 @@ public class SecurityServiceImpl implements SecurityService {
 	public static final String UPDATE_TIME_KEY = "updateTime";
 	public static final String PERMISSIONS_KEY = "permissions";
 	@Autowired
-	private MycloudConfiguration mycloudConfiguration;
-	@Autowired
 	private UserService userService;
+
+	private final String secret;
+
+	@Autowired
+	public SecurityServiceImpl(MycloudConfiguration mycloudConfiguration) {
+		secret = mycloudConfiguration.getSecret();
+	}
 
 	@Override
 	public SecurityUser checkSecurityUser(String username, String password) {
@@ -103,7 +108,7 @@ public class SecurityServiceImpl implements SecurityService {
 				//有效期设置
 				.setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
 				//签名设置
-				.signWith(SignatureAlgorithm.HS512, mycloudConfiguration.getSecret())
+				.signWith(SignatureAlgorithm.HS512, secret)
 				.compact();
 		return jwt;
 	}
@@ -116,7 +121,7 @@ public class SecurityServiceImpl implements SecurityService {
 		}
 		try {
 			Claims claims = Jwts.parser()
-					.setSigningKey(mycloudConfiguration.getSecret())
+					.setSigningKey(secret)
 					.parseClaimsJws(token)
 					.getBody();
 

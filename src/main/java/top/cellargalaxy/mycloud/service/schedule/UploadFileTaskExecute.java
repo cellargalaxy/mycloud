@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import top.cellargalaxy.mycloud.configuration.MycloudConfiguration;
+import top.cellargalaxy.mycloud.model.bo.FileInfoBo;
 import top.cellargalaxy.mycloud.model.bo.schedule.UploadFileTask;
 import top.cellargalaxy.mycloud.model.po.BlockPo;
 import top.cellargalaxy.mycloud.model.po.FileBlockPo;
@@ -43,7 +44,7 @@ public class UploadFileTaskExecute implements TaskExecute<UploadFileTask> {
 	@Autowired
 	public UploadFileTaskExecute(MycloudConfiguration mycloudConfiguration) {
 		blobLength = mycloudConfiguration.getBlobLength();
-		logger.info("UploadFileTaskExecute:{}", blobLength);
+		logger.info("UploadFileTaskExecute, blobLength:{}", blobLength);
 	}
 
 	@Override
@@ -70,43 +71,13 @@ public class UploadFileTaskExecute implements TaskExecute<UploadFileTask> {
 			fileInfoPo.setContentType(contentType);
 			fileInfoPo.setMd5(md5);
 			fileInfoPo.setFileLength(fileLength);
+			fileInfoService.addFileInfo(fileInfoPo);
 
-			String string = fileInfoService.addFileInfo(fileInfoPo);
-			if (string != null) {
-				return string;
+			FileInfoBo fileInfoBo = fileInfoService.getFileInfo(fileInfoPo);
+			if (fileInfoBo == null) {
+				return "新增文件信息失败";
 			}
-
-			//写数据块
-			int[] blockIds;
-			try (FileBlocks fileBlocks = new FileBlocks(file, blobLength)) {
-				blockIds = new int[fileBlocks.getBlockCount()];
-				int blockIndex = 0;
-				byte[] block;
-				while ((block = fileBlocks.next()) != null) {
-					BlockPo blockPo = new BlockPo();
-					blockPo.setBlock(block);
-					string = blockService.addBlock(blockPo);
-					if (string != null) {
-						return string;
-					}
-					blockIds[blockIndex] = blockPo.getBlockId();
-					blockIndex++;
-				}
-			}
-
-			//添加文件信息与数据块对应数据
-			for (int blockId : blockIds) {
-				FileBlockPo fileBlockPo = new FileBlockPo();
-				fileBlockPo.setFileId(fileInfoPo.getFileId());
-				fileBlockPo.setBlockId(blockId);
-				string = fileBlockService.addFileBlock(fileBlockPo);
-				if (string != null) {
-					return string;
-				}
-			}
-
-			ownPo.setFileId(fileInfoPo.getFileId());
-			string = ownService.addOwn(ownPo);
+			String string = uploadFile(fileInfoBo, ownPo, file);
 			if (string != null) {
 				return string;
 			}
@@ -116,12 +87,47 @@ public class UploadFileTaskExecute implements TaskExecute<UploadFileTask> {
 				localFile.getParentFile().mkdirs();
 			}
 			file.renameTo(localFile);
-			logger.info("uploadFile:addLocalFile:{}", localFileService.addLocalFile(localFile));
+			string = localFileService.addLocalFile(localFile);
+			logger.info("uploadFile:addLocalFile:{}", string);
 			return null;
 		} finally {
 			if (file != null) {
 				file.delete();
 			}
 		}
+	}
+
+	private String uploadFile(FileInfoBo fileInfoBo, OwnPo ownPo, File file) throws IOException {
+		//写数据块
+		int[] blockIds;
+		try (FileBlocks fileBlocks = new FileBlocks(file, blobLength)) {
+			blockIds = new int[fileBlocks.getBlockCount()];
+			int blockIndex = 0;
+			byte[] block;
+			while ((block = fileBlocks.next()) != null) {
+				BlockPo blockPo = new BlockPo();
+				blockPo.setBlock(block);
+				String string = blockService.addBlock(blockPo);
+				if (string != null) {
+					return string;
+				}
+				blockIds[blockIndex] = blockPo.getBlockId();
+				blockIndex++;
+			}
+		}
+
+		//添加文件信息与数据块对应数据
+		for (int blockId : blockIds) {
+			FileBlockPo fileBlockPo = new FileBlockPo();
+			fileBlockPo.setFileId(fileInfoBo.getFileId());
+			fileBlockPo.setBlockId(blockId);
+			String string = fileBlockService.addFileBlock(fileBlockPo);
+			if (string != null) {
+				return string;
+			}
+		}
+
+		ownPo.setFileId(fileInfoBo.getFileId());
+		return ownService.addOwn(ownPo);
 	}
 }

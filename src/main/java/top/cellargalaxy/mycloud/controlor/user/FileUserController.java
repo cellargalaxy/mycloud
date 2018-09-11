@@ -32,8 +32,13 @@ public class FileUserController {
 	@Autowired
 	private ExecuteService executeService;
 
+	private final String mycloudTmpPath;
+
 	@Autowired
-	private MycloudConfiguration mycloudConfiguration;
+	public FileUserController(MycloudConfiguration mycloudConfiguration) {
+		mycloudTmpPath = mycloudConfiguration.getMycloudPath();
+		logger.info("FileUserController, mycloudTmpPath:{}", mycloudTmpPath);
+	}
 
 	@PostMapping("/uploadFile")
 	public Vo uploadFile(HttpServletRequest request, OwnPo ownPo, @RequestParam("files") MultipartFile[] multipartFiles) {
@@ -45,7 +50,7 @@ public class FileUserController {
 		try {
 			OwnPo[] ownPos = new OwnPo[multipartFiles.length];
 			for (int i = 0; i < multipartFiles.length; i++) {
-				File file = new File(mycloudConfiguration.getMycloudTmpPath() + File.separator + UUID.randomUUID().toString());
+				File file = new File(mycloudTmpPath + File.separator + UUID.randomUUID().toString());
 				if (file.getParentFile() != null && !file.getParentFile().exists()) {
 					file.getParentFile().mkdirs();
 				}

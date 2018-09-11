@@ -30,8 +30,14 @@ public class TaskServiceImpl implements TaskService {
 	private TaskDao taskDao;
 	@Autowired
 	private TaskSchedule taskSchedule;
+
+	private final int taskDetailLength;
+
 	@Autowired
-	private MycloudConfiguration mycloudConfiguration;
+	public TaskServiceImpl(MycloudConfiguration mycloudConfiguration) {
+		taskDetailLength = mycloudConfiguration.getTaskDetailLength();
+		logger.info("FileUserController, taskDetailLength:{}", taskDetailLength);
+	}
 
 	@Override
 	public String addWaitTask(Task task) {
@@ -76,8 +82,8 @@ public class TaskServiceImpl implements TaskService {
 		if (string != null) {
 			return string;
 		}
-		if (taskPo.getTaskDetail() != null && taskPo.getTaskDetail().length() > mycloudConfiguration.getTaskDetailLength()) {
-			taskPo.setTaskDetail(taskPo.getTaskDetail().substring(0, mycloudConfiguration.getTaskDetailLength()));
+		if (taskPo.getTaskDetail() != null && taskPo.getTaskDetail().length() > taskDetailLength) {
+			taskPo.setTaskDetail(taskPo.getTaskDetail().substring(0, taskDetailLength));
 		}
 		int i = taskDao.insert(taskPo);
 		if (i == 0) {
@@ -123,8 +129,8 @@ public class TaskServiceImpl implements TaskService {
 		if (string != null) {
 			return string;
 		}
-		if (taskPo.getTaskDetail() != null && taskPo.getTaskDetail().length() > mycloudConfiguration.getTaskDetailLength()) {
-			taskPo.setTaskDetail(taskPo.getTaskDetail().substring(0, mycloudConfiguration.getTaskDetailLength()));
+		if (taskPo.getTaskDetail() != null && taskPo.getTaskDetail().length() > taskDetailLength) {
+			taskPo.setTaskDetail(taskPo.getTaskDetail().substring(0, taskDetailLength));
 		}
 		int i = taskDao.update(taskPo);
 		if (i == 0) {

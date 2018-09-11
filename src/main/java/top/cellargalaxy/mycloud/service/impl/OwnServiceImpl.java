@@ -27,8 +27,14 @@ public class OwnServiceImpl implements OwnService {
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	@Autowired
 	private OwnDao ownDao;
+
+	private final String domain;
+
 	@Autowired
-	private MycloudConfiguration mycloudConfiguration;
+	public OwnServiceImpl(MycloudConfiguration mycloudConfiguration) {
+		domain = mycloudConfiguration.getDomain();
+		logger.info("FileUserController, domain:{}", domain);
+	}
 
 	@Override
 	public String addOwn(OwnPo ownPo) {
@@ -186,7 +192,7 @@ public class OwnServiceImpl implements OwnService {
 		if (ownBo == null) {
 			return null;
 		}
-		ownBo.setUrl(StringUtil.createUrl(mycloudConfiguration.getDomain(), ownBo.getMd5()));
+		ownBo.setUrl(StringUtil.createUrl(domain, ownBo.getMd5()));
 		return ownBo;
 	}
 }

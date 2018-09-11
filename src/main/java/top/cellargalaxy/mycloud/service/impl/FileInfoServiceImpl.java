@@ -10,7 +10,8 @@ import top.cellargalaxy.mycloud.configuration.MycloudConfiguration;
 import top.cellargalaxy.mycloud.dao.FileInfoDao;
 import top.cellargalaxy.mycloud.model.bo.FileInfoBo;
 import top.cellargalaxy.mycloud.model.bo.OwnBo;
-import top.cellargalaxy.mycloud.model.po.*;
+import top.cellargalaxy.mycloud.model.po.FileInfoPo;
+import top.cellargalaxy.mycloud.model.po.UserPo;
 import top.cellargalaxy.mycloud.model.query.FileInfoQuery;
 import top.cellargalaxy.mycloud.model.query.OwnQuery;
 import top.cellargalaxy.mycloud.model.vo.FileInfoOwnVo;
@@ -34,8 +35,14 @@ public class FileInfoServiceImpl implements FileInfoService {
 	private FileInfoDao fileInfoDao;
 	@Autowired
 	private OwnService ownService;
+
+	private final String domain;
+
 	@Autowired
-	private MycloudConfiguration mycloudConfiguration;
+	public FileInfoServiceImpl(MycloudConfiguration mycloudConfiguration) {
+		domain = mycloudConfiguration.getDomain();
+		logger.info("FileUserController, domain:{}", domain);
+	}
 
 	@Override
 	public String addFileInfo(FileInfoPo fileInfoPo) {
@@ -187,7 +194,7 @@ public class FileInfoServiceImpl implements FileInfoService {
 		if (fileInfoBo == null) {
 			return null;
 		}
-		fileInfoBo.setUrl(StringUtil.createUrl(mycloudConfiguration.getDomain(), fileInfoBo.getMd5()));
+		fileInfoBo.setUrl(StringUtil.createUrl(domain, fileInfoBo.getMd5()));
 		return fileInfoBo;
 	}
 }
