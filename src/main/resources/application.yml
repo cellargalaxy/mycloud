@@ -44,9 +44,10 @@ spring:
 
 webUploadMaxFileSize: ${MYCLOUD_WEB_UPLOAD_MAX_FILE_SIZE:1024MB}
 webUploadMaxRequestSize: ${MYCLOUD_WEB_UPLOAD_MAX_REQUEST_SIZE:1024MB}
-mycloudPath: ${MYCLOUD_PATH:}
+mycloudPath: ${MYCLOUD_PATH:/}
 localFileMaxSpaceRate: ${MYCLOUD_LOCAL_FILE_MAX_SPACE_RATE:0.8}
-installationType: ${MYCLOUD_INSTALLATION_TYPE:local}
+installationType: ${MYCLOUD_INSTALLATION_TYPE:hadoop}
+hdfsUrl: ${MYCLOUD_HDFS_URL:}
 secret: ${MYCLOUD_SECRET}
 domain: ${MYCLOUD_DOMAIN}
 

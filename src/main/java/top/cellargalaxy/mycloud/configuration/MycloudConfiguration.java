@@ -9,6 +9,9 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class MycloudConfiguration {
+	public static final String LOCAL_START = "local";
+	public static final String HADOOP_START = "hadoop";
+
 	@Value("${secret}")
 	private volatile String secret;
 	@Value("${webUploadMaxFileSize}")
@@ -25,6 +28,9 @@ public class MycloudConfiguration {
 
 	@Value("${localFileMaxSpaceRate}")
 	private volatile double localFileMaxSpaceRate;
+
+	@Value("${hdfsUrl}")
+	private volatile String hdfsUrl;
 
 	public String getSecret() {
 		return secret;
@@ -80,5 +86,13 @@ public class MycloudConfiguration {
 
 	public void setLocalFileMaxSpaceRate(double localFileMaxSpaceRate) {
 		this.localFileMaxSpaceRate = localFileMaxSpaceRate;
+	}
+
+	public String getHdfsUrl() {
+		return hdfsUrl;
+	}
+
+	public void setHdfsUrl(String hdfsUrl) {
+		this.hdfsUrl = hdfsUrl;
 	}
 }
