@@ -7,6 +7,8 @@ import top.cellargalaxy.mycloud.model.security.SecurityUser;
  * @time 2018/7/31
  */
 public interface SecurityService {
+	String USER_KEY = "user";
+
 	/**
 	 * 验证账号密码是否正确
 	 *

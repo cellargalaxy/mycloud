@@ -1,27 +1,22 @@
 package top.cellargalaxy.mycloud.service.impl;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import top.cellargalaxy.mycloud.configuration.MycloudConfiguration;
 import top.cellargalaxy.mycloud.dao.FileInfoDao;
 import top.cellargalaxy.mycloud.model.bo.FileInfoBo;
 import top.cellargalaxy.mycloud.model.bo.OwnBo;
 import top.cellargalaxy.mycloud.model.po.FileInfoPo;
-import top.cellargalaxy.mycloud.model.po.UserPo;
 import top.cellargalaxy.mycloud.model.query.FileInfoQuery;
 import top.cellargalaxy.mycloud.model.query.OwnQuery;
-import top.cellargalaxy.mycloud.model.vo.FileInfoOwnVo;
+import top.cellargalaxy.mycloud.model.vo.FileInfoVo;
 import top.cellargalaxy.mycloud.service.FileInfoService;
 import top.cellargalaxy.mycloud.service.OwnService;
-import top.cellargalaxy.mycloud.util.SqlUtil;
-import top.cellargalaxy.mycloud.util.StringUtil;
+import top.cellargalaxy.mycloud.util.ServiceUtil;
 
-import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author cellargalaxy
@@ -30,171 +25,100 @@ import java.util.List;
 @Transactional
 @Service
 public class FileInfoServiceImpl implements FileInfoService {
-	private final Logger logger = LoggerFactory.getLogger(this.getClass());
+	private static final String NAME = "文件";
 	@Autowired
 	private FileInfoDao fileInfoDao;
 	@Autowired
 	private OwnService ownService;
-
 	private final String domain;
 
 	@Autowired
 	public FileInfoServiceImpl(MycloudConfiguration mycloudConfiguration) {
-		domain = mycloudConfiguration.getDomain();
-		logger.info("FileUserController, domain:{}", domain);
+		this.domain = mycloudConfiguration.getDomain();
 	}
 
 	@Override
 	public String addFileInfo(FileInfoPo fileInfoPo) {
-		logger.info("addFileInfo, fileInfoPo:{}", fileInfoPo);
-		String string = checkAddFileInfo(fileInfoPo);
-		if (string != null) {
-			return string;
-		}
-		int i = fileInfoDao.insert(fileInfoPo);
-		if (i == 0) {
-			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-			return "文件信息空新增";
-		}
-		return null;
+		return ServiceUtil.add(fileInfoPo, NAME, this::checkAddFileInfo, fileInfoDao);
 	}
 
 	@Override
 	public String removeFileInfo(FileInfoPo fileInfoPo) {
-		logger.info("removeFileInfo:{}", fileInfoPo);
-		int i = fileInfoDao.delete(fileInfoPo);
-		if (i == 0) {
-			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-			return "文件信息空删除";
-		}
-		return null;
+		return ServiceUtil.remove(fileInfoPo, NAME, fileInfoDao);
+	}
+
+	@Override
+	public String checkAddFileInfo(FileInfoPo fileInfoPo) {
+		return ServiceUtil.checkAdd(fileInfoPo, NAME, FileInfoDao::checkInsert, fileInfoDao);
 	}
 
 	@Override
 	public FileInfoBo getFileInfo(FileInfoPo fileInfoPo) {
-		logger.info("getFileInfo:{}", fileInfoPo);
-		return setUrl(fileInfoDao.selectOne(fileInfoPo));
+		FileInfoBo fileInfoBo = fileInfoDao.selectOne(fileInfoPo);
+		if (fileInfoBo!=null) {
+			fileInfoBo.setMd5Url(domain + "/" + fileInfoBo.getMd5());
+		}
+		return fileInfoBo;
 	}
 
 	@Override
-	public FileInfoBo getFileInfo(UserPo userPo, FileInfoQuery fileInfoQuery) {
-		return getFileInfo(fileInfoQuery);
-	}
-
-	@Override
-	public int getFileInfoCount(FileInfoQuery fileInfoQuery) {
-		logger.info("getFileInfoCount:{}", fileInfoQuery);
-		return fileInfoDao.selectCount(fileInfoQuery);
+	public FileInfoVo getFileInfoVo(FileInfoPo fileInfoPo) {
+		FileInfoBo fileInfoBo = fileInfoDao.selectOne(fileInfoPo);
+		if (fileInfoBo!=null) {
+			fileInfoBo.setMd5Url(domain + "/" + fileInfoBo.getMd5());
+		}
+		return bo2vo(fileInfoBo);
 	}
 
 	@Override
 	public List<FileInfoBo> listFileInfo(FileInfoQuery fileInfoQuery) {
-		logger.info("listFileInfo:{}", fileInfoQuery);
-		return setUrl(fileInfoDao.selectSome(fileInfoQuery));
+		List<FileInfoBo> fileInfoBos = fileInfoDao.selectPageSome(fileInfoQuery);
+		fileInfoBos.stream().forEach(fileInfoBo -> {
+			if (fileInfoBo!=null) {
+				fileInfoBo.setMd5Url(domain + "/" + fileInfoBo.getMd5());
+			}
+		});
+		return fileInfoBos;
 	}
 
 	@Override
-	public List<FileInfoBo> listAllFileInfo() {
-		logger.info("listAllFileInfo");
-		return setUrl(fileInfoDao.selectAll());
+	public List<FileInfoVo> listFileInfoVo(FileInfoQuery fileInfoQuery) {
+		List<FileInfoBo> fileInfoBos = fileInfoDao.selectPageSome(fileInfoQuery);
+		fileInfoBos.stream().forEach(fileInfoBo -> {
+			if (fileInfoBo!=null) {
+				fileInfoBo.setMd5Url(domain + "/" + fileInfoBo.getMd5());
+			}
+		});
+		return bo2vo(fileInfoBos);
 	}
 
 	@Override
-	public FileInfoOwnVo getFileInfoOwn(FileInfoQuery fileInfoQuery) {
-		logger.info("getFileInfoOwn:{}", fileInfoQuery);
-		FileInfoBo fileInfoBo = setUrl(fileInfoDao.selectOne(fileInfoQuery));
+	public int getFileInfoCount(FileInfoQuery fileInfoQuery) {
+		return fileInfoDao.selectCount(fileInfoQuery);
+	}
+
+	@Override
+	public List<String> listContentType() {
+		return fileInfoDao.selectAllContentType();
+	}
+
+	private FileInfoVo bo2vo(FileInfoBo fileInfoBo) {
 		if (fileInfoBo == null) {
 			return null;
 		}
 		OwnQuery ownQuery = new OwnQuery();
 		ownQuery.setFileId(fileInfoBo.getFileId());
-		List<OwnBo> ownBos = ownService.listOwn(ownQuery);
-		return new FileInfoOwnVo(fileInfoBo, ownBos);
+		List<OwnBo> ownBos = ownService.listAllOwn(ownQuery);
+		FileInfoVo fileInfoVo = new FileInfoVo();
+		fileInfoVo.setFileInfo(fileInfoBo);
+		fileInfoVo.setOwns(ownBos);
+		return fileInfoVo;
 	}
 
-	@Override
-	public List<FileInfoOwnVo> listFileInfoOwn(FileInfoQuery fileInfoQuery) {
-		logger.info("listFileInfoOwn:{}", fileInfoQuery);
-		List<FileInfoBo> fileInfoBos = setUrl(fileInfoDao.selectSome(fileInfoQuery));
+	private List<FileInfoVo> bo2vo(List<FileInfoBo> fileInfoBos) {
 		if (fileInfoBos == null) {
 			return null;
 		}
-		List<FileInfoOwnVo> fileInfoOwnVos = new LinkedList<>();
-		for (FileInfoBo fileInfoBo : fileInfoBos) {
-			OwnQuery ownQuery = new OwnQuery();
-			ownQuery.setFileId(fileInfoBo.getFileId());
-			ownQuery.setPage(1);
-			ownQuery.setPageSize(SqlUtil.MAX_PAGE_SIZE);
-			List<OwnBo> ownBos = ownService.listOwn(ownQuery);
-			fileInfoOwnVos.add(new FileInfoOwnVo(fileInfoBo, ownBos));
-		}
-		return fileInfoOwnVos;
-	}
-
-	@Override
-	public List<String> listContentType() {
-		logger.info("listContentType");
-		return fileInfoDao.selectContentType();
-	}
-
-	@Override
-	public String changeFileInfo(FileInfoPo fileInfoPo) {
-		logger.info("changeFileInfo:{}", fileInfoPo);
-		String string = checkChangeFileInfo(fileInfoPo);
-		if (string != null) {
-			return string;
-		}
-		int i = fileInfoDao.update(fileInfoPo);
-		if (i == 0) {
-			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-			return "文件信息空更新";
-		}
-		return null;
-	}
-
-	@Override
-	public String checkAddFileInfo(FileInfoPo fileInfoPo) {
-		logger.info("checkAddFileInfo:{}", fileInfoPo);
-		String string = FileInfoDao.checkInsert(fileInfoPo);
-		if (string != null) {
-			return string;
-		}
-		FileInfoBo fileInfoBo = fileInfoDao.selectOne(fileInfoPo);
-		if (fileInfoBo != null) {
-			return "文件已存在,MD5:" + fileInfoBo.getMd5();
-		}
-		return null;
-	}
-
-	@Override
-	public String checkChangeFileInfo(FileInfoPo fileInfoPo) {
-		logger.info("checkChangeFileInfo:{}", fileInfoPo);
-		String string = FileInfoDao.checkUpdate(fileInfoPo);
-		if (string != null) {
-			return string;
-		}
-		FileInfoBo fileInfoBo = fileInfoDao.selectOne(fileInfoPo);
-		if (fileInfoBo == null) {
-			return "文件不存在";
-		}
-		return null;
-	}
-
-	private List<FileInfoBo> setUrl(List<FileInfoBo> fileInfoBos) {
-		if (fileInfoBos == null) {
-			return null;
-		}
-		for (FileInfoBo fileInfoBo : fileInfoBos) {
-			setUrl(fileInfoBo);
-		}
-		return fileInfoBos;
-	}
-
-	private FileInfoBo setUrl(FileInfoBo fileInfoBo) {
-		if (fileInfoBo == null) {
-			return null;
-		}
-		fileInfoBo.setUrl(StringUtil.createUrl(domain, fileInfoBo.getMd5()));
-		return fileInfoBo;
+		return fileInfoBos.stream().map(fileInfoBo -> bo2vo(fileInfoBo)).collect(Collectors.toList());
 	}
 }

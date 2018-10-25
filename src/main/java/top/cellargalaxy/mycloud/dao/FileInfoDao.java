@@ -9,22 +9,16 @@ import java.util.List;
 
 /**
  * @author cellargalaxy
- * @time 2018/7/3
+ * @time 2018/10/25
  */
 public interface FileInfoDao extends AbstractDao<FileInfoPo, FileInfoBo, FileInfoQuery> {
 	String TABLE_NAME = "file_info";
 
-	List<String> selectContentType();
+	List<String> selectAllContentType();
 
 	static String checkInsert(FileInfoPo fileInfoPo) {
 		if (StringUtil.isBlank(fileInfoPo.getMd5())) {
-			return "md5不得为空";
-		}
-		if (fileInfoPo.getMd5().length() != 32) {
-			return "md5长度异常,现长度为: " + fileInfoPo.getMd5().length();
-		}
-		if (fileInfoPo.getFileLength() < 1) {
-			return "文件长度不得为空";
+			return "MD5不得为空";
 		}
 		if (StringUtil.isBlank(fileInfoPo.getContentType())) {
 			return "文件类型不得为空";

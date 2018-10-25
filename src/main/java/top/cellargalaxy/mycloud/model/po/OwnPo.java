@@ -11,8 +11,11 @@ import java.util.Objects;
 public class OwnPo implements Serializable {
 	private static final long serialVersionUID = -1711152764871510164L;
 	private int ownId;
+	private String ownUuid;
 	private int userId;
 	private int fileId;
+	private long fileLength;
+	private String contentType;
 	private String fileName;
 	private String sort;
 	private String description;
@@ -25,6 +28,14 @@ public class OwnPo implements Serializable {
 
 	public void setOwnId(int ownId) {
 		this.ownId = ownId;
+	}
+
+	public String getOwnUuid() {
+		return ownUuid;
+	}
+
+	public void setOwnUuid(String ownUuid) {
+		this.ownUuid = ownUuid;
 	}
 
 	public int getUserId() {
@@ -41,6 +52,22 @@ public class OwnPo implements Serializable {
 
 	public void setFileId(int fileId) {
 		this.fileId = fileId;
+	}
+
+	public long getFileLength() {
+		return fileLength;
+	}
+
+	public void setFileLength(long fileLength) {
+		this.fileLength = fileLength;
+	}
+
+	public String getContentType() {
+		return contentType;
+	}
+
+	public void setContentType(String contentType) {
+		this.contentType = contentType;
 	}
 
 	public String getFileName() {
@@ -84,20 +111,6 @@ public class OwnPo implements Serializable {
 	}
 
 	@Override
-	public String toString() {
-		return "OwnPo{" +
-				"ownId=" + ownId +
-				", userId=" + userId +
-				", fileId=" + fileId +
-				", fileName='" + fileName + '\'' +
-				", sort='" + sort + '\'' +
-				", description='" + description + '\'' +
-				", createTime=" + createTime +
-				", updateTime=" + updateTime +
-				'}';
-	}
-
-	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
@@ -105,6 +118,9 @@ public class OwnPo implements Serializable {
 		return ownId == ownPo.ownId &&
 				userId == ownPo.userId &&
 				fileId == ownPo.fileId &&
+				fileLength == ownPo.fileLength &&
+				Objects.equals(ownUuid, ownPo.ownUuid) &&
+				Objects.equals(contentType, ownPo.contentType) &&
 				Objects.equals(fileName, ownPo.fileName) &&
 				Objects.equals(sort, ownPo.sort) &&
 				Objects.equals(description, ownPo.description) &&
@@ -114,6 +130,21 @@ public class OwnPo implements Serializable {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(ownId, userId, fileId, fileName, sort, description, createTime, updateTime);
+
+		return Objects.hash(ownId, ownUuid, userId, fileId, fileLength, contentType, fileName, sort, description, createTime, updateTime);
+	}
+
+	@Override
+	public String toString() {
+		return "OwnPo{" +
+				"ownId=" + ownId +
+				", ownUuid='" + ownUuid + '\'' +
+				", userId=" + userId +
+				", fileId=" + fileId +
+				", fileLength=" + fileLength +
+				", contentType='" + contentType + '\'' +
+				", fileName='" + fileName + '\'' +
+				", sort='" + sort + '\'' +
+				'}';
 	}
 }

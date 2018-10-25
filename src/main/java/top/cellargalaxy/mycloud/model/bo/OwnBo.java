@@ -11,9 +11,8 @@ import java.util.Objects;
 public class OwnBo extends OwnPo {
 	private String username;
 	private String md5;
-	private long fileLength;
-	private String contentType;
-	private String url;
+	private String md5Url;
+	private String ownUrl;
 
 	public String getUsername() {
 		return username;
@@ -31,39 +30,20 @@ public class OwnBo extends OwnPo {
 		this.md5 = md5;
 	}
 
-	public long getFileLength() {
-		return fileLength;
+	public String getMd5Url() {
+		return md5Url;
 	}
 
-	public void setFileLength(long fileLength) {
-		this.fileLength = fileLength;
+	public void setMd5Url(String md5Url) {
+		this.md5Url = md5Url;
 	}
 
-	public String getContentType() {
-		return contentType;
+	public String getOwnUrl() {
+		return ownUrl;
 	}
 
-	public void setContentType(String contentType) {
-		this.contentType = contentType;
-	}
-
-	public String getUrl() {
-		return url;
-	}
-
-	public void setUrl(String url) {
-		this.url = url;
-	}
-
-	@Override
-	public String toString() {
-		return "OwnBo{" +
-				"username='" + username + '\'' +
-				", md5='" + md5 + '\'' +
-				", fileLength=" + fileLength +
-				", contentType='" + contentType + '\'' +
-				", url='" + url + '\'' +
-				'}';
+	public void setOwnUrl(String ownUrl) {
+		this.ownUrl = ownUrl;
 	}
 
 	@Override
@@ -72,16 +52,23 @@ public class OwnBo extends OwnPo {
 		if (o == null || getClass() != o.getClass()) return false;
 		if (!super.equals(o)) return false;
 		OwnBo ownBo = (OwnBo) o;
-		return fileLength == ownBo.fileLength &&
-				Objects.equals(username, ownBo.username) &&
+		return Objects.equals(username, ownBo.username) &&
 				Objects.equals(md5, ownBo.md5) &&
-				Objects.equals(contentType, ownBo.contentType) &&
-				Objects.equals(url, ownBo.url);
+				Objects.equals(md5Url, ownBo.md5Url) &&
+				Objects.equals(ownUrl, ownBo.ownUrl);
 	}
 
 	@Override
 	public int hashCode() {
 
-		return Objects.hash(super.hashCode(), username, md5, fileLength, contentType, url);
+		return Objects.hash(super.hashCode(), username, md5, md5Url, ownUrl);
+	}
+
+	@Override
+	public String toString() {
+		return "OwnBo{" +
+				"username='" + username + '\'' +
+				", md5='" + md5 + '\'' +
+				'}';
 	}
 }

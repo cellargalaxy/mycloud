@@ -11,7 +11,7 @@ public class AuthorizationPo implements Serializable {
 	private static final long serialVersionUID = 1523109653163477354L;
 	private int authorizationId;
 	private int userId;
-	private int permissionId;
+	private Permission permission;
 	private Date createTime;
 	private Date updateTime;
 
@@ -31,12 +31,12 @@ public class AuthorizationPo implements Serializable {
 		this.userId = userId;
 	}
 
-	public int getPermissionId() {
-		return permissionId;
+	public Permission getPermission() {
+		return permission;
 	}
 
-	public void setPermissionId(int permissionId) {
-		this.permissionId = permissionId;
+	public void setPermission(Permission permission) {
+		this.permission = permission;
 	}
 
 	public Date getCreateTime() {
@@ -56,30 +56,29 @@ public class AuthorizationPo implements Serializable {
 	}
 
 	@Override
-	public String toString() {
-		return "AuthorizationPo{" +
-				"authorizationId=" + authorizationId +
-				", userId=" + userId +
-				", permissionId=" + permissionId +
-				", createTime=" + createTime +
-				", updateTime=" + updateTime +
-				'}';
-	}
-
-	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
 		AuthorizationPo that = (AuthorizationPo) o;
 		return authorizationId == that.authorizationId &&
 				userId == that.userId &&
-				permissionId == that.permissionId &&
+				permission == that.permission &&
 				Objects.equals(createTime, that.createTime) &&
 				Objects.equals(updateTime, that.updateTime);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(authorizationId, userId, permissionId, createTime, updateTime);
+
+		return Objects.hash(authorizationId, userId, permission, createTime, updateTime);
+	}
+
+	@Override
+	public String toString() {
+		return "AuthorizationPo{" +
+				"authorizationId=" + authorizationId +
+				", userId=" + userId +
+				", permission=" + permission +
+				'}';
 	}
 }

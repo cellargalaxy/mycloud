@@ -7,54 +7,56 @@ import top.cellargalaxy.mycloud.model.bo.FileInfoBo;
 import top.cellargalaxy.mycloud.model.po.FileInfoPo;
 import top.cellargalaxy.mycloud.model.query.FileInfoQuery;
 import top.cellargalaxy.mycloud.util.ProviderUtil;
+import top.cellargalaxy.mycloud.util.SqlUtil;
 import top.cellargalaxy.mycloud.util.StringUtil;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
-import static org.apache.ibatis.type.JdbcType.BIGINT;
 import static org.apache.ibatis.type.JdbcType.TIMESTAMP;
 
 /**
  * @author cellargalaxy
- * @time 2018/7/3
+ * @time 2018/10/25
  */
 @Mapper
 public interface FileInfoMapper extends AbstractDao<FileInfoPo, FileInfoBo, FileInfoQuery> {
-	@InsertProvider(type = FileInfoProvider.class, method = "insert")
 	@Options(useGeneratedKeys = true, keyProperty = "fileId")
+	@InsertProvider(type = FileInfoProvider.class, method = "insert")
 	int insert(FileInfoPo fileInfoPo);
 
 	@DeleteProvider(type = FileInfoProvider.class, method = "delete")
 	int delete(FileInfoPo fileInfoPo);
 
-	@Results(id = "fileInfoResult", value = {
+	@UpdateProvider(type = FileInfoProvider.class, method = "update")
+	int update(FileInfoPo fileInfoPo);
+
+	@Results(id = "fileInfoResults", value = {
 			@Result(property = "fileId", column = "file_id", id = true),
 			@Result(property = "md5", column = "md5"),
-			@Result(property = "fileLength", column = "file_length", javaType = long.class, jdbcType = BIGINT),
+			@Result(property = "fileLength", column = "file_length"),
 			@Result(property = "contentType", column = "content_type"),
-			@Result(property = "createTime", column = "create_time", javaType = Date.class, jdbcType = TIMESTAMP)
+			@Result(property = "createTime", column = "create_time", javaType = Date.class, jdbcType = TIMESTAMP),
 	})
 	@SelectProvider(type = FileInfoProvider.class, method = "selectOne")
 	FileInfoBo selectOne(FileInfoPo fileInfoPo);
 
-	@ResultMap(value = "fileInfoResult")
-	@SelectProvider(type = FileInfoProvider.class, method = "selectSome")
-	List<FileInfoBo> selectSome(FileInfoQuery fileInfoQuery);
+	@ResultMap(value = "fileInfoResults")
+	@SelectProvider(type = FileInfoProvider.class, method = "selectPageSome")
+	List<FileInfoBo> selectPageSome(FileInfoQuery fileInfoQuery);
+
+	@ResultMap(value = "fileInfoResults")
+	@SelectProvider(type = FileInfoProvider.class, method = "selectAllSome")
+	List<FileInfoBo> selectAllSome(FileInfoQuery fileInfoQuery);
 
 	@SelectProvider(type = FileInfoProvider.class, method = "selectCount")
 	int selectCount(FileInfoQuery fileInfoQuery);
 
-	@ResultMap(value = "fileInfoResult")
+	@ResultMap(value = "fileInfoResults")
 	@SelectProvider(type = FileInfoProvider.class, method = "selectAll")
 	List<FileInfoBo> selectAll();
 
-	@SelectProvider(type = FileInfoProvider.class, method = "selectContentType")
-	List<String> selectContentType();
-
-	@UpdateProvider(type = FileInfoProvider.class, method = "update")
-	int update(FileInfoPo fileInfoPo);
+	@SelectProvider(type = FileInfoProvider.class, method = "selectAllContentType")
+	List<String> selectAllContentType();
 
 	class FileInfoProvider /*implements AbstractProvider<FileInfoPo, FileInfoQuery>*/ {
 		private String tableName = FileInfoDao.TABLE_NAME;
@@ -64,91 +66,115 @@ public interface FileInfoMapper extends AbstractDao<FileInfoPo, FileInfoBo, File
 		private String contentType = tableName + ".content_type=#{contentType}";
 		private String createTime = tableName + ".create_time=#{createTime,jdbcType=TIMESTAMP}";
 
-		public String insert(FileInfoPo fileInfoPo) {
-			init(fileInfoPo);
-			fileInfoPo.setCreateTime(new Date());
-
-			String string = "insert into " + tableName + "(md5,file_length,content_type,create_time) " +
-					"values(#{md5},#{fileLength},#{contentType},#{createTime,jdbcType=TIMESTAMP})";
-			return string;
+		private List<String> createSelects() {
+			List<String> selects = new LinkedList<>();
+			selects.add(tableName + ".file_id");
+			selects.add(tableName + ".md5");
+			selects.add(tableName + ".file_length");
+			selects.add(tableName + ".content_type");
+			selects.add(tableName + ".create_time");
+			return selects;
 		}
 
-		public String delete(FileInfoPo fileInfoPo) {
-			return ProviderUtil.delete(tableName, fileInfoPo, this::wheresKey).append(" limit 1").toString();
+		public void wheresKey(FileInfoPo fileInfoPo, Set<String> wheres) {
+			if (!StringUtil.isBlank(fileInfoPo.getMd5())) {
+				wheres.add(md5);
+				return;
+			}
+			wheres.add(fileId);
 		}
 
-		public String selectOne(FileInfoPo fileInfoPo) {
-			return ProviderUtil.selectOne(tableName, fileInfoPo, this::wheresKey).append(" limit 1").toString();
-		}
 
-		public String selectSome(FileInfoQuery fileInfoQuery) {
-			return ProviderUtil.selectSome(tableName, fileInfoQuery, this::wheresAll).append(" order by create_time desc limit #{off},#{len}").toString();
-		}
-
-		public String selectCount(FileInfoQuery fileInfoQuery) {
-			return ProviderUtil.selectCount(tableName, fileInfoQuery, this::wheresAll).toString();
-		}
-
-		public String selectAll() {
-			return ProviderUtil.selectAll(tableName).toString();
-		}
-
-		public String selectContentType() {
-			return "select distinct content_type from " + tableName;
-		}
-
-		public String update(FileInfoPo fileInfoPo) {
-			init(fileInfoPo);
-			fileInfoPo.setCreateTime(null);
-
-			return ProviderUtil.update(tableName, fileInfoPo, fileId, this::sets, this::wheresKey).append(" limit 1").toString();
-		}
-
-		private void wheresAll(FileInfoQuery fileInfoQuery, Set<String> wheres) {
+		public void wheresAll(FileInfoQuery fileInfoQuery, Set<String> wheres) {
 			if (fileInfoQuery.getFileId() > 0) {
 				wheres.add(fileId);
 			}
 			if (!StringUtil.isBlank(fileInfoQuery.getMd5())) {
 				wheres.add(md5);
 			}
-			if (fileInfoQuery.getFileLength() > 0) {
-				wheres.add(fileLength);
-			}
 			if (!StringUtil.isBlank(fileInfoQuery.getContentType())) {
 				wheres.add(contentType);
 			}
-			if (fileInfoQuery.getCreateTime() != null) {
-				wheres.add(createTime);
-			}
 		}
 
-		private void wheresKey(FileInfoPo fileInfoPo, Set<String> wheres) {
-			if (fileInfoPo.getFileId() > 0) {
-				wheres.add(fileId);
-			} else if (!StringUtil.isBlank(fileInfoPo.getMd5())) {
-				wheres.add(md5);
-			}
+
+		public void sets(FileInfoPo fileInfoPo, Set<String> sets) {
+
 		}
 
-		private void sets(FileInfoPo fileInfoPo, Set<String> sets) {
-			if (!StringUtil.isBlank(fileInfoPo.getMd5())) {
-				sets.add(md5);
-			}
-			if (fileInfoPo.getFileLength() > 0) {
-				sets.add(fileLength);
-			}
-			if (!StringUtil.isBlank(fileInfoPo.getContentType())) {
-				sets.add(contentType);
-			}
+
+		public String insert(FileInfoPo fileInfoPo) {
+			String string = "insert into " + tableName + "(md5,file_length,content_type,create_time) " +
+					"values(#{md5},#{fileLength},#{contentType},#{createTime,jdbcType=TIMESTAMP})";
+			return string;
 		}
 
-		private void init(FileInfoPo fileInfoPo) {
-			if (fileInfoPo.getMd5() != null) {
-				fileInfoPo.setMd5(fileInfoPo.getMd5().trim());
-			}
-			if (fileInfoPo.getContentType() != null) {
-				fileInfoPo.setContentType(fileInfoPo.getContentType().trim());
-			}
+
+		public String delete(FileInfoPo fileInfoPo) {
+			return ProviderUtil.delete(tableName, fileInfoPo, this::wheresKey).append(" limit 1").toString();
+		}
+
+
+		public String update(FileInfoPo fileInfoPo) {
+			return ProviderUtil.update(tableName, fileInfoPo, fileId, this::sets, this::wheresKey).append(" limit 1").toString();
+		}
+
+
+		public String selectOne(FileInfoPo fileInfoPo) {
+			List<String> selects = createSelects();
+
+			Set<String> wheres = new HashSet<>();
+			wheresKey(fileInfoPo, wheres);
+
+			StringBuilder sql = SqlUtil.createSelectSql(selects, tableName, wheres);
+			String string = sql.append(" limit 1").toString();
+			return string;
+		}
+
+
+		public String selectPageSome(FileInfoQuery fileInfoQuery) {
+			SqlUtil.initPageQuery(fileInfoQuery);
+			return selectSome(fileInfoQuery).append(" limit #{off},#{len}").toString();
+		}
+
+
+		public String selectAllSome(FileInfoQuery fileInfoQuery) {
+			return selectSome(fileInfoQuery).toString();
+		}
+
+		private StringBuilder selectSome(FileInfoQuery fileInfoQuery) {
+			List<String> selects = createSelects();
+
+			Set<String> wheres = new HashSet<>();
+			wheresAll(fileInfoQuery, wheres);
+
+			StringBuilder sql = SqlUtil.createSelectSql(selects, tableName, wheres);
+			return sql;
+		}
+
+		public String selectCount(FileInfoQuery fileInfoQuery) {
+			return ProviderUtil.selectCount(tableName, fileInfoQuery, this::wheresAll).toString();
+		}
+
+
+		public String selectAll() {
+			List<String> selects = createSelects();
+
+			Set<String> wheres = Collections.EMPTY_SET;
+
+			StringBuilder sql = SqlUtil.createSelectSql(selects, tableName, wheres);
+			String string = sql.toString();
+			return string;
+		}
+
+		public String selectAllContentType() {
+			List<String> selects = Arrays.asList("distinct " + tableName + ".content_type");
+
+			Set<String> wheres = Collections.EMPTY_SET;
+
+			StringBuilder sql = SqlUtil.createSelectSql(selects, tableName, wheres);
+			String string = sql.toString();
+			return string;
 		}
 	}
 }

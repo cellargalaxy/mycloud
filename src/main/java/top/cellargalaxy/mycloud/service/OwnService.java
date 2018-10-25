@@ -14,33 +14,33 @@ import java.util.List;
 public interface OwnService {
 	String addOwn(OwnPo ownPo);
 
-	String removeOwn(OwnPo ownPo);
-
-	OwnBo getOwn(OwnPo ownPo);
-
-	int getOwnCount(OwnQuery ownQuery);
-
-	List<OwnBo> listOwn(OwnQuery ownQuery);
-
-	List<String> listSort(OwnQuery ownQuery);
-
-	String changeOwn(OwnPo ownPo);
-
 	String addOwn(UserPo userPo, OwnPo ownPo);
 
-	String removeOwn(UserPo userPo, OwnQuery ownQuery);
+	String removeOwn(OwnPo ownPo);
 
-	OwnBo getOwn(UserPo userPo, OwnQuery ownQuery);
+	String removeOwn(UserPo userPo, OwnPo ownPo);
 
-	int getOwnCount(UserPo userPo, OwnQuery ownQuery);
-
-	List<OwnBo> listOwn(UserPo userPo, OwnQuery ownQuery);
-
-	List<String> listSort(UserPo userPo, OwnQuery ownQuery);
+	String changeOwn(OwnPo ownPo);
 
 	String changeOwn(UserPo userPo, OwnPo ownPo);
 
 	String checkAddOwn(OwnPo ownPo);
 
 	String checkChangeOwn(OwnPo ownPo);
+
+	OwnBo getOwn(OwnPo ownPo);
+
+	OwnBo getOwn(UserPo userPo, OwnPo ownPo);
+
+	List<OwnBo> listOwn(OwnQuery ownQuery);
+
+	List<OwnBo> listAllOwn(OwnQuery ownQuery);
+
+	List<OwnBo> listOwn(UserPo userPo, OwnQuery ownQuery);
+
+	int getOwnCount(OwnQuery ownQuery);
+
+	List<String> listSort();
+
+	List<String> listSort(UserPo userPo);
 }

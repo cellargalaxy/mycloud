@@ -1,11 +1,8 @@
 package top.cellargalaxy.mycloud.service.impl;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import top.cellargalaxy.mycloud.configuration.MycloudConfiguration;
 import top.cellargalaxy.mycloud.dao.OwnDao;
 import top.cellargalaxy.mycloud.model.bo.OwnBo;
@@ -13,7 +10,7 @@ import top.cellargalaxy.mycloud.model.po.OwnPo;
 import top.cellargalaxy.mycloud.model.po.UserPo;
 import top.cellargalaxy.mycloud.model.query.OwnQuery;
 import top.cellargalaxy.mycloud.service.OwnService;
-import top.cellargalaxy.mycloud.util.StringUtil;
+import top.cellargalaxy.mycloud.util.ServiceUtil;
 
 import java.util.List;
 
@@ -24,175 +21,149 @@ import java.util.List;
 @Transactional
 @Service
 public class OwnServiceImpl implements OwnService {
-	private final Logger logger = LoggerFactory.getLogger(this.getClass());
+	private static final String NAME = "所属";
 	@Autowired
 	private OwnDao ownDao;
-
 	private final String domain;
 
 	@Autowired
 	public OwnServiceImpl(MycloudConfiguration mycloudConfiguration) {
-		domain = mycloudConfiguration.getDomain();
-		logger.info("FileUserController, domain:{}", domain);
+		this.domain = mycloudConfiguration.getDomain();
 	}
 
 	@Override
 	public String addOwn(OwnPo ownPo) {
-		logger.info("addOwn:{}", ownPo);
-		String string = checkAddOwn(ownPo);
-		if (string != null) {
-			return string;
-		}
-		int i = ownDao.insert(ownPo);
-		if (i == 0) {
-			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-			return "权限空新增";
-		}
-		return null;
-	}
-
-	@Override
-	public String removeOwn(OwnPo ownPo) {
-		logger.info("removeOwn:{}", ownPo);
-		int i = ownDao.delete(ownPo);
-		if (i == 0) {
-			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-			return "所属空删除";
-		}
-		return null;
-	}
-
-	@Override
-	public OwnBo getOwn(OwnPo ownPo) {
-		logger.info("getOwn:{}", ownPo);
-		return setUrl(ownDao.selectOne(ownPo));
-	}
-
-	@Override
-	public int getOwnCount(OwnQuery ownQuery) {
-		logger.info("getOwnCount:{}", ownQuery);
-		return ownDao.selectCount(ownQuery);
-	}
-
-	@Override
-	public List<OwnBo> listOwn(OwnQuery ownQuery) {
-		logger.info("listOwn:{}", ownQuery);
-		return setUrl(ownDao.selectSome(ownQuery));
-	}
-
-	@Override
-	public List<String> listSort(OwnQuery ownQuery) {
-		logger.info("listSort:{}" + ownQuery);
-		return ownDao.selectSort(ownQuery);
-	}
-
-	@Override
-	public String changeOwn(OwnPo ownPo) {
-		logger.info("changeOwn:{}", ownPo);
-		String string = checkChangeOwn(ownPo);
-		if (string != null) {
-			return string;
-		}
-		int i = ownDao.update(ownPo);
-		if (i == 0) {
-			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-			return "所属空更新";
-		}
-		return null;
+		return ServiceUtil.add(ownPo, NAME, this::checkAddOwn, ownDao);
 	}
 
 	@Override
 	public String addOwn(UserPo userPo, OwnPo ownPo) {
-		ownPo.setOwnId(0);
+		if (userPo == null) {
+			return "未登录";
+		}
 		ownPo.setUserId(userPo.getUserId());
-		return addOwn(ownPo);
+		return ServiceUtil.add(ownPo, NAME, this::checkAddOwn, ownDao);
 	}
 
 	@Override
-	public String removeOwn(UserPo userPo, OwnQuery ownQuery) {
-		ownQuery.setOwnId(0);
-		ownQuery.setUserId(userPo.getUserId());
-		return removeOwn(ownQuery);
+	public String removeOwn(OwnPo ownPo) {
+		return ServiceUtil.remove(ownPo, NAME, ownDao);
 	}
 
 	@Override
-	public OwnBo getOwn(UserPo userPo, OwnQuery ownQuery) {
-		ownQuery.setOwnId(0);
-		ownQuery.setUserId(userPo.getUserId());
-		return getOwn(ownQuery);
+	public String removeOwn(UserPo userPo, OwnPo ownPo) {
+		if (userPo == null) {
+			return "未登录";
+		}
+		ownPo.setUserId(userPo.getUserId());
+		return ServiceUtil.remove(ownPo, NAME, ownDao);
 	}
 
 	@Override
-	public int getOwnCount(UserPo userPo, OwnQuery ownQuery) {
-		ownQuery.setOwnId(0);
-		ownQuery.setUserId(userPo.getUserId());
-		return getOwnCount(ownQuery);
-	}
-
-	@Override
-	public List<OwnBo> listOwn(UserPo userPo, OwnQuery ownQuery) {
-		ownQuery.setOwnId(0);
-		ownQuery.setUserId(userPo.getUserId());
-		return listOwn(ownQuery);
-	}
-
-	@Override
-	public List<String> listSort(UserPo userPo, OwnQuery ownQuery) {
-		ownQuery.setOwnId(0);
-		ownQuery.setUserId(userPo.getUserId());
-		return listSort(ownQuery);
+	public String changeOwn(OwnPo ownPo) {
+		return ServiceUtil.change(ownPo, NAME, this::checkChangeOwn, ownDao);
 	}
 
 	@Override
 	public String changeOwn(UserPo userPo, OwnPo ownPo) {
-		ownPo.setOwnId(0);
+		if (userPo == null) {
+			return "未登录";
+		}
 		ownPo.setUserId(userPo.getUserId());
-		return changeOwn(ownPo);
+		return ServiceUtil.change(ownPo, NAME, this::checkChangeOwn, ownDao);
 	}
 
 	@Override
 	public String checkAddOwn(OwnPo ownPo) {
-		logger.info("checkAddOwn:{}", ownPo);
-		String string = OwnDao.checkInsert(ownPo);
-		if (string != null) {
-			return string;
-		}
-		OwnBo ownBo = ownDao.selectOne(ownPo);
-		if (ownBo != null) {
-			return "所属已存在";
-		}
-		return null;
+		return ServiceUtil.checkAdd(ownPo, NAME, OwnDao::checkInsert, ownDao);
 	}
 
 	@Override
 	public String checkChangeOwn(OwnPo ownPo) {
-		logger.info("checkChangeOwn:{}", ownPo);
-		String string = OwnDao.checkUpdate(ownPo);
-		if (string != null) {
-			return string;
-		}
-		OwnBo ownBo = ownDao.selectOne(ownPo);
-		if (ownBo == null) {
-			return "所属不存在";
-		}
-		return null;
+		return ServiceUtil.checkChange(ownPo, NAME, OwnDao::checkUpdate, ownDao);
 	}
 
-	private List<OwnBo> setUrl(List<OwnBo> ownBos) {
-		if (ownBos == null) {
+	@Override
+	public OwnBo getOwn(OwnPo ownPo) {
+		OwnBo ownBo = ownDao.selectOne(ownPo);
+		if (ownBo != null) {
+			ownBo.setMd5Url(domain + "/" + ownBo.getMd5());
+			ownBo.setOwnUrl(domain + "/" + ownBo.getOwnUuid());
+		}
+		return ownBo;
+	}
+
+	@Override
+	public OwnBo getOwn(UserPo userPo, OwnPo ownPo) {
+		if (userPo == null) {
 			return null;
 		}
-		for (OwnBo ownBo : ownBos) {
-			setUrl(ownBo);
+		ownPo.setUserId(userPo.getUserId());
+		OwnBo ownBo = ownDao.selectOne(ownPo);
+		if (ownBo != null) {
+			ownBo.setMd5Url(domain + "/" + ownBo.getMd5());
+			ownBo.setOwnUrl(domain + "/" + ownBo.getOwnUuid());
 		}
+		return ownBo;
+	}
+
+	@Override
+	public List<OwnBo> listOwn(OwnQuery ownQuery) {
+		List<OwnBo> ownBos = ownDao.selectPageSome(ownQuery);
+		ownBos.stream().forEach(ownBo -> {
+			if (ownBo != null) {
+				ownBo.setMd5Url(domain + "/" + ownBo.getMd5());
+				ownBo.setOwnUrl(domain + "/" + ownBo.getOwnUuid());
+			}
+		});
 		return ownBos;
 	}
 
-	private OwnBo setUrl(OwnBo ownBo) {
-		if (ownBo == null) {
+	@Override
+	public List<OwnBo> listAllOwn(OwnQuery ownQuery) {
+		List<OwnBo> ownBos = ownDao.selectAllSome(ownQuery);
+		ownBos.stream().forEach(ownBo -> {
+			if (ownBo != null) {
+				ownBo.setMd5Url(domain + "/" + ownBo.getMd5());
+				ownBo.setOwnUrl(domain + "/" + ownBo.getOwnUuid());
+			}
+		});
+		return ownBos;
+	}
+
+	@Override
+	public List<OwnBo> listOwn(UserPo userPo, OwnQuery ownQuery) {
+		if (userPo == null) {
 			return null;
 		}
-		ownBo.setUrl(StringUtil.createUrl(domain, ownBo.getMd5()));
-		return ownBo;
+		ownQuery.setUserId(userPo.getUserId());
+		List<OwnBo> ownBos = ownDao.selectPageSome(ownQuery);
+		ownBos.stream().forEach(ownBo -> {
+			if (ownBo != null) {
+				ownBo.setMd5Url(domain + "/" + ownBo.getMd5());
+				ownBo.setOwnUrl(domain + "/" + ownBo.getOwnUuid());
+			}
+		});
+		return ownBos;
+	}
+
+	@Override
+	public int getOwnCount(OwnQuery ownQuery) {
+		return ownDao.selectCount(ownQuery);
+	}
+
+	@Override
+	public List<String> listSort() {
+		return ownDao.selectAllSort(new OwnQuery());
+	}
+
+	@Override
+	public List<String> listSort(UserPo userPo) {
+		if (userPo == null) {
+			return null;
+		}
+		OwnQuery ownQuery = new OwnQuery();
+		ownQuery.setUserId(userPo.getUserId());
+		return ownDao.selectAllSort(ownQuery);
 	}
 }

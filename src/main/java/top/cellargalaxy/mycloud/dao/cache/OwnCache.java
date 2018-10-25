@@ -1,7 +1,5 @@
 package top.cellargalaxy.mycloud.dao.cache;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
@@ -14,6 +12,7 @@ import top.cellargalaxy.mycloud.model.bo.OwnBo;
 import top.cellargalaxy.mycloud.model.po.OwnPo;
 import top.cellargalaxy.mycloud.model.query.OwnQuery;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -21,70 +20,70 @@ import java.util.List;
  * @time 2018/7/16
  */
 @Repository
-@CacheConfig(cacheNames = "own")
+@CacheConfig
 public class OwnCache implements OwnDao {
-	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	@Autowired
 	private OwnMapper ownMapper;
 
-	@Cacheable(key = "'selectOne'+(#p0.ownId>0?#p0.ownId:(#p0.userId+'-'+#p0.fileId))", condition = "true")
-	public OwnBo selectOne(OwnPo ownPo) {
-		logger.info("selectOne:{}", ownPo);
-		return ownMapper.selectOne(ownPo);
-	}
-
-	@Cacheable(key = "'selectSome'+#p0", condition = "true")
-	public List<OwnBo> selectSome(OwnQuery ownQuery) {
-		logger.info("selectSome:{}", ownQuery);
-		return ownMapper.selectSome(ownQuery);
-	}
-
-	@Cacheable(key = "'selectCount'+#p0", condition = "true")
-	public int selectCount(OwnQuery ownQuery) {
-		logger.info("selectCount:{}", ownQuery);
-		return ownMapper.selectCount(ownQuery);
-	}
-
-	@Cacheable(key = "'selectAll'", condition = "true")
+	@Cacheable(key = "'OwnCache-selectAll'", cacheNames = "5m")
 	public List<OwnBo> selectAll() {
-		logger.info("selectAll");
 		return ownMapper.selectAll();
 	}
 
-	@Cacheable(key = "'selectSort'+#p0", condition = "true")
-	public List<String> selectSort(OwnQuery ownQuery) {
-		logger.info("selectSort:{}", ownQuery);
-		return ownMapper.selectSort(ownQuery);
-	}
-
 	//
+
 	@Caching(evict = {
-			@CacheEvict(key = "'selectOne'+#p0.ownId"),
-			@CacheEvict(key = "'selectOne'+(#p0.userId+'-'+#p0.fileId)"),
-			@CacheEvict(key = "'selectAll'"),
+			@CacheEvict(key = "'OwnCache-selectAll'", cacheNames = "5m"),
 	})
 	public int insert(OwnPo ownPo) {
-		logger.info("insert:{}", ownPo);
+		Date date = new Date();
+		ownPo.setCreateTime(date);
+		ownPo.setUpdateTime(date);
 		return ownMapper.insert(ownPo);
 	}
 
+
 	@Caching(evict = {
-			@CacheEvict(key = "'selectOne'+#p0.ownId"),
-			@CacheEvict(key = "'selectOne'+(#p0.userId+'-'+#p0.fileId)"),
-			@CacheEvict(key = "'selectAll'"),
+			@CacheEvict(key = "'OwnCache-selectAll'", cacheNames = "5m"),
 	})
 	public int delete(OwnPo ownPo) {
-		logger.info("delete:{}", ownPo);
 		return ownMapper.delete(ownPo);
 	}
 
+
 	@Caching(evict = {
-			@CacheEvict(key = "'selectOne'+#p0.ownId"),
-			@CacheEvict(key = "'selectOne'+(#p0.userId+'-'+#p0.fileId)"),
-			@CacheEvict(key = "'selectAll'"),
+			@CacheEvict(key = "'OwnCache-selectAll'", cacheNames = "5m"),
 	})
 	public int update(OwnPo ownPo) {
-		logger.info("update:{}", ownPo);
+		ownPo.setCreateTime(null);
+		ownPo.setUpdateTime(new Date());
 		return ownMapper.update(ownPo);
+	}
+
+	//
+
+	@Cacheable(key = "'OwnCache-selectOne-'+#p0", cacheNames = "5m")
+	public OwnBo selectOne(OwnPo ownPo) {
+		return ownMapper.selectOne(ownPo);
+	}
+
+	@Cacheable(key = "'OwnCache-selectPageSome-'+#p0", cacheNames = "5m")
+	public List<OwnBo> selectPageSome(OwnQuery ownQuery) {
+		return ownMapper.selectPageSome(ownQuery);
+	}
+
+	@Cacheable(key = "'OwnCache-selectAllSome-'+#p0", cacheNames = "5m")
+	public List<OwnBo> selectAllSome(OwnQuery ownQuery) {
+		return ownMapper.selectAllSome(ownQuery);
+	}
+
+	@Cacheable(key = "'OwnCache-selectCount-'+#p0", cacheNames = "5m")
+	public int selectCount(OwnQuery ownQuery) {
+		return ownMapper.selectCount(ownQuery);
+	}
+
+	@Cacheable(key = "'OwnCache-selectAllSort-'+#p0", cacheNames = "5m")
+	public List<String> selectAllSort(OwnQuery ownQuery) {
+		return ownMapper.selectAllSort(ownQuery);
 	}
 }

@@ -1,7 +1,5 @@
 package top.cellargalaxy.mycloud.dao.cache;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
@@ -14,6 +12,7 @@ import top.cellargalaxy.mycloud.model.bo.FileInfoBo;
 import top.cellargalaxy.mycloud.model.po.FileInfoPo;
 import top.cellargalaxy.mycloud.model.query.FileInfoQuery;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -21,67 +20,71 @@ import java.util.List;
  * @time 2018/7/13
  */
 @Repository
-@CacheConfig(cacheNames = "fileInfo")
+@CacheConfig
 public class FileInfoCache implements FileInfoDao {
-	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	@Autowired
 	private FileInfoMapper fileInfoMapper;
 
-	@Cacheable(key = "'selectOne'+(#p0.md5!=null?#p0.md5:#p0.fileId)", condition = "true")
-	public FileInfoBo selectOne(FileInfoPo fileInfoPo) {
-		logger.info("selectOne:{}", fileInfoPo);
-		return fileInfoMapper.selectOne(fileInfoPo);
-	}
-
-	public List<FileInfoBo> selectSome(FileInfoQuery fileInfoQuery) {
-		logger.info("selectSome:{}", fileInfoQuery);
-		return fileInfoMapper.selectSome(fileInfoQuery);
-	}
-
-	public int selectCount(FileInfoQuery fileInfoQuery) {
-		logger.info("selectCount:{}", fileInfoQuery);
-		return fileInfoMapper.selectCount(fileInfoQuery);
-	}
-
+	@Cacheable(key = "'FileInfoCache-selectAll'", cacheNames = "5m")
 	public List<FileInfoBo> selectAll() {
-		logger.info("selectAll");
 		return fileInfoMapper.selectAll();
 	}
 
-	@Cacheable(key = "'selectContentType'", condition = "true")
-	public List<String> selectContentType() {
-		logger.info("selectContentType");
-		return fileInfoMapper.selectContentType();
+	@Cacheable(key = "'FileInfoCache-selectAllContentType'", cacheNames = "5m")
+	public List<String> selectAllContentType() {
+		return fileInfoMapper.selectAllContentType();
 	}
 
 	//
+
 	@Caching(evict = {
-			@CacheEvict(key = "'selectOne'+#p0.fileId"),
-			@CacheEvict(key = "'selectOne'+#p0.md5"),
-			@CacheEvict(key = "'selectContentType'"),
+			@CacheEvict(key = "'FileInfoCache-selectAll'", cacheNames = "5m"),
+			@CacheEvict(key = "'FileInfoCache-selectAllContentType'", cacheNames = "5m"),
 	})
 	public int insert(FileInfoPo fileInfoPo) {
-		logger.info("insert:{}", fileInfoPo);
+		Date date = new Date();
+		fileInfoPo.setCreateTime(date);
 		return fileInfoMapper.insert(fileInfoPo);
 	}
 
+
 	@Caching(evict = {
-			@CacheEvict(key = "'selectOne'+#p0.fileId"),
-			@CacheEvict(key = "'selectOne'+#p0.md5"),
-			@CacheEvict(key = "'selectContentType'"),
+			@CacheEvict(key = "'FileInfoCache-selectAll'", cacheNames = "5m"),
+			@CacheEvict(key = "'FileInfoCache-selectAllContentType'", cacheNames = "5m"),
 	})
 	public int delete(FileInfoPo fileInfoPo) {
-		logger.info("delete:{}", fileInfoPo);
 		return fileInfoMapper.delete(fileInfoPo);
 	}
 
+
 	@Caching(evict = {
-			@CacheEvict(key = "'selectOne'+#p0.fileId"),
-			@CacheEvict(key = "'selectOne'+#p0.md5"),
-			@CacheEvict(key = "'selectContentType'"),
+			@CacheEvict(key = "'FileInfoCache-selectAll'", cacheNames = "5m"),
+			@CacheEvict(key = "'FileInfoCache-selectAllContentType'", cacheNames = "5m"),
 	})
 	public int update(FileInfoPo fileInfoPo) {
-		logger.info("update:{}", fileInfoPo);
+		fileInfoPo.setCreateTime(null);
 		return fileInfoMapper.update(fileInfoPo);
+	}
+
+	//
+
+	@Cacheable(key = "'FileInfoCache-selectOne-'+#p0", cacheNames = "5m")
+	public FileInfoBo selectOne(FileInfoPo fileInfoPo) {
+		return fileInfoMapper.selectOne(fileInfoPo);
+	}
+
+	@Cacheable(key = "'FileInfoCache-selectPageSome-'+#p0", cacheNames = "5m")
+	public List<FileInfoBo> selectPageSome(FileInfoQuery fileInfoQuery) {
+		return fileInfoMapper.selectPageSome(fileInfoQuery);
+	}
+
+	@Cacheable(key = "'FileInfoCache-selectAllSome-'+#p0", cacheNames = "5m")
+	public List<FileInfoBo> selectAllSome(FileInfoQuery fileInfoQuery) {
+		return fileInfoMapper.selectAllSome(fileInfoQuery);
+	}
+
+	@Cacheable(key = "'FileInfoCache-selectCount-'+#p0", cacheNames = "5m")
+	public int selectCount(FileInfoQuery fileInfoQuery) {
+		return fileInfoMapper.selectCount(fileInfoQuery);
 	}
 }

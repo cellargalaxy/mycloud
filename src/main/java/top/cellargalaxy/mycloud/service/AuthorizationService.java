@@ -15,15 +15,7 @@ public interface AuthorizationService {
 
 	String removeAuthorization(AuthorizationPo authorizationPo);
 
-	AuthorizationBo getAuthorization(AuthorizationPo authorizationPo);
-
-	int getAuthorizationCount(AuthorizationQuery authorizationQuery);
-
-	List<AuthorizationBo> listAuthorization(AuthorizationQuery authorizationQuery);
-
-	String changeAuthorization(AuthorizationPo authorizationPo);
-
 	String checkAddAuthorization(AuthorizationPo authorizationPo);
 
-	String checkChangeAuthorization(AuthorizationPo authorizationPo);
+	List<AuthorizationBo> listAuthorizationByUserId(AuthorizationQuery authorizationQuery);
 }

@@ -4,11 +4,9 @@ import top.cellargalaxy.mycloud.model.bo.AuthorizationBo;
 import top.cellargalaxy.mycloud.model.po.AuthorizationPo;
 import top.cellargalaxy.mycloud.model.query.AuthorizationQuery;
 
-import java.util.List;
-
 /**
  * @author cellargalaxy
- * @time 2018/7/12
+ * @time 2018/10/25
  */
 public interface AuthorizationDao extends AbstractDao<AuthorizationPo, AuthorizationBo, AuthorizationQuery> {
 	String TABLE_NAME = "authorization";
@@ -17,15 +15,15 @@ public interface AuthorizationDao extends AbstractDao<AuthorizationPo, Authoriza
 		if (authorizationPo.getUserId() < 1) {
 			return "用户id不得为空";
 		}
-		if (authorizationPo.getPermissionId() < 1) {
-			return "权限id不得为空";
+		if (authorizationPo.getPermission() == null) {
+			return "权限不得为空";
 		}
 		return null;
 	}
 
 	static String checkUpdate(AuthorizationPo authorizationPo) {
-		if (authorizationPo.getUserId() < 0) {
-			return "用户id不得为空";
+		if (authorizationPo.getAuthorizationId() < 1) {
+			return "授权id不得为空";
 		}
 		return null;
 	}

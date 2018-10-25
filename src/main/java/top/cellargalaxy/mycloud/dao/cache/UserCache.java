@@ -1,7 +1,5 @@
 package top.cellargalaxy.mycloud.dao.cache;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
@@ -14,6 +12,7 @@ import top.cellargalaxy.mycloud.model.bo.UserBo;
 import top.cellargalaxy.mycloud.model.po.UserPo;
 import top.cellargalaxy.mycloud.model.query.UserQuery;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -21,64 +20,63 @@ import java.util.List;
  * @time 2018/7/13
  */
 @Repository
-@CacheConfig(cacheNames = "user")
+@CacheConfig
 public class UserCache implements UserDao {
-	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	@Autowired
 	private UserMapper userMapper;
 
-	@Cacheable(key = "'selectOne'+(#p0.username!=null?#p0.username:#p0.userId)", condition = "true")
-	public UserBo selectOne(UserPo userPo) {
-		logger.info("selectOne:{}", userPo);
-		return userMapper.selectOne(userPo);
-	}
-
-	@Cacheable(key = "'selectSome'+#p0", condition = "true")
-	public List<UserBo> selectSome(UserQuery userQuery) {
-		logger.info("selectSome:{}", userQuery);
-		return userMapper.selectSome(userQuery);
-	}
-
-	@Cacheable(key = "'selectCount'+#p0", condition = "true")
-	public int selectCount(UserQuery userQuery) {
-		logger.info("selectCount:{}", userQuery);
-		return userMapper.selectCount(userQuery);
-	}
-
-	@Cacheable(key = "'selectAll'", condition = "true")
+	@Cacheable(key = "'UserCache-selectAll'", cacheNames = "5m")
 	public List<UserBo> selectAll() {
-		logger.info("selectAll");
 		return userMapper.selectAll();
 	}
 
 	//
+
 	@Caching(evict = {
-			@CacheEvict(key = "'selectOne'+#p0.username"),
-			@CacheEvict(key = "'selectOne'+#p0.userId"),
-			@CacheEvict(key = "'selectAll'"),
+			@CacheEvict(key = "'UserCache-selectAll'", cacheNames = "5m"),
 	})
 	public int insert(UserPo userPo) {
-		logger.info("insert:{}", userPo);
+		Date date = new Date();
+		userPo.setCreateTime(date);
+		userPo.setUpdateTime(date);
 		return userMapper.insert(userPo);
 	}
 
 	@Caching(evict = {
-			@CacheEvict(key = "'selectOne'+#p0.username"),
-			@CacheEvict(key = "'selectOne'+#p0.userId"),
-			@CacheEvict(key = "'selectAll'"),
+			@CacheEvict(key = "'UserCache-selectAll'", cacheNames = "5m"),
 	})
 	public int delete(UserPo userPo) {
-		logger.info("delete:{}", userPo);
 		return userMapper.delete(userPo);
 	}
 
 	@Caching(evict = {
-			@CacheEvict(key = "'selectOne'+#p0.username"),
-			@CacheEvict(key = "'selectOne'+#p0.userId"),
-			@CacheEvict(key = "'selectAll'"),
+			@CacheEvict(key = "'UserCache-selectAll'", cacheNames = "5m"),
 	})
 	public int update(UserPo userPo) {
-		logger.info("update:{}", userPo);
+		userPo.setCreateTime(null);
+		userPo.setUpdateTime(new Date());
 		return userMapper.update(userPo);
+	}
+
+	//
+
+	@Cacheable(key = "'UserCache-selectOne-'+#p0", cacheNames = "5m")
+	public UserBo selectOne(UserPo userPo) {
+		return userMapper.selectOne(userPo);
+	}
+
+	@Cacheable(key = "'UserCache-selectPageSome-'+#p0", cacheNames = "5m")
+	public List<UserBo> selectPageSome(UserQuery userQuery) {
+		return userMapper.selectPageSome(userQuery);
+	}
+
+	@Cacheable(key = "'UserCache-selectAllSome-'+#p0", cacheNames = "5m")
+	public List<UserBo> selectAllSome(UserQuery userQuery) {
+		return userMapper.selectAllSome(userQuery);
+	}
+
+	@Cacheable(key = "'UserCache-selectCount-'+#p0", cacheNames = "5m")
+	public int selectCount(UserQuery userQuery) {
+		return userMapper.selectCount(userQuery);
 	}
 }

@@ -2,9 +2,8 @@ package top.cellargalaxy.mycloud.service;
 
 import top.cellargalaxy.mycloud.model.bo.FileInfoBo;
 import top.cellargalaxy.mycloud.model.po.FileInfoPo;
-import top.cellargalaxy.mycloud.model.po.UserPo;
 import top.cellargalaxy.mycloud.model.query.FileInfoQuery;
-import top.cellargalaxy.mycloud.model.vo.FileInfoOwnVo;
+import top.cellargalaxy.mycloud.model.vo.FileInfoVo;
 
 import java.util.List;
 
@@ -17,25 +16,17 @@ public interface FileInfoService {
 
 	String removeFileInfo(FileInfoPo fileInfoPo);
 
+	String checkAddFileInfo(FileInfoPo fileInfoPo);
+
 	FileInfoBo getFileInfo(FileInfoPo fileInfoPo);
 
-	FileInfoBo getFileInfo(UserPo userPo, FileInfoQuery fileInfoQuery);
-
-	int getFileInfoCount(FileInfoQuery fileInfoQuery);
+	FileInfoVo getFileInfoVo(FileInfoPo fileInfoPo);
 
 	List<FileInfoBo> listFileInfo(FileInfoQuery fileInfoQuery);
 
-	List<FileInfoBo> listAllFileInfo();
+	List<FileInfoVo> listFileInfoVo(FileInfoQuery fileInfoQuery);
 
-	FileInfoOwnVo getFileInfoOwn(FileInfoQuery fileInfoQuery);
-
-	List<FileInfoOwnVo> listFileInfoOwn(FileInfoQuery fileInfoQuery);
+	int getFileInfoCount(FileInfoQuery fileInfoQuery);
 
 	List<String> listContentType();
-
-	String changeFileInfo(FileInfoPo fileInfoPo);
-
-	String checkAddFileInfo(FileInfoPo fileInfoPo);
-
-	String checkChangeFileInfo(FileInfoPo fileInfoPo);
 }

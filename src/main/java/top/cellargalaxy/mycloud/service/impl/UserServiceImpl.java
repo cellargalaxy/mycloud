@@ -1,29 +1,22 @@
 package top.cellargalaxy.mycloud.service.impl;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import top.cellargalaxy.mycloud.dao.UserDao;
 import top.cellargalaxy.mycloud.model.bo.AuthorizationBo;
-import top.cellargalaxy.mycloud.model.bo.OwnBo;
 import top.cellargalaxy.mycloud.model.bo.UserBo;
+import top.cellargalaxy.mycloud.model.po.Permission;
 import top.cellargalaxy.mycloud.model.po.UserPo;
 import top.cellargalaxy.mycloud.model.query.AuthorizationQuery;
-import top.cellargalaxy.mycloud.model.query.OwnQuery;
-import top.cellargalaxy.mycloud.model.query.UserQuery;
-import top.cellargalaxy.mycloud.model.vo.UserAuthorizationVo;
-import top.cellargalaxy.mycloud.model.vo.UserOwnVo;
+import top.cellargalaxy.mycloud.model.vo.UserVo;
 import top.cellargalaxy.mycloud.service.AuthorizationService;
-import top.cellargalaxy.mycloud.service.OwnService;
 import top.cellargalaxy.mycloud.service.UserService;
-import top.cellargalaxy.mycloud.util.SqlUtil;
+import top.cellargalaxy.mycloud.util.ServiceUtil;
 
-import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author cellargalaxy
@@ -32,192 +25,126 @@ import java.util.List;
 @Transactional
 @Service
 public class UserServiceImpl implements UserService {
-	private final Logger logger = LoggerFactory.getLogger(this.getClass());
-	private final String passwordHead = "{bcrypt}";
-	private final BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+	private static final String NAME = "账号";
+	private static final String passwordHead = "{bcrypt}";
+	private static final BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 	@Autowired
 	private UserDao userDao;
 	@Autowired
 	private AuthorizationService authorizationService;
-	@Autowired
-	private OwnService ownService;
 
 	@Override
 	public String addUser(UserPo userPo) {
-		logger.info("addUser:{}", userPo);
-		String string = checkAddUser(userPo);
-		if (string != null) {
-			return string;
+		if (userPo.getPassword() != null) {
+			userPo.setPassword(passwordHead + bCryptPasswordEncoder.encode(userPo.getPassword()));
 		}
-		if (userPo.getUserPassword() != null) {
-			userPo.setUserPassword(passwordHead + bCryptPasswordEncoder.encode(userPo.getUserPassword()));
-		}
-		int i = userDao.insert(userPo);
-		if (i == 0) {
-			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-			return "用户空新增";
-		}
-		return null;
+		return ServiceUtil.add(userPo, NAME, this::checkAddUser, userDao);
 	}
 
 	@Override
 	public String removeUser(UserPo userPo) {
-		logger.info("removeUser:{}", userPo);
-		int i = userDao.delete(userPo);
-		if (i == 0) {
-			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-			return "用户空删除";
-		}
-		return null;
-	}
-
-	@Override
-	public UserBo getUser(UserPo userPo) {
-		logger.info("getUser:{}", userPo);
-		return userDao.selectOne(userPo);
-	}
-
-	@Override
-	public UserBo getUser(UserPo userPo, UserQuery userQuery) {
-		userQuery.setUserId(userPo.getUserId());
-		userQuery.setUsername(userPo.getUsername());
-		return getUser(userQuery);
-	}
-
-	@Override
-	public int getUserCount(UserQuery userQuery) {
-		logger.info("getUserCount:{}", userQuery);
-		return userDao.selectCount(userQuery);
-	}
-
-	@Override
-	public List<UserBo> listUser(UserQuery userQuery) {
-		logger.info("listUser:{}", userQuery);
-		return userDao.selectSome(userQuery);
-	}
-
-	@Override
-	public UserAuthorizationVo getUserAuthorization(UserQuery userQuery) {
-		logger.info("getUserAuthorization:{}", userQuery);
-		UserBo userBo = userDao.selectOne(userQuery);
-		if (userBo == null) {
-			return null;
-		}
-		AuthorizationQuery authorizationQuery = new AuthorizationQuery();
-		authorizationQuery.setUserId(userBo.getUserId());
-		List<AuthorizationBo> authorizationBos = authorizationService.listAuthorization(authorizationQuery);
-		return new UserAuthorizationVo(userBo, authorizationBos);
-	}
-
-	@Override
-	public UserAuthorizationVo getUserAuthorization(UserPo userPo, UserQuery userQuery) {
-		userQuery.setUserId(userPo.getUserId());
-		userQuery.setUsername(userPo.getUsername());
-		return getUserAuthorization(userQuery);
-	}
-
-	@Override
-	public List<UserAuthorizationVo> listUserAuthorization(UserQuery userQuery) {
-		logger.info("listUserAuthorization:{}", userQuery);
-		List<UserBo> userBos = userDao.selectSome(userQuery);
-		if (userBos == null) {
-			return null;
-		}
-		List<UserAuthorizationVo> userAuthorizationVos = new LinkedList<>();
-		for (UserBo userBo : userBos) {
-			AuthorizationQuery authorizationQuery = new AuthorizationQuery();
-			authorizationQuery.setUserId(userBo.getUserId());
-			authorizationQuery.setPage(1);
-			authorizationQuery.setPageSize(SqlUtil.MAX_PAGE_SIZE);
-			List<AuthorizationBo> authorizationBos = authorizationService.listAuthorization(authorizationQuery);
-			userAuthorizationVos.add(new UserAuthorizationVo(userBo, authorizationBos));
-		}
-		return userAuthorizationVos;
-	}
-
-	@Override
-	public UserOwnVo getUserOwn(UserQuery userQuery) {
-		logger.info("getUserOwn:{}", userQuery);
-		UserBo userBo = userDao.selectOne(userQuery);
-		if (userBo == null) {
-			return null;
-		}
-		OwnQuery ownQuery = new OwnQuery();
-		ownQuery.setUserId(userBo.getUserId());
-		List<OwnBo> ownBos = ownService.listOwn(ownQuery);
-		return new UserOwnVo(userBo, ownBos);
-	}
-
-	@Override
-	public List<UserOwnVo> listUserOwn(UserQuery userQuery) {
-		logger.info("listUserOwn:{}", userQuery);
-		List<UserBo> userBos = userDao.selectSome(userQuery);
-		if (userBos == null) {
-			return null;
-		}
-		List<UserOwnVo> userOwnVos = new LinkedList<>();
-		for (UserBo userBo : userBos) {
-			OwnQuery ownQuery = new OwnQuery();
-			ownQuery.setUserId(userBo.getUserId());
-			ownQuery.setPage(1);
-			ownQuery.setPageSize(SqlUtil.MAX_PAGE_SIZE);
-			List<OwnBo> ownBos = ownService.listOwn(ownQuery);
-			userOwnVos.add(new UserOwnVo(userBo, ownBos));
-		}
-		return userOwnVos;
+		return ServiceUtil.remove(userPo, NAME, userDao);
 	}
 
 	@Override
 	public String changeUser(UserPo userPo) {
-		logger.info("changeUser:{}", userPo);
-		String string = checkChangeUser(userPo);
-		if (string != null) {
-			return string;
+		if (userPo.getPassword() != null) {
+			userPo.setPassword(passwordHead + bCryptPasswordEncoder.encode(userPo.getPassword()));
 		}
-		if (userPo.getUserPassword() != null) {
-			userPo.setUserPassword(passwordHead + bCryptPasswordEncoder.encode(userPo.getUserPassword()));
-		}
-		int i = userDao.update(userPo);
-		if (i == 0) {
-			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-			return "用户空更新";
-		}
-		return null;
+		return ServiceUtil.change(userPo, NAME, this::checkChangeUser, userDao);
 	}
 
 	@Override
-	public String changeUser(UserPo odUserPo, UserPo newUserPo) {
-		if (odUserPo.getUserId() != newUserPo.getUserId()) {
-			return "登录账号与被修改账号不相同";
+	public String changeUser(UserPo userPo, UserPo newUserPo) {
+		if (userPo == null) {
+			return "未登录";
 		}
-		return changeUser(newUserPo);
+		if (userPo.getUserId() != newUserPo.getUserId()) {
+			return "不得修改他人信息";
+		}
+		return ServiceUtil.change(newUserPo, NAME, this::checkChangeUser, userDao);
 	}
 
 	@Override
 	public String checkAddUser(UserPo userPo) {
-		logger.info("checkAddUser:{}", userPo);
-		String string = UserDao.checkInsert(userPo);
-		if (string != null) {
-			return string;
-		}
-		UserBo userBo = userDao.selectOne(userPo);
-		if (userBo != null) {
-			return "账号已存在";
-		}
-		return null;
+		return ServiceUtil.checkAdd(userPo, NAME, UserDao::checkInsert, userDao);
 	}
 
 	@Override
 	public String checkChangeUser(UserPo userPo) {
-		logger.info("checkChangeUser:{}", userPo);
-		String string = UserDao.checkUpdate(userPo);
-		if (string != null) {
-			return string;
-		}
+		return ServiceUtil.checkChange(userPo, NAME, UserDao::checkUpdate, userDao);
+	}
+
+	@Override
+	public UserBo getUser(UserPo userPo) {
+		return userDao.selectOne(userPo);
+	}
+
+	@Override
+	public UserVo getUserVo(UserPo userPo) {
 		UserBo userBo = userDao.selectOne(userPo);
-		if (userBo == null) {
-			return "账号不存在";
+		return bo2vo(userBo);
+	}
+
+	@Override
+	public UserBo getUserByUsername(UserPo userPo) {
+		String username = userPo.getUsername();
+
+		userPo = new UserPo();
+		userPo.setUsername(username);
+
+		return userDao.selectOne(userPo);
+	}
+
+	@Override
+	public UserVo getUserVoByUsername(UserPo userPo) {
+		String username = userPo.getUsername();
+
+		userPo = new UserPo();
+		userPo.setUsername(username);
+
+		UserBo userBo = userDao.selectOne(userPo);
+		return bo2vo(userBo);
+	}
+
+	@Override
+	public List<UserBo> listAllUser() {
+		return userDao.selectAll();
+	}
+
+	@Override
+	public List<UserVo> listAllUserVo() {
+		List<UserBo> userBos = userDao.selectAll();
+		return bo2vo(userBos);
+	}
+
+	@Override
+	public Permission[] listAllPermission() {
+		return Permission.values();
+	}
+
+	private List<UserVo> bo2vo(List<UserBo> userBos) {
+		if (userBos == null) {
+			return null;
 		}
-		return null;
+		return userBos.stream().map(userBo -> bo2vo(userBo)).collect(Collectors.toList());
+	}
+
+	private UserVo bo2vo(UserBo userBo) {
+		if (userBo == null) {
+			return null;
+		}
+
+		AuthorizationQuery authorizationQuery = new AuthorizationQuery();
+		authorizationQuery.setUserId(userBo.getUserId());
+		List<AuthorizationBo> authorizationBos = authorizationService.listAuthorizationByUserId(authorizationQuery).stream().collect(Collectors.toList());
+		if (authorizationBos.size() == 0) {
+			authorizationBos.add(AuthorizationBo.GUEST);
+		}
+
+		UserVo userVo = new UserVo();
+		userVo.setUser(userBo);
+		userVo.setAuthorizations(authorizationBos);
+		return userVo;
 	}
 }

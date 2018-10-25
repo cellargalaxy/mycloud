@@ -1,16 +1,14 @@
 package top.cellargalaxy.mycloud.service.impl;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import top.cellargalaxy.mycloud.dao.AuthorizationDao;
 import top.cellargalaxy.mycloud.model.bo.AuthorizationBo;
 import top.cellargalaxy.mycloud.model.po.AuthorizationPo;
 import top.cellargalaxy.mycloud.model.query.AuthorizationQuery;
 import top.cellargalaxy.mycloud.service.AuthorizationService;
+import top.cellargalaxy.mycloud.util.ServiceUtil;
 
 import java.util.List;
 
@@ -21,94 +19,36 @@ import java.util.List;
 @Transactional
 @Service
 public class AuthorizationServiceImpl implements AuthorizationService {
-	private final Logger logger = LoggerFactory.getLogger(this.getClass());
+	private static final String NAME = "授权";
 	@Autowired
 	private AuthorizationDao authorizationDao;
 
 	@Override
 	public String addAuthorization(AuthorizationPo authorizationPo) {
-		logger.info("addAuthorization:{}", authorizationPo);
-		String string = checkAddAuthorization(authorizationPo);
-		if (string != null) {
-			return string;
-		}
-		int i = authorizationDao.insert(authorizationPo);
-		if (i == 0) {
-			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-			return "授权空新增";
-		}
-		return null;
+		return ServiceUtil.add(authorizationPo, NAME, this::checkAddAuthorization, authorizationDao);
 	}
 
 	@Override
 	public String removeAuthorization(AuthorizationPo authorizationPo) {
-		logger.info("removeAuthorization:{}", authorizationPo);
-		int i = authorizationDao.delete(authorizationPo);
-		if (i == 0) {
-			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-			return "授权空删除";
-		}
-		return null;
-	}
-
-	@Override
-	public AuthorizationBo getAuthorization(AuthorizationPo authorizationPo) {
-		logger.info("getAuthorization:{}", authorizationPo);
-		return authorizationDao.selectOne(authorizationPo);
-	}
-
-	@Override
-	public int getAuthorizationCount(AuthorizationQuery authorizationQuery) {
-		logger.info("getAuthorizationCount:{}", authorizationQuery);
-		return authorizationDao.selectCount(authorizationQuery);
-	}
-
-	@Override
-	public List<AuthorizationBo> listAuthorization(AuthorizationQuery authorizationQuery) {
-		logger.info("listAuthorization:{}", authorizationQuery);
-		return authorizationDao.selectSome(authorizationQuery);
-	}
-
-	@Override
-	public String changeAuthorization(AuthorizationPo authorizationPo) {
-		logger.info("changeAuthorization:{}", authorizationPo);
-		String string = checkChangeAuthorization(authorizationPo);
-		if (string != null) {
-			return string;
-		}
-		int i = authorizationDao.update(authorizationPo);
-		if (i == 0) {
-			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-			return "授权空更新";
-		}
-		return null;
+		return ServiceUtil.remove(authorizationPo, NAME, authorizationDao);
 	}
 
 	@Override
 	public String checkAddAuthorization(AuthorizationPo authorizationPo) {
-		logger.info("checkAddAuthorization:{}", authorizationPo);
-		String string = AuthorizationDao.checkInsert(authorizationPo);
-		if (string != null) {
-			return string;
-		}
-		AuthorizationBo authorizationBo = authorizationDao.selectOne(authorizationPo);
-		if (authorizationBo != null) {
-			return "授权已存在";
-		}
-		return null;
+		return ServiceUtil.checkAdd(authorizationPo, NAME, AuthorizationDao::checkInsert, authorizationDao);
 	}
 
 	@Override
-	public String checkChangeAuthorization(AuthorizationPo authorizationPo) {
-		logger.info("checkChangeAuthorization:{}", authorizationPo);
-		String string = AuthorizationDao.checkUpdate(authorizationPo);
-		if (string != null) {
-			return string;
-		}
-		AuthorizationBo authorizationBo = authorizationDao.selectOne(authorizationPo);
-		if (authorizationBo == null) {
-			return "授权不存在";
-		}
-		return null;
+	public List<AuthorizationBo> listAuthorizationByUserId(AuthorizationQuery authorizationQuery) {
+		int page = authorizationQuery.getPage();
+		int pageSize = authorizationQuery.getPageSize();
+		int userId = authorizationQuery.getUserId();
+
+		authorizationQuery = new AuthorizationQuery();
+		authorizationQuery.setPage(page);
+		authorizationQuery.setPageSize(pageSize);
+		authorizationQuery.setUserId(userId);
+
+		return authorizationDao.selectAllSome(authorizationQuery);
 	}
 }

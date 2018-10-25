@@ -7,6 +7,7 @@ import top.cellargalaxy.mycloud.model.bo.UserBo;
 import top.cellargalaxy.mycloud.model.po.UserPo;
 import top.cellargalaxy.mycloud.model.query.UserQuery;
 import top.cellargalaxy.mycloud.util.ProviderUtil;
+import top.cellargalaxy.mycloud.util.SqlUtil;
 import top.cellargalaxy.mycloud.util.StringUtil;
 
 import java.util.Date;
@@ -16,57 +17,89 @@ import java.util.Set;
 import static org.apache.ibatis.type.JdbcType.TIMESTAMP;
 
 /**
- * Created by cellargalaxy on 18-7-12.
+ * @author cellargalaxy
+ * @time 2018/9/25
  */
 @Mapper
 public interface UserMapper extends AbstractDao<UserPo, UserBo, UserQuery> {
+	@Options(useGeneratedKeys = true, keyProperty = "articleId")
 	@InsertProvider(type = UserProvider.class, method = "insert")
-	@Options(useGeneratedKeys = true, keyProperty = "userId")
 	int insert(UserPo userPo);
 
 	@DeleteProvider(type = UserProvider.class, method = "delete")
 	int delete(UserPo userPo);
 
-	@Results(id = "userResult", value = {
+	@UpdateProvider(type = UserProvider.class, method = "update")
+	int update(UserPo userPo);
+
+	@Results(id = "userResults", value = {
 			@Result(property = "userId", column = "user_id", id = true),
 			@Result(property = "username", column = "username"),
-			@Result(property = "userPassword", column = "user_password"),
+			@Result(property = "password", column = "password"),
 			@Result(property = "createTime", column = "create_time", javaType = Date.class, jdbcType = TIMESTAMP),
-			@Result(property = "updateTime", column = "update_time", javaType = Date.class, jdbcType = TIMESTAMP)
+			@Result(property = "updateTime", column = "update_time", javaType = Date.class, jdbcType = TIMESTAMP),
 	})
 	@SelectProvider(type = UserProvider.class, method = "selectOne")
 	UserBo selectOne(UserPo userPo);
 
-	@ResultMap(value = "userResult")
-	@SelectProvider(type = UserProvider.class, method = "selectSome")
-	List<UserBo> selectSome(UserQuery userQuery);
+	@ResultMap(value = "userResults")
+	@SelectProvider(type = UserProvider.class, method = "selectPageSome")
+	List<UserBo> selectPageSome(UserQuery userQuery);
+
+	@ResultMap(value = "userResults")
+	@SelectProvider(type = UserProvider.class, method = "selectAllSome")
+	List<UserBo> selectAllSome(UserQuery userQuery);
 
 	@SelectProvider(type = UserProvider.class, method = "selectCount")
 	int selectCount(UserQuery userQuery);
 
-	@ResultMap(value = "userResult")
+	@ResultMap(value = "userResults")
 	@SelectProvider(type = UserProvider.class, method = "selectAll")
 	List<UserBo> selectAll();
-
-	@UpdateProvider(type = UserProvider.class, method = "update")
-	int update(UserPo userPo);
 
 	class UserProvider /*implements AbstractProvider<UserPo, UserQuery>*/ {
 		private String tableName = UserDao.TABLE_NAME;
 		private String userId = tableName + ".user_id=#{userId}";
 		private String username = tableName + ".username=#{username}";
-		private String userPassword = tableName + ".user_password=#{userPassword}";
+		private String password = tableName + ".password=#{password}";
 		private String createTime = tableName + ".create_time=#{createTime,jdbcType=TIMESTAMP}";
 		private String updateTime = tableName + ".update_time=#{updateTime,jdbcType=TIMESTAMP}";
 
-		public String insert(UserPo userPo) {
-			init(userPo);
-			Date date = new Date();
-			userPo.setCreateTime(date);
-			userPo.setUpdateTime(date);
+		public void wheresKey(UserPo userPo, Set<String> wheres) {
+			if (!StringUtil.isBlank(userPo.getUsername())) {
+				wheres.add(username);
+				return;
+			}
+			wheres.add(userId);
+		}
 
-			String string = "insert into " + tableName + "(username,user_password,create_time,update_time) " +
-					"values(#{username},#{userPassword},#{createTime,jdbcType=TIMESTAMP},#{updateTime,jdbcType=TIMESTAMP})";
+		public void wheresAll(UserQuery userQuery, Set<String> wheres) {
+			if (userQuery.getUserId() > 0) {
+				wheres.add(userId);
+			}
+			if (!StringUtil.isBlank(userQuery.getUsername())) {
+				wheres.add(username);
+			}
+			if (!StringUtil.isBlank(userQuery.getPassword())) {
+				wheres.add(password);
+			}
+		}
+
+		public void sets(UserPo userPo, Set<String> sets) {
+			if (!StringUtil.isBlank(userPo.getUsername())) {
+				sets.add(username);
+			}
+			if (!StringUtil.isBlank(userPo.getPassword())) {
+				sets.add(password);
+			}
+			if (userPo.getUpdateTime() != null) {
+				sets.add(updateTime);
+			}
+		}
+
+		public String insert(UserPo userPo) {
+			String string = "insert into " + tableName + "(username,password,create_time,update_time) " +
+					"values(#{username},#{password},#{createTime,jdbcType=TIMESTAMP},#{updateTime,jdbcType=TIMESTAMP})";
 			return string;
 		}
 
@@ -74,12 +107,21 @@ public interface UserMapper extends AbstractDao<UserPo, UserBo, UserQuery> {
 			return ProviderUtil.delete(tableName, userPo, this::wheresKey).append(" limit 1").toString();
 		}
 
+		public String update(UserPo userPo) {
+			return ProviderUtil.update(tableName, userPo, userId, this::sets, this::wheresKey).append(" limit 1").toString();
+		}
+
 		public String selectOne(UserPo userPo) {
 			return ProviderUtil.selectOne(tableName, userPo, this::wheresKey).append(" limit 1").toString();
 		}
 
-		public String selectSome(UserQuery userQuery) {
+		public String selectPageSome(UserQuery userQuery) {
+			SqlUtil.initPageQuery(userQuery);
 			return ProviderUtil.selectSome(tableName, userQuery, this::wheresAll).append(" limit #{off},#{len}").toString();
+		}
+
+		public String selectAllSome(UserQuery userQuery) {
+			return ProviderUtil.selectSome(tableName, userQuery, this::wheresAll).toString();
 		}
 
 		public String selectCount(UserQuery userQuery) {
@@ -88,61 +130,6 @@ public interface UserMapper extends AbstractDao<UserPo, UserBo, UserQuery> {
 
 		public String selectAll() {
 			return ProviderUtil.selectAll(tableName).toString();
-		}
-
-		public String update(UserPo userPo) {
-			init(userPo);
-			userPo.setCreateTime(null);
-			userPo.setUpdateTime(new Date());
-
-			return ProviderUtil.update(tableName, userPo, userId, this::sets, this::wheresKey).append(" limit 1").toString();
-		}
-
-		private void wheresAll(UserQuery userQuery, Set<String> wheres) {
-			if (userQuery.getUserId() > 0) {
-				wheres.add(userId);
-			}
-			if (!StringUtil.isBlank(userQuery.getUsername())) {
-				wheres.add(username);
-			}
-			if (!StringUtil.isBlank(userQuery.getUserPassword())) {
-				wheres.add(userPassword);
-			}
-			if (userQuery.getCreateTime() != null) {
-				wheres.add(createTime);
-			}
-			if (userQuery.getUpdateTime() != null) {
-				wheres.add(updateTime);
-			}
-		}
-
-		private void wheresKey(UserPo userPo, Set<String> wheres) {
-			if (userPo.getUserId() > 0) {
-				wheres.add(userId);
-			} else if (!StringUtil.isBlank(userPo.getUsername())) {
-				wheres.add(username);
-			}
-		}
-
-		private void sets(UserPo userPo, Set<String> sets) {
-			if (!StringUtil.isBlank(userPo.getUsername())) {
-				sets.add(username);
-			}
-			if (!StringUtil.isBlank(userPo.getUserPassword())) {
-				sets.add(userPassword);
-			}
-			if (userPo.getUpdateTime() != null) {
-				sets.add(updateTime);
-			}
-		}
-
-		private void init(UserPo userPo) {
-			if (userPo.getUsername() != null) {
-				userPo.setUsername(userPo.getUsername().trim());
-			}
-			if (userPo.getUserPassword() != null) {
-				userPo.setUserPassword(userPo.getUserPassword().trim());
-			}
 		}
 	}
 }

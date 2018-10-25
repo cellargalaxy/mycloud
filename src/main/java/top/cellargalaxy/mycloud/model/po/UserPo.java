@@ -15,7 +15,7 @@ public class UserPo implements Serializable {
 	private int userId;
 	private String username;
 	@JsonIgnore
-	private String userPassword;
+	private String password;
 	private Date createTime;
 	private Date updateTime;
 
@@ -35,12 +35,12 @@ public class UserPo implements Serializable {
 		this.username = username;
 	}
 
-	public String getUserPassword() {
-		return userPassword;
+	public String getPassword() {
+		return password;
 	}
 
-	public void setUserPassword(String userPassword) {
-		this.userPassword = userPassword;
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 	public Date getCreateTime() {
@@ -60,30 +60,28 @@ public class UserPo implements Serializable {
 	}
 
 	@Override
-	public String toString() {
-		return "UserPo{" +
-				"userId=" + userId +
-				", username='" + username + '\'' +
-				", userPassword='" + userPassword + '\'' +
-				", createTime=" + createTime +
-				", updateTime=" + updateTime +
-				'}';
-	}
-
-	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
 		UserPo userPo = (UserPo) o;
 		return userId == userPo.userId &&
 				Objects.equals(username, userPo.username) &&
-				Objects.equals(userPassword, userPo.userPassword) &&
+				Objects.equals(password, userPo.password) &&
 				Objects.equals(createTime, userPo.createTime) &&
 				Objects.equals(updateTime, userPo.updateTime);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(userId, username, userPassword, createTime, updateTime);
+
+		return Objects.hash(userId, username, password, createTime, updateTime);
+	}
+
+	@Override
+	public String toString() {
+		return "UserPo{" +
+				"userId=" + userId +
+				", username='" + username + '\'' +
+				'}';
 	}
 }

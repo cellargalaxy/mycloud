@@ -1,7 +1,5 @@
 package top.cellargalaxy.mycloud.dao.cache;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
@@ -14,6 +12,7 @@ import top.cellargalaxy.mycloud.model.bo.AuthorizationBo;
 import top.cellargalaxy.mycloud.model.po.AuthorizationPo;
 import top.cellargalaxy.mycloud.model.query.AuthorizationQuery;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -21,64 +20,63 @@ import java.util.List;
  * @time 2018/7/13
  */
 @Repository
-@CacheConfig(cacheNames = "authorization")
+@CacheConfig
 public class AuthorizationCache implements AuthorizationDao {
-	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	@Autowired
 	private AuthorizationMapper authorizationMapper;
 
-	@Cacheable(key = "'selectOne'+(#p0.authorizationId>0?#p0.authorizationId:(#p0.userId+'-'+#p0.permissionId))", condition = "true")
-	public AuthorizationBo selectOne(AuthorizationPo authorizationPo) {
-		logger.info("selectOne:{}", authorizationPo);
-		return authorizationMapper.selectOne(authorizationPo);
-	}
-
-	@Cacheable(key = "'selectSome'+#p0", condition = "true")
-	public List<AuthorizationBo> selectSome(AuthorizationQuery authorizationQuery) {
-		logger.info("selectSome:{}", authorizationQuery);
-		return authorizationMapper.selectSome(authorizationQuery);
-	}
-
-	@Cacheable(key = "'selectCount'+#p0", condition = "true")
-	public int selectCount(AuthorizationQuery authorizationQuery) {
-		logger.info("selectCount:{}", authorizationQuery);
-		return authorizationMapper.selectCount(authorizationQuery);
-	}
-
-	@Cacheable(key = "'selectAll'", condition = "true")
+	@Cacheable(key = "'AuthorizationCache-selectAll'", cacheNames = "5m")
 	public List<AuthorizationBo> selectAll() {
-		logger.info("selectAll");
 		return authorizationMapper.selectAll();
 	}
 
 	//
+
 	@Caching(evict = {
-			@CacheEvict(key = "'selectOne'+#p0.authorizationId"),
-			@CacheEvict(key = "'selectOne'+(#p0.userId+'-'+#p0.permissionId)"),
-			@CacheEvict(key = "'selectAll'"),
+			@CacheEvict(key = "'AuthorizationCache-selectAll'", cacheNames = "5m"),
 	})
 	public int insert(AuthorizationPo authorizationPo) {
-		logger.info("insert:{}", authorizationPo);
+		Date date = new Date();
+		authorizationPo.setCreateTime(date);
+		authorizationPo.setUpdateTime(date);
 		return authorizationMapper.insert(authorizationPo);
 	}
 
 	@Caching(evict = {
-			@CacheEvict(key = "'selectOne'+#p0.authorizationId"),
-			@CacheEvict(key = "'selectOne'+(#p0.userId+'-'+#p0.permissionId)"),
-			@CacheEvict(key = "'selectAll'"),
+			@CacheEvict(key = "'AuthorizationCache-selectAll'", cacheNames = "5m"),
 	})
 	public int delete(AuthorizationPo authorizationPo) {
-		logger.info("delete:{}", authorizationPo);
 		return authorizationMapper.delete(authorizationPo);
 	}
 
 	@Caching(evict = {
-			@CacheEvict(key = "'selectOne'+#p0.authorizationId"),
-			@CacheEvict(key = "'selectOne'+(#p0.userId+'-'+#p0.permissionId)"),
-			@CacheEvict(key = "'selectAll'"),
+			@CacheEvict(key = "'AuthorizationCache-selectAll'", cacheNames = "5m"),
 	})
 	public int update(AuthorizationPo authorizationPo) {
-		logger.info("update:{}", authorizationPo);
+		authorizationPo.setCreateTime(null);
+		authorizationPo.setUpdateTime(new Date());
 		return authorizationMapper.update(authorizationPo);
+	}
+
+	//
+
+	@Cacheable(key = "'AuthorizationCache-selectOne-'+#p0", cacheNames = "5m")
+	public AuthorizationBo selectOne(AuthorizationPo authorizationPo) {
+		return authorizationMapper.selectOne(authorizationPo);
+	}
+
+	@Cacheable(key = "'AuthorizationCache-selectPageSome-'+#p0", cacheNames = "5m")
+	public List<AuthorizationBo> selectPageSome(AuthorizationQuery authorizationQuery) {
+		return authorizationMapper.selectPageSome(authorizationQuery);
+	}
+
+	@Cacheable(key = "'AuthorizationCache-selectAllSome-'+#p0", cacheNames = "5m")
+	public List<AuthorizationBo> selectAllSome(AuthorizationQuery authorizationQuery) {
+		return authorizationMapper.selectAllSome(authorizationQuery);
+	}
+
+	@Cacheable(key = "'AuthorizationCache-selectCount-'+#p0", cacheNames = "5m")
+	public int selectCount(AuthorizationQuery authorizationQuery) {
+		return authorizationMapper.selectCount(authorizationQuery);
 	}
 }

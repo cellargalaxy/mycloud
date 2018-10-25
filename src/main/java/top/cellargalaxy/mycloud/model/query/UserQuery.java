@@ -58,11 +58,11 @@ public class UserQuery extends UserPo implements PageQuery {
 	@Override
 	public String toString() {
 		return "UserQuery{" +
-				"super=" + super.toString() +
-				", pageSize=" + pageSize +
+				"pageSize=" + pageSize +
 				", page=" + page +
 				", off=" + off +
 				", len=" + len +
+				", super=" + super.toString() +
 				'}';
 	}
 

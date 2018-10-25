@@ -9,16 +9,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import top.cellargalaxy.mycloud.configuration.MycloudConfiguration;
 import top.cellargalaxy.mycloud.model.bo.AuthorizationBo;
+import top.cellargalaxy.mycloud.model.bo.UserBo;
 import top.cellargalaxy.mycloud.model.po.UserPo;
-import top.cellargalaxy.mycloud.model.query.UserQuery;
 import top.cellargalaxy.mycloud.model.security.SecurityUser;
-import top.cellargalaxy.mycloud.model.vo.UserAuthorizationVo;
+import top.cellargalaxy.mycloud.model.vo.UserVo;
 import top.cellargalaxy.mycloud.service.UserService;
 
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
+import javax.servlet.http.HttpServletRequest;
+import java.util.*;
 
 /**
  * @author cellargalaxy
@@ -44,7 +42,7 @@ public class SecurityServiceImpl implements SecurityService {
 
 	@Override
 	public SecurityUser checkSecurityUser(String username, String password) {
-		logger.info("checkSecurityUser:{}", username);
+		logger.info("checkSecurityUser: {}", username);
 		SecurityUser securityUser = getSecurityUser(username);
 		if (securityUser != null && securityUser.getPassword().equals(password)) {
 			return securityUser;
@@ -55,21 +53,24 @@ public class SecurityServiceImpl implements SecurityService {
 
 	@Override
 	public SecurityUser getSecurityUser(String username) {
-		logger.info("getSecurityUser:{}", username);
-		UserAuthorizationVo userAuthorizationVo = userService.getUserAuthorization(new UserQuery() {{
-			setUsername(username);
-		}});
-		if (userAuthorizationVo != null) {
-			return new SecurityUserImpl() {{
-				setUserId(userAuthorizationVo.getUser().getUserId());
-				setUsername(userAuthorizationVo.getUser().getUsername());
-				setUserPassword(userAuthorizationVo.getUser().getUserPassword());
-				setCreateTime(userAuthorizationVo.getUser().getCreateTime());
-				setUpdateTime(userAuthorizationVo.getUser().getUpdateTime());
-				for (AuthorizationBo authorization : userAuthorizationVo.getAuthorizations()) {
-					getPermissions().add(authorization.getPermissionName());
-				}
-			}};
+		logger.info("getSecurityUser: {}", username);
+		UserPo userPo = new UserPo();
+		userPo.setUsername(username);
+		UserVo userVo = userService.getUserVo(userPo);
+		if (userVo != null) {
+			SecurityUserImpl securityUser = new SecurityUserImpl();
+
+			UserBo userBo = userVo.getUser();
+			securityUser.setUserId(userBo.getUserId());
+			securityUser.setUsername(userBo.getUsername());
+			securityUser.setPassword(userBo.getPassword());
+			securityUser.setCreateTime(userBo.getCreateTime());
+			securityUser.setUpdateTime(userBo.getUpdateTime());
+
+			List<AuthorizationBo> authorizationBos = userVo.getAuthorizations();
+			authorizationBos.stream().forEach(authorizationBo -> securityUser.getPermissions().add(authorizationBo.getPermission().permission));
+
+			return securityUser;
 		}
 		return null;
 	}
@@ -147,6 +148,9 @@ public class SecurityServiceImpl implements SecurityService {
 		}
 	}
 
+	public static final SecurityUserImpl getSecurityUser(HttpServletRequest request) {
+		return (SecurityUserImpl) request.getAttribute(USER_KEY);
+	}
 	class SecurityUserImpl extends UserPo implements SecurityUser {
 		private final Set<String> permissions;
 
@@ -161,7 +165,7 @@ public class SecurityServiceImpl implements SecurityService {
 
 		@Override
 		public String getPassword() {
-			return super.getUserPassword();
+			return super.getPassword();
 		}
 
 		@Override

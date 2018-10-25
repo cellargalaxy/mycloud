@@ -33,36 +33,39 @@ spring:
         enabled: true
         url-pattern: /*
         exclusions: '*.js,*.gif,*.jpg,*.bmp,*.png,*.css,*.ico,/druid/*'
+
   jackson:
     serialization:
 #    json返回时间戳
       write-dates-as-timestamps: true
+
   cache:
-    type: REDIS
-  redis:
-    host: ${MYCLOUD_REDIS_IP}
-    port: ${MYCLOUD_REDIS_PORT:6379}
-    database: 0
-    password: ${MYCLOUD_REDIS_PASSWORD}
-    jedis:
-      pool:
-        max-idle: 8
-        min-idle: 1
-blobLength: ${MYCLOUD_BLOB_LENGTH:65535}
-taskDetailLength: ${MYCLOUD_TASH_DETAIL_LENGTH:1024}
+    type: CAFFEINE
+
 webUploadMaxFileSize: ${MYCLOUD_WEB_UPLOAD_MAX_FILE_SIZE:1024MB}
 webUploadMaxRequestSize: ${MYCLOUD_WEB_UPLOAD_MAX_REQUEST_SIZE:1024MB}
 mycloudPath: ${MYCLOUD_PATH:}
-mycloudTmpPath: ${MYCLOUD_TMP_PATH:}
-mycloudDrivePath: ${MYCLOUD_DRIVE_PATH:}
-domain: ${MYCLOUD_DOMAIN}
-localFileMaxSpace: ${MYCLOUD_LOCAL_FILE_MAX_SPACE:104857600}
+localFileMaxSpaceRate: ${MYCLOUD_LOCAL_FILE_MAX_SPACE_RATE:0.8}
+installationType: ${MYCLOUD_INSTALLATION_TYPE:local}
 secret: ${MYCLOUD_SECRET}
+domain: ${MYCLOUD_DOMAIN}
 
-#logging:
-#  level:
-#    top:
-#      cellargalaxy:
-#        mycloud:
-#          dao:
-#            '*': DEBUG
+logging:
+  level:
+    top:
+      cellargalaxy:
+        mycloud:
+          dao:
+            '*': DEBUG
+
+#MYCLOUD_MYSQL_DATABASE_NAME:mycloud
+#MYCLOUD_MYSQL_USERNAME:root
+#MYCLOUD_WEB_UPLOAD_MAX_FILE_SIZE:1024MB
+#MYCLOUD_WEB_UPLOAD_MAX_REQUEST_SIZE:1024MB
+#MYCLOUD_PATH:
+#MYCLOUD_LOCAL_FILE_MAX_SPACE_RATE:0.8
+#MYCLOUD_INSTALLATION_TYPE:local
+#MYCLOUD_MYSQL_IP_PORT
+#MYCLOUD_MYSQL_PASSWORD
+#MYCLOUD_SECRET
+#MYCLOUD_DOMAIN
