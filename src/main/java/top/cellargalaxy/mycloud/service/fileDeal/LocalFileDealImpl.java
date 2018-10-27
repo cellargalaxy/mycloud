@@ -1,9 +1,10 @@
-package top.cellargalaxy.mycloud.service.impl;
+package top.cellargalaxy.mycloud.service.fileDeal;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import top.cellargalaxy.mycloud.configuration.MycloudConfiguration;
 import top.cellargalaxy.mycloud.model.po.FileInfoPo;
 import top.cellargalaxy.mycloud.model.po.OwnPo;
+import top.cellargalaxy.mycloud.service.fileDownload.FileDownload;
+import top.cellargalaxy.mycloud.service.fileDownload.FileDownloadImpl;
 import top.cellargalaxy.mycloud.util.StreamUtil;
 
 import java.io.File;
@@ -17,20 +18,21 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author cellargalaxy
  * @time 2018/8/29
  */
-public class LocalFileService {
+public class LocalFileDealImpl implements FileDeal {
+	private final FileDownload fileDownload;
 	private final File md5Folder;
 	private final File uuidFolder;
 	private final double localFileMaxSpaceRate;
 	private final ConcurrentHashMap<String, Integer> fileWeightMap = new ConcurrentHashMap<>();
 
-	@Autowired
-	public LocalFileService(MycloudConfiguration mycloudConfiguration) {
-		md5Folder = new File(mycloudConfiguration.getMycloudPath() + File.separator + "md5");
-		uuidFolder = new File(mycloudConfiguration.getMycloudPath() + File.separator + "uuid");
+	public LocalFileDealImpl(MycloudConfiguration mycloudConfiguration) {
+		fileDownload = new FileDownloadImpl(1000 * 10);
+		md5Folder = new File(mycloudConfiguration.getMycloudPath() + File.separator + "mycloud" + File.separator + "md5");
+		uuidFolder = new File(mycloudConfiguration.getMycloudPath() + File.separator + "mycloud" + File.separator + "uuid");
 		localFileMaxSpaceRate = mycloudConfiguration.getLocalFileMaxSpaceRate();
 	}
 
-
+	@Override
 	public String addFile(InputStream inputStream, FileInfoPo fileInfoPo) throws IOException {
 		if (isFull()) {
 			return "磁盘使用率已满";
@@ -38,11 +40,14 @@ public class LocalFileService {
 		File localFile = createLocalFile(fileInfoPo);
 		try (OutputStream outputStream = StreamUtil.getOutputStream(localFile)) {
 			StreamUtil.stream(inputStream, outputStream);
+		}catch (IOException e) {
+			localFile.delete();
+			return e.getMessage();
 		}
 		return null;
 	}
 
-
+	@Override
 	public String addFile(InputStream inputStream, OwnPo ownPo) throws IOException {
 		if (isFull()) {
 			return "磁盘使用率已满";
@@ -50,31 +55,64 @@ public class LocalFileService {
 		File localFile = createLocalFile(ownPo);
 		try (OutputStream outputStream = StreamUtil.getOutputStream(localFile)) {
 			StreamUtil.stream(inputStream, outputStream);
+		}catch (IOException e) {
+			localFile.delete();
+			return e.getMessage();
 		}
 		return null;
 	}
 
+	@Override
+	public String addFile(String urlString, FileInfoPo fileInfoPo) throws IOException {
+		if (isFull()) {
+			return "磁盘使用率已满";
+		}
+		File localFile = createLocalFile(fileInfoPo);
+		try (OutputStream outputStream = StreamUtil.getOutputStream(localFile)) {
+			fileDownload.downloadFile(urlString, fileInfoPo, outputStream);
+		} catch (IOException e) {
+			localFile.delete();
+			return e.getMessage();
+		}
+		return null;
+	}
 
-	public String deleteFile(FileInfoPo fileInfoPo) {
+	@Override
+	public String addFile(String urlString, OwnPo ownPo) throws IOException {
+		if (isFull()) {
+			return "磁盘使用率已满";
+		}
+		File localFile = createLocalFile(ownPo);
+		try (OutputStream outputStream = StreamUtil.getOutputStream(localFile)) {
+			fileDownload.downloadFile(urlString, ownPo, outputStream);
+		} catch (IOException e) {
+			localFile.delete();
+			return e.getMessage();
+		}
+		return null;
+	}
+
+	@Override
+	public String removeFile(FileInfoPo fileInfoPo) throws IOException {
 		File localFile = createLocalFile(fileInfoPo);
 		localFile.delete();
 		return null;
 	}
 
-
-	public String deleteFile(OwnPo ownPo) {
+	@Override
+	public String removeFile(OwnPo ownPo) throws IOException {
 		File localFile = createLocalFile(ownPo);
 		localFile.delete();
 		return null;
 	}
 
-
+	@Override
 	public String getFile(FileInfoPo fileInfoPo, OutputStream outputStream) throws IOException {
 		File localFile = createLocalFile(fileInfoPo);
 		return getFile(localFile, outputStream);
 	}
 
-
+	@Override
 	public String getFile(OwnPo ownPo, OutputStream outputStream) throws IOException {
 		File localFile = createLocalFile(ownPo);
 		return getFile(localFile, outputStream);

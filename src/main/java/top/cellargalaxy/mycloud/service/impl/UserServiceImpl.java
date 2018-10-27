@@ -72,7 +72,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public String checkChangeUser(UserPo userPo) {
-		return ServiceUtil.checkChange(userPo, NAME, UserDao::checkUpdate, userDao);
+		return UserDao.checkUpdate(userPo);
 	}
 
 	@Override

@@ -12,24 +12,24 @@ public class MycloudConfiguration {
 	public static final String LOCAL_START = "local";
 	public static final String HADOOP_START = "hadoop";
 
-	@Value("${secret}")
+	@Value("${mycloud.secret}")
 	private volatile String secret;
-	@Value("${webUploadMaxFileSize}")
+	@Value("${mycloud.webUploadMaxFileSize}")
 	private volatile String webUploadMaxFileSize;
-	@Value("${webUploadMaxRequestSize}")
+	@Value("${mycloud.webUploadMaxRequestSize}")
 	private volatile String webUploadMaxRequestSize;
-	@Value("${domain}")
+	@Value("${mycloud.domain}")
 	private volatile String domain;
-	@Value("${mycloudPath}")
+	@Value("${mycloud.mycloudPath}")
 	private volatile String mycloudPath;
 
-	@Value("${installationType}")
+	@Value("${mycloud.installationType}")
 	private volatile String installationType;
 
-	@Value("${localFileMaxSpaceRate}")
+	@Value("${mycloud.localFileMaxSpaceRate}")
 	private volatile double localFileMaxSpaceRate;
 
-	@Value("${hdfsUrl}")
+	@Value("${mycloud.hdfsUrl}")
 	private volatile String hdfsUrl;
 
 	public String getSecret() {

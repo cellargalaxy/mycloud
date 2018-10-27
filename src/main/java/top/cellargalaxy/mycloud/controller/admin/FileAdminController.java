@@ -17,7 +17,7 @@ import top.cellargalaxy.mycloud.service.FileService;
 @RestController
 @RequestMapping(FileAdminController.URL)
 public class FileAdminController {
-	public static final String URL = "/admin/file";
+	public static final String URL = "/admin/fileDeal";
 	@Autowired
 	private FileService fileService;
 

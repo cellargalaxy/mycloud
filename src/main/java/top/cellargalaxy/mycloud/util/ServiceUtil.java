@@ -51,16 +51,4 @@ public class ServiceUtil {
 		}
 		return null;
 	}
-
-	public static final <Po, Bo extends Po, Query extends Po> String checkChange(Po po, String name, Function<Po, String> checkUpdate, AbstractDao<Po, Bo, Query> abstractDao) {
-		String string = checkUpdate.apply(po);
-		if (string != null) {
-			return string;
-		}
-		Bo bo = abstractDao.selectOne(po);
-		if (bo == null) {
-			return name + "不存在";
-		}
-		return null;
-	}
 }

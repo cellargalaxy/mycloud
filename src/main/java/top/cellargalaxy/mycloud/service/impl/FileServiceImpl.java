@@ -10,6 +10,8 @@ import top.cellargalaxy.mycloud.model.po.UserPo;
 import top.cellargalaxy.mycloud.service.FileInfoService;
 import top.cellargalaxy.mycloud.service.FileService;
 import top.cellargalaxy.mycloud.service.OwnService;
+import top.cellargalaxy.mycloud.service.fileDeal.FileDeal;
+import top.cellargalaxy.mycloud.service.fileDeal.FileDealFactory;
 
 import javax.validation.constraints.NotNull;
 import java.io.IOException;
@@ -23,7 +25,7 @@ import java.util.UUID;
  */
 @Service
 public class FileServiceImpl implements FileService {
-	private final LocalFileService localFileService;
+	private final FileDeal fileDeal;
 	@Autowired
 	private FileInfoService fileInfoService;
 	@Autowired
@@ -31,45 +33,50 @@ public class FileServiceImpl implements FileService {
 
 	@Autowired
 	public FileServiceImpl(MycloudConfiguration mycloudConfiguration) {
-		this.localFileService = new LocalFileService(mycloudConfiguration);
+		this.fileDeal = FileDealFactory.getFileDeal(mycloudConfiguration);
 	}
 
 	@Override
-	public String addFile(InputStream inputStream, FileInfoPo fileInfoPo) throws IOException {
-		String string = localFileService.addFile(inputStream, fileInfoPo);
-		if (string == null) {
-			string = fileInfoService.addFileInfo(fileInfoPo);
-		}
-		if (string != null) {
-			removeFile(fileInfoPo);
-		}
-		return string;
+	public String addFile(InputStream inputStream, OwnBo ownBo, UserPo userPo) throws IOException {
+		ownBo.setOwnUuid(UUID.randomUUID().toString());
+		ownBo.setUserId(userPo.getUserId());
+		String string = fileDeal.addFile(inputStream, ownBo);
+		return addFile(string, ownBo);
 	}
 
 	@Override
-	public String addFile(InputStream inputStream, OwnPo ownPo, UserPo userPo) throws IOException {
-		ownPo.setOwnUuid(UUID.randomUUID().toString());
-		ownPo.setUserId(userPo.getUserId());
-		String string = localFileService.addFile(inputStream, ownPo);
-		if (string == null) {
-			string = ownService.addOwn(ownPo);
-		}
-		if (string != null) {
-			removeFile(ownPo);
-		}
-		return string;
+	public String addFile(String urlString, OwnBo ownBo, UserPo userPo) throws IOException {
+		ownBo.setOwnUuid(UUID.randomUUID().toString());
+		ownBo.setUserId(userPo.getUserId());
+		String string = fileDeal.addFile(urlString, ownBo);
+		return addFile(string, ownBo);
 	}
 
+	private String addFile(String string, OwnBo ownBo) throws IOException {
+		if (string == null) {
+			string = ownService.addOwn(ownBo);
+		}
+		if (string != null) {
+			removeFile(ownBo);
+			return string;
+		}
+		OwnBo newOwnBo = ownService.getOwn(ownBo);
+		ownBo.setMd5(newOwnBo.getMd5());
+		ownBo.setMd5Url(newOwnBo.getMd5Url());
+		ownBo.setOwnUrl(newOwnBo.getOwnUrl());
+		ownBo.setUsername(newOwnBo.getUsername());
+		return null;
+	}
 	@Override
 	public String removeFile(FileInfoPo fileInfoPo) throws IOException {
 		fileInfoService.removeFileInfo(fileInfoPo);
-		return localFileService.deleteFile(fileInfoPo);
+		return fileDeal.removeFile(fileInfoPo);
 	}
 
 	@Override
 	public String removeFile(OwnPo ownPo) throws IOException {
 		ownService.removeOwn(ownPo);
-		return localFileService.deleteFile(ownPo);
+		return fileDeal.removeFile(ownPo);
 	}
 
 	@Override
@@ -97,21 +104,11 @@ public class FileServiceImpl implements FileService {
 		if (md5OrUuid.indexOf('-') > 0) {
 			OwnPo ownPo = new OwnPo();
 			ownPo.setOwnUuid(md5OrUuid);
-			return getFile(ownPo, outputStream);
+			return fileDeal.getFile(ownPo, outputStream);
 		} else {
 			FileInfoPo fileInfoPo = new FileInfoPo();
 			fileInfoPo.setMd5(md5OrUuid);
-			return getFile(fileInfoPo, outputStream);
+			return fileDeal.getFile(fileInfoPo, outputStream);
 		}
-	}
-
-	@Override
-	public String getFile(FileInfoPo fileInfoPo, OutputStream outputStream) throws IOException {
-		return localFileService.getFile(fileInfoPo, outputStream);
-	}
-
-	@Override
-	public String getFile(OwnPo ownPo, OutputStream outputStream) throws IOException {
-		return localFileService.getFile(ownPo, outputStream);
 	}
 }

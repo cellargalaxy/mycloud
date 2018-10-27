@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-import top.cellargalaxy.mycloud.model.po.OwnPo;
+import top.cellargalaxy.mycloud.model.bo.OwnBo;
 import top.cellargalaxy.mycloud.model.po.UserPo;
 import top.cellargalaxy.mycloud.model.vo.Vo;
 import top.cellargalaxy.mycloud.service.FileService;
@@ -28,14 +28,20 @@ public class FileUserController {
 	private FileService fileService;
 
 	@PostMapping("/uploadFile")
-	public Vo uploadFile(HttpServletRequest request, OwnPo ownPo, @RequestParam("file") MultipartFile multipartFile) throws IOException {
+	public Vo uploadFile(HttpServletRequest request, OwnBo ownBo, @RequestParam("fileDeal") MultipartFile multipartFile) throws IOException {
 		UserPo userPo = SecurityServiceImpl.getSecurityUser(request);
-		if (multipartFile == null) {
+		if (multipartFile == null || multipartFile.isEmpty()) {
 			return new Vo("无上传文件", null);
 		}
-		ownPo.setContentType(multipartFile.getContentType());
-		ownPo.setFileLength(multipartFile.getSize());
-		ownPo.setFileName(multipartFile.getOriginalFilename());
-		return new Vo(fileService.addFile(multipartFile.getInputStream(), ownPo,userPo), null);
+		ownBo.setContentType(multipartFile.getContentType());
+		ownBo.setFileLength(multipartFile.getSize());
+		ownBo.setFileName(multipartFile.getOriginalFilename());
+		return new Vo(fileService.addFile(multipartFile.getInputStream(), ownBo, userPo), ownBo);
+	}
+
+	@PostMapping("/submitUrl")
+	public Vo submitUrl(HttpServletRequest request, OwnBo ownBo, @RequestParam("url") String url) throws IOException {
+		UserPo userPo = SecurityServiceImpl.getSecurityUser(request);
+		return new Vo(fileService.addFile(url, ownBo, userPo), ownBo);
 	}
 }

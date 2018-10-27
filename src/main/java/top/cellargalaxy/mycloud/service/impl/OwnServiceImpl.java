@@ -75,12 +75,12 @@ public class OwnServiceImpl implements OwnService {
 
 	@Override
 	public String checkAddOwn(OwnPo ownPo) {
-		return ServiceUtil.checkAdd(ownPo, NAME, OwnDao::checkInsert, ownDao);
+		return OwnDao.checkInsert(ownPo);
 	}
 
 	@Override
 	public String checkChangeOwn(OwnPo ownPo) {
-		return ServiceUtil.checkChange(ownPo, NAME, OwnDao::checkUpdate, ownDao);
+		return OwnDao.checkUpdate(ownPo);
 	}
 
 	@Override

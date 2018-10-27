@@ -46,7 +46,7 @@ public class LoginFilter extends AbstractAuthenticationProcessingFilter {
 		httpServletResponse.setCharacterEncoding("utf-8");
 		String username = httpServletRequest.getParameter(USERNAME_KEY);
 		String password = httpServletRequest.getParameter(PASSWORD_KEY);
-		logger.info("登录,username:{}", username);
+		logger.debug("登录,username:{}", username);
 		//返回这个对象，封装了账号密码，用于给框架检查账号密码是否正确
 		return getAuthenticationManager().authenticate(new UsernamePasswordAuthenticationToken(username, password));
 	}
@@ -57,7 +57,7 @@ public class LoginFilter extends AbstractAuthenticationProcessingFilter {
 		String username = request.getParameter(USERNAME_KEY);
 		String token = securityService.createToken(username);
 
-		logger.info("登录成功,username:{},token:{}", username, token);
+		logger.debug("登录成功,username:{},token:{}", username, token);
 
 		//在头里返回给前端
 		response.setHeader(TOKEN_KEY, token);

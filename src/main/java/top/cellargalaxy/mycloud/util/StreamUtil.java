@@ -4,6 +4,8 @@ import eu.medsea.mimeutil.MimeUtil;
 import org.apache.commons.codec.digest.DigestUtils;
 
 import java.io.*;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.Collection;
 
 /**
@@ -49,11 +51,13 @@ public class StreamUtil {
 		return new BufferedInputStream(new FileInputStream(file));
 	}
 
-	public static final void stream(InputStream inputStream, OutputStream outputStream) throws IOException {
+	public static final void stream(InputStream inputStream, OutputStream... outputStreams) throws IOException {
 		byte[] bytes = new byte[1024];
 		int len;
 		while ((len = inputStream.read(bytes, 0, bytes.length)) != -1) {
-			outputStream.write(bytes, 0, len);
+			for (OutputStream outputStream : outputStreams) {
+				outputStream.write(bytes, 0, len);
+			}
 		}
 	}
 

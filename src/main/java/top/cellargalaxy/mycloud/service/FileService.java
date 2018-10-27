@@ -1,5 +1,6 @@
 package top.cellargalaxy.mycloud.service;
 
+import top.cellargalaxy.mycloud.model.bo.OwnBo;
 import top.cellargalaxy.mycloud.model.po.FileInfoPo;
 import top.cellargalaxy.mycloud.model.po.OwnPo;
 import top.cellargalaxy.mycloud.model.po.UserPo;
@@ -13,9 +14,9 @@ import java.io.OutputStream;
  * @time 2018/10/25
  */
 public interface FileService {
-	String addFile(InputStream inputStream, FileInfoPo fileInfoPo) throws IOException;
+	String addFile(InputStream inputStream, OwnBo ownBo, UserPo userPo) throws IOException;
 
-	String addFile(InputStream inputStream,  OwnPo ownPo,UserPo userPo) throws IOException;
+	String addFile(String urlString, OwnBo ownBo, UserPo userPo) throws IOException;
 
 	String removeFile(FileInfoPo fileInfoPo) throws IOException;
 
@@ -24,8 +25,4 @@ public interface FileService {
 	FileInfoPo getFileInfoPoByMd5OrUuid(String md5OrUuid);
 
 	String getFileByMd5OrUuid(String md5OrUuid, OutputStream outputStream)throws IOException;
-
-	String getFile(FileInfoPo fileInfoPo, OutputStream outputStream) throws IOException;
-
-	String getFile(OwnPo ownPo, OutputStream outputStream) throws IOException;
 }

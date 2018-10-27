@@ -42,7 +42,7 @@ public class SecurityServiceImpl implements SecurityService {
 
 	@Override
 	public SecurityUser checkSecurityUser(String username, String password) {
-		logger.info("checkSecurityUser: {}", username);
+		logger.debug("checkSecurityUser: {}", username);
 		SecurityUser securityUser = getSecurityUser(username);
 		if (securityUser != null && securityUser.getPassword().equals(password)) {
 			return securityUser;
@@ -53,7 +53,7 @@ public class SecurityServiceImpl implements SecurityService {
 
 	@Override
 	public SecurityUser getSecurityUser(String username) {
-		logger.info("getSecurityUser: {}", username);
+		logger.debug("getSecurityUser: {}", username);
 		UserPo userPo = new UserPo();
 		userPo.setUsername(username);
 		UserVo userVo = userService.getUserVo(userPo);
@@ -77,13 +77,13 @@ public class SecurityServiceImpl implements SecurityService {
 
 	@Override
 	public String createToken(String username) {
-		logger.info("createToken:{}", username);
+		logger.debug("createToken:{}", username);
 		return createToken(getSecurityUser(username));
 	}
 
 	@Override
 	public String createToken(SecurityUser securityUser) {
-		logger.info("createToken:{}", securityUser);
+		logger.debug("createToken:{}", securityUser);
 		if (securityUser == null) {
 			return null;
 		}
@@ -116,7 +116,7 @@ public class SecurityServiceImpl implements SecurityService {
 
 	@Override
 	public SecurityUser checkToken(String token) {
-		logger.info("checkToken:{}", token);
+		logger.debug("checkToken:{}", token);
 		if (token == null) {
 			return null;
 		}

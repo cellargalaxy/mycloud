@@ -72,7 +72,7 @@ public class FileBlocks implements Closeable {
 	@Override
 	public String toString() {
 		return "FileBlocks{" +
-				"file=" + file +
+				"fileDeal=" + file +
 				", blockLength=" + blockLength +
 				", blockCount=" + blockCount +
 				", blockIndex=" + blockIndex +

@@ -1,6 +1,10 @@
 package top.cellargalaxy.mycloud.configuration;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.servlet.MultipartConfigFactory;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.core.convert.support.GenericConversionService;
@@ -8,6 +12,8 @@ import org.springframework.web.bind.support.ConfigurableWebBindingInitializer;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
 
 import javax.annotation.PostConstruct;
+import javax.servlet.MultipartConfigElement;
+import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -17,7 +23,8 @@ import java.util.Date;
  * @time 2018/7/20
  */
 @Configuration
-public class WebDateConfigBeans {
+public class WebConfigBeans {
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	@Autowired
 	private RequestMappingHandlerAdapter handlerAdapter;
 
@@ -25,7 +32,7 @@ public class WebDateConfigBeans {
 	 * http参数的日期字符串转Date对象
 	 */
 	@PostConstruct
-	public void initEditableAvlidation() {
+	public void dataConfig() {
 		ConfigurableWebBindingInitializer initializer = (ConfigurableWebBindingInitializer) handlerAdapter.getWebBindingInitializer();
 		if (initializer.getConversionService() != null) {
 			GenericConversionService genericConversionService = (GenericConversionService) initializer.getConversionService();
@@ -53,5 +60,24 @@ public class WebDateConfigBeans {
 				}
 			});
 		}
+	}
+
+	@Bean
+	public MultipartConfigElement multipartConfigElement(MycloudConfiguration mycloudConfiguration) {
+		String mycloudTmpPath = mycloudConfiguration.getMycloudPath() + File.separator + "mycloud" + File.separator + "tmp";
+		String webUploadMaxFileSize = mycloudConfiguration.getWebUploadMaxFileSize();
+		String webUploadMaxRequestSize = mycloudConfiguration.getWebUploadMaxRequestSize();
+		logger.info("mycloudTmpPath: {}; webUploadMaxFileSize: {}; webUploadMaxRequestSize: {}", mycloudTmpPath, webUploadMaxFileSize, webUploadMaxRequestSize);
+
+		MultipartConfigFactory factory = new MultipartConfigFactory();
+		File folder = new File(mycloudTmpPath);
+		if (!folder.exists()) {
+			folder.mkdirs();
+		}
+		factory.setLocation(mycloudTmpPath);
+
+		factory.setMaxFileSize(webUploadMaxFileSize);
+		factory.setMaxRequestSize(webUploadMaxRequestSize);
+		return factory.createMultipartConfig();
 	}
 }
