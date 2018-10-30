@@ -1,6 +1,7 @@
 package top.cellargalaxy.mycloud.dao.mapper;
 
 import org.apache.ibatis.annotations.*;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import top.cellargalaxy.mycloud.dao.AbstractDao;
 import top.cellargalaxy.mycloud.dao.AuthorizationDao;
 import top.cellargalaxy.mycloud.dao.UserDao;
@@ -10,6 +11,7 @@ import top.cellargalaxy.mycloud.model.query.AuthorizationQuery;
 import top.cellargalaxy.mycloud.util.ProviderUtil;
 import top.cellargalaxy.mycloud.util.SqlUtil;
 
+import javax.sql.DataSource;
 import java.util.*;
 
 import static org.apache.ibatis.type.JdbcType.TIMESTAMP;
@@ -18,6 +20,7 @@ import static org.apache.ibatis.type.JdbcType.TIMESTAMP;
  * @author cellargalaxy
  * @time 2018/10/25
  */
+@ConditionalOnBean(DataSource.class)
 @Mapper
 public interface AuthorizationMapper extends AbstractDao<AuthorizationPo, AuthorizationBo, AuthorizationQuery> {
 	@Options(useGeneratedKeys = true, keyProperty = "authorizationId")

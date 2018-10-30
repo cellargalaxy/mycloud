@@ -5,6 +5,7 @@ import top.cellargalaxy.mycloud.model.po.FileInfoPo;
 import top.cellargalaxy.mycloud.model.query.FileInfoQuery;
 import top.cellargalaxy.mycloud.model.vo.FileInfoVo;
 
+import java.io.File;
 import java.util.List;
 
 /**
@@ -26,7 +27,11 @@ public interface FileInfoService {
 
 	List<FileInfoVo> listFileInfoVo(FileInfoQuery fileInfoQuery);
 
+	List<FileInfoBo> listAllFileInfo();
+
 	int getFileInfoCount(FileInfoQuery fileInfoQuery);
 
 	List<String> listContentType();
+
+	void setUrl(FileInfoBo fileInfoBo);
 }

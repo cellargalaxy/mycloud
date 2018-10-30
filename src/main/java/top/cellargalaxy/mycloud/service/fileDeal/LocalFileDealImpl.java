@@ -1,16 +1,14 @@
 package top.cellargalaxy.mycloud.service.fileDeal;
 
 import top.cellargalaxy.mycloud.configuration.MycloudConfiguration;
+import top.cellargalaxy.mycloud.model.bo.OwnBo;
 import top.cellargalaxy.mycloud.model.po.FileInfoPo;
 import top.cellargalaxy.mycloud.model.po.OwnPo;
 import top.cellargalaxy.mycloud.service.fileDownload.FileDownload;
 import top.cellargalaxy.mycloud.service.fileDownload.FileDownloadImpl;
-import top.cellargalaxy.mycloud.util.StreamUtil;
+import top.cellargalaxy.mycloud.util.IOUtil;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -38,9 +36,9 @@ public class LocalFileDealImpl implements FileDeal {
 			return "磁盘使用率已满";
 		}
 		File localFile = createLocalFile(fileInfoPo);
-		try (OutputStream outputStream = StreamUtil.getOutputStream(localFile)) {
-			StreamUtil.stream(inputStream, outputStream);
-		}catch (IOException e) {
+		try (OutputStream outputStream = IOUtil.getOutputStream(localFile)) {
+			IOUtil.stream(inputStream, outputStream);
+		} catch (IOException e) {
 			localFile.delete();
 			return e.getMessage();
 		}
@@ -53,9 +51,9 @@ public class LocalFileDealImpl implements FileDeal {
 			return "磁盘使用率已满";
 		}
 		File localFile = createLocalFile(ownPo);
-		try (OutputStream outputStream = StreamUtil.getOutputStream(localFile)) {
-			StreamUtil.stream(inputStream, outputStream);
-		}catch (IOException e) {
+		try (OutputStream outputStream = IOUtil.getOutputStream(localFile)) {
+			IOUtil.stream(inputStream, outputStream);
+		} catch (IOException e) {
 			localFile.delete();
 			return e.getMessage();
 		}
@@ -68,7 +66,7 @@ public class LocalFileDealImpl implements FileDeal {
 			return "磁盘使用率已满";
 		}
 		File localFile = createLocalFile(fileInfoPo);
-		try (OutputStream outputStream = StreamUtil.getOutputStream(localFile)) {
+		try (OutputStream outputStream = IOUtil.getOutputStream(localFile)) {
 			fileDownload.downloadFile(urlString, fileInfoPo, outputStream);
 		} catch (IOException e) {
 			localFile.delete();
@@ -83,7 +81,7 @@ public class LocalFileDealImpl implements FileDeal {
 			return "磁盘使用率已满";
 		}
 		File localFile = createLocalFile(ownPo);
-		try (OutputStream outputStream = StreamUtil.getOutputStream(localFile)) {
+		try (OutputStream outputStream = IOUtil.getOutputStream(localFile)) {
 			fileDownload.downloadFile(urlString, ownPo, outputStream);
 		} catch (IOException e) {
 			localFile.delete();
@@ -113,9 +111,36 @@ public class LocalFileDealImpl implements FileDeal {
 	}
 
 	@Override
-	public String getFile(OwnPo ownPo, OutputStream outputStream) throws IOException {
-		File localFile = createLocalFile(ownPo);
-		return getFile(localFile, outputStream);
+	public String getFile(OwnBo ownBo, OutputStream outputStream) throws IOException {
+		File localFile = createLocalFile(ownBo);
+		if (localFile.exists()) {
+			return getFile(localFile, outputStream);
+		} else {
+			FileInfoPo fileInfoPo = new FileInfoPo();
+			fileInfoPo.setMd5(ownBo.getMd5());
+			return getFile(fileInfoPo, outputStream);
+		}
+	}
+
+	@Override
+	public InputStream getFileInputStream(FileInfoPo fileInfoPo) throws FileNotFoundException {
+		File localFile = createLocalFile(fileInfoPo);
+		if (!localFile.exists()) {
+			return null;
+		}
+		return IOUtil.getInputStream(localFile);
+	}
+
+	@Override
+	public InputStream getFileInputStream(OwnBo ownBo) throws FileNotFoundException {
+		File localFile = createLocalFile(ownBo);
+		if (localFile.exists()) {
+			return IOUtil.getInputStream(localFile);
+		} else {
+			FileInfoPo fileInfoPo = new FileInfoPo();
+			fileInfoPo.setMd5(ownBo.getMd5());
+			return getFileInputStream(fileInfoPo);
+		}
 	}
 
 	private String getFile(File localFile, OutputStream outputStream) throws IOException {
@@ -127,8 +152,8 @@ public class LocalFileDealImpl implements FileDeal {
 			integer = 0;
 		}
 		fileWeightMap.put(localFile.getAbsolutePath(), integer + 1);
-		try (InputStream inputStream = StreamUtil.getInputStream(localFile)) {
-			StreamUtil.stream(inputStream, outputStream);
+		try (InputStream inputStream = IOUtil.getInputStream(localFile)) {
+			IOUtil.stream(inputStream, outputStream);
 		}
 		return null;
 	}
@@ -141,8 +166,8 @@ public class LocalFileDealImpl implements FileDeal {
 			deleteColdFile();
 		}
 		File localFile = createLocalFile(fileInfoPo);
-		try (OutputStream outputStream = StreamUtil.getOutputStream(localFile)) {
-			StreamUtil.stream(inputStream, outputStream);
+		try (OutputStream outputStream = IOUtil.getOutputStream(localFile)) {
+			IOUtil.stream(inputStream, outputStream);
 		}
 		return null;
 	}
@@ -155,8 +180,8 @@ public class LocalFileDealImpl implements FileDeal {
 			deleteColdFile();
 		}
 		File localFile = createLocalFile(ownPo);
-		try (OutputStream outputStream = StreamUtil.getOutputStream(localFile)) {
-			StreamUtil.stream(inputStream, outputStream);
+		try (OutputStream outputStream = IOUtil.getOutputStream(localFile)) {
+			IOUtil.stream(inputStream, outputStream);
 		}
 		return null;
 	}

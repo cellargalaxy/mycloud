@@ -1,10 +1,10 @@
 spring:
   datasource:
     druid:
-      url: jdbc:mysql://${MYCLOUD_MYSQL_IP_PORT}/${MYCLOUD_MYSQL_DATABASE_NAME:mycloud}?useUnicode=true&characterEncoding=UTF8&useSSL=false
+      url: jdbc:mysql://${mycloud.dbHost}:${mycloud.dbPort}/${mycloud.dbName}?useUnicode=true&characterEncoding=UTF8&useSSL=false
       driver-class-name: com.mysql.jdbc.Driver
-      username: ${MYCLOUD_MYSQL_USERNAME:root}
-      password: ${MYCLOUD_MYSQL_PASSWORD}
+      username: ${mycloud.dbUsername}
+      password: ${mycloud.dbPassword}
 #      初始化大小，最小，最大
       initial-size: 2
       min-idle: 2
@@ -36,21 +36,35 @@ spring:
 
   jackson:
     serialization:
-#    json返回时间戳
+#      json返回时间戳
       write-dates-as-timestamps: true
 
   cache:
     type: CAFFEINE
 
+  autoconfigure:
+#    exclude: org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration,com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceAutoConfigure
+
 mycloud:
   webUploadMaxFileSize: ${MYCLOUD_WEB_UPLOAD_MAX_FILE_SIZE:1024MB}
   webUploadMaxRequestSize: ${MYCLOUD_WEB_UPLOAD_MAX_REQUEST_SIZE:1024MB}
+
   mycloudPath: ${MYCLOUD_PATH:./}
   localFileMaxSpaceRate: ${MYCLOUD_LOCAL_FILE_MAX_SPACE_RATE:0.8}
-  installationType: ${MYCLOUD_INSTALLATION_TYPE:local}
-  hdfsUrl: ${MYCLOUD_HDFS_URL:}
   domain: ${MYCLOUD_DOMAIN:}
   secret: ${MYCLOUD_SECRET:${random.value}}
+
+  mycloudUsername: ${MYCLOUD_USERNAME:mycloud}
+  mycloudPassword: ${MYCLOUD_PASSWORD:mycloud}
+
+  dbHost: ${MYCLOUD_DB_HOST}
+  dbPort: ${MYCLOUD_DB_PORT:3306}
+  dbName: ${MYCLOUD_DB_NAME:mycloud}
+  dbUsername: ${MYCLOUD_DB_USERNAME:root}
+  dbPassword: ${MYCLOUD_DB_PASSWORD}
+
+  hdfsUrl: ${MYCLOUD_HDFS_URL:}
+
 
 logging:
   level:
@@ -59,6 +73,9 @@ logging:
         mycloud:
           dao:
             '*': DEBUG
+          controller:
+            security:
+              '*': DEBUG
 
 #MYCLOUD_MYSQL_DATABASE_NAME:mycloud
 #MYCLOUD_MYSQL_USERNAME:root
@@ -68,6 +85,6 @@ logging:
 #MYCLOUD_INSTALLATION_TYPE:local
 #MYCLOUD_PATH:./
 #MYCLOUD_SECRET:${random.value}
-#MYCLOUD_DOMAIN:/
+#MYCLOUD_DOMAIN:
 #MYCLOUD_MYSQL_IP_PORT
 #MYCLOUD_MYSQL_PASSWORD

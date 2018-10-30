@@ -34,13 +34,17 @@ public interface OwnService {
 
 	List<OwnBo> listOwn(OwnQuery ownQuery);
 
+	List<OwnBo> listOwn(UserPo userPo, OwnQuery ownQuery);
+
 	List<OwnBo> listAllOwn(OwnQuery ownQuery);
 
-	List<OwnBo> listOwn(UserPo userPo, OwnQuery ownQuery);
+	List<OwnBo> listAllOwn();
 
 	int getOwnCount(OwnQuery ownQuery);
 
 	List<String> listSort();
 
 	List<String> listSort(UserPo userPo);
+
+	void setUrl(OwnBo ownBo);
 }

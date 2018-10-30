@@ -86,10 +86,7 @@ public class OwnServiceImpl implements OwnService {
 	@Override
 	public OwnBo getOwn(OwnPo ownPo) {
 		OwnBo ownBo = ownDao.selectOne(ownPo);
-		if (ownBo != null) {
-			ownBo.setMd5Url(domain + "/" + ownBo.getMd5());
-			ownBo.setOwnUrl(domain + "/" + ownBo.getOwnUuid());
-		}
+		setUrl(ownBo);
 		return ownBo;
 	}
 
@@ -100,34 +97,14 @@ public class OwnServiceImpl implements OwnService {
 		}
 		ownPo.setUserId(userPo.getUserId());
 		OwnBo ownBo = ownDao.selectOne(ownPo);
-		if (ownBo != null) {
-			ownBo.setMd5Url(domain + "/" + ownBo.getMd5());
-			ownBo.setOwnUrl(domain + "/" + ownBo.getOwnUuid());
-		}
+		setUrl(ownBo);
 		return ownBo;
 	}
 
 	@Override
 	public List<OwnBo> listOwn(OwnQuery ownQuery) {
 		List<OwnBo> ownBos = ownDao.selectPageSome(ownQuery);
-		ownBos.stream().forEach(ownBo -> {
-			if (ownBo != null) {
-				ownBo.setMd5Url(domain + "/" + ownBo.getMd5());
-				ownBo.setOwnUrl(domain + "/" + ownBo.getOwnUuid());
-			}
-		});
-		return ownBos;
-	}
-
-	@Override
-	public List<OwnBo> listAllOwn(OwnQuery ownQuery) {
-		List<OwnBo> ownBos = ownDao.selectAllSome(ownQuery);
-		ownBos.stream().forEach(ownBo -> {
-			if (ownBo != null) {
-				ownBo.setMd5Url(domain + "/" + ownBo.getMd5());
-				ownBo.setOwnUrl(domain + "/" + ownBo.getOwnUuid());
-			}
-		});
+		ownBos.stream().forEach(ownBo -> setUrl(ownBo));
 		return ownBos;
 	}
 
@@ -138,12 +115,21 @@ public class OwnServiceImpl implements OwnService {
 		}
 		ownQuery.setUserId(userPo.getUserId());
 		List<OwnBo> ownBos = ownDao.selectPageSome(ownQuery);
-		ownBos.stream().forEach(ownBo -> {
-			if (ownBo != null) {
-				ownBo.setMd5Url(domain + "/" + ownBo.getMd5());
-				ownBo.setOwnUrl(domain + "/" + ownBo.getOwnUuid());
-			}
-		});
+		ownBos.stream().forEach(ownBo -> setUrl(ownBo));
+		return ownBos;
+	}
+
+	@Override
+	public List<OwnBo> listAllOwn(OwnQuery ownQuery) {
+		List<OwnBo> ownBos = ownDao.selectAllSome(ownQuery);
+		ownBos.stream().forEach(ownBo -> setUrl(ownBo));
+		return ownBos;
+	}
+
+	@Override
+	public List<OwnBo> listAllOwn() {
+		List<OwnBo> ownBos = ownDao.selectAll();
+		ownBos.stream().forEach(ownBo -> setUrl(ownBo));
 		return ownBos;
 	}
 
@@ -165,5 +151,14 @@ public class OwnServiceImpl implements OwnService {
 		OwnQuery ownQuery = new OwnQuery();
 		ownQuery.setUserId(userPo.getUserId());
 		return ownDao.selectAllSort(ownQuery);
+	}
+
+	@Override
+	public void setUrl(OwnBo ownBo) {
+		if (ownBo == null) {
+			return;
+		}
+		ownBo.setMd5Url(domain + "/" + ownBo.getMd5());
+		ownBo.setOwnUrl(domain + "/" + ownBo.getOwnUuid());
 	}
 }

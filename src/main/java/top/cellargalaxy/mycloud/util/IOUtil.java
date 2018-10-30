@@ -2,19 +2,66 @@ package top.cellargalaxy.mycloud.util;
 
 import eu.medsea.mimeutil.MimeUtil;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
+import org.apache.commons.compress.archivers.tar.TarArchiveOutputStream;
 
 import java.io.*;
-import java.net.URL;
-import java.net.URLConnection;
 import java.util.Collection;
 
 /**
  * @author cellargalaxy
  * @time 2018/7/5
  */
-public class StreamUtil {
+public class IOUtil {
 	static {
 		MimeUtil.registerMimeDetector("eu.medsea.mimeutil.detector.MagicMimeMimeDetector");
+	}
+
+	public static final TarArchiveOutputStream createTarArchiveOutputStream(File file) throws FileNotFoundException {
+		return createTarArchiveOutputStream(IOUtil.getOutputStream(file));
+	}
+
+	public static final TarArchiveOutputStream createTarArchiveOutputStream(OutputStream outputStream) {
+		TarArchiveOutputStream tarArchiveOutputStream = new TarArchiveOutputStream(outputStream);
+		//如果tar里的路径长过100byte会报错，这里设置长文件名的模式
+		tarArchiveOutputStream.setLongFileMode(TarArchiveOutputStream.LONGFILE_GNU);
+		return tarArchiveOutputStream;
+	}
+
+	public static final void archive(TarArchiveOutputStream tarArchiveOutputStream, File file) throws IOException {
+		String basePath = file.getName();
+		if (file.isDirectory()) {
+			archiveFolder(file, tarArchiveOutputStream, basePath);
+		} else {
+			archiveFile(tarArchiveOutputStream, file, basePath);
+		}
+	}
+
+	private static void archiveFolder(File folder, TarArchiveOutputStream tarArchiveOutputStream, String basePath) throws IOException {
+		File[] listFiles = folder.listFiles();
+		if (listFiles != null) {
+			for (File file : listFiles) {
+				if (file.isDirectory()) {
+					archiveFolder(file, tarArchiveOutputStream, basePath + File.separator + file.getName());
+				} else {
+					archiveFile(tarArchiveOutputStream, file, basePath);
+				}
+			}
+		}
+	}
+
+	private static void archiveFile(TarArchiveOutputStream tarArchiveOutputStream, File file, String basePath) throws IOException {
+		try (InputStream inputStream = IOUtil.getInputStream(file)) {
+			archiveFile(tarArchiveOutputStream, inputStream, file.length(), basePath + File.separator + file.getName());
+		}
+	}
+
+	public static void archiveFile(TarArchiveOutputStream tarArchiveOutputStream, InputStream inputStream, long fileLength, String archiveName) throws IOException {
+		TarArchiveEntry tarArchiveEntry = new TarArchiveEntry(archiveName);
+		tarArchiveEntry.setSize(fileLength);
+		tarArchiveOutputStream.putArchiveEntry(tarArchiveEntry);
+		IOUtil.stream(inputStream, tarArchiveOutputStream);
+		tarArchiveOutputStream.closeArchiveEntry();//这里必须写，否则会失败
 	}
 
 	public static final String md5Hex(File file) throws IOException {
@@ -49,6 +96,17 @@ public class StreamUtil {
 
 	public static final InputStream getInputStream(File file) throws FileNotFoundException {
 		return new BufferedInputStream(new FileInputStream(file));
+	}
+
+	public static final Writer getWriter(File file) throws IOException {
+		if (file.getParentFile() != null && !file.getParentFile().exists()) {
+			file.getParentFile().mkdirs();
+		}
+		return new BufferedWriter(new FileWriter(file));
+	}
+
+	public static final Reader getReader(File file) throws FileNotFoundException {
+		return new BufferedReader(new FileReader(file));
 	}
 
 	public static final void stream(InputStream inputStream, OutputStream... outputStreams) throws IOException {

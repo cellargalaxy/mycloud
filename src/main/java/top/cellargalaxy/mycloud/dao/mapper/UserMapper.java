@@ -1,6 +1,7 @@
 package top.cellargalaxy.mycloud.dao.mapper;
 
 import org.apache.ibatis.annotations.*;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import top.cellargalaxy.mycloud.dao.AbstractDao;
 import top.cellargalaxy.mycloud.dao.UserDao;
 import top.cellargalaxy.mycloud.model.bo.UserBo;
@@ -10,6 +11,7 @@ import top.cellargalaxy.mycloud.util.ProviderUtil;
 import top.cellargalaxy.mycloud.util.SqlUtil;
 import top.cellargalaxy.mycloud.util.StringUtil;
 
+import javax.sql.DataSource;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -20,6 +22,7 @@ import static org.apache.ibatis.type.JdbcType.TIMESTAMP;
  * @author cellargalaxy
  * @time 2018/9/25
  */
+@ConditionalOnBean(DataSource.class)
 @Mapper
 public interface UserMapper extends AbstractDao<UserPo, UserBo, UserQuery> {
 	@Options(useGeneratedKeys = true, keyProperty = "articleId")

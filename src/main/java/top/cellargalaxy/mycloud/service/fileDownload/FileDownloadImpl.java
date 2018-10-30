@@ -2,7 +2,7 @@ package top.cellargalaxy.mycloud.service.fileDownload;
 
 import top.cellargalaxy.mycloud.model.po.FileInfoPo;
 import top.cellargalaxy.mycloud.model.po.OwnPo;
-import top.cellargalaxy.mycloud.util.StreamUtil;
+import top.cellargalaxy.mycloud.util.IOUtil;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -26,7 +26,7 @@ public class FileDownloadImpl implements FileDownload {
 		fileInfoPo.setContentType(urlConnection.getContentType());
 		fileInfoPo.setFileLength(urlConnection.getContentLength());
 		try (InputStream inputStream = urlConnection.getInputStream()) {
-			StreamUtil.stream(inputStream, outputStreams);
+			IOUtil.stream(inputStream, outputStreams);
 		}
 		return null;
 	}
@@ -38,7 +38,7 @@ public class FileDownloadImpl implements FileDownload {
 		ownPo.setFileLength(urlConnection.getContentLength());
 		ownPo.setFileName(ownPo.getOwnUuid());
 		try (InputStream inputStream = urlConnection.getInputStream()) {
-			StreamUtil.stream(inputStream, outputStreams);
+			IOUtil.stream(inputStream, outputStreams);
 		}
 		return null;
 	}

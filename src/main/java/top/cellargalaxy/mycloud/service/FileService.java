@@ -5,6 +5,7 @@ import top.cellargalaxy.mycloud.model.po.FileInfoPo;
 import top.cellargalaxy.mycloud.model.po.OwnPo;
 import top.cellargalaxy.mycloud.model.po.UserPo;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -24,5 +25,9 @@ public interface FileService {
 
 	FileInfoPo getFileInfoPoByMd5OrUuid(String md5OrUuid);
 
-	String getFileByMd5OrUuid(String md5OrUuid, OutputStream outputStream)throws IOException;
+	String getFileByMd5OrUuid(String md5OrUuid, OutputStream outputStream) throws IOException;
+
+	String getTar(OutputStream outputStream) throws IOException;
+
+	String getTar(UserPo userPo, OutputStream outputStream) throws IOException;
 }

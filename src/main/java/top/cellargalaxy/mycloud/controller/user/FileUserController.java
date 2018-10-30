@@ -2,10 +2,7 @@ package top.cellargalaxy.mycloud.controller.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import top.cellargalaxy.mycloud.model.bo.OwnBo;
 import top.cellargalaxy.mycloud.model.po.UserPo;
@@ -14,7 +11,10 @@ import top.cellargalaxy.mycloud.service.FileService;
 import top.cellargalaxy.mycloud.service.security.SecurityServiceImpl;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.net.URLEncoder;
 
 /**
  * Created by cellargalaxy on 18-8-4.
@@ -28,7 +28,7 @@ public class FileUserController {
 	private FileService fileService;
 
 	@PostMapping("/uploadFile")
-	public Vo uploadFile(HttpServletRequest request, OwnBo ownBo, @RequestParam("fileDeal") MultipartFile multipartFile) throws IOException {
+	public Vo uploadFile(HttpServletRequest request, OwnBo ownBo, @RequestParam("file") MultipartFile multipartFile) throws IOException {
 		UserPo userPo = SecurityServiceImpl.getSecurityUser(request);
 		if (multipartFile == null || multipartFile.isEmpty()) {
 			return new Vo("无上传文件", null);
@@ -43,5 +43,16 @@ public class FileUserController {
 	public Vo submitUrl(HttpServletRequest request, OwnBo ownBo, @RequestParam("url") String url) throws IOException {
 		UserPo userPo = SecurityServiceImpl.getSecurityUser(request);
 		return new Vo(fileService.addFile(url, ownBo, userPo), ownBo);
+	}
+
+	@GetMapping("/downloadTar")
+	public void download(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		UserPo userPo = SecurityServiceImpl.getSecurityUser(request);
+		response.reset();
+		response.setContentType("application/x-tar");
+		response.setHeader("Content-Disposition", "attachment; filename=" + URLEncoder.encode(userPo.getUsername() + ".tar", "UTF-8"));
+		try (OutputStream outputStream = response.getOutputStream()) {
+			fileService.getTar(userPo, outputStream);
+		}
 	}
 }

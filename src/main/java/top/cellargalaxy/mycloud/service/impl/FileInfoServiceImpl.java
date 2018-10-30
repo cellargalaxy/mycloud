@@ -55,41 +55,36 @@ public class FileInfoServiceImpl implements FileInfoService {
 	@Override
 	public FileInfoBo getFileInfo(FileInfoPo fileInfoPo) {
 		FileInfoBo fileInfoBo = fileInfoDao.selectOne(fileInfoPo);
-		if (fileInfoBo!=null) {
-			fileInfoBo.setMd5Url(domain + "/" + fileInfoBo.getMd5());
-		}
+		setUrl(fileInfoBo);
 		return fileInfoBo;
 	}
 
 	@Override
 	public FileInfoVo getFileInfoVo(FileInfoPo fileInfoPo) {
 		FileInfoBo fileInfoBo = fileInfoDao.selectOne(fileInfoPo);
-		if (fileInfoBo!=null) {
-			fileInfoBo.setMd5Url(domain + "/" + fileInfoBo.getMd5());
-		}
+		setUrl(fileInfoBo);
 		return bo2vo(fileInfoBo);
 	}
 
 	@Override
 	public List<FileInfoBo> listFileInfo(FileInfoQuery fileInfoQuery) {
 		List<FileInfoBo> fileInfoBos = fileInfoDao.selectPageSome(fileInfoQuery);
-		fileInfoBos.stream().forEach(fileInfoBo -> {
-			if (fileInfoBo!=null) {
-				fileInfoBo.setMd5Url(domain + "/" + fileInfoBo.getMd5());
-			}
-		});
+		fileInfoBos.stream().forEach(fileInfoBo -> setUrl(fileInfoBo));
 		return fileInfoBos;
 	}
 
 	@Override
 	public List<FileInfoVo> listFileInfoVo(FileInfoQuery fileInfoQuery) {
 		List<FileInfoBo> fileInfoBos = fileInfoDao.selectPageSome(fileInfoQuery);
-		fileInfoBos.stream().forEach(fileInfoBo -> {
-			if (fileInfoBo!=null) {
-				fileInfoBo.setMd5Url(domain + "/" + fileInfoBo.getMd5());
-			}
-		});
+		fileInfoBos.stream().forEach(fileInfoBo -> setUrl(fileInfoBo));
 		return bo2vo(fileInfoBos);
+	}
+
+	@Override
+	public List<FileInfoBo> listAllFileInfo() {
+		List<FileInfoBo> fileInfoBos = fileInfoDao.selectAll();
+		fileInfoBos.stream().forEach(fileInfoBo -> setUrl(fileInfoBo));
+		return fileInfoBos;
 	}
 
 	@Override
@@ -100,6 +95,14 @@ public class FileInfoServiceImpl implements FileInfoService {
 	@Override
 	public List<String> listContentType() {
 		return fileInfoDao.selectAllContentType();
+	}
+
+	@Override
+	public void setUrl(FileInfoBo fileInfoBo) {
+		if (fileInfoBo == null) {
+			return;
+		}
+		fileInfoBo.setMd5Url(domain + "/" + fileInfoBo.getMd5());
 	}
 
 	private FileInfoVo bo2vo(FileInfoBo fileInfoBo) {

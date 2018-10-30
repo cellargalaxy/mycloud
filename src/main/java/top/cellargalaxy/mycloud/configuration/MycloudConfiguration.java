@@ -1,6 +1,6 @@
 package top.cellargalaxy.mycloud.configuration;
 
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 /**
@@ -8,36 +8,36 @@ import org.springframework.stereotype.Component;
  * @time 2018/7/17
  */
 @Component
+@ConfigurationProperties(prefix = "mycloud")
 public class MycloudConfiguration {
-	public static final String LOCAL_START = "local";
-	public static final String HADOOP_START = "hadoop";
 
-	@Value("${mycloud.secret}")
-	private volatile String secret;
-	@Value("${mycloud.webUploadMaxFileSize}")
 	private volatile String webUploadMaxFileSize;
-	@Value("${mycloud.webUploadMaxRequestSize}")
 	private volatile String webUploadMaxRequestSize;
-	@Value("${mycloud.domain}")
-	private volatile String domain;
-	@Value("${mycloud.mycloudPath}")
+
 	private volatile String mycloudPath;
-
-	@Value("${mycloud.installationType}")
-	private volatile String installationType;
-
-	@Value("${mycloud.localFileMaxSpaceRate}")
 	private volatile double localFileMaxSpaceRate;
+	private volatile String secret;
+	private volatile String domain;
 
-	@Value("${mycloud.hdfsUrl}")
+	private String mycloudUsername;
+	private String mycloudPassword;
+
 	private volatile String hdfsUrl;
 
-	public String getSecret() {
-		return secret;
+	public String getMycloudUsername() {
+		return mycloudUsername;
 	}
 
-	public void setSecret(String secret) {
-		this.secret = secret;
+	public void setMycloudUsername(String mycloudUsername) {
+		this.mycloudUsername = mycloudUsername;
+	}
+
+	public String getMycloudPassword() {
+		return mycloudPassword;
+	}
+
+	public void setMycloudPassword(String mycloudPassword) {
+		this.mycloudPassword = mycloudPassword;
 	}
 
 	public String getWebUploadMaxFileSize() {
@@ -56,14 +56,6 @@ public class MycloudConfiguration {
 		this.webUploadMaxRequestSize = webUploadMaxRequestSize;
 	}
 
-	public String getDomain() {
-		return domain;
-	}
-
-	public void setDomain(String domain) {
-		this.domain = domain;
-	}
-
 	public String getMycloudPath() {
 		return mycloudPath;
 	}
@@ -72,20 +64,28 @@ public class MycloudConfiguration {
 		this.mycloudPath = mycloudPath;
 	}
 
-	public String getInstallationType() {
-		return installationType;
-	}
-
-	public void setInstallationType(String installationType) {
-		this.installationType = installationType;
-	}
-
 	public double getLocalFileMaxSpaceRate() {
 		return localFileMaxSpaceRate;
 	}
 
 	public void setLocalFileMaxSpaceRate(double localFileMaxSpaceRate) {
 		this.localFileMaxSpaceRate = localFileMaxSpaceRate;
+	}
+
+	public String getSecret() {
+		return secret;
+	}
+
+	public void setSecret(String secret) {
+		this.secret = secret;
+	}
+
+	public String getDomain() {
+		return domain;
+	}
+
+	public void setDomain(String domain) {
+		this.domain = domain;
 	}
 
 	public String getHdfsUrl() {

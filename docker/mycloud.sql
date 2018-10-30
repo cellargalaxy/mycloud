@@ -30,7 +30,7 @@ CREATE TABLE `authorization` (
   `update_time` datetime NOT NULL COMMENT '更新时间',
   PRIMARY KEY (`authorization_id`),
   UNIQUE KEY `uk_user_id_permission` (`user_id`,`permission`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COMMENT='授权表';
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COMMENT='授权表';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -40,6 +40,7 @@ CREATE TABLE `authorization` (
 LOCK TABLES `authorization` WRITE;
 /*!40000 ALTER TABLE `authorization` DISABLE KEYS */;
 INSERT INTO `authorization` VALUES (1,1,'ADMIN','2018-08-01 00:00:00','2018-08-01 00:00:00');
+INSERT INTO `authorization` VALUES (2,1,'USER','2018-08-01 00:00:00','2018-08-01 00:00:00');
 /*!40000 ALTER TABLE `authorization` ENABLE KEYS */;
 UNLOCK TABLES;
 

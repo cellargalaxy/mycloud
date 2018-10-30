@@ -14,6 +14,7 @@ import top.cellargalaxy.mycloud.model.vo.UserVo;
 import top.cellargalaxy.mycloud.service.AuthorizationService;
 import top.cellargalaxy.mycloud.service.UserService;
 import top.cellargalaxy.mycloud.util.ServiceUtil;
+import top.cellargalaxy.mycloud.util.StringUtil;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -26,8 +27,6 @@ import java.util.stream.Collectors;
 @Service
 public class UserServiceImpl implements UserService {
 	private static final String NAME = "账号";
-	private static final String passwordHead = "{bcrypt}";
-	private static final BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 	@Autowired
 	private UserDao userDao;
 	@Autowired
@@ -36,7 +35,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public String addUser(UserPo userPo) {
 		if (userPo.getPassword() != null) {
-			userPo.setPassword(passwordHead + bCryptPasswordEncoder.encode(userPo.getPassword()));
+			userPo.setPassword(StringUtil.PASSWORD_HEAD + StringUtil.encoderPassword(userPo.getPassword()));
 		}
 		return ServiceUtil.add(userPo, NAME, this::checkAddUser, userDao);
 	}
@@ -49,7 +48,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public String changeUser(UserPo userPo) {
 		if (userPo.getPassword() != null) {
-			userPo.setPassword(passwordHead + bCryptPasswordEncoder.encode(userPo.getPassword()));
+			userPo.setPassword(StringUtil.PASSWORD_HEAD + StringUtil.encoderPassword(userPo.getPassword()));
 		}
 		return ServiceUtil.change(userPo, NAME, this::checkChangeUser, userDao);
 	}
