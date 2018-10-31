@@ -1,7 +1,5 @@
 package top.cellargalaxy.mycloud.model.vo;
 
-import top.cellargalaxy.mycloud.util.ExceptionUtil;
-
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -21,7 +19,7 @@ public class Vo implements Serializable {
 	}
 
 	public Vo(Exception e) {
-		this(FAIL_STATUS, "未知异常", ExceptionUtil.printException(e));
+		this(FAIL_STATUS, "未知异常", e.getMessage());
 	}
 
 	public Vo(String massage, Object data) {

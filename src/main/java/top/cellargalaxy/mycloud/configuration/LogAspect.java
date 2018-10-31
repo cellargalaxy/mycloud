@@ -92,18 +92,18 @@ public class LogAspect {
 	//
 
 	private final void beforeInfo(JoinPoint joinPoint) {
-		logger.info("{}: {}; {}", joinPoint.getSignature().getDeclaringTypeName(), joinPoint.getSignature().getName(), Arrays.toString(joinPoint.getArgs()));
+		logger.info("before {}: {}; {}", joinPoint.getSignature().getDeclaringTypeName(), joinPoint.getSignature().getName(), Arrays.toString(joinPoint.getArgs()));
 	}
 
 	private final void afterReturningInfo(JoinPoint joinPoint, Object object) {
-		logger.info("{}: {}; {}", joinPoint.getSignature().getDeclaringTypeName(), joinPoint.getSignature().getName(), object);
+		logger.info("after  {}: {}; {}", joinPoint.getSignature().getDeclaringTypeName(), joinPoint.getSignature().getName(), object);
 	}
 
 	private final void beforeDebug(JoinPoint joinPoint) {
-		logger.debug("{}: {}; {}", joinPoint.getSignature().getDeclaringTypeName(), joinPoint.getSignature().getName(), Arrays.toString(joinPoint.getArgs()));
+		logger.debug("before {}: {}; {}", joinPoint.getSignature().getDeclaringTypeName(), joinPoint.getSignature().getName(), Arrays.toString(joinPoint.getArgs()));
 	}
 
 	private final void afterReturningDebug(JoinPoint joinPoint, Object object) {
-		logger.debug("{}: {}; {}", joinPoint.getSignature().getDeclaringTypeName(), joinPoint.getSignature().getName(), object);
+		logger.debug("after  {}: {}; {}", joinPoint.getSignature().getDeclaringTypeName(), joinPoint.getSignature().getName(), object);
 	}
 }

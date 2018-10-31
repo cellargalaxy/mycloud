@@ -3,8 +3,6 @@ package top.cellargalaxy.mycloud;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.annotation.EnableCaching;
-import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 //事务，由于UploadFileTaskExecute类要被注入，又有事务，还实现了个接口。但不知为何spring会报错，说
 //The bean 'uploadFileTaskExecute' could not be injected as a 'top.cellargalaxy.mycloud.service.schedule.UploadFileTaskExecute' because it is a JDK dynamic proxy that implements:top.cellargalaxy.mycloud.service.schedule.TaskExecute

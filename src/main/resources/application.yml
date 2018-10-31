@@ -66,16 +66,16 @@ mycloud:
   hdfsUrl: ${MYCLOUD_HDFS_URL:}
 
 
-logging:
-  level:
-    top:
-      cellargalaxy:
-        mycloud:
-          dao:
-            '*': DEBUG
-          controller:
-            security:
-              '*': DEBUG
+#logging:
+#  level:
+#    top:
+#      cellargalaxy:
+#        mycloud:
+#          dao:
+#            '*': DEBUG
+#          controller:
+#            security:
+#              '*': DEBUG
 
 #MYCLOUD_MYSQL_DATABASE_NAME:mycloud
 #MYCLOUD_MYSQL_USERNAME:root

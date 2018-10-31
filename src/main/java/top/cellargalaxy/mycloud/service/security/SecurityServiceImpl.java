@@ -68,7 +68,7 @@ public class SecurityServiceImpl implements SecurityService {
 			securityUser.setUpdateTime(userBo.getUpdateTime());
 
 			List<AuthorizationBo> authorizationBos = userVo.getAuthorizations();
-			authorizationBos.stream().forEach(authorizationBo -> securityUser.getPermissions().add(authorizationBo.getPermission().permission));
+			authorizationBos.stream().forEach(authorizationBo -> securityUser.getPermissions().add(authorizationBo.getPermission().toString()));
 
 			return securityUser;
 		}
@@ -151,6 +151,7 @@ public class SecurityServiceImpl implements SecurityService {
 	public static final SecurityUserImpl getSecurityUser(HttpServletRequest request) {
 		return (SecurityUserImpl) request.getAttribute(USER_KEY);
 	}
+
 	class SecurityUserImpl extends UserPo implements SecurityUser {
 		private final Set<String> permissions;
 

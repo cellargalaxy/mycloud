@@ -22,4 +22,15 @@ public class StringUtil {
 	public static final boolean matchesPassword(CharSequence rawPassword, String encodedPassword) {
 		return PASSWORD_ENCODER.matches(rawPassword, encodedPassword);
 	}
+
+	public static final String printException(Exception exception) {
+		if (exception == null) {
+			return null;
+		}
+		StringBuilder stringBuilder = new StringBuilder("Exception in thread \"" + Thread.currentThread().getName() + "\" " + exception.toString());
+		for (StackTraceElement stackTraceElement : exception.getStackTrace()) {
+			stringBuilder.append("\n\tat " + stackTraceElement);
+		}
+		return stringBuilder.toString();
+	}
 }
