@@ -32,19 +32,19 @@ cd mycloud/docker
 
 除此以外还要修改`mycloud.yml`的：
 
-`MYCLOUD_DOMAIN`修改为你的域名或者地址，将会用于构造文件链接的url
+`MYCLOUD_DOMAIN`：修改为你的域名或者地址，将会用于构造文件链接的url
 
-`MYCLOUD_SECRET`是mycloud用于验证登录的密匙
+`MYCLOUD_SECRET`：是mycloud用于验证登录的密匙
 
 其他参数的解释：
 
-`MYCLOUD_WEB_UPLOAD_MAX_FILE_SIZE`最大上传文件的大小，默认1024M
+`MYCLOUD_WEB_UPLOAD_MAX_FILE_SIZE`：上传的单文件文件最大大小，默认1024M
 
-`MYCLOUD_WEB_UPLOAD_MAX_REQUEST_SIZE`上传全部文件最大大小和，默认1024M
+`MYCLOUD_WEB_UPLOAD_MAX_REQUEST_SIZE`：上传全部文件最大大小和，默认1024M
 
-`MYCLOUD_LOCAL_FILE_MAX_SPACE_RATE`
+`MYCLOUD_LOCAL_FILE_MAX_SPACE_RATE`：本地磁盘的最大占用率。默认0.8。即当磁盘的使用率达到80%或者以上（无论是否是mycloud的文件所占用），都会拒接保存文件
 
-`MYCLOUD_PATH`
+`MYCLOUD_PATH`：本地文件的保存路径。由与docker的volumes相决定，一般无需修改
 
 
 然后构建，就会创建名为mycloud的容器
