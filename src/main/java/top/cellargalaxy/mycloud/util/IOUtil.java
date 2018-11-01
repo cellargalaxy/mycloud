@@ -153,11 +153,11 @@ public class IOUtil {
 		return files == null || files.length == 0;
 	}
 
-	public static final String getMimeType(File file) {
-		if (file == null || !file.exists()) {
+	public static final String getMimeType(InputStream inputStream) {
+		if (inputStream == null) {
 			return null;
 		}
-		Collection mimeType = MimeUtil.getMimeTypes(file);
+		Collection mimeType = MimeUtil.getMimeTypes(inputStream);
 		return mimeType != null ? mimeType.toString() : null;
 	}
 }

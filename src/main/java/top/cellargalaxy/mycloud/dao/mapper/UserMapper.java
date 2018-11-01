@@ -69,6 +69,10 @@ public interface UserMapper extends AbstractDao<UserPo, UserBo, UserQuery> {
 		private String updateTime = tableName + ".update_time=#{updateTime,jdbcType=TIMESTAMP}";
 
 		public void wheresKey(UserPo userPo, Set<String> wheres) {
+			if (userPo.getUserId() > 0) {
+				wheres.add(userId);
+				return;
+			}
 			if (!StringUtil.isBlank(userPo.getUsername())) {
 				wheres.add(username);
 				return;

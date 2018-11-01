@@ -80,6 +80,10 @@ public interface FileInfoMapper extends AbstractDao<FileInfoPo, FileInfoBo, File
 		}
 
 		public void wheresKey(FileInfoPo fileInfoPo, Set<String> wheres) {
+			if (fileInfoPo.getFileId() > 0) {
+				wheres.add(fileId);
+				return;
+			}
 			if (!StringUtil.isBlank(fileInfoPo.getMd5())) {
 				wheres.add(md5);
 				return;

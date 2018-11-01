@@ -1,9 +1,7 @@
 #!/bin/bash
 echo 'remember modify configuration'
-echo 'MYCLOUD_MYSQL_IP_PORT'
-echo 'MYCLOUD_MYSQL_PASSWORD'
-echo 'MYCLOUD_REDIS_IP'
-echo 'MYCLOUD_REDIS_PASSWORD'
+echo 'MYCLOUD_DB_HOST'
+echo 'MYCLOUD_DB_PASSWORD'
 echo 'MYCLOUD_SECRET'
 echo 'press any key to continue or ctrl+c to stop'
 read

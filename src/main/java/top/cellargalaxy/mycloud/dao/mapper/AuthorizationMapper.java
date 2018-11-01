@@ -85,6 +85,10 @@ public interface AuthorizationMapper extends AbstractDao<AuthorizationPo, Author
 		}
 
 		public void wheresKey(AuthorizationPo authorizationPo, Set<String> wheres) {
+			if (authorizationPo.getAuthorizationId() > 0) {
+				wheres.add(authorizationId);
+				return;
+			}
 			if (authorizationPo.getUserId() > 0 && authorizationPo.getPermission() != null) {
 				wheres.add(userId);
 				wheres.add(permission);

@@ -36,13 +36,15 @@ public class FileUserController {
 		ownBo.setContentType(multipartFile.getContentType());
 		ownBo.setFileLength(multipartFile.getSize());
 		ownBo.setFileName(multipartFile.getOriginalFilename());
-		return new Vo(fileService.addFile(multipartFile.getInputStream(), ownBo, userPo), ownBo);
+		String string = fileService.addFile(multipartFile.getInputStream(), ownBo, userPo);
+		return new Vo(string, string == null ? ownBo : null);
 	}
 
 	@PostMapping("/submitUrl")
 	public Vo submitUrl(HttpServletRequest request, OwnBo ownBo, @RequestParam("url") String url) throws IOException {
 		UserPo userPo = SecurityServiceImpl.getSecurityUser(request);
-		return new Vo(fileService.addFile(url, ownBo, userPo), ownBo);
+		String string = fileService.addFile(url, ownBo, userPo);
+		return new Vo(string, string == null ? ownBo : null);
 	}
 
 	@GetMapping("/downloadTar")

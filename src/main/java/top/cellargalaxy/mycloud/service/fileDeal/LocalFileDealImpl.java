@@ -42,6 +42,10 @@ public class LocalFileDealImpl implements FileDeal {
 			localFile.delete();
 			return e.getMessage();
 		}
+		String mimeType = getMimeType(localFile);
+		if (mimeType != null) {
+			fileInfoPo.setContentType(mimeType);
+		}
 		return null;
 	}
 
@@ -56,6 +60,10 @@ public class LocalFileDealImpl implements FileDeal {
 		} catch (IOException e) {
 			localFile.delete();
 			return e.getMessage();
+		}
+		String mimeType = getMimeType(localFile);
+		if (mimeType != null) {
+			ownPo.setContentType(mimeType);
 		}
 		return null;
 	}
@@ -72,6 +80,10 @@ public class LocalFileDealImpl implements FileDeal {
 			localFile.delete();
 			return e.getMessage();
 		}
+		String mimeType = getMimeType(localFile);
+		if (mimeType != null) {
+			fileInfoPo.setContentType(mimeType);
+		}
 		return null;
 	}
 
@@ -86,6 +98,22 @@ public class LocalFileDealImpl implements FileDeal {
 		} catch (IOException e) {
 			localFile.delete();
 			return e.getMessage();
+		}
+		String mimeType = getMimeType(localFile);
+		if (mimeType != null) {
+			ownPo.setContentType(mimeType);
+		}
+		return null;
+	}
+
+	private String getMimeType(File localFile) throws IOException {
+		if (localFile != null && localFile.exists()) {
+			try (InputStream inputStream = IOUtil.getInputStream(localFile)) {
+				String mimeType = IOUtil.getMimeType(inputStream);
+				if (mimeType != null && !mimeType.trim().startsWith("application")) {
+					return mimeType;
+				}
+			}
 		}
 		return null;
 	}

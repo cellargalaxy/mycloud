@@ -107,6 +107,10 @@ public interface OwnMapper extends AbstractDao<OwnPo, OwnBo, OwnQuery> {
 			if (ownPo.getUserId() > 0) {
 				wheres.add(userId);
 			}
+			if (ownPo.getOwnId() > 0) {
+				wheres.add(ownId);
+				return;
+			}
 			if (!StringUtil.isBlank(ownPo.getOwnUuid())) {
 				wheres.add(ownUuid);
 				return;
@@ -205,7 +209,7 @@ public interface OwnMapper extends AbstractDao<OwnPo, OwnBo, OwnQuery> {
 
 			//own left join user on own.user_id=user.user_id left join file_info on own.file_id=file_info.file_id
 			StringBuilder sql = SqlUtil.createSelectSql(selects, tableName + " left join " + UserDao.TABLE_NAME + " on " + tableName + ".user_id=" + UserDao.TABLE_NAME + ".user_id left join " + FileInfoDao.TABLE_NAME + " on " + tableName + ".file_id=" + FileInfoDao.TABLE_NAME + ".file_id", wheres);
-			return sql;
+			return sql.append(" order by " + tableName + ".create_time desc");
 		}
 
 		public String selectCount(OwnQuery ownQuery) {
