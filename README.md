@@ -5,30 +5,21 @@
 
 mycloud只提供后台接口，前端页面需另外安装，可[使用](https://github.com/cellargalaxy/mycloud-vue "使用")
 
-mycloud负责文件的上传、持久化与下载功能。下载可以搭配nginx的缓存使用。
-
-mycloud使用到mysql与redis，可通过docker安装。
-
-## 部署与缓存策略
-
-首先软件栈是：mysql-redis-mycloud-nginx
-
-mysql做持久化，可以按照情况做一主多从的备份，暂时不知道怎么做主从读写分离
-
-redis只部署一个，做mysql的缓存
-
-mycloud可做集群。缓存策略是mycloud首先检查文件数据是否缓存到本地，没有则往redis里查询，最后才到mysql里获取
-
-nginx有两个功能，一个是均衡负载集群的mycloud，第二是对文件进行再一步缓存。
-
-nginx的缓存好像没有意义，nginx的缓存是保存到硬盘，mycloud的缓存也是。
-
-如果nginx跟mycloud内网连同，网上很快那应该是差不多。
-
-但如果nginx跟mycloud直接网速不快，那nginx这层缓存就也是必要的。
+mycloud负责文件的上传、持久化与下载功能。
 
 ## 如何使用
+
+### 建库
+
+mycloud使用到mysql，请先自行安装并建库。
+
+由于数据库名是可配置的，所以建库时的数据库名字随意。[建库脚本位于](https://github.com/cellargalaxy/mycloud/blob/master/docker/mycloud.sql)
+
+### 安装docker和docker-compose
+
 需要先自行安装docker和docker-compose，[参考](https://yeasy.gitbooks.io/docker_practice/ "参考")
+
+### 安装mycloud
 
 获取项目的docker目录及其下面的全部文件
 
@@ -37,57 +28,24 @@ git clone https://github.com/cellargalaxy/mycloud.git
 cd mycloud/docker
 ```
 
-### 安装主数据库
+根据实际情况修改`mycloud.yml`的mysql地址端口密码
 
-需要修改配置文件`mysql_master.yml`，注意修改mysql的密码`MYSQL_ROOT_PASSWORD`
-
-然后构建，就会创建名为mysql_master_mycloud的容器
-
-```shell
-./mysql_master.sh
-```
-
-测试：默认会暴露3306端口，请自行测试
-
-### 安装从数据库
-
-从数据库数据库主要用于备份，不需要备份的可以跳过
-
-跟主数据库一样，修改配置文件`mysql_slave.yml`，注意修改mysql的密码`MYSQL_ROOT_PASSWORD`
-
-然后构建，就会创建名为mysql_slave_mycloud的容器
-
-```shell
-./mysql_slave.sh
-```
-
-测试：默认会暴露3306端口，请自行测试
-
-### 安装redis
-
-根据你的机子的空闲内存大小，修改配置文件`redis.conf`的最大内存使用量`maxmemory`
-
-需要修改配置文件`redis.yml`的redis的密码`requirepass`
-
-然后构建，就会创建名为redis_mycloud的容器
-
-```shell
-./redis.sh
-```
-
-测试：默认会暴露6379端口，请自行测试
-
-### 安装mycloud
-
-根据上面mysql与redis的配置与机器ip地址，修改`mycloud.yml`的mysql地址端口与密码，redis的地址端口与密码
-
-初次以外还要修改`mycloud.yml`的：
+除此以外还要修改`mycloud.yml`的：
 
 `MYCLOUD_DOMAIN`修改为你的域名或者地址，将会用于构造文件链接的url
 
 `MYCLOUD_SECRET`是mycloud用于验证登录的密匙
 
-`MYCLOUD_LOCAL_FILE_MAX_SPACE`是mycloud在本地最大的缓存大小，小于硬盘空闲空间即可
+其他参数的解释：
+
+`MYCLOUD_WEB_UPLOAD_MAX_FILE_SIZE`最大上传文件的大小，默认1024M
+
+`MYCLOUD_WEB_UPLOAD_MAX_REQUEST_SIZE`上传全部文件最大大小和，默认1024M
+
+`MYCLOUD_LOCAL_FILE_MAX_SPACE_RATE`
+
+`MYCLOUD_PATH`
+
 
 然后构建，就会创建名为mycloud的容器
 
@@ -111,16 +69,25 @@ mycloud的超级管理员账号默认为mycloud，密码默认为mycloud
 }
 ```
 
-## api
-只有一个了，文件的直链接口：`配置文件的域名+文件的MD5`
+## 公开api
+只有一个了，文件的直链接口：`配置文件的域名+文件的MD5/uuid`
 
 ## 挖坑
 
 |目标|时间|
 |-|-|
-|支持提交url下载文件并保存|等我有空|
+|文件保存到hadoop的hdfs里|等我需要或者闲得慌|
+|文件保存到谷歌硬盘里|等我需要或者闲得慌|
 
 ## 更新日志
+2018-11-01
+
+又大改了一下，目前是单机版，不用redis，直接用内存做缓存了，单机版的文件都保存到本地
+
+增加了提交url下载文件并保存功能
+
+增加用户的全部文件tar打包下载功能
+
 2018-8-31
 
 修改部署策略与缓存，修改docker文件
