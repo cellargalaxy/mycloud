@@ -9,7 +9,7 @@ import org.springframework.cache.annotation.EnableCaching;
 //所以不得不用cglib
 //@EnableTransactionManagement(proxyTargetClass = true)
 //@EnableScheduling//定时任务
-@EnableCaching//缓存
+//@EnableCaching//缓存
 @SpringBootApplication
 public class MycloudApplication {
 

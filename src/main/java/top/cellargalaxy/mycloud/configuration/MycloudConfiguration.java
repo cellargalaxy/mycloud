@@ -15,6 +15,7 @@ public class MycloudConfiguration {
 	private volatile String webUploadMaxRequestSize;
 
 	private volatile String mycloudPath;
+	private volatile int downloadUrlConnectTimeout;
 	private volatile double localFileMaxSpaceRate;
 	private volatile String secret;
 	private volatile String domain;
@@ -23,22 +24,6 @@ public class MycloudConfiguration {
 	private String mycloudPassword;
 
 	private volatile String hdfsUrl;
-
-	public String getMycloudUsername() {
-		return mycloudUsername;
-	}
-
-	public void setMycloudUsername(String mycloudUsername) {
-		this.mycloudUsername = mycloudUsername;
-	}
-
-	public String getMycloudPassword() {
-		return mycloudPassword;
-	}
-
-	public void setMycloudPassword(String mycloudPassword) {
-		this.mycloudPassword = mycloudPassword;
-	}
 
 	public String getWebUploadMaxFileSize() {
 		return webUploadMaxFileSize;
@@ -64,6 +49,14 @@ public class MycloudConfiguration {
 		this.mycloudPath = mycloudPath;
 	}
 
+	public int getDownloadUrlConnectTimeout() {
+		return downloadUrlConnectTimeout;
+	}
+
+	public void setDownloadUrlConnectTimeout(int downloadUrlConnectTimeout) {
+		this.downloadUrlConnectTimeout = downloadUrlConnectTimeout;
+	}
+
 	public double getLocalFileMaxSpaceRate() {
 		return localFileMaxSpaceRate;
 	}
@@ -86,6 +79,22 @@ public class MycloudConfiguration {
 
 	public void setDomain(String domain) {
 		this.domain = domain;
+	}
+
+	public String getMycloudUsername() {
+		return mycloudUsername;
+	}
+
+	public void setMycloudUsername(String mycloudUsername) {
+		this.mycloudUsername = mycloudUsername;
+	}
+
+	public String getMycloudPassword() {
+		return mycloudPassword;
+	}
+
+	public void setMycloudPassword(String mycloudPassword) {
+		this.mycloudPassword = mycloudPassword;
 	}
 
 	public String getHdfsUrl() {

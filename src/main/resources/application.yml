@@ -43,7 +43,7 @@ spring:
     type: CAFFEINE
 
   autoconfigure:
-#    exclude: org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration,com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceAutoConfigure
+    exclude: org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration,com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceAutoConfigure
 
 mycloud:
   webUploadMaxFileSize: ${MYCLOUD_WEB_UPLOAD_MAX_FILE_SIZE:1024MB}

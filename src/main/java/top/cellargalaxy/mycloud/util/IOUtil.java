@@ -87,25 +87,25 @@ public class IOUtil {
 		}
 	}
 
-	public static final OutputStream getOutputStream(File file) throws FileNotFoundException {
+	public static final BufferedOutputStream getOutputStream(File file) throws FileNotFoundException {
 		if (file.getParentFile() != null && !file.getParentFile().exists()) {
 			file.getParentFile().mkdirs();
 		}
 		return new BufferedOutputStream(new FileOutputStream(file));
 	}
 
-	public static final InputStream getInputStream(File file) throws FileNotFoundException {
+	public static final BufferedInputStream getInputStream(File file) throws FileNotFoundException {
 		return new BufferedInputStream(new FileInputStream(file));
 	}
 
-	public static final Writer getWriter(File file) throws IOException {
+	public static final BufferedWriter getWriter(File file) throws IOException {
 		if (file.getParentFile() != null && !file.getParentFile().exists()) {
 			file.getParentFile().mkdirs();
 		}
 		return new BufferedWriter(new FileWriter(file));
 	}
 
-	public static final Reader getReader(File file) throws FileNotFoundException {
+	public static final BufferedReader getReader(File file) throws FileNotFoundException {
 		return new BufferedReader(new FileReader(file));
 	}
 

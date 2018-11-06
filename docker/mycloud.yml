@@ -11,6 +11,9 @@ services:
       MYCLOUD_DB_USERNAME: root
       MYCLOUD_DB_PASSWORD: mysqlpw123
 
+      MYCLOUD_USERNAME: mycloud
+      MYCLOUD_PASSWORD: mycloud
+
       MYCLOUD_DOMAIN: http://drive.cellargalaxy.top
       MYCLOUD_SECRET: MYCLOUD_SECRET
 
@@ -20,6 +23,7 @@ services:
       MYCLOUD_PATH: /root
     volumes:
       - ./mycloud.jar:/root/mycloud.jar
+      - ./application.yml:/root/application.yml
       - mycloud:/root/mycloud
     command: java -jar /root/mycloud.jar
     ports:
