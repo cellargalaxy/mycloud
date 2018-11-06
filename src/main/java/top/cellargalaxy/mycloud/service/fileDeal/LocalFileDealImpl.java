@@ -7,6 +7,7 @@ import top.cellargalaxy.mycloud.model.po.OwnPo;
 import top.cellargalaxy.mycloud.service.fileDownload.FileDownload;
 import top.cellargalaxy.mycloud.service.fileDownload.FileDownloadImpl;
 import top.cellargalaxy.mycloud.util.IOUtil;
+import top.cellargalaxy.mycloud.util.MimeSuffixNameUtil;
 
 import java.io.*;
 import java.util.Map;
@@ -109,7 +110,7 @@ public class LocalFileDealImpl implements FileDeal {
 	private String getMimeType(File localFile) throws IOException {
 		if (localFile != null && localFile.exists()) {
 			try (InputStream inputStream = IOUtil.getInputStream(localFile)) {
-				String mimeType = IOUtil.getMimeType(inputStream);
+				String mimeType = MimeSuffixNameUtil.getMimeType(inputStream);
 				if (mimeType != null && !mimeType.trim().startsWith("application")) {
 					return mimeType;
 				}

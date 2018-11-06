@@ -1,21 +1,16 @@
 package top.cellargalaxy.mycloud.util;
 
-import eu.medsea.mimeutil.MimeUtil;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveOutputStream;
 
 import java.io.*;
-import java.util.Collection;
 
 /**
  * @author cellargalaxy
  * @time 2018/7/5
  */
 public class IOUtil {
-	static {
-		MimeUtil.registerMimeDetector("eu.medsea.mimeutil.detector.MagicMimeMimeDetector");
-	}
 
 	public static final TarArchiveOutputStream createTarArchiveOutputStream(File file) throws FileNotFoundException {
 		return createTarArchiveOutputStream(IOUtil.getOutputStream(file));
@@ -151,13 +146,5 @@ public class IOUtil {
 		}
 		files = folder.listFiles();
 		return files == null || files.length == 0;
-	}
-
-	public static final String getMimeType(InputStream inputStream) {
-		if (inputStream == null) {
-			return null;
-		}
-		Collection mimeType = MimeUtil.getMimeTypes(inputStream);
-		return mimeType != null ? mimeType.toString() : null;
 	}
 }

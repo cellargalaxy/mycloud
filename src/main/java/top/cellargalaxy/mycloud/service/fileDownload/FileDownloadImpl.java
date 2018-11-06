@@ -3,6 +3,7 @@ package top.cellargalaxy.mycloud.service.fileDownload;
 import top.cellargalaxy.mycloud.model.po.FileInfoPo;
 import top.cellargalaxy.mycloud.model.po.OwnPo;
 import top.cellargalaxy.mycloud.util.IOUtil;
+import top.cellargalaxy.mycloud.util.MimeSuffixNameUtil;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -36,7 +37,12 @@ public class FileDownloadImpl implements FileDownload {
 		URLConnection urlConnection = createURLConnection(urlString);
 		ownPo.setContentType(urlConnection.getContentType());
 		ownPo.setFileLength(urlConnection.getContentLength());
-		ownPo.setFileName(ownPo.getOwnUuid());
+		String suffixName = MimeSuffixNameUtil.mime2SuffixName(ownPo.getContentType());
+		if (suffixName != null) {
+			ownPo.setFileName(ownPo.getOwnUuid() + "." + MimeSuffixNameUtil.mime2SuffixName(ownPo.getContentType()));
+		} else {
+			ownPo.setFileName(ownPo.getOwnUuid());
+		}
 		try (InputStream inputStream = urlConnection.getInputStream()) {
 			IOUtil.stream(inputStream, outputStreams);
 		}
