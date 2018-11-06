@@ -1,7 +1,6 @@
 package top.cellargalaxy.mycloud.dao.cache;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -20,7 +19,6 @@ import java.util.List;
  * @author cellargalaxy
  * @time 2018/7/13
  */
-@ConditionalOnBean(UserMapper.class)
 @Repository
 @CacheConfig
 public class UserCache implements UserDao {

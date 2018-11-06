@@ -3,7 +3,6 @@ package top.cellargalaxy.mycloud.dao.file;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.stereotype.Repository;
-import top.cellargalaxy.mycloud.dao.AuthorizationDao;
 import top.cellargalaxy.mycloud.dao.mapper.AuthorizationMapper;
 import top.cellargalaxy.mycloud.model.bo.AuthorizationBo;
 import top.cellargalaxy.mycloud.model.bo.UserBo;
@@ -11,6 +10,7 @@ import top.cellargalaxy.mycloud.model.po.AuthorizationPo;
 import top.cellargalaxy.mycloud.model.po.Permission;
 import top.cellargalaxy.mycloud.model.query.AuthorizationQuery;
 
+import javax.sql.DataSource;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -19,9 +19,9 @@ import java.util.List;
  * @author cellargalaxy
  * @time 2018/10/30
  */
-@ConditionalOnMissingBean(AuthorizationMapper.class)
+@ConditionalOnMissingBean(DataSource.class)
 @Repository
-public class AuthorizationFileDao implements AuthorizationDao {
+public class AuthorizationFileDao implements AuthorizationMapper {
 	private final AuthorizationBo admin;
 	private final AuthorizationBo user;
 

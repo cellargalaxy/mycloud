@@ -4,13 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.stereotype.Repository;
 import top.cellargalaxy.mycloud.configuration.MycloudConfiguration;
-import top.cellargalaxy.mycloud.dao.UserDao;
 import top.cellargalaxy.mycloud.dao.mapper.UserMapper;
 import top.cellargalaxy.mycloud.model.bo.UserBo;
 import top.cellargalaxy.mycloud.model.po.UserPo;
 import top.cellargalaxy.mycloud.model.query.UserQuery;
 import top.cellargalaxy.mycloud.util.StringUtil;
 
+import javax.sql.DataSource;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -19,9 +19,9 @@ import java.util.List;
  * @author cellargalaxy
  * @time 2018/10/30
  */
-@ConditionalOnMissingBean(UserMapper.class)
+@ConditionalOnMissingBean(DataSource.class)
 @Repository
-public class UserFileDao implements UserDao {
+public class UserFileDao implements UserMapper {
 	private final UserBo userBo;
 
 	@Autowired

@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.stereotype.Repository;
 import top.cellargalaxy.mycloud.configuration.MycloudConfiguration;
-import top.cellargalaxy.mycloud.dao.OwnDao;
 import top.cellargalaxy.mycloud.dao.mapper.OwnMapper;
 import top.cellargalaxy.mycloud.model.bo.OwnBo;
 import top.cellargalaxy.mycloud.model.po.OwnPo;
@@ -14,12 +13,12 @@ import top.cellargalaxy.mycloud.util.IOUtil;
 import top.cellargalaxy.mycloud.util.SqlUtil;
 import top.cellargalaxy.mycloud.util.StringUtil;
 
+import javax.sql.DataSource;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -28,9 +27,9 @@ import java.util.stream.Collectors;
  * @author cellargalaxy
  * @time 2018/10/30
  */
-@ConditionalOnMissingBean(OwnMapper.class)
+@ConditionalOnMissingBean(DataSource.class)
 @Repository
-public class OwnFileDao implements OwnDao {
+public class OwnFileDao implements OwnMapper {
 	private final ObjectMapper objectMapper;
 	private final File file;
 	private final LinkedList<OwnBo> ownBos;
@@ -45,10 +44,6 @@ public class OwnFileDao implements OwnDao {
 	@Override
 	public synchronized int insert(OwnPo ownPo) {
 		try {
-			Date date = new Date();
-			ownPo.setCreateTime(date);
-			ownPo.setUpdateTime(date);
-
 			OwnBo ownBo = new OwnBo();
 			ownBo.setOwnId(ownPo.getOwnId());
 			ownBo.setOwnUuid(ownPo.getOwnUuid());
@@ -86,10 +81,6 @@ public class OwnFileDao implements OwnDao {
 	@Override
 	public synchronized int update(OwnPo ownPo) {
 		try {
-			Date date = new Date();
-			ownPo.setCreateTime(null);
-			ownPo.setUpdateTime(date);
-
 			ownBos.stream().filter(ownBo -> filterKey(ownPo, ownBo)).forEach(ownBo -> set(ownPo, ownBo));
 			write();
 		} catch (IOException e) {
