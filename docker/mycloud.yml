@@ -25,6 +25,8 @@ services:
       - ./mycloud.jar:/root/mycloud.jar
       - ./application.yml:/root/application.yml
       - mycloud:/root/mycloud
+      - /etc/timezone:/etc/timezone
+      - /etc/localtime:/etc/localtime
     command: java -jar /root/mycloud.jar
     ports:
       - 18088:8080
