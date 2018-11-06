@@ -25,7 +25,12 @@ public class OwnCache implements OwnDao {
 	@Autowired
 	private OwnMapper ownMapper;
 
-	@Cacheable(key = "'OwnCache-selectAll'", cacheNames = "5m")
+	@Cacheable(key = "'OwnCache-selectOne-'+#p0", cacheNames = "1m")
+	public OwnBo selectOne(OwnPo ownPo) {
+		return ownMapper.selectOne(ownPo);
+	}
+
+	@Cacheable(key = "'OwnCache-selectAll'", cacheNames = "1m")
 	public List<OwnBo> selectAll() {
 		return ownMapper.selectAll();
 	}
@@ -33,7 +38,8 @@ public class OwnCache implements OwnDao {
 	//
 
 	@Caching(evict = {
-			@CacheEvict(key = "'OwnCache-selectAll'", cacheNames = "5m"),
+			@CacheEvict(key = "'OwnCache-selectOne-'+#p0", cacheNames = "1m"),
+			@CacheEvict(key = "'OwnCache-selectAll'", cacheNames = "1m"),
 	})
 	public int insert(OwnPo ownPo) {
 		Date date = new Date();
@@ -44,7 +50,8 @@ public class OwnCache implements OwnDao {
 
 
 	@Caching(evict = {
-			@CacheEvict(key = "'OwnCache-selectAll'", cacheNames = "5m"),
+			@CacheEvict(key = "'OwnCache-selectOne-'+#p0", cacheNames = "1m"),
+			@CacheEvict(key = "'OwnCache-selectAll'", cacheNames = "1m"),
 	})
 	public int delete(OwnPo ownPo) {
 		return ownMapper.delete(ownPo);
@@ -52,7 +59,8 @@ public class OwnCache implements OwnDao {
 
 
 	@Caching(evict = {
-			@CacheEvict(key = "'OwnCache-selectAll'", cacheNames = "5m"),
+			@CacheEvict(key = "'OwnCache-selectOne-'+#p0", cacheNames = "1m"),
+			@CacheEvict(key = "'OwnCache-selectAll'", cacheNames = "1m"),
 	})
 	public int update(OwnPo ownPo) {
 		ownPo.setCreateTime(null);
@@ -62,27 +70,22 @@ public class OwnCache implements OwnDao {
 
 	//
 
-	@Cacheable(key = "'OwnCache-selectOne-'+#p0", cacheNames = "5m")
-	public OwnBo selectOne(OwnPo ownPo) {
-		return ownMapper.selectOne(ownPo);
-	}
-
-	@Cacheable(key = "'OwnCache-selectPageSome-'+#p0", cacheNames = "5m")
+	@Cacheable(key = "'OwnCache-selectPageSome-'+#p0", cacheNames = "1m")
 	public List<OwnBo> selectPageSome(OwnQuery ownQuery) {
 		return ownMapper.selectPageSome(ownQuery);
 	}
 
-	@Cacheable(key = "'OwnCache-selectAllSome-'+#p0", cacheNames = "5m")
+	@Cacheable(key = "'OwnCache-selectAllSome-'+#p0", cacheNames = "1m")
 	public List<OwnBo> selectAllSome(OwnQuery ownQuery) {
 		return ownMapper.selectAllSome(ownQuery);
 	}
 
-	@Cacheable(key = "'OwnCache-selectCount-'+#p0", cacheNames = "5m")
+	@Cacheable(key = "'OwnCache-selectCount-'+#p0", cacheNames = "1m")
 	public int selectCount(OwnQuery ownQuery) {
 		return ownMapper.selectCount(ownQuery);
 	}
 
-	@Cacheable(key = "'OwnCache-selectAllSort-'+#p0", cacheNames = "5m")
+	@Cacheable(key = "'OwnCache-selectAllSort-'+#p0", cacheNames = "1m")
 	public List<String> selectAllSort(OwnQuery ownQuery) {
 		return ownMapper.selectAllSort(ownQuery);
 	}

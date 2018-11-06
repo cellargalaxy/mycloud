@@ -25,12 +25,17 @@ public class FileInfoCache implements FileInfoDao {
 	@Autowired
 	private FileInfoMapper fileInfoMapper;
 
-	@Cacheable(key = "'FileInfoCache-selectAll'", cacheNames = "5m")
+	@Cacheable(key = "'FileInfoCache-selectOne-'+#p0", cacheNames = "1m")
+	public FileInfoBo selectOne(FileInfoPo fileInfoPo) {
+		return fileInfoMapper.selectOne(fileInfoPo);
+	}
+
+	@Cacheable(key = "'FileInfoCache-selectAll'", cacheNames = "1m")
 	public List<FileInfoBo> selectAll() {
 		return fileInfoMapper.selectAll();
 	}
 
-	@Cacheable(key = "'FileInfoCache-selectAllContentType'", cacheNames = "5m")
+	@Cacheable(key = "'FileInfoCache-selectAllContentType'", cacheNames = "1m")
 	public List<String> selectAllContentType() {
 		return fileInfoMapper.selectAllContentType();
 	}
@@ -38,8 +43,9 @@ public class FileInfoCache implements FileInfoDao {
 	//
 
 	@Caching(evict = {
-			@CacheEvict(key = "'FileInfoCache-selectAll'", cacheNames = "5m"),
-			@CacheEvict(key = "'FileInfoCache-selectAllContentType'", cacheNames = "5m"),
+			@CacheEvict(key = "'FileInfoCache-selectOne-'+#p0", cacheNames = "1m"),
+			@CacheEvict(key = "'FileInfoCache-selectAll'", cacheNames = "1m"),
+			@CacheEvict(key = "'FileInfoCache-selectAllContentType'", cacheNames = "1m"),
 	})
 	public int insert(FileInfoPo fileInfoPo) {
 		Date date = new Date();
@@ -49,8 +55,9 @@ public class FileInfoCache implements FileInfoDao {
 
 
 	@Caching(evict = {
-			@CacheEvict(key = "'FileInfoCache-selectAll'", cacheNames = "5m"),
-			@CacheEvict(key = "'FileInfoCache-selectAllContentType'", cacheNames = "5m"),
+			@CacheEvict(key = "'FileInfoCache-selectOne-'+#p0", cacheNames = "1m"),
+			@CacheEvict(key = "'FileInfoCache-selectAll'", cacheNames = "1m"),
+			@CacheEvict(key = "'FileInfoCache-selectAllContentType'", cacheNames = "1m"),
 	})
 	public int delete(FileInfoPo fileInfoPo) {
 		return fileInfoMapper.delete(fileInfoPo);
@@ -58,8 +65,9 @@ public class FileInfoCache implements FileInfoDao {
 
 
 	@Caching(evict = {
-			@CacheEvict(key = "'FileInfoCache-selectAll'", cacheNames = "5m"),
-			@CacheEvict(key = "'FileInfoCache-selectAllContentType'", cacheNames = "5m"),
+			@CacheEvict(key = "'FileInfoCache-selectOne-'+#p0", cacheNames = "1m"),
+			@CacheEvict(key = "'FileInfoCache-selectAll'", cacheNames = "1m"),
+			@CacheEvict(key = "'FileInfoCache-selectAllContentType'", cacheNames = "1m"),
 	})
 	public int update(FileInfoPo fileInfoPo) {
 		fileInfoPo.setCreateTime(null);
@@ -68,22 +76,17 @@ public class FileInfoCache implements FileInfoDao {
 
 	//
 
-	@Cacheable(key = "'FileInfoCache-selectOne-'+#p0", cacheNames = "5m")
-	public FileInfoBo selectOne(FileInfoPo fileInfoPo) {
-		return fileInfoMapper.selectOne(fileInfoPo);
-	}
-
-	@Cacheable(key = "'FileInfoCache-selectPageSome-'+#p0", cacheNames = "5m")
+	@Cacheable(key = "'FileInfoCache-selectPageSome-'+#p0", cacheNames = "1m")
 	public List<FileInfoBo> selectPageSome(FileInfoQuery fileInfoQuery) {
 		return fileInfoMapper.selectPageSome(fileInfoQuery);
 	}
 
-	@Cacheable(key = "'FileInfoCache-selectAllSome-'+#p0", cacheNames = "5m")
+	@Cacheable(key = "'FileInfoCache-selectAllSome-'+#p0", cacheNames = "1m")
 	public List<FileInfoBo> selectAllSome(FileInfoQuery fileInfoQuery) {
 		return fileInfoMapper.selectAllSome(fileInfoQuery);
 	}
 
-	@Cacheable(key = "'FileInfoCache-selectCount-'+#p0", cacheNames = "5m")
+	@Cacheable(key = "'FileInfoCache-selectCount-'+#p0", cacheNames = "1m")
 	public int selectCount(FileInfoQuery fileInfoQuery) {
 		return fileInfoMapper.selectCount(fileInfoQuery);
 	}
