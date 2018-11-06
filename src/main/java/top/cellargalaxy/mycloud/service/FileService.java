@@ -22,6 +22,8 @@ public interface FileService {
 
 	String removeFile(OwnPo ownPo) throws IOException;
 
+	String removeFile(OwnPo ownPo, UserPo userPo) throws IOException;
+
 	FileInfoPo getFileInfoPoByMd5OrUuid(String md5OrUuid);
 
 	String getFileByMd5OrUuid(String md5OrUuid, OutputStream outputStream) throws IOException;

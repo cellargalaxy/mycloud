@@ -28,7 +28,7 @@ public class FileAdminController {
 	private FileService fileService;
 
 	@PostMapping("/removeFile")
-	public Vo removeFileTask(FileInfoPo fileInfoPo) throws Exception {
+	public Vo removeFile(FileInfoPo fileInfoPo) throws Exception {
 		return new Vo(fileService.removeFile(fileInfoPo), null);
 	}
 

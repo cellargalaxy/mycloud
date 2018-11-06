@@ -88,6 +88,19 @@ public class FileServiceImpl implements FileService {
 	}
 
 	@Override
+	public String removeFile(OwnPo ownPo, UserPo userPo) throws IOException {
+		OwnBo ownBo = ownService.getOwn(ownPo);
+		if (ownBo == null) {
+			return null;
+		}
+		if (ownBo.getUserId() != userPo.getUserId()) {
+			return "不得删除他人文件";
+		}
+		ownService.removeOwn(ownBo);
+		return fileDeal.removeFile(ownBo);
+	}
+
+	@Override
 	public FileInfoPo getFileInfoPoByMd5OrUuid(String md5OrUuid) {
 		if (md5OrUuid.indexOf('-') > 0) {
 			OwnPo ownPo = new OwnPo();
