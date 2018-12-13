@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import top.cellargalaxy.mycloud.model.po.OwnPo;
 import top.cellargalaxy.mycloud.model.query.OwnQuery;
-import top.cellargalaxy.mycloud.model.vo.Vo;
+import top.cellargalaxy.mycloud.util.model.Vo;
 import top.cellargalaxy.mycloud.service.OwnService;
 
 /**
@@ -19,42 +19,42 @@ import top.cellargalaxy.mycloud.service.OwnService;
 @RestController
 @RequestMapping(OwnAdminController.URL)
 public class OwnAdminController {
-	public static final String URL = "/admin/own";
-	@Autowired
-	private OwnService ownService;
+    public static final String URL = "/admin/own";
+    @Autowired
+    private OwnService ownService;
 
-	@PostMapping("/addOwn")
-	public Vo addOwn(OwnPo ownPo) {
-		return new Vo(ownService.addOwn(ownPo), null);
-	}
+    @PostMapping("/addOwn")
+    public Vo addOwn(OwnPo ownPo) {
+        return new Vo(ownService.addOwn(ownPo), null);
+    }
 
-	@PostMapping("/removeOwn")
-	public Vo removeOwn(OwnPo ownPo) {
-		return new Vo(ownService.removeOwn(ownPo), null);
-	}
+    @PostMapping("/removeOwn")
+    public Vo removeOwn(OwnPo ownPo) {
+        return new Vo(ownService.removeOwn(ownPo), null);
+    }
 
-	@PostMapping("/changeOwn")
-	public Vo changeOwn(OwnPo ownPo) {
-		return new Vo(ownService.changeOwn(ownPo), null);
-	}
+    @PostMapping("/changeOwn")
+    public Vo changeOwn(OwnPo ownPo) {
+        return new Vo(ownService.changeOwn(ownPo), null);
+    }
 
-	@GetMapping("/getOwn")
-	public Vo getOwn(OwnPo ownPo) {
-		return new Vo(null, ownService.getOwn(ownPo));
-	}
+    @GetMapping("/getOwn")
+    public Vo getOwn(OwnPo ownPo) {
+        return new Vo(null, ownService.getOwn(ownPo));
+    }
 
-	@GetMapping("/listOwn")
-	public Vo listOwn(OwnQuery ownQuery) {
-		return new Vo(null, ownService.listOwn(ownQuery));
-	}
+    @GetMapping("/listOwn")
+    public Vo listOwn(OwnQuery ownQuery) {
+        return new Vo(null, ownService.listOwn(ownQuery));
+    }
 
-	@GetMapping("/getOwnCount")
-	public Vo getOwnCount(OwnQuery ownQuery) {
-		return new Vo(null, ownService.getOwnCount(ownQuery));
-	}
+    @GetMapping("/getOwnCount")
+    public Vo getOwnCount(OwnQuery ownQuery) {
+        return new Vo(null, ownService.getOwnCount(ownQuery));
+    }
 
-	@GetMapping("/listSort")
-	public Vo listSort() {
-		return new Vo(null, ownService.listSort());
-	}
+    @GetMapping("/listSort")
+    public Vo listSort() {
+        return new Vo(null, ownService.listSort());
+    }
 }

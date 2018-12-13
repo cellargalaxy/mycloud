@@ -22,64 +22,63 @@ import java.util.List;
 @Repository
 @CacheConfig
 public class AuthorizationCache implements AuthorizationDao {
-	@Autowired
-	private AuthorizationMapper authorizationMapper;
+    @Autowired
+    private AuthorizationMapper authorizationMapper;
 
-	@Cacheable(key = "'AuthorizationCache-selectOne-'+#p0", cacheNames = "1m")
-	public AuthorizationBo selectOne(AuthorizationPo authorizationPo) {
-		return authorizationMapper.selectOne(authorizationPo);
-	}
+    @Cacheable(key = "'AuthorizationCache-selectOne-'+#p0", cacheNames = "1m")
+    public AuthorizationBo selectOne(AuthorizationPo authorizationPo) {
+        return authorizationMapper.selectOne(authorizationPo);
+    }
 
-	@Cacheable(key = "'AuthorizationCache-selectAll'", cacheNames = "1m")
-	public List<AuthorizationBo> selectAll() {
-		return authorizationMapper.selectAll();
-	}
+    @Cacheable(key = "'AuthorizationCache-selectAll'", cacheNames = "1m")
+    public List<AuthorizationBo> selectAll() {
+        return authorizationMapper.selectAll();
+    }
 
-	//
+    //
 
-	@Caching(evict = {
-			@CacheEvict(key = "'AuthorizationCache-selectOne-'+#p0", cacheNames = "1m"),
-			@CacheEvict(key = "'AuthorizationCache-selectAll'", cacheNames = "1m"),
-	})
-	public int insert(AuthorizationPo authorizationPo) {
-		Date date = new Date();
-		authorizationPo.setCreateTime(date);
-		authorizationPo.setUpdateTime(date);
-		return authorizationMapper.insert(authorizationPo);
-	}
+    @Caching(evict = {
+            @CacheEvict(key = "'AuthorizationCache-selectOne-'+#p0", cacheNames = "1m"),
+            @CacheEvict(key = "'AuthorizationCache-selectAll'", cacheNames = "1m"),
+    })
+    public int insert(AuthorizationPo authorizationPo) {
+        Date date = new Date();
+        authorizationPo.setCreateTime(date);
+        authorizationPo.setUpdateTime(date);
+        return authorizationMapper.insert(authorizationPo);
+    }
 
-	@Caching(evict = {
-			@CacheEvict(key = "'AuthorizationCache-selectOne-'+#p0", cacheNames = "1m"),
-			@CacheEvict(key = "'AuthorizationCache-selectAll'", cacheNames = "1m"),
-	})
-	public int delete(AuthorizationPo authorizationPo) {
-		return authorizationMapper.delete(authorizationPo);
-	}
+    @Caching(evict = {
+            @CacheEvict(key = "'AuthorizationCache-selectOne-'+#p0", cacheNames = "1m"),
+            @CacheEvict(key = "'AuthorizationCache-selectAll'", cacheNames = "1m"),
+    })
+    public int delete(AuthorizationPo authorizationPo) {
+        return authorizationMapper.delete(authorizationPo);
+    }
 
-	@Caching(evict = {
-			@CacheEvict(key = "'AuthorizationCache-selectOne-'+#p0", cacheNames = "1m"),
-			@CacheEvict(key = "'AuthorizationCache-selectAll'", cacheNames = "1m"),
-	})
-	public int update(AuthorizationPo authorizationPo) {
-		authorizationPo.setCreateTime(null);
-		authorizationPo.setUpdateTime(new Date());
-		return authorizationMapper.update(authorizationPo);
-	}
+    @Caching(evict = {
+            @CacheEvict(key = "'AuthorizationCache-selectOne-'+#p0", cacheNames = "1m"),
+            @CacheEvict(key = "'AuthorizationCache-selectAll'", cacheNames = "1m"),
+    })
+    public int update(AuthorizationPo authorizationPo) {
+        authorizationPo.setUpdateTime(new Date());
+        return authorizationMapper.update(authorizationPo);
+    }
 
-	//
+    //
 
-	@Cacheable(key = "'AuthorizationCache-selectPageSome-'+#p0", cacheNames = "1m")
-	public List<AuthorizationBo> selectPageSome(AuthorizationQuery authorizationQuery) {
-		return authorizationMapper.selectPageSome(authorizationQuery);
-	}
+    @Cacheable(key = "'AuthorizationCache-selectPageSome-'+#p0", cacheNames = "1m")
+    public List<AuthorizationBo> selectPageSome(AuthorizationQuery authorizationQuery) {
+        return authorizationMapper.selectPageSome(authorizationQuery);
+    }
 
-	@Cacheable(key = "'AuthorizationCache-selectAllSome-'+#p0", cacheNames = "1m")
-	public List<AuthorizationBo> selectAllSome(AuthorizationQuery authorizationQuery) {
-		return authorizationMapper.selectAllSome(authorizationQuery);
-	}
+    @Cacheable(key = "'AuthorizationCache-selectAllSome-'+#p0", cacheNames = "1m")
+    public List<AuthorizationBo> selectAllSome(AuthorizationQuery authorizationQuery) {
+        return authorizationMapper.selectAllSome(authorizationQuery);
+    }
 
-	@Cacheable(key = "'AuthorizationCache-selectCount-'+#p0", cacheNames = "1m")
-	public int selectCount(AuthorizationQuery authorizationQuery) {
-		return authorizationMapper.selectCount(authorizationQuery);
-	}
+    @Cacheable(key = "'AuthorizationCache-selectCount-'+#p0", cacheNames = "1m")
+    public int selectCount(AuthorizationQuery authorizationQuery) {
+        return authorizationMapper.selectCount(authorizationQuery);
+    }
 }

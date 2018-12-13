@@ -19,25 +19,25 @@ import java.util.Date;
 @RestController
 @RequestMapping(RootController.URL)
 public class RootController {
-	public static final String URL = "";
-	private static final long expires = 1000 * 60 * 60 * 24 * 30 * 12 * 10;
-	@Autowired
-	private FileService fileService;
+    public static final String URL = "";
+    private static final long expires = 1000 * 60 * 60 * 24 * 30 * 12 * 10;
+    @Autowired
+    private FileService fileService;
 
-	@GetMapping("/{md5OrUuid}")
-	public void download(HttpServletResponse response, @PathVariable("md5OrUuid") String md5OrUuid) throws IOException {
-		response.reset();
-		FileInfoPo fileInfoPo = fileService.getFileInfoPoByMd5OrUuid(md5OrUuid);
-		if (fileInfoPo == null) {
-			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-			return;
-		}
-		response.setHeader("cache-control", "max-age=" + expires);
-		response.setHeader("expires", new Date(System.currentTimeMillis() + expires * 100).toString());
-		response.setContentLength((int) fileInfoPo.getFileLength());
-		response.setContentType(fileInfoPo.getContentType());
-		try (OutputStream outputStream = response.getOutputStream()) {
-			fileService.getFileByMd5OrUuid(md5OrUuid, outputStream);
-		}
-	}
+    @GetMapping("/{md5OrUuid}")
+    public void download(HttpServletResponse response, @PathVariable("md5OrUuid") String md5OrUuid) throws IOException {
+        response.reset();
+        FileInfoPo fileInfoPo = fileService.getFileInfoPoByMd5OrUuid(md5OrUuid);
+        if (fileInfoPo == null) {
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            return;
+        }
+        response.setHeader("cache-control", "max-age=" + expires);
+        response.setHeader("expires", new Date(System.currentTimeMillis() + expires * 100).toString());
+        response.setContentLength((int) fileInfoPo.getFileLength());
+        response.setContentType(fileInfoPo.getContentType());
+        try (OutputStream outputStream = response.getOutputStream()) {
+            fileService.getFileByMd5OrUuid(md5OrUuid, outputStream);
+        }
+    }
 }

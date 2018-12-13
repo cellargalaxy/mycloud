@@ -12,29 +12,25 @@ import java.util.List;
  * @time 2018/7/17
  */
 public interface UserService {
-	String addUser(UserPo userPo);
+    String addUser(UserPo userPo);
 
-	String removeUser(UserPo userPo);
+    String removeUser(UserPo userPo);
 
-	String changeUser(UserPo userPo);
+    String changeUser(UserPo userPo);
 
-	String changeUser(UserPo userPo, UserPo newUserPo);
+    String changeUser(UserPo userPo, UserPo newUserPo);
 
-	String checkAddUser(UserPo userPo);
+    UserBo getUser(UserPo userPo);
 
-	String checkChangeUser(UserPo userPo);
+    UserVo getUserVo(UserPo userPo);
 
-	UserBo getUser(UserPo userPo);
+    UserBo getUserByUsername(UserPo userPo);
 
-	UserVo getUserVo(UserPo userPo);
+    UserVo getUserVoByUsername(UserPo userPo);
 
-	UserBo getUserByUsername(UserPo userPo);
+    List<UserBo> listAllUser();
 
-	UserVo getUserVoByUsername(UserPo userPo);
+    List<UserVo> listAllUserVo();
 
-	List<UserBo> listAllUser();
-
-	List<UserVo> listAllUserVo();
-
-	Permission[] listAllPermission();
+    Permission[] listAllPermission();
 }

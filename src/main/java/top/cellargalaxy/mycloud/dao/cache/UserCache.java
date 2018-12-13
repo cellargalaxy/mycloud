@@ -22,64 +22,63 @@ import java.util.List;
 @Repository
 @CacheConfig
 public class UserCache implements UserDao {
-	@Autowired
-	private UserMapper userMapper;
+    @Autowired
+    private UserMapper userMapper;
 
-	@Cacheable(key = "'UserCache-selectOne-'+#p0", cacheNames = "1m")
-	public UserBo selectOne(UserPo userPo) {
-		return userMapper.selectOne(userPo);
-	}
+    @Cacheable(key = "'UserCache-selectOne-'+#p0", cacheNames = "1m")
+    public UserBo selectOne(UserPo userPo) {
+        return userMapper.selectOne(userPo);
+    }
 
-	@Cacheable(key = "'UserCache-selectAll'", cacheNames = "1m")
-	public List<UserBo> selectAll() {
-		return userMapper.selectAll();
-	}
+    @Cacheable(key = "'UserCache-selectAll'", cacheNames = "1m")
+    public List<UserBo> selectAll() {
+        return userMapper.selectAll();
+    }
 
-	//
+    //
 
-	@Caching(evict = {
-			@CacheEvict(key = "'UserCache-selectOne-'+#p0", cacheNames = "1m"),
-			@CacheEvict(key = "'UserCache-selectAll'", cacheNames = "1m"),
-	})
-	public int insert(UserPo userPo) {
-		Date date = new Date();
-		userPo.setCreateTime(date);
-		userPo.setUpdateTime(date);
-		return userMapper.insert(userPo);
-	}
+    @Caching(evict = {
+            @CacheEvict(key = "'UserCache-selectOne-'+#p0", cacheNames = "1m"),
+            @CacheEvict(key = "'UserCache-selectAll'", cacheNames = "1m"),
+    })
+    public int insert(UserPo userPo) {
+        Date date = new Date();
+        userPo.setCreateTime(date);
+        userPo.setUpdateTime(date);
+        return userMapper.insert(userPo);
+    }
 
-	@Caching(evict = {
-			@CacheEvict(key = "'UserCache-selectOne-'+#p0", cacheNames = "1m"),
-			@CacheEvict(key = "'UserCache-selectAll'", cacheNames = "1m"),
-	})
-	public int delete(UserPo userPo) {
-		return userMapper.delete(userPo);
-	}
+    @Caching(evict = {
+            @CacheEvict(key = "'UserCache-selectOne-'+#p0", cacheNames = "1m"),
+            @CacheEvict(key = "'UserCache-selectAll'", cacheNames = "1m"),
+    })
+    public int delete(UserPo userPo) {
+        return userMapper.delete(userPo);
+    }
 
-	@Caching(evict = {
-			@CacheEvict(key = "'UserCache-selectOne-'+#p0", cacheNames = "1m"),
-			@CacheEvict(key = "'UserCache-selectAll'", cacheNames = "1m"),
-	})
-	public int update(UserPo userPo) {
-		userPo.setCreateTime(null);
-		userPo.setUpdateTime(new Date());
-		return userMapper.update(userPo);
-	}
+    @Caching(evict = {
+            @CacheEvict(key = "'UserCache-selectOne-'+#p0", cacheNames = "1m"),
+            @CacheEvict(key = "'UserCache-selectAll'", cacheNames = "1m"),
+    })
+    public int update(UserPo userPo) {
+        userPo.setUpdateTime(new Date());
+        return userMapper.update(userPo);
+    }
 
-	//
+    //
 
-	@Cacheable(key = "'UserCache-selectPageSome-'+#p0", cacheNames = "1m")
-	public List<UserBo> selectPageSome(UserQuery userQuery) {
-		return userMapper.selectPageSome(userQuery);
-	}
+    @Cacheable(key = "'UserCache-selectPageSome-'+#p0", cacheNames = "1m")
+    public List<UserBo> selectPageSome(UserQuery userQuery) {
+        return userMapper.selectPageSome(userQuery);
+    }
 
-	@Cacheable(key = "'UserCache-selectAllSome-'+#p0", cacheNames = "1m")
-	public List<UserBo> selectAllSome(UserQuery userQuery) {
-		return userMapper.selectAllSome(userQuery);
-	}
+    @Cacheable(key = "'UserCache-selectAllSome-'+#p0", cacheNames = "1m")
+    public List<UserBo> selectAllSome(UserQuery userQuery) {
+        return userMapper.selectAllSome(userQuery);
+    }
 
-	@Cacheable(key = "'UserCache-selectCount-'+#p0", cacheNames = "1m")
-	public int selectCount(UserQuery userQuery) {
-		return userMapper.selectCount(userQuery);
-	}
+    @Cacheable(key = "'UserCache-selectCount-'+#p0", cacheNames = "1m")
+    public int selectCount(UserQuery userQuery) {
+        return userMapper.selectCount(userQuery);
+    }
 }

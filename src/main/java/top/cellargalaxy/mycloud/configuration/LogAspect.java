@@ -16,94 +16,94 @@ import java.util.Arrays;
 @Aspect
 @Component
 public class LogAspect {
-	private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-	//
+    //
 
-	@Before("execution(public * top.cellargalaxy.mycloud.dao.mapper.*.*(..))")
-	public void mapperBefore(JoinPoint joinPoint) {
-		beforeDebug(joinPoint);
-	}
+    @Before("execution(public * top.cellargalaxy.mycloud.dao.mapper.*.*(..))")
+    public void mapperBefore(JoinPoint joinPoint) {
+        beforeDebug(joinPoint);
+    }
 
-	@AfterReturning(pointcut = "execution(public * top.cellargalaxy.mycloud.dao.mapper.*.*(..))", returning = "object")
-	public void mapperAfterReturning(JoinPoint joinPoint, Object object) {
-		afterReturningDebug(joinPoint, object);
-	}
+    @AfterReturning(pointcut = "execution(public * top.cellargalaxy.mycloud.dao.mapper.*.*(..))", returning = "object")
+    public void mapperAfterReturning(JoinPoint joinPoint, Object object) {
+        afterReturningDebug(joinPoint, object);
+    }
 
-	//
-	@Before("execution(public * top.cellargalaxy.mycloud.dao.cache.*.*(..))")
-	public void cacheBefore(JoinPoint joinPoint) {
-		beforeDebug(joinPoint);
-	}
+    //
+    @Before("execution(public * top.cellargalaxy.mycloud.dao.cache.*.*(..))")
+    public void cacheBefore(JoinPoint joinPoint) {
+        beforeDebug(joinPoint);
+    }
 
-	@AfterReturning(pointcut = "execution(public * top.cellargalaxy.mycloud.dao.cache.*.*(..))", returning = "object")
-	public void cacheAfterReturning(JoinPoint joinPoint, Object object) {
-		afterReturningDebug(joinPoint, object);
-	}
+    @AfterReturning(pointcut = "execution(public * top.cellargalaxy.mycloud.dao.cache.*.*(..))", returning = "object")
+    public void cacheAfterReturning(JoinPoint joinPoint, Object object) {
+        afterReturningDebug(joinPoint, object);
+    }
 
-	//
+    //
 
-	@Before("execution(public * top.cellargalaxy.mycloud.service.impl.*.*(..))")
-	public void implBefore(JoinPoint joinPoint) {
-		beforeDebug(joinPoint);
-	}
+    @Before("execution(public * top.cellargalaxy.mycloud.service.impl.*.*(..))")
+    public void implBefore(JoinPoint joinPoint) {
+        beforeDebug(joinPoint);
+    }
 
-	@AfterReturning(pointcut = "execution(public * top.cellargalaxy.mycloud.service.impl.*.*(..))", returning = "object")
-	public void implAfterReturning(JoinPoint joinPoint, Object object) {
-		afterReturningDebug(joinPoint, object);
-	}
+    @AfterReturning(pointcut = "execution(public * top.cellargalaxy.mycloud.service.impl.*.*(..))", returning = "object")
+    public void implAfterReturning(JoinPoint joinPoint, Object object) {
+        afterReturningDebug(joinPoint, object);
+    }
 
-	//
+    //
 
-	@Before("execution(public * top.cellargalaxy.mycloud.controller.*.*(..))")
-	public void controllerBefore(JoinPoint joinPoint) {
-		beforeInfo(joinPoint);
-	}
+    @Before("execution(public * top.cellargalaxy.mycloud.controller.*.*(..))")
+    public void controllerBefore(JoinPoint joinPoint) {
+        beforeInfo(joinPoint);
+    }
 
-	@AfterReturning(pointcut = "execution(public * top.cellargalaxy.mycloud.controller.*.*(..))", returning = "object")
-	public void controllerAfterReturning(JoinPoint joinPoint, Object object) {
-		afterReturningInfo(joinPoint, object);
-	}
+    @AfterReturning(pointcut = "execution(public * top.cellargalaxy.mycloud.controller.*.*(..))", returning = "object")
+    public void controllerAfterReturning(JoinPoint joinPoint, Object object) {
+        afterReturningInfo(joinPoint, object);
+    }
 
-	//
+    //
 
-	@Before("execution(public * top.cellargalaxy.mycloud.controller.admin.*.*(..))")
-	public void adminBefore(JoinPoint joinPoint) {
-		beforeInfo(joinPoint);
-	}
+    @Before("execution(public * top.cellargalaxy.mycloud.controller.admin.*.*(..))")
+    public void adminBefore(JoinPoint joinPoint) {
+        beforeInfo(joinPoint);
+    }
 
-	@AfterReturning(pointcut = "execution(public * top.cellargalaxy.mycloud.controller.admin.*.*(..))", returning = "object")
-	public void adminAfterReturning(JoinPoint joinPoint, Object object) {
-		afterReturningInfo(joinPoint, object);
-	}
+    @AfterReturning(pointcut = "execution(public * top.cellargalaxy.mycloud.controller.admin.*.*(..))", returning = "object")
+    public void adminAfterReturning(JoinPoint joinPoint, Object object) {
+        afterReturningInfo(joinPoint, object);
+    }
 
-	//
+    //
 
-	@Before("execution(public * top.cellargalaxy.mycloud.controller.user.*.*(..))")
-	public void guestBefore(JoinPoint joinPoint) {
-		beforeInfo(joinPoint);
-	}
+    @Before("execution(public * top.cellargalaxy.mycloud.controller.user.*.*(..))")
+    public void guestBefore(JoinPoint joinPoint) {
+        beforeInfo(joinPoint);
+    }
 
-	@AfterReturning(pointcut = "execution(public * top.cellargalaxy.mycloud.controller.user.*.*(..))", returning = "object")
-	public void guestAfterReturning(JoinPoint joinPoint, Object object) {
-		afterReturningInfo(joinPoint, object);
-	}
+    @AfterReturning(pointcut = "execution(public * top.cellargalaxy.mycloud.controller.user.*.*(..))", returning = "object")
+    public void guestAfterReturning(JoinPoint joinPoint, Object object) {
+        afterReturningInfo(joinPoint, object);
+    }
 
-	//
+    //
 
-	private final void beforeInfo(JoinPoint joinPoint) {
-		logger.info("before {}: {}; {}", joinPoint.getSignature().getDeclaringTypeName(), joinPoint.getSignature().getName(), Arrays.toString(joinPoint.getArgs()));
-	}
+    private final void beforeInfo(JoinPoint joinPoint) {
+        logger.info("before {}: {}; {}", joinPoint.getSignature().getDeclaringTypeName(), joinPoint.getSignature().getName(), Arrays.toString(joinPoint.getArgs()));
+    }
 
-	private final void afterReturningInfo(JoinPoint joinPoint, Object object) {
-		logger.info("after  {}: {}; {}", joinPoint.getSignature().getDeclaringTypeName(), joinPoint.getSignature().getName(), object);
-	}
+    private final void afterReturningInfo(JoinPoint joinPoint, Object object) {
+        logger.info("after  {}: {}; {}", joinPoint.getSignature().getDeclaringTypeName(), joinPoint.getSignature().getName(), object);
+    }
 
-	private final void beforeDebug(JoinPoint joinPoint) {
-		logger.debug("before {}: {}; {}", joinPoint.getSignature().getDeclaringTypeName(), joinPoint.getSignature().getName(), Arrays.toString(joinPoint.getArgs()));
-	}
+    private final void beforeDebug(JoinPoint joinPoint) {
+        logger.debug("before {}: {}; {}", joinPoint.getSignature().getDeclaringTypeName(), joinPoint.getSignature().getName(), Arrays.toString(joinPoint.getArgs()));
+    }
 
-	private final void afterReturningDebug(JoinPoint joinPoint, Object object) {
-		logger.debug("after  {}: {}; {}", joinPoint.getSignature().getDeclaringTypeName(), joinPoint.getSignature().getName(), object);
-	}
+    private final void afterReturningDebug(JoinPoint joinPoint, Object object) {
+        logger.debug("after  {}: {}; {}", joinPoint.getSignature().getDeclaringTypeName(), joinPoint.getSignature().getName(), object);
+    }
 }

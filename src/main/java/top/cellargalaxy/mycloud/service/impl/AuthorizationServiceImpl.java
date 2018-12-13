@@ -8,7 +8,7 @@ import top.cellargalaxy.mycloud.model.bo.AuthorizationBo;
 import top.cellargalaxy.mycloud.model.po.AuthorizationPo;
 import top.cellargalaxy.mycloud.model.query.AuthorizationQuery;
 import top.cellargalaxy.mycloud.service.AuthorizationService;
-import top.cellargalaxy.mycloud.util.ServiceUtil;
+import top.cellargalaxy.mycloud.util.serivce.ServiceUtils;
 
 import java.util.List;
 
@@ -19,36 +19,36 @@ import java.util.List;
 @Transactional
 @Service
 public class AuthorizationServiceImpl implements AuthorizationService {
-	private static final String NAME = "授权";
-	@Autowired
-	private AuthorizationDao authorizationDao;
+    private static final String NAME = "授权";
+    @Autowired
+    private AuthorizationDao authorizationDao;
 
-	@Override
-	public String addAuthorization(AuthorizationPo authorizationPo) {
-		return ServiceUtil.add(authorizationPo, NAME, this::checkAddAuthorization, authorizationDao);
-	}
+    @Override
+    public String addAuthorization(AuthorizationPo authorizationPo) {
+        return ServiceUtils.add(authorizationPo, NAME, this::checkAddAuthorization, authorizationDao);
+    }
 
-	@Override
-	public String removeAuthorization(AuthorizationPo authorizationPo) {
-		return ServiceUtil.remove(authorizationPo, NAME, authorizationDao);
-	}
+    private String checkAddAuthorization(AuthorizationPo authorizationPo) {
+        return AuthorizationDao.checkInsert(authorizationPo);
+//        return ServiceUtils.checkAdd(authorizationPo, NAME, AuthorizationDao::checkInsert, authorizationDao);
+    }
 
-	@Override
-	public String checkAddAuthorization(AuthorizationPo authorizationPo) {
-		return ServiceUtil.checkAdd(authorizationPo, NAME, AuthorizationDao::checkInsert, authorizationDao);
-	}
+    @Override
+    public String removeAuthorization(AuthorizationPo authorizationPo) {
+        return ServiceUtils.remove(authorizationPo, NAME, authorizationDao);
+    }
 
-	@Override
-	public List<AuthorizationBo> listAuthorizationByUserId(AuthorizationQuery authorizationQuery) {
-		int page = authorizationQuery.getPage();
-		int pageSize = authorizationQuery.getPageSize();
-		int userId = authorizationQuery.getUserId();
+    @Override
+    public List<AuthorizationBo> listAuthorizationByUserId(AuthorizationQuery authorizationQuery) {
+        int page = authorizationQuery.getPage();
+        int pageSize = authorizationQuery.getPageSize();
+        int userId = authorizationQuery.getUserId();
 
-		authorizationQuery = new AuthorizationQuery();
-		authorizationQuery.setPage(page);
-		authorizationQuery.setPageSize(pageSize);
-		authorizationQuery.setUserId(userId);
+        authorizationQuery = new AuthorizationQuery();
+        authorizationQuery.setPage(page);
+        authorizationQuery.setPageSize(pageSize);
+        authorizationQuery.setUserId(userId);
 
-		return authorizationDao.selectAllSome(authorizationQuery);
-	}
+        return authorizationDao.selectAllSome(authorizationQuery);
+    }
 }

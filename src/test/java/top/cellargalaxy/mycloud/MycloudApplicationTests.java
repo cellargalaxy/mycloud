@@ -1,12 +1,17 @@
 package top.cellargalaxy.mycloud;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import top.cellargalaxy.mycloud.dao.mapper.AuthorizationMapper;
+import top.cellargalaxy.mycloud.dao.mapper.UserMapper;
 import top.cellargalaxy.mycloud.model.bo.OwnBo;
+import top.cellargalaxy.mycloud.model.po.AuthorizationPo;
+import top.cellargalaxy.mycloud.model.po.UserPo;
 import top.cellargalaxy.mycloud.service.OwnService;
 import top.cellargalaxy.mycloud.util.IOUtil;
 
@@ -23,10 +28,18 @@ import java.util.List;
 @SpringBootTest
 public class MycloudApplicationTests {
 	@Autowired
-	private OwnService ownService;
+	private UserMapper userMapper;
 
 	@Test
 	public void test() throws Exception {
+		db();
+	}
+
+	private void db(){
+		UserPo userPo=new UserPo();
+		userPo.setUserId(1);
+		userPo=userMapper.selectOne(userPo);
+		System.out.println(userPo);
 	}
 
 	private static void read() throws IOException {
