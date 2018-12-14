@@ -124,7 +124,7 @@ public interface AuthorizationMapper extends IDao<AuthorizationPo, Authorization
                     .WHERE(tableName + ".user_id=" + UserDao.TABLE_NAME + ".user_id");
             Set<String> wheres = new HashSet<>();
             wheresKey(authorizationPo, wheres);
-            ProviderUtils.where( wheres, sql);
+            ProviderUtils.where(wheres, sql);
             String string = ProviderUtils.limitOne(sql).toString();
             return string;
         }
@@ -143,7 +143,7 @@ public interface AuthorizationMapper extends IDao<AuthorizationPo, Authorization
                     .WHERE(tableName + ".user_id=" + UserDao.TABLE_NAME + ".user_id");
             Set<String> wheres = new HashSet<>();
             wheresAll(authorizationQuery, wheres);
-            ProviderUtils.where( wheres, sql);
+            ProviderUtils.where(wheres, sql);
             String string = ProviderUtils.limitSome(sql).toString();
             return string;
         }
@@ -161,7 +161,7 @@ public interface AuthorizationMapper extends IDao<AuthorizationPo, Authorization
                     .WHERE(tableName + ".user_id=" + UserDao.TABLE_NAME + ".user_id");
             Set<String> wheres = new HashSet<>();
             wheresAll(authorizationQuery, wheres);
-            ProviderUtils.where( wheres, sql);
+            ProviderUtils.where(wheres, sql);
             String string = sql.toString();
             return string;
         }

@@ -61,7 +61,7 @@ public class UserProviderTest /*implements UserDao*/ {
 
     @Test
     public void selectPageSome() {
-        UserQuery userQuery=new UserQuery();
+        UserQuery userQuery = new UserQuery();
         userQuery.setUsername("aaa");
 //        System.out.println("selectPageSome");
 //        System.out.println(userProvider.selectPageSome(userQuery));
@@ -73,7 +73,7 @@ public class UserProviderTest /*implements UserDao*/ {
 
     @Test
     public void selectAllSome() {
-        UserQuery userQuery=new UserQuery();
+        UserQuery userQuery = new UserQuery();
         userQuery.setUsername("aaa");
 //        System.out.println("selectAllSome");
 //        System.out.println(userProvider.selectAllSome(userQuery));
@@ -85,7 +85,7 @@ public class UserProviderTest /*implements UserDao*/ {
 
     @Test
     public void selectCount() {
-        UserQuery userQuery=new UserQuery();
+        UserQuery userQuery = new UserQuery();
         userQuery.setUsername("aaa");
 //        System.out.println("selectCount");
 //        System.out.println(userProvider.selectCount(userQuery));

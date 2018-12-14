@@ -37,19 +37,21 @@ public class StringUtils {
 
     /**
      * test_data -> testData
+     *
      * @param string
      * @return
      */
-    public static final String lowerUnderscore2LowerCamel(String string){
+    public static final String lowerUnderscore2LowerCamel(String string) {
         return CaseFormat.LOWER_UNDERSCORE.to(CaseFormat.LOWER_CAMEL, string);
     }
 
     /**
      * testData -> test_data
+     *
      * @param string
      * @return
      */
-    public static final String lowerCamel2LowerHyphen(String string){
+    public static final String lowerCamel2LowerHyphen(String string) {
         return CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, string);
     }
 }
