@@ -7,10 +7,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import top.cellargalaxy.mycloud.model.po.FileInfoPo;
 import top.cellargalaxy.mycloud.service.FileService;
+import top.cellargalaxy.mycloud.util.MimeSuffixNameUtils;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.net.URLEncoder;
 import java.util.Date;
 
 /**
@@ -34,6 +36,7 @@ public class RootController {
         }
         response.setHeader("cache-control", "max-age=" + expires);
         response.setHeader("expires", new Date(System.currentTimeMillis() + expires * 100).toString());
+        response.setHeader("Content-Disposition", "attachment; filename=" + URLEncoder.encode(fileInfoPo.getMd5() + "." + MimeSuffixNameUtils.mime2SuffixName(fileInfoPo.getContentType()), "UTF-8"));
         response.setContentLength((int) fileInfoPo.getFileLength());
         response.setContentType(fileInfoPo.getContentType());
         try (OutputStream outputStream = response.getOutputStream()) {

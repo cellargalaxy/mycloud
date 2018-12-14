@@ -5,10 +5,11 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import top.cellargalaxy.mycloud.model.bo.OwnBo;
+import top.cellargalaxy.mycloud.model.po.OwnPo;
 import top.cellargalaxy.mycloud.model.po.UserPo;
-import top.cellargalaxy.mycloud.util.model.Vo;
 import top.cellargalaxy.mycloud.service.FileService;
 import top.cellargalaxy.mycloud.service.security.SecurityServiceImpl;
+import top.cellargalaxy.mycloud.util.model.Vo;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -45,6 +46,12 @@ public class FileUserController {
         UserPo userPo = SecurityServiceImpl.getSecurityUser(request);
         String string = fileService.addFile(url, ownBo, userPo);
         return new Vo(string, string == null ? ownBo : null);
+    }
+
+    @PostMapping("/removeFile")
+    public Vo removeFile(HttpServletRequest request, OwnPo ownPo) throws Exception {
+        UserPo userPo = SecurityServiceImpl.getSecurityUser(request);
+        return new Vo(fileService.removeFile(ownPo, userPo), null);
     }
 
     @GetMapping("/downloadTar")

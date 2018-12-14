@@ -18,7 +18,7 @@ public class FileBlocks implements Closeable {
     public FileBlocks(File file, int blockLength) throws FileNotFoundException {
         this.file = file;
         this.blockLength = blockLength;
-        inputStream = IOUtil.getInputStream(file);
+        inputStream = IOUtils.getInputStream(file);
         blockIndex = 0;
         int remainder = (int) (file.length() % blockLength);
         blockCount = (int) (file.length() / blockLength);

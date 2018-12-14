@@ -2,18 +2,15 @@ package top.cellargalaxy.mycloud.dao.file;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.stereotype.Repository;
 import top.cellargalaxy.mycloud.configuration.MycloudConfiguration;
 import top.cellargalaxy.mycloud.dao.mapper.OwnMapper;
 import top.cellargalaxy.mycloud.model.bo.OwnBo;
 import top.cellargalaxy.mycloud.model.po.OwnPo;
 import top.cellargalaxy.mycloud.model.query.OwnQuery;
-import top.cellargalaxy.mycloud.util.IOUtil;
+import top.cellargalaxy.mycloud.util.IOUtils;
 import top.cellargalaxy.mycloud.util.dao.SqlUtils;
 import top.cellargalaxy.mycloud.util.StringUtils;
 
-import javax.sql.DataSource;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -125,7 +122,7 @@ public class OwnFileDao implements OwnMapper {
         if (!file.exists()) {
             return new LinkedList<>();
         }
-        try (BufferedReader reader = IOUtil.getReader(file)) {
+        try (BufferedReader reader = IOUtils.getReader(file)) {
             StringBuilder stringBuilder = new StringBuilder();
             String string;
             if ((string = reader.readLine()) != null) {
@@ -136,7 +133,7 @@ public class OwnFileDao implements OwnMapper {
     }
 
     private void write() throws IOException {
-        try (Writer writer = IOUtil.getWriter(file)) {
+        try (Writer writer = IOUtils.getWriter(file)) {
             writer.write(objectMapper.writeValueAsString(ownBos));
         }
     }

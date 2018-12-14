@@ -194,7 +194,7 @@ public interface OwnMapper extends IDao<OwnPo, OwnBo, OwnQuery> {
             Set<String> wheres = new HashSet<>();
             wheresAll(ownQuery, wheres);
             ProviderUtils.where(ownQuery, wheres, sql);
-            String string = ProviderUtils.limitOne(sql).toString();
+            String string = ProviderUtils.limitSome(sql).toString();
             return string;
         }
 

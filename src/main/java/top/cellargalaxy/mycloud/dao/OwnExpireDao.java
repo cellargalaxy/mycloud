@@ -2,6 +2,7 @@ package top.cellargalaxy.mycloud.dao;
 
 import top.cellargalaxy.mycloud.model.bo.OwnExpireBo;
 import top.cellargalaxy.mycloud.model.po.OwnExpirePo;
+import top.cellargalaxy.mycloud.model.po.OwnPo;
 import top.cellargalaxy.mycloud.model.query.OwnExpireQuery;
 import top.cellargalaxy.mycloud.util.dao.IDao;
 
@@ -15,6 +16,8 @@ public interface OwnExpireDao extends IDao<OwnExpirePo, OwnExpireBo, OwnExpireQu
     String TABLE_NAME = "own_expire";
 
     List<OwnExpireBo> selectExpireOwnExpire(OwnExpireQuery ownExpireQuery);
+
+    List<OwnPo> selectRecentExpireOwn(OwnExpireQuery ownExpireQuery);
 
     static String checkInsert(OwnExpirePo ownExpirePo) {
         if (ownExpirePo.getOwnId() < 1) {

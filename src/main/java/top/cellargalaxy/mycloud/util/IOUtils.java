@@ -10,10 +10,10 @@ import java.io.*;
  * @author cellargalaxy
  * @time 2018/7/5
  */
-public class IOUtil {
+public class IOUtils {
 
     public static final TarArchiveOutputStream createTarArchiveOutputStream(File file) throws FileNotFoundException {
-        return createTarArchiveOutputStream(IOUtil.getOutputStream(file));
+        return createTarArchiveOutputStream(IOUtils.getOutputStream(file));
     }
 
     public static final TarArchiveOutputStream createTarArchiveOutputStream(OutputStream outputStream) {
@@ -46,7 +46,7 @@ public class IOUtil {
     }
 
     private static void archiveFile(TarArchiveOutputStream tarArchiveOutputStream, File file, String basePath) throws IOException {
-        try (InputStream inputStream = IOUtil.getInputStream(file)) {
+        try (InputStream inputStream = IOUtils.getInputStream(file)) {
             archiveFile(tarArchiveOutputStream, inputStream, file.length(), basePath + File.separator + file.getName());
         }
     }
@@ -55,7 +55,7 @@ public class IOUtil {
         TarArchiveEntry tarArchiveEntry = new TarArchiveEntry(archiveName);
         tarArchiveEntry.setSize(fileLength);
         tarArchiveOutputStream.putArchiveEntry(tarArchiveEntry);
-        IOUtil.stream(inputStream, tarArchiveOutputStream);
+        IOUtils.stream(inputStream, tarArchiveOutputStream);
         tarArchiveOutputStream.closeArchiveEntry();//这里必须写，否则会失败
     }
 

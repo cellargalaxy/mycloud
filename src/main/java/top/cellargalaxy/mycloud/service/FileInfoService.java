@@ -29,6 +29,4 @@ public interface FileInfoService {
     int getFileInfoCount(FileInfoQuery fileInfoQuery);
 
     List<String> listContentType();
-
-    void setUrl(FileInfoBo fileInfoBo);
 }

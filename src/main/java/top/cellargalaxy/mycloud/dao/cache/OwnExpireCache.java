@@ -6,6 +6,7 @@ import top.cellargalaxy.mycloud.dao.OwnExpireDao;
 import top.cellargalaxy.mycloud.dao.mapper.OwnExpireMapper;
 import top.cellargalaxy.mycloud.model.bo.OwnExpireBo;
 import top.cellargalaxy.mycloud.model.po.OwnExpirePo;
+import top.cellargalaxy.mycloud.model.po.OwnPo;
 import top.cellargalaxy.mycloud.model.query.OwnExpireQuery;
 
 import java.util.List;
@@ -21,6 +22,11 @@ public class OwnExpireCache implements OwnExpireDao {
 
     public List<OwnExpireBo> selectExpireOwnExpire(OwnExpireQuery ownExpireQuery) {
         return ownExpireMapper.selectExpireOwnExpire(ownExpireQuery);
+    }
+
+
+    public List<OwnPo> selectRecentExpireOwn(OwnExpireQuery ownExpireQuery) {
+        return ownExpireMapper.selectRecentExpireOwn(ownExpireQuery);
     }
 
 

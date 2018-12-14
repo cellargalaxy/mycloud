@@ -1,19 +1,16 @@
 package top.cellargalaxy.mycloud;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import top.cellargalaxy.mycloud.dao.mapper.AuthorizationMapper;
 import top.cellargalaxy.mycloud.dao.mapper.UserMapper;
 import top.cellargalaxy.mycloud.model.bo.OwnBo;
-import top.cellargalaxy.mycloud.model.po.AuthorizationPo;
 import top.cellargalaxy.mycloud.model.po.UserPo;
 import top.cellargalaxy.mycloud.service.OwnService;
-import top.cellargalaxy.mycloud.util.IOUtil;
+import top.cellargalaxy.mycloud.util.IOUtils;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -50,7 +47,7 @@ public class MycloudApplicationTests {
 			return;
 		}
 		LinkedList<OwnBo> ownBos=null;
-		try (BufferedReader reader = IOUtil.getReader(file)) {
+		try (BufferedReader reader = IOUtils.getReader(file)) {
 			StringBuilder stringBuilder = new StringBuilder();
 			String string;
 			if ((string = reader.readLine()) != null) {
@@ -60,7 +57,7 @@ public class MycloudApplicationTests {
 		}
 		Collections.reverse(ownBos);
 
-		try (Writer writer = IOUtil.getWriter(file)) {
+		try (Writer writer = IOUtils.getWriter(file)) {
 			writer.write(objectMapper.writeValueAsString(ownBos));
 		}
 	}
@@ -73,7 +70,7 @@ public class MycloudApplicationTests {
 		LinkedList<OwnBo> ownBos = new LinkedList<>(list);
 		Collections.reverse(ownBos);
 
-		try (Writer writer = IOUtil.getWriter(file)) {
+		try (Writer writer = IOUtils.getWriter(file)) {
 			writer.write(objectMapper.writeValueAsString(ownBos));
 		}
 	}

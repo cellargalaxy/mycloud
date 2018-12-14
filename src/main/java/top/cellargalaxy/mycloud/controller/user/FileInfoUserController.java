@@ -16,8 +16,8 @@ import top.cellargalaxy.mycloud.service.FileInfoService;
  */
 @PreAuthorize("hasAuthority('USER')")
 @RestController
-@RequestMapping(FileInfoController.URL)
-public class FileInfoController {
+@RequestMapping(FileInfoUserController.URL)
+public class FileInfoUserController {
     public static final String URL = "/user/fileInfo";
     @Autowired
     private FileInfoService fileInfoService;

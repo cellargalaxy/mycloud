@@ -7,8 +7,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import top.cellargalaxy.mycloud.model.po.FileInfoPo;
-import top.cellargalaxy.mycloud.util.model.Vo;
+import top.cellargalaxy.mycloud.model.po.OwnPo;
 import top.cellargalaxy.mycloud.service.FileService;
+import top.cellargalaxy.mycloud.util.model.Vo;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -27,16 +28,21 @@ public class FileAdminController {
     @Autowired
     private FileService fileService;
 
-    @PostMapping("/removeFile")
-    public Vo removeFile(FileInfoPo fileInfoPo) throws Exception {
+    @PostMapping("/removeFileByFileInfo")
+    public Vo removeFileByFileInfo(FileInfoPo fileInfoPo) throws Exception {
         return new Vo(fileService.removeFile(fileInfoPo), null);
+    }
+
+    @PostMapping("/removeFileByOwn")
+    public Vo removeFileByOwn(OwnPo ownPo) throws Exception {
+        return new Vo(fileService.removeFile(ownPo), null);
     }
 
     @GetMapping("/downloadTar")
     public void download(HttpServletResponse response) throws IOException {
         response.reset();
         response.setContentType("application/x-tar");
-        response.setHeader("Content-Disposition", "attachment; filename=" + URLEncoder.encode("mycloud.tar", "UTF-8"));
+        response.setHeader("Content-Disposition", "attachment; filename=" + URLEncoder.encode("mycloudDrive.tar", "UTF-8"));
         try (OutputStream outputStream = response.getOutputStream()) {
             fileService.getTar(outputStream);
         }

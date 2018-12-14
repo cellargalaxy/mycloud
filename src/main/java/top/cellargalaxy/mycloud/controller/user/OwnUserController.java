@@ -9,13 +9,11 @@ import org.springframework.web.bind.annotation.RestController;
 import top.cellargalaxy.mycloud.model.po.OwnPo;
 import top.cellargalaxy.mycloud.model.po.UserPo;
 import top.cellargalaxy.mycloud.model.query.OwnQuery;
-import top.cellargalaxy.mycloud.util.model.Vo;
-import top.cellargalaxy.mycloud.service.FileService;
 import top.cellargalaxy.mycloud.service.OwnService;
 import top.cellargalaxy.mycloud.service.security.SecurityServiceImpl;
+import top.cellargalaxy.mycloud.util.model.Vo;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
 
 /**
  * Created by cellargalaxy on 18-8-4.
@@ -27,19 +25,11 @@ public class OwnUserController {
     public static final String URL = "/user/own";
     @Autowired
     private OwnService ownService;
-    @Autowired
-    private FileService fileService;
 
     @PostMapping("/addOwn")
     public Vo addOwn(HttpServletRequest request, OwnPo ownPo) {
         UserPo userPo = SecurityServiceImpl.getSecurityUser(request);
         return new Vo(ownService.addOwn(userPo, ownPo), null);
-    }
-
-    @PostMapping("/removeOwn")
-    public Vo removeOwn(HttpServletRequest request, OwnPo ownPo) throws IOException {
-        UserPo userPo = SecurityServiceImpl.getSecurityUser(request);
-        return new Vo(fileService.removeFile(ownPo, userPo), null);
     }
 
     @PostMapping("/changeOwn")

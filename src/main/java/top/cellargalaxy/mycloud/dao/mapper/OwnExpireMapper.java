@@ -2,9 +2,11 @@ package top.cellargalaxy.mycloud.dao.mapper;
 
 import org.apache.ibatis.annotations.*;
 import org.apache.ibatis.jdbc.SQL;
+import top.cellargalaxy.mycloud.dao.OwnDao;
 import top.cellargalaxy.mycloud.dao.OwnExpireDao;
 import top.cellargalaxy.mycloud.model.bo.OwnExpireBo;
 import top.cellargalaxy.mycloud.model.po.OwnExpirePo;
+import top.cellargalaxy.mycloud.model.po.OwnPo;
 import top.cellargalaxy.mycloud.model.query.OwnExpireQuery;
 import top.cellargalaxy.mycloud.util.dao.ProviderUtils;
 import top.cellargalaxy.mycloud.util.dao.SqlUtils;
@@ -50,8 +52,25 @@ public interface OwnExpireMapper extends OwnExpireDao {
     @SelectProvider(type = OwnExpireProvider.class, method = "selectAll")
     List<OwnExpireBo> selectAll();
 
+    @ResultMap(value = "ownExpireResults")
     @SelectProvider(type = OwnExpireProvider.class, method = "selectExpireOwnExpire")
     List<OwnExpireBo> selectExpireOwnExpire(OwnExpireQuery ownExpireQuery);
+
+    @Results(id = "ownResults", value = {
+            @Result(property = "ownId", column = "own_id"),
+            @Result(property = "ownUuid", column = "own_uuid"),
+            @Result(property = "userId", column = "user_id"),
+            @Result(property = "fileLength", column = "file_length"),
+            @Result(property = "contentType", column = "content_type"),
+            @Result(property = "fileName", column = "file_name"),
+            @Result(property = "fileId", column = "file_id"),
+            @Result(property = "sort", column = "sort"),
+            @Result(property = "description", column = "description"),
+            @Result(property = "createTime", column = "create_time"),
+            @Result(property = "updateTime", column = "update_time"),
+    })
+    @SelectProvider(type = OwnExpireProvider.class, method = "selectRecentExpireOwn")
+    List<OwnPo> selectRecentExpireOwn(OwnExpireQuery ownExpireQuery);
 
     class OwnExpireProvider /*implements IProvider<OwnExpirePo, OwnExpireQuery>*/ {
         private String tableName = OwnExpireDao.TABLE_NAME;
@@ -134,6 +153,19 @@ public interface OwnExpireMapper extends OwnExpireDao {
                 sql.WHERE("expire_time<=#{expireTime}");
             }
             String string = sql.toString();
+            return string;
+        }
+
+
+        public String selectRecentExpireOwn(OwnExpireQuery ownExpireQuery) {
+            SqlUtils.initPageQuery(ownExpireQuery);
+            SQL sql = new SQL()
+                    .SELECT("*")
+                    .FROM(tableName)
+                    .LEFT_OUTER_JOIN(OwnDao.TABLE_NAME)
+                    .WHERE("true")
+                    .ORDER_BY("expire_time desc");
+            String string = ProviderUtils.limitSome(sql).toString();
             return string;
         }
     }

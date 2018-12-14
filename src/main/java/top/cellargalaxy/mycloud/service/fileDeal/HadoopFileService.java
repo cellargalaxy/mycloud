@@ -8,7 +8,7 @@ import top.cellargalaxy.mycloud.configuration.MycloudConfiguration;
 import top.cellargalaxy.mycloud.model.po.FileInfoPo;
 import top.cellargalaxy.mycloud.model.po.OwnPo;
 import top.cellargalaxy.mycloud.model.po.UserPo;
-import top.cellargalaxy.mycloud.util.IOUtil;
+import top.cellargalaxy.mycloud.util.IOUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -43,7 +43,7 @@ public class HadoopFileService {
     public String addFile(InputStream inputStream, FileInfoPo fileInfoPo) throws IOException {
         Path path = new Path(hdfsUrl + "/mycloud/md5/" + fileInfoPo.getMd5());
         try (FSDataOutputStream fsDataOutputStream = fileSystem.create(path)) {
-            IOUtil.stream(inputStream, fsDataOutputStream);
+            IOUtils.stream(inputStream, fsDataOutputStream);
         }
         return null;
     }
@@ -52,7 +52,7 @@ public class HadoopFileService {
     public String addFile(InputStream inputStream, OwnPo ownPo, UserPo userPo) throws IOException {
         Path path = new Path(hdfsUrl + "/mycloud/uuid/" + ownPo.getOwnUuid());
         try (FSDataOutputStream fsDataOutputStream = fileSystem.create(path)) {
-            IOUtil.stream(inputStream, fsDataOutputStream);
+            IOUtils.stream(inputStream, fsDataOutputStream);
         }
         return null;
     }
@@ -75,7 +75,7 @@ public class HadoopFileService {
     public String getFile(FileInfoPo fileInfoPo, OutputStream outputStream) throws IOException {
         Path path = new Path(hdfsUrl + "/mycloud/md5/" + fileInfoPo.getMd5());
         try (InputStream inputStream = fileSystem.open(path)) {
-            IOUtil.stream(inputStream, outputStream);
+            IOUtils.stream(inputStream, outputStream);
         }
         return null;
     }
@@ -84,7 +84,7 @@ public class HadoopFileService {
     public String getFile(OwnPo ownPo, OutputStream outputStream) throws IOException {
         Path path = new Path(hdfsUrl + "/mycloud/uuid/" + ownPo.getOwnUuid());
         try (InputStream inputStream = fileSystem.open(path)) {
-            IOUtil.stream(inputStream, outputStream);
+            IOUtils.stream(inputStream, outputStream);
         }
         return null;
     }

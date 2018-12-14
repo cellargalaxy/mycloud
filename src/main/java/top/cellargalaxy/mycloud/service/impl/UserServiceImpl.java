@@ -41,7 +41,6 @@ public class UserServiceImpl implements UserService {
 
     private String checkAddUser(UserPo userPo) {
         return UserDao.checkInsert(userPo);
-//        return ServiceUtils.checkAdd(userPo, NAME, UserDao::checkInsert, userDao);
     }
 
     @Override

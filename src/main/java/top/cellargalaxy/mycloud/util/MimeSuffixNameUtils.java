@@ -11,7 +11,7 @@ import java.util.Map;
  * @author cellargalaxy
  * @time 2018/11/6
  */
-public class MimeSuffixNameUtil {
+public class MimeSuffixNameUtils {
     private static final Map<String, String> SUFFIX_NAME_2_MIME = new HashMap<>();
     private static final Map<String, String> MIME_2_SUFFIX_NAME = new HashMap<>();
 

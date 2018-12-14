@@ -3,7 +3,6 @@ package top.cellargalaxy.mycloud.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import top.cellargalaxy.mycloud.configuration.MycloudConfiguration;
 import top.cellargalaxy.mycloud.dao.FileInfoDao;
 import top.cellargalaxy.mycloud.model.bo.FileInfoBo;
 import top.cellargalaxy.mycloud.model.bo.OwnBo;
@@ -13,6 +12,7 @@ import top.cellargalaxy.mycloud.model.query.OwnQuery;
 import top.cellargalaxy.mycloud.model.vo.FileInfoVo;
 import top.cellargalaxy.mycloud.service.FileInfoService;
 import top.cellargalaxy.mycloud.service.OwnService;
+import top.cellargalaxy.mycloud.service.PathService;
 import top.cellargalaxy.mycloud.util.serivce.ServiceUtils;
 
 import java.util.List;
@@ -30,12 +30,8 @@ public class FileInfoServiceImpl implements FileInfoService {
     private FileInfoDao fileInfoDao;
     @Autowired
     private OwnService ownService;
-    private final String domain;
-
     @Autowired
-    public FileInfoServiceImpl(MycloudConfiguration mycloudConfiguration) {
-        this.domain = mycloudConfiguration.getDomain();
-    }
+    private PathService pathService;
 
     @Override
     public String addFileInfo(FileInfoPo fileInfoPo) {
@@ -44,7 +40,6 @@ public class FileInfoServiceImpl implements FileInfoService {
 
     private String checkAddFileInfo(FileInfoPo fileInfoPo) {
         return FileInfoDao.checkInsert(fileInfoPo);
-//        return ServiceUtils.checkAdd(fileInfoPo, NAME, FileInfoDao::checkInsert, fileInfoDao);
     }
 
     @Override
@@ -55,35 +50,35 @@ public class FileInfoServiceImpl implements FileInfoService {
     @Override
     public FileInfoBo getFileInfo(FileInfoPo fileInfoPo) {
         FileInfoBo fileInfoBo = fileInfoDao.selectOne(fileInfoPo);
-        setUrl(fileInfoBo);
+        pathService.setUrl(fileInfoBo);
         return fileInfoBo;
     }
 
     @Override
     public FileInfoVo getFileInfoVo(FileInfoPo fileInfoPo) {
         FileInfoBo fileInfoBo = fileInfoDao.selectOne(fileInfoPo);
-        setUrl(fileInfoBo);
+        pathService.setUrl(fileInfoBo);
         return bo2vo(fileInfoBo);
     }
 
     @Override
     public List<FileInfoBo> listFileInfo(FileInfoQuery fileInfoQuery) {
         List<FileInfoBo> fileInfoBos = fileInfoDao.selectPageSome(fileInfoQuery);
-        fileInfoBos.stream().forEach(fileInfoBo -> setUrl(fileInfoBo));
+        fileInfoBos.stream().forEach(fileInfoBo -> pathService.setUrl(fileInfoBo));
         return fileInfoBos;
     }
 
     @Override
     public List<FileInfoVo> listFileInfoVo(FileInfoQuery fileInfoQuery) {
         List<FileInfoBo> fileInfoBos = fileInfoDao.selectPageSome(fileInfoQuery);
-        fileInfoBos.stream().forEach(fileInfoBo -> setUrl(fileInfoBo));
+        fileInfoBos.stream().forEach(fileInfoBo -> pathService.setUrl(fileInfoBo));
         return bo2vo(fileInfoBos);
     }
 
     @Override
     public List<FileInfoBo> listAllFileInfo() {
         List<FileInfoBo> fileInfoBos = fileInfoDao.selectAll();
-        fileInfoBos.stream().forEach(fileInfoBo -> setUrl(fileInfoBo));
+        fileInfoBos.stream().forEach(fileInfoBo -> pathService.setUrl(fileInfoBo));
         return fileInfoBos;
     }
 
@@ -95,14 +90,6 @@ public class FileInfoServiceImpl implements FileInfoService {
     @Override
     public List<String> listContentType() {
         return fileInfoDao.selectAllContentType();
-    }
-
-    @Override
-    public void setUrl(FileInfoBo fileInfoBo) {
-        if (fileInfoBo == null) {
-            return;
-        }
-        fileInfoBo.setMd5Url(domain + "/" + fileInfoBo.getMd5());
     }
 
     private FileInfoVo bo2vo(FileInfoBo fileInfoBo) {

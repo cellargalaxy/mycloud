@@ -1,9 +1,11 @@
 package top.cellargalaxy.mycloud.service.fileDownload;
 
+import org.springframework.stereotype.Service;
+import top.cellargalaxy.mycloud.configuration.MycloudConfiguration;
 import top.cellargalaxy.mycloud.model.po.FileInfoPo;
 import top.cellargalaxy.mycloud.model.po.OwnPo;
-import top.cellargalaxy.mycloud.util.IOUtil;
-import top.cellargalaxy.mycloud.util.MimeSuffixNameUtil;
+import top.cellargalaxy.mycloud.util.IOUtils;
+import top.cellargalaxy.mycloud.util.MimeSuffixNameUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -14,11 +16,12 @@ import java.net.URLConnection;
 /**
  * Created by cellargalaxy on 18-10-27.
  */
+@Service
 public class FileDownloadImpl implements FileDownload {
     private final int connectTimeout;
 
-    public FileDownloadImpl(int connectTimeout) {
-        this.connectTimeout = connectTimeout;
+    public FileDownloadImpl(MycloudConfiguration mycloudConfiguration) {
+        connectTimeout = mycloudConfiguration.getDownloadUrlConnectTimeout();
     }
 
     @Override
@@ -27,7 +30,7 @@ public class FileDownloadImpl implements FileDownload {
         fileInfoPo.setContentType(urlConnection.getContentType());
         fileInfoPo.setFileLength(urlConnection.getContentLength());
         try (InputStream inputStream = urlConnection.getInputStream()) {
-            IOUtil.stream(inputStream, outputStreams);
+            IOUtils.stream(inputStream, outputStreams);
         }
         return null;
     }
@@ -37,14 +40,14 @@ public class FileDownloadImpl implements FileDownload {
         URLConnection urlConnection = createURLConnection(urlString);
         ownPo.setContentType(urlConnection.getContentType());
         ownPo.setFileLength(urlConnection.getContentLength());
-        String suffixName = MimeSuffixNameUtil.mime2SuffixName(ownPo.getContentType());
+        String suffixName = MimeSuffixNameUtils.mime2SuffixName(ownPo.getContentType());
         if (suffixName != null) {
-            ownPo.setFileName(ownPo.getOwnUuid() + "." + MimeSuffixNameUtil.mime2SuffixName(ownPo.getContentType()));
+            ownPo.setFileName(ownPo.getOwnUuid() + "." + MimeSuffixNameUtils.mime2SuffixName(ownPo.getContentType()));
         } else {
             ownPo.setFileName(ownPo.getOwnUuid());
         }
         try (InputStream inputStream = urlConnection.getInputStream()) {
-            IOUtil.stream(inputStream, outputStreams);
+            IOUtils.stream(inputStream, outputStreams);
         }
         return null;
     }

@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-public interface FileDeal {
+public interface FileDriverService {
     String addFile(InputStream inputStream, FileInfoPo fileInfoPo) throws IOException;
 
     String addFile(InputStream inputStream, OwnPo ownPo) throws IOException;

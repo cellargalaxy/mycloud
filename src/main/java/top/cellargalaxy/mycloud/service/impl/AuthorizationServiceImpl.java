@@ -30,7 +30,6 @@ public class AuthorizationServiceImpl implements AuthorizationService {
 
     private String checkAddAuthorization(AuthorizationPo authorizationPo) {
         return AuthorizationDao.checkInsert(authorizationPo);
-//        return ServiceUtils.checkAdd(authorizationPo, NAME, AuthorizationDao::checkInsert, authorizationDao);
     }
 
     @Override

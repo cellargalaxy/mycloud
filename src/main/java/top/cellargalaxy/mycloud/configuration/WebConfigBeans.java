@@ -10,6 +10,7 @@ import org.springframework.core.convert.converter.Converter;
 import org.springframework.core.convert.support.GenericConversionService;
 import org.springframework.web.bind.support.ConfigurableWebBindingInitializer;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
+import top.cellargalaxy.mycloud.service.PathService;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.MultipartConfigElement;
@@ -41,18 +42,18 @@ public class WebConfigBeans {
                 private final DateFormat SHORT_DATE_FORMAT_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 
                 @Override
-                public Date convert(String s) {
-                    if (s == null || (s = s.trim()).length() == 0) {
+                public Date convert(String string) {
+                    if (string == null || (string = string.trim()).length() == 0) {
                         return null;
                     }
                     try {
-                        if (s.matches("^\\d+$")) {
-                            return new Date(Long.valueOf(s));
+                        if (string.matches("^\\d+$")) {
+                            return new Date(Long.valueOf(string));
                         }
-                        if (s.contains(":")) {
-                            return DATE_FORMAT_FORMAT.parse(s);
+                        if (string.contains(":")) {
+                            return DATE_FORMAT_FORMAT.parse(string);
                         } else {
-                            return SHORT_DATE_FORMAT_FORMAT.parse(s);
+                            return SHORT_DATE_FORMAT_FORMAT.parse(string);
                         }
                     } catch (Exception e) {
                         return null;
@@ -63,19 +64,17 @@ public class WebConfigBeans {
     }
 
     @Bean
-    public MultipartConfigElement multipartConfigElement(MycloudConfiguration mycloudConfiguration) {
-        String mycloudTmpPath = mycloudConfiguration.getMycloudPath() + File.separator + "mycloud" + File.separator + "tmp";
+    public MultipartConfigElement multipartConfigElement(MycloudConfiguration mycloudConfiguration, PathService pathService) {
+        File mycloudTmpFolder = pathService.getTmpFolder();
+        if (!mycloudTmpFolder.exists()) {
+            mycloudTmpFolder.mkdirs();
+        }
         String webUploadMaxFileSize = mycloudConfiguration.getWebUploadMaxFileSize();
         String webUploadMaxRequestSize = mycloudConfiguration.getWebUploadMaxRequestSize();
-        logger.info("mycloudTmpPath: {}; webUploadMaxFileSize: {}; webUploadMaxRequestSize: {}", mycloudTmpPath, webUploadMaxFileSize, webUploadMaxRequestSize);
+        logger.info("webUploadMaxFileSize: {}; webUploadMaxRequestSize: {}; mycloudTmpPath: {}", webUploadMaxFileSize, webUploadMaxRequestSize, mycloudTmpFolder);
 
         MultipartConfigFactory factory = new MultipartConfigFactory();
-        File folder = new File(mycloudTmpPath);
-        if (!folder.exists()) {
-            folder.mkdirs();
-        }
-        factory.setLocation(mycloudTmpPath);
-
+        factory.setLocation(mycloudTmpFolder.getAbsolutePath());
         factory.setMaxFileSize(webUploadMaxFileSize);
         factory.setMaxRequestSize(webUploadMaxRequestSize);
         return factory.createMultipartConfig();

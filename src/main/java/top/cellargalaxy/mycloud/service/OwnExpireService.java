@@ -2,6 +2,7 @@ package top.cellargalaxy.mycloud.service;
 
 import top.cellargalaxy.mycloud.model.bo.OwnExpireBo;
 import top.cellargalaxy.mycloud.model.po.OwnExpirePo;
+import top.cellargalaxy.mycloud.model.po.OwnPo;
 
 import java.util.List;
 
@@ -10,9 +11,11 @@ import java.util.List;
  * @time 2018/12/13
  */
 public interface OwnExpireService {
-    String addOwnExpire(OwnExpirePo ownExpirePo);
+    String addOwnExpire(OwnPo ownPo, OwnExpirePo ownExpirePo);
 
     String removeOwnExpire(OwnExpirePo ownExpirePo);
 
     List<OwnExpireBo> listExpireOwnExpire();
+
+    List<OwnPo> listRecentExpireOwn();
 }
