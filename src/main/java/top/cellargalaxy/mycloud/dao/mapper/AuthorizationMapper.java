@@ -120,10 +120,11 @@ public interface AuthorizationMapper extends IDao<AuthorizationPo, Authorization
                     .SELECT(tableName + ".update_time")
                     .SELECT(UserDao.TABLE_NAME + ".username")
                     .FROM(tableName)
+                    .FROM(UserDao.TABLE_NAME)
                     .WHERE(tableName + ".user_id=" + UserDao.TABLE_NAME + ".user_id");
             Set<String> wheres = new HashSet<>();
             wheresKey(authorizationPo, wheres);
-            ProviderUtils.where(authorizationPo, wheres, sql);
+            ProviderUtils.where( wheres, sql);
             String string = ProviderUtils.limitOne(sql).toString();
             return string;
         }
@@ -138,10 +139,11 @@ public interface AuthorizationMapper extends IDao<AuthorizationPo, Authorization
                     .SELECT(tableName + ".update_time")
                     .SELECT(UserDao.TABLE_NAME + ".username")
                     .FROM(tableName)
+                    .FROM(UserDao.TABLE_NAME)
                     .WHERE(tableName + ".user_id=" + UserDao.TABLE_NAME + ".user_id");
             Set<String> wheres = new HashSet<>();
             wheresAll(authorizationQuery, wheres);
-            ProviderUtils.where(authorizationQuery, wheres, sql);
+            ProviderUtils.where( wheres, sql);
             String string = ProviderUtils.limitSome(sql).toString();
             return string;
         }
@@ -155,10 +157,11 @@ public interface AuthorizationMapper extends IDao<AuthorizationPo, Authorization
                     .SELECT(tableName + ".update_time")
                     .SELECT(UserDao.TABLE_NAME + ".username")
                     .FROM(tableName)
+                    .FROM(UserDao.TABLE_NAME)
                     .WHERE(tableName + ".user_id=" + UserDao.TABLE_NAME + ".user_id");
             Set<String> wheres = new HashSet<>();
             wheresAll(authorizationQuery, wheres);
-            ProviderUtils.where(authorizationQuery, wheres, sql);
+            ProviderUtils.where( wheres, sql);
             String string = sql.toString();
             return string;
         }
@@ -177,6 +180,7 @@ public interface AuthorizationMapper extends IDao<AuthorizationPo, Authorization
                     .SELECT(tableName + ".update_time")
                     .SELECT(UserDao.TABLE_NAME + ".username")
                     .FROM(tableName)
+                    .FROM(UserDao.TABLE_NAME)
                     .WHERE(tableName + ".user_id=" + UserDao.TABLE_NAME + ".user_id");
             String string = sql.toString();
             return string;

@@ -43,7 +43,7 @@ public class ProviderUtils {
             sql.WHERE("false");
             return sql;
         }
-        where(po, wheres, sql);
+        where(wheres, sql);
         return sql;
     }
 
@@ -55,7 +55,7 @@ public class ProviderUtils {
         if (sets.size() == 0) {
             sets.add(defaultSet);
         }
-        set(po, sets, sql);
+        set(sets, sql);
 
         Set<String> wheres = new HashSet<>();
         wheresKeyFunc.accept(po, wheres);
@@ -63,7 +63,7 @@ public class ProviderUtils {
             sql.WHERE("false");
             return sql;
         }
-        where(po, wheres, sql);
+        where(wheres, sql);
         return sql;
     }
 
@@ -76,7 +76,7 @@ public class ProviderUtils {
             sql.WHERE("true");
             return sql;
         }
-        where(po, wheres, sql);
+        where(wheres, sql);
         return sql;
     }
 
@@ -86,10 +86,10 @@ public class ProviderUtils {
         Set<String> wheres = new HashSet<>();
         wheresAllFunc.accept(query, wheres);
         if (wheres.size() == 0) {
-            sql.WHERE("true");
+            sql = sql.WHERE("true");
             return sql;
         }
-        where(query, wheres, sql);
+        where(wheres, sql);
         return sql;
     }
 
@@ -98,25 +98,15 @@ public class ProviderUtils {
         return sql;
     }
 
-    public static final <Po> void set(Po po, Set<String> sets, SQL sql) {
-        for (Field field : po.getClass().getDeclaredFields()) {
-            String modifier = Modifier.toString(field.getModifiers());
-            if (!modifier.contains("static") && !modifier.contains("final")) {
-                if (sets.contains(field.getName())) {
-                    sql.SET(StringUtils.lowerCamel2LowerHyphen(field.getName()) + "=#{" + field.getName() + "}");
-                }
-            }
+    public static final void set(Set<String> sets, SQL sql) {
+        for (String set : sets) {
+            sql.SET(StringUtils.lowerCamel2LowerHyphen(set) + "=#{" + set + "}");
         }
     }
 
-    public static final <Po> void where(Po po, Set<String> wheres, SQL sql) {
-        for (Field field : po.getClass().getDeclaredFields()) {
-            String modifier = Modifier.toString(field.getModifiers());
-            if (!modifier.contains("static") && !modifier.contains("final")) {
-                if (wheres.contains(field.getName())) {
-                    sql.WHERE(StringUtils.lowerCamel2LowerHyphen(field.getName()) + "=#{" + field.getName() + "}");
-                }
-            }
+    public static final void where(Set<String> wheres, SQL sql) {
+        for (String where : wheres) {
+            sql.WHERE(StringUtils.lowerCamel2LowerHyphen(where) + "=#{" + where + "}");
         }
     }
 }

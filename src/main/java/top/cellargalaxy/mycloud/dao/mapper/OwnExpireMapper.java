@@ -4,6 +4,7 @@ import org.apache.ibatis.annotations.*;
 import org.apache.ibatis.jdbc.SQL;
 import top.cellargalaxy.mycloud.dao.OwnDao;
 import top.cellargalaxy.mycloud.dao.OwnExpireDao;
+import top.cellargalaxy.mycloud.dao.UserDao;
 import top.cellargalaxy.mycloud.model.bo.OwnExpireBo;
 import top.cellargalaxy.mycloud.model.po.OwnExpirePo;
 import top.cellargalaxy.mycloud.model.po.OwnPo;
@@ -162,8 +163,8 @@ public interface OwnExpireMapper extends OwnExpireDao {
             SQL sql = new SQL()
                     .SELECT("*")
                     .FROM(tableName)
-                    .LEFT_OUTER_JOIN(OwnDao.TABLE_NAME)
-                    .WHERE("true")
+                    .FROM(OwnDao.TABLE_NAME)
+                    .WHERE(tableName + ".own_id=" + OwnDao.TABLE_NAME + ".own_id")
                     .ORDER_BY("expire_time desc");
             String string = ProviderUtils.limitSome(sql).toString();
             return string;

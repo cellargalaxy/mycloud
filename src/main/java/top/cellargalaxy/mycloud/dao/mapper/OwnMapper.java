@@ -158,13 +158,10 @@ public interface OwnMapper extends IDao<OwnPo, OwnBo, OwnQuery> {
                     .SELECT(UserDao.TABLE_NAME + ".username")
                     .SELECT(FileInfoDao.TABLE_NAME + ".md5")
                     //own left join user on own.user_id=user.user_id left join file_info on own.file_id=file_info.file_id
-                    //.FROM(tableName + " left join " + UserDao.TABLE_NAME + " on " + tableName + ".user_id=" + UserDao.TABLE_NAME + ".user_id left join " + FileInfoDao.TABLE_NAME + " on " + tableName + ".file_id=" + FileInfoDao.TABLE_NAME + ".file_id")
-                    .FROM(tableName)
-                    .LEFT_OUTER_JOIN(UserDao.TABLE_NAME)
-                    .LEFT_OUTER_JOIN(FileInfoDao.TABLE_NAME);
+                    .FROM(tableName + " left join " + UserDao.TABLE_NAME + " on " + tableName + ".user_id=" + UserDao.TABLE_NAME + ".user_id left join " + FileInfoDao.TABLE_NAME + " on " + tableName + ".file_id=" + FileInfoDao.TABLE_NAME + ".file_id");
             Set<String> wheres = new HashSet<>();
             wheresKey(ownPo, wheres);
-            ProviderUtils.where(ownPo, wheres, sql);
+            ProviderUtils.where(wheres, sql);
             String string = ProviderUtils.limitOne(sql).toString();
             return string;
         }
@@ -187,13 +184,10 @@ public interface OwnMapper extends IDao<OwnPo, OwnBo, OwnQuery> {
                     .SELECT(UserDao.TABLE_NAME + ".username")
                     .SELECT(FileInfoDao.TABLE_NAME + ".md5")
                     //own left join user on own.user_id=user.user_id left join file_info on own.file_id=file_info.file_id
-                    //.FROM(tableName + " left join " + UserDao.TABLE_NAME + " on " + tableName + ".user_id=" + UserDao.TABLE_NAME + ".user_id left join " + FileInfoDao.TABLE_NAME + " on " + tableName + ".file_id=" + FileInfoDao.TABLE_NAME + ".file_id")
-                    .FROM(tableName)
-                    .LEFT_OUTER_JOIN(UserDao.TABLE_NAME)
-                    .LEFT_OUTER_JOIN(FileInfoDao.TABLE_NAME);
+                    .FROM(tableName + " left join " + UserDao.TABLE_NAME + " on " + tableName + ".user_id=" + UserDao.TABLE_NAME + ".user_id left join " + FileInfoDao.TABLE_NAME + " on " + tableName + ".file_id=" + FileInfoDao.TABLE_NAME + ".file_id");
             Set<String> wheres = new HashSet<>();
             wheresAll(ownQuery, wheres);
-            ProviderUtils.where(ownQuery, wheres, sql);
+            ProviderUtils.where(wheres, sql);
             String string = ProviderUtils.limitSome(sql).toString();
             return string;
         }
@@ -215,13 +209,10 @@ public interface OwnMapper extends IDao<OwnPo, OwnBo, OwnQuery> {
                     .SELECT(UserDao.TABLE_NAME + ".username")
                     .SELECT(FileInfoDao.TABLE_NAME + ".md5")
                     //own left join user on own.user_id=user.user_id left join file_info on own.file_id=file_info.file_id
-                    //.FROM(tableName + " left join " + UserDao.TABLE_NAME + " on " + tableName + ".user_id=" + UserDao.TABLE_NAME + ".user_id left join " + FileInfoDao.TABLE_NAME + " on " + tableName + ".file_id=" + FileInfoDao.TABLE_NAME + ".file_id")
-                    .FROM(tableName)
-                    .LEFT_OUTER_JOIN(UserDao.TABLE_NAME)
-                    .LEFT_OUTER_JOIN(FileInfoDao.TABLE_NAME);
+                    .FROM(tableName + " left join " + UserDao.TABLE_NAME + " on " + tableName + ".user_id=" + UserDao.TABLE_NAME + ".user_id left join " + FileInfoDao.TABLE_NAME + " on " + tableName + ".file_id=" + FileInfoDao.TABLE_NAME + ".file_id");
             Set<String> wheres = new HashSet<>();
             wheresAll(ownQuery, wheres);
-            ProviderUtils.where(ownQuery, wheres, sql);
+            ProviderUtils.where(wheres, sql);
             String string = sql.toString();
             return string;
         }
@@ -248,10 +239,7 @@ public interface OwnMapper extends IDao<OwnPo, OwnBo, OwnQuery> {
                     .SELECT(UserDao.TABLE_NAME + ".username")
                     .SELECT(FileInfoDao.TABLE_NAME + ".md5")
                     //own left join user on own.user_id=user.user_id left join file_info on own.file_id=file_info.file_id
-                    //.FROM(tableName + " left join " + UserDao.TABLE_NAME + " on " + tableName + ".user_id=" + UserDao.TABLE_NAME + ".user_id left join " + FileInfoDao.TABLE_NAME + " on " + tableName + ".file_id=" + FileInfoDao.TABLE_NAME + ".file_id")
-                    .FROM(tableName)
-                    .LEFT_OUTER_JOIN(UserDao.TABLE_NAME)
-                    .LEFT_OUTER_JOIN(FileInfoDao.TABLE_NAME);
+                    .FROM(tableName + " left join " + UserDao.TABLE_NAME + " on " + tableName + ".user_id=" + UserDao.TABLE_NAME + ".user_id left join " + FileInfoDao.TABLE_NAME + " on " + tableName + ".file_id=" + FileInfoDao.TABLE_NAME + ".file_id");
             String string = sql.toString();
             return string;
         }
@@ -262,7 +250,7 @@ public interface OwnMapper extends IDao<OwnPo, OwnBo, OwnQuery> {
                     .FROM(tableName);
             Set<String> wheres = new HashSet<>();
             wheresAll(ownQuery, wheres);
-            ProviderUtils.where(ownQuery, wheres, sql);
+            ProviderUtils.where(wheres, sql);
             String string = sql.toString();
             return string;
         }
