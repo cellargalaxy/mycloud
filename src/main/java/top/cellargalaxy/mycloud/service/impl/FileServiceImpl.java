@@ -6,13 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import top.cellargalaxy.mycloud.model.bo.OwnBo;
 import top.cellargalaxy.mycloud.model.po.FileInfoPo;
+import top.cellargalaxy.mycloud.model.po.OwnExpirePo;
 import top.cellargalaxy.mycloud.model.po.OwnPo;
 import top.cellargalaxy.mycloud.model.po.UserPo;
 import top.cellargalaxy.mycloud.model.query.OwnQuery;
-import top.cellargalaxy.mycloud.service.FileInfoService;
-import top.cellargalaxy.mycloud.service.FileService;
-import top.cellargalaxy.mycloud.service.OwnService;
-import top.cellargalaxy.mycloud.service.PathService;
+import top.cellargalaxy.mycloud.service.*;
 import top.cellargalaxy.mycloud.service.fileDeal.FileDriverService;
 import top.cellargalaxy.mycloud.util.IOUtils;
 
@@ -39,11 +37,32 @@ public class FileServiceImpl implements FileService {
     private OwnService ownService;
     @Autowired
     private FileDriverService fileDriverService;
+    @Autowired
+    private OwnExpireService ownExpireService;
 
     @Autowired
     public FileServiceImpl(PathService pathService) {
         this.pathService = pathService;
         driveFolder = pathService.getDriveFolder();
+    }
+
+    @Override
+    public String addTmpFile(InputStream inputStream, OwnBo ownBo, OwnExpirePo ownExpirePo, UserPo userPo) throws IOException {
+        ownBo.setOwnUuid(UUID.randomUUID().toString());
+        ownBo.setUserId(userPo.getUserId());
+        ownBo.setUsername(userPo.getUsername());
+        String string = fileDriverService.addFile(inputStream, ownBo);
+        if (string != null) {
+            fileDriverService.removeFile(ownBo);
+            return string;
+        }
+        string = ownExpireService.addOwnExpire(ownBo, ownExpirePo);
+        if (string != null) {
+            fileDriverService.removeFile(ownBo);
+            return string;
+        }
+        pathService.setUrl(ownBo);
+        return string;
     }
 
     @Override

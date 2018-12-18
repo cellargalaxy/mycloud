@@ -25,12 +25,18 @@ public class ProviderUtils {
 
     public static final <Po> SQL insert(String tableName, Po po) {
         SQL sql = new SQL().INSERT_INTO(tableName);
-        for (Field field : po.getClass().getDeclaredFields()) {
-            String modifier = Modifier.toString(field.getModifiers());
-            if (!modifier.contains("static") && !modifier.contains("final")) {
-                sql.VALUES(StringUtils.lowerCamel2LowerHyphen(field.getName()), "#{" + field.getName() + "}");
+
+        Class<?> clazz = po.getClass();
+        do {
+            for (Field field : clazz.getDeclaredFields()) {
+                String modifier = Modifier.toString(field.getModifiers());
+                if (!modifier.contains("static") && !modifier.contains("final")) {
+                    sql.VALUES(StringUtils.lowerCamel2LowerHyphen(field.getName()), "#{" + field.getName() + "}");
+                }
             }
-        }
+            clazz = clazz.getSuperclass();
+        } while (!Object.class.equals(clazz));
+
         return sql;
     }
 
