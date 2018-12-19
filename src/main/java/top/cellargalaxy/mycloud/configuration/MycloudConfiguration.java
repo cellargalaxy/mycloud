@@ -17,13 +17,11 @@ public class MycloudConfiguration {
     private volatile String webUploadMaxRequestSize;
 
     private volatile String mycloudPath;
-    private volatile int downloadUrlConnectTimeout;
     private volatile double localFileMaxSpaceRate;
+    private volatile int downloadUrlConnectTimeout;
+    private volatile long maxTmpFileSaveTime;
     private volatile String secret;
     private volatile String domain;
-
-    private String mycloudUsername;
-    private String mycloudPassword;
 
     private volatile String hdfsUrl;
 }

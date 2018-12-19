@@ -4,11 +4,11 @@ import org.apache.ibatis.annotations.*;
 import org.apache.ibatis.jdbc.SQL;
 import top.cellargalaxy.mycloud.dao.OwnDao;
 import top.cellargalaxy.mycloud.dao.OwnExpireDao;
-import top.cellargalaxy.mycloud.dao.UserDao;
 import top.cellargalaxy.mycloud.model.bo.OwnExpireBo;
 import top.cellargalaxy.mycloud.model.po.OwnExpirePo;
 import top.cellargalaxy.mycloud.model.po.OwnPo;
 import top.cellargalaxy.mycloud.model.query.OwnExpireQuery;
+import top.cellargalaxy.mycloud.util.dao.IDao;
 import top.cellargalaxy.mycloud.util.dao.ProviderUtils;
 import top.cellargalaxy.mycloud.util.dao.SqlUtils;
 
@@ -20,7 +20,7 @@ import java.util.Set;
  * @time 2018/12/13
  */
 @Mapper
-public interface OwnExpireMapper extends OwnExpireDao {
+public interface OwnExpireMapper extends IDao<OwnExpirePo, OwnExpireBo, OwnExpireQuery> {
     @Options(useGeneratedKeys = true, keyProperty = "ownId")
     @InsertProvider(type = OwnExpireProvider.class, method = "insert")
     int insert(OwnExpirePo ownExpirePo);
@@ -97,7 +97,7 @@ public interface OwnExpireMapper extends OwnExpireDao {
 
 
         public String insert(OwnExpirePo ownExpirePo) {
-            String string = ProviderUtils.insert(tableName, ownExpirePo).toString();
+            String string = ProviderUtils.insert(tableName, OwnExpirePo.class).toString();
             return string;
         }
 

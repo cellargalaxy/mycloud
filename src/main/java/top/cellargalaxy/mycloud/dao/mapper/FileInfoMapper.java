@@ -91,7 +91,7 @@ public interface FileInfoMapper extends IDao<FileInfoPo, FileInfoBo, FileInfoQue
         }
 
         public String insert(FileInfoPo fileInfoPo) {
-            String string = ProviderUtils.insert(tableName, fileInfoPo).toString();
+            String string = ProviderUtils.insert(tableName, FileInfoPo.class).toString();
             return string;
         }
 

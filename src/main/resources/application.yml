@@ -36,11 +36,14 @@ spring:
 
   jackson:
     serialization:
-      #      json返回时间戳
+      #json返回时间戳
       write-dates-as-timestamps: true
 
-  cache:
-    type: CAFFEINE
+#  cache:
+#    type: CAFFEINE
+  redis:
+    host: 127.0.0.1
+    port: 6379
 
 #  autoconfigure:Could not find value method on SQL annotation Error creating SqlSource for SqlProvider Sql provider method can not overload
 #    exclude: org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration,com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceAutoConfigure
@@ -51,11 +54,10 @@ mycloud:
 
   mycloudPath: ${MYCLOUD_PATH:./}
   localFileMaxSpaceRate: ${MYCLOUD_LOCAL_FILE_MAX_SPACE_RATE:0.8}
+  downloadUrlConnectTimeout: ${MYCLOUD_DOWBLOAD_UTL_CONNECT_TIMEOUT:5000} #五秒
+  maxTmpFileSaveTime: ${MYCLOUD_MAX_TMP_FILE_SAVE_TIME:864000000} #十天
   domain: ${MYCLOUD_DOMAIN:}
   secret: ${MYCLOUD_SECRET:${random.value}}
-
-  mycloudUsername: ${MYCLOUD_USERNAME:mycloud}
-  mycloudPassword: ${MYCLOUD_PASSWORD:mycloud}
 
   dbHost: ${MYCLOUD_DB_HOST:127.0.0.1}
   dbPort: ${MYCLOUD_DB_PORT:3306}
@@ -66,13 +68,13 @@ mycloud:
   hdfsUrl: ${MYCLOUD_HDFS_URL:}
 
 
-#logging:
-#  level:
-#    top:
-#      cellargalaxy:
-#        mycloud:
-#          dao:
-#            '*': DEBUG
-#          controller:
-#            security:
-#              '*': DEBUG
+logging:
+  level:
+    top:
+      cellargalaxy:
+        mycloud:
+          dao:
+            '*': DEBUG
+          controller:
+            security:
+              '*': DEBUG

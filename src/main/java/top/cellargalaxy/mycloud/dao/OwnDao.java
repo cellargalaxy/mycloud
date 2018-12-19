@@ -27,7 +27,7 @@ public interface OwnDao extends IDao<OwnPo, OwnBo, OwnQuery> {
         if (StringUtils.isBlank(ownPo.getOwnUuid())) {
             return "所属uuid不得为空";
         }
-        if (ownPo.getUserId() < 1) {
+        if (ownPo.getUserId() < 0) {
             return "用户id不得为空";
         }
         return null;

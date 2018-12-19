@@ -126,7 +126,7 @@ public interface OwnMapper extends IDao<OwnPo, OwnBo, OwnQuery> {
 
 
         public String insert(OwnPo ownPo) {
-            String string = ProviderUtils.insert(tableName, ownPo).toString();
+            String string = ProviderUtils.insert(tableName, OwnPo.class).toString();
             return string;
         }
 
@@ -143,25 +143,15 @@ public interface OwnMapper extends IDao<OwnPo, OwnBo, OwnQuery> {
         }
 
         public String selectOne(OwnPo ownPo) {
-            SQL sql = new SQL()
-                    .SELECT(tableName + ".own_id")
-                    .SELECT(tableName + ".own_uuid")
-                    .SELECT(tableName + ".user_id")
-                    .SELECT(tableName + ".file_id")
-                    .SELECT(tableName + ".file_length")
-                    .SELECT(tableName + ".content_type")
-                    .SELECT(tableName + ".file_name")
-                    .SELECT(tableName + ".sort")
-                    .SELECT(tableName + ".description")
-                    .SELECT(tableName + ".create_time")
-                    .SELECT(tableName + ".update_time")
-                    .SELECT(UserDao.TABLE_NAME + ".username")
+            SQL sql = new SQL();
+            ProviderUtils.select(tableName, OwnPo.class, sql);
+            sql.SELECT(UserDao.TABLE_NAME + ".username")
                     .SELECT(FileInfoDao.TABLE_NAME + ".md5")
                     //own left join user on own.user_id=user.user_id left join file_info on own.file_id=file_info.file_id
                     .FROM(tableName + " left join " + UserDao.TABLE_NAME + " on " + tableName + ".user_id=" + UserDao.TABLE_NAME + ".user_id left join " + FileInfoDao.TABLE_NAME + " on " + tableName + ".file_id=" + FileInfoDao.TABLE_NAME + ".file_id");
             Set<String> wheres = new HashSet<>();
             wheresKey(ownPo, wheres);
-            ProviderUtils.where(wheres, sql);
+            ProviderUtils.where(tableName, wheres, sql);
             String string = ProviderUtils.limitOne(sql).toString();
             return string;
         }
@@ -169,50 +159,30 @@ public interface OwnMapper extends IDao<OwnPo, OwnBo, OwnQuery> {
 
         public String selectPageSome(OwnQuery ownQuery) {
             SqlUtils.initPageQuery(ownQuery);
-            SQL sql = new SQL()
-                    .SELECT(tableName + ".own_id")
-                    .SELECT(tableName + ".own_uuid")
-                    .SELECT(tableName + ".user_id")
-                    .SELECT(tableName + ".file_id")
-                    .SELECT(tableName + ".file_length")
-                    .SELECT(tableName + ".content_type")
-                    .SELECT(tableName + ".file_name")
-                    .SELECT(tableName + ".sort")
-                    .SELECT(tableName + ".description")
-                    .SELECT(tableName + ".create_time")
-                    .SELECT(tableName + ".update_time")
-                    .SELECT(UserDao.TABLE_NAME + ".username")
+            SQL sql = new SQL();
+            ProviderUtils.select(tableName, OwnPo.class, sql);
+            sql.SELECT(UserDao.TABLE_NAME + ".username")
                     .SELECT(FileInfoDao.TABLE_NAME + ".md5")
                     //own left join user on own.user_id=user.user_id left join file_info on own.file_id=file_info.file_id
                     .FROM(tableName + " left join " + UserDao.TABLE_NAME + " on " + tableName + ".user_id=" + UserDao.TABLE_NAME + ".user_id left join " + FileInfoDao.TABLE_NAME + " on " + tableName + ".file_id=" + FileInfoDao.TABLE_NAME + ".file_id");
             Set<String> wheres = new HashSet<>();
             wheresAll(ownQuery, wheres);
-            ProviderUtils.where(wheres, sql);
+            ProviderUtils.where(tableName, wheres, sql);
             String string = ProviderUtils.limitSome(sql).toString();
             return string;
         }
 
 
         public String selectAllSome(OwnQuery ownQuery) {
-            SQL sql = new SQL()
-                    .SELECT(tableName + ".own_id")
-                    .SELECT(tableName + ".own_uuid")
-                    .SELECT(tableName + ".user_id")
-                    .SELECT(tableName + ".file_id")
-                    .SELECT(tableName + ".file_length")
-                    .SELECT(tableName + ".content_type")
-                    .SELECT(tableName + ".file_name")
-                    .SELECT(tableName + ".sort")
-                    .SELECT(tableName + ".description")
-                    .SELECT(tableName + ".create_time")
-                    .SELECT(tableName + ".update_time")
-                    .SELECT(UserDao.TABLE_NAME + ".username")
+            SQL sql = new SQL();
+            ProviderUtils.select(tableName, OwnPo.class, sql);
+            sql.SELECT(UserDao.TABLE_NAME + ".username")
                     .SELECT(FileInfoDao.TABLE_NAME + ".md5")
                     //own left join user on own.user_id=user.user_id left join file_info on own.file_id=file_info.file_id
                     .FROM(tableName + " left join " + UserDao.TABLE_NAME + " on " + tableName + ".user_id=" + UserDao.TABLE_NAME + ".user_id left join " + FileInfoDao.TABLE_NAME + " on " + tableName + ".file_id=" + FileInfoDao.TABLE_NAME + ".file_id");
             Set<String> wheres = new HashSet<>();
             wheresAll(ownQuery, wheres);
-            ProviderUtils.where(wheres, sql);
+            ProviderUtils.where(tableName, wheres, sql);
             String string = sql.toString();
             return string;
         }
@@ -224,19 +194,9 @@ public interface OwnMapper extends IDao<OwnPo, OwnBo, OwnQuery> {
 
 
         public String selectAll() {
-            SQL sql = new SQL()
-                    .SELECT(tableName + ".own_id")
-                    .SELECT(tableName + ".own_uuid")
-                    .SELECT(tableName + ".user_id")
-                    .SELECT(tableName + ".file_id")
-                    .SELECT(tableName + ".file_length")
-                    .SELECT(tableName + ".content_type")
-                    .SELECT(tableName + ".file_name")
-                    .SELECT(tableName + ".sort")
-                    .SELECT(tableName + ".description")
-                    .SELECT(tableName + ".create_time")
-                    .SELECT(tableName + ".update_time")
-                    .SELECT(UserDao.TABLE_NAME + ".username")
+            SQL sql = new SQL();
+            ProviderUtils.select(tableName, OwnPo.class, sql);
+            sql.SELECT(UserDao.TABLE_NAME + ".username")
                     .SELECT(FileInfoDao.TABLE_NAME + ".md5")
                     //own left join user on own.user_id=user.user_id left join file_info on own.file_id=file_info.file_id
                     .FROM(tableName + " left join " + UserDao.TABLE_NAME + " on " + tableName + ".user_id=" + UserDao.TABLE_NAME + ".user_id left join " + FileInfoDao.TABLE_NAME + " on " + tableName + ".file_id=" + FileInfoDao.TABLE_NAME + ".file_id");
@@ -250,7 +210,7 @@ public interface OwnMapper extends IDao<OwnPo, OwnBo, OwnQuery> {
                     .FROM(tableName);
             Set<String> wheres = new HashSet<>();
             wheresAll(ownQuery, wheres);
-            ProviderUtils.where(wheres, sql);
+            ProviderUtils.where(tableName, wheres, sql);
             String string = sql.toString();
             return string;
         }

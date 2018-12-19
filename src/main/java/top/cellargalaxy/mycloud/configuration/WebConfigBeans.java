@@ -48,7 +48,7 @@ public class WebConfigBeans {
                     }
                     try {
                         if (string.matches("^\\d+$")) {
-                            return new Date(Long.valueOf(string));
+                            return new Date(Long.valueOf(string) * 1000);
                         }
                         if (string.contains(":")) {
                             return DATE_FORMAT_FORMAT.parse(string);

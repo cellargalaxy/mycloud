@@ -15,7 +15,7 @@ import java.io.OutputStream;
  * @time 2018/10/25
  */
 public interface FileService {
-    String addTmpFile(InputStream inputStream, OwnBo ownBo, OwnExpirePo ownExpirePo, UserPo userPo) throws IOException;
+    String addTmpFile(InputStream inputStream, OwnBo ownBo, OwnExpirePo ownExpirePo) throws IOException;
 
     String addFile(InputStream inputStream, OwnBo ownBo, UserPo userPo) throws IOException;
 

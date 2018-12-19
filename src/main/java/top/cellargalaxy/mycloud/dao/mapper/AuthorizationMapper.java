@@ -97,7 +97,7 @@ public interface AuthorizationMapper extends IDao<AuthorizationPo, Authorization
         }
 
         public String insert(AuthorizationPo authorizationPo) {
-            String string = ProviderUtils.insert(tableName, authorizationPo).toString();
+            String string = ProviderUtils.insert(tableName, AuthorizationPo.class).toString();
             return string;
         }
 
@@ -112,56 +112,44 @@ public interface AuthorizationMapper extends IDao<AuthorizationPo, Authorization
         }
 
         public String selectOne(AuthorizationPo authorizationPo) {
-            SQL sql = new SQL()
-                    .SELECT(tableName + ".authorization_id")
-                    .SELECT(tableName + ".user_id")
-                    .SELECT(tableName + ".permission")
-                    .SELECT(tableName + ".create_time")
-                    .SELECT(tableName + ".update_time")
-                    .SELECT(UserDao.TABLE_NAME + ".username")
+            SQL sql = new SQL();
+            ProviderUtils.select(tableName, AuthorizationPo.class, sql);
+            sql.SELECT(UserDao.TABLE_NAME + ".username")
                     .FROM(tableName)
                     .FROM(UserDao.TABLE_NAME)
                     .WHERE(tableName + ".user_id=" + UserDao.TABLE_NAME + ".user_id");
             Set<String> wheres = new HashSet<>();
             wheresKey(authorizationPo, wheres);
-            ProviderUtils.where(wheres, sql);
+            ProviderUtils.where(tableName, wheres, sql);
             String string = ProviderUtils.limitOne(sql).toString();
             return string;
         }
 
         public String selectPageSome(AuthorizationQuery authorizationQuery) {
             SqlUtils.initPageQuery(authorizationQuery);
-            SQL sql = new SQL()
-                    .SELECT(tableName + ".authorization_id")
-                    .SELECT(tableName + ".user_id")
-                    .SELECT(tableName + ".permission")
-                    .SELECT(tableName + ".create_time")
-                    .SELECT(tableName + ".update_time")
-                    .SELECT(UserDao.TABLE_NAME + ".username")
+            SQL sql = new SQL();
+            ProviderUtils.select(tableName, AuthorizationPo.class, sql);
+            sql.SELECT(UserDao.TABLE_NAME + ".username")
                     .FROM(tableName)
                     .FROM(UserDao.TABLE_NAME)
                     .WHERE(tableName + ".user_id=" + UserDao.TABLE_NAME + ".user_id");
             Set<String> wheres = new HashSet<>();
             wheresAll(authorizationQuery, wheres);
-            ProviderUtils.where(wheres, sql);
+            ProviderUtils.where(tableName, wheres, sql);
             String string = ProviderUtils.limitSome(sql).toString();
             return string;
         }
 
         public String selectAllSome(AuthorizationQuery authorizationQuery) {
-            SQL sql = new SQL()
-                    .SELECT(tableName + ".authorization_id")
-                    .SELECT(tableName + ".user_id")
-                    .SELECT(tableName + ".permission")
-                    .SELECT(tableName + ".create_time")
-                    .SELECT(tableName + ".update_time")
-                    .SELECT(UserDao.TABLE_NAME + ".username")
+            SQL sql = new SQL();
+            ProviderUtils.select(tableName, AuthorizationPo.class, sql);
+            sql.SELECT(UserDao.TABLE_NAME + ".username")
                     .FROM(tableName)
                     .FROM(UserDao.TABLE_NAME)
                     .WHERE(tableName + ".user_id=" + UserDao.TABLE_NAME + ".user_id");
             Set<String> wheres = new HashSet<>();
             wheresAll(authorizationQuery, wheres);
-            ProviderUtils.where(wheres, sql);
+            ProviderUtils.where(tableName, wheres, sql);
             String string = sql.toString();
             return string;
         }
@@ -172,13 +160,9 @@ public interface AuthorizationMapper extends IDao<AuthorizationPo, Authorization
         }
 
         public String selectAll() {
-            SQL sql = new SQL()
-                    .SELECT(tableName + ".authorization_id")
-                    .SELECT(tableName + ".user_id")
-                    .SELECT(tableName + ".permission")
-                    .SELECT(tableName + ".create_time")
-                    .SELECT(tableName + ".update_time")
-                    .SELECT(UserDao.TABLE_NAME + ".username")
+            SQL sql = new SQL();
+            ProviderUtils.select(tableName, AuthorizationPo.class, sql);
+            sql.SELECT(UserDao.TABLE_NAME + ".username")
                     .FROM(tableName)
                     .FROM(UserDao.TABLE_NAME)
                     .WHERE(tableName + ".user_id=" + UserDao.TABLE_NAME + ".user_id");

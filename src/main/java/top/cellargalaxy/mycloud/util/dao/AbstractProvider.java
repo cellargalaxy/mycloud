@@ -18,7 +18,7 @@ public abstract class AbstractProvider<Po, Query extends PageQuery> implements I
 
     @Override
     public String insert(Po po) {
-        String string = ProviderUtils.insert(tableName, po).toString();
+        String string = ProviderUtils.insert(tableName, po.getClass()).toString();
         return string;
     }
 

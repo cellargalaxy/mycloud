@@ -5,15 +5,16 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import top.cellargalaxy.mycloud.configuration.MycloudConfiguration;
 import top.cellargalaxy.mycloud.model.bo.AuthorizationBo;
 import top.cellargalaxy.mycloud.model.bo.UserBo;
 import top.cellargalaxy.mycloud.model.po.UserPo;
-import top.cellargalaxy.mycloud.util.model.SecurityUser;
 import top.cellargalaxy.mycloud.model.vo.UserVo;
 import top.cellargalaxy.mycloud.service.UserService;
+import top.cellargalaxy.mycloud.util.model.SecurityUser;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
@@ -61,11 +62,7 @@ public class SecurityServiceImpl implements SecurityService {
             SecurityUserImpl securityUser = new SecurityUserImpl();
 
             UserBo userBo = userVo.getUser();
-            securityUser.setUserId(userBo.getUserId());
-            securityUser.setUsername(userBo.getUsername());
-            securityUser.setPassword(userBo.getPassword());
-            securityUser.setCreateTime(userBo.getCreateTime());
-            securityUser.setUpdateTime(userBo.getUpdateTime());
+            BeanUtils.copyProperties(userBo, securityUser);
 
             List<AuthorizationBo> authorizationBos = userVo.getAuthorizations();
             authorizationBos.stream().forEach(authorizationBo -> securityUser.getPermissions().add(authorizationBo.getPermission().toString()));
@@ -152,7 +149,7 @@ public class SecurityServiceImpl implements SecurityService {
         return (SecurityUserImpl) request.getAttribute(USER_KEY);
     }
 
-    class SecurityUserImpl extends UserPo implements SecurityUser {
+    public static class SecurityUserImpl extends UserPo implements SecurityUser {
         private final Set<String> permissions;
 
         public SecurityUserImpl() {

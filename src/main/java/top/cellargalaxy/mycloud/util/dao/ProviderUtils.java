@@ -23,15 +23,14 @@ public class ProviderUtils {
         return new StringBuilder(sql.toString()).append(" limit #{off},#{len}");
     }
 
-    public static final <Po> SQL insert(String tableName, Po po) {
+    public static final SQL insert(String tableName, Class<?> clazz) {
         SQL sql = new SQL().INSERT_INTO(tableName);
 
-        Class<?> clazz = po.getClass();
         do {
             for (Field field : clazz.getDeclaredFields()) {
                 String modifier = Modifier.toString(field.getModifiers());
                 if (!modifier.contains("static") && !modifier.contains("final")) {
-                    sql.VALUES(StringUtils.lowerCamel2LowerHyphen(field.getName()), "#{" + field.getName() + "}");
+                    sql.VALUES(column(tableName, field.getName()), property(field.getName()));
                 }
             }
             clazz = clazz.getSuperclass();
@@ -49,7 +48,7 @@ public class ProviderUtils {
             sql.WHERE("false");
             return sql;
         }
-        where(wheres, sql);
+        where(tableName, wheres, sql);
         return sql;
     }
 
@@ -61,7 +60,7 @@ public class ProviderUtils {
         if (sets.size() == 0) {
             sets.add(defaultSet);
         }
-        set(sets, sql);
+        set(tableName, sets, sql);
 
         Set<String> wheres = new HashSet<>();
         wheresKeyFunc.accept(po, wheres);
@@ -69,7 +68,7 @@ public class ProviderUtils {
             sql.WHERE("false");
             return sql;
         }
-        where(wheres, sql);
+        where(tableName, wheres, sql);
         return sql;
     }
 
@@ -82,7 +81,7 @@ public class ProviderUtils {
             sql.WHERE("true");
             return sql;
         }
-        where(wheres, sql);
+        where(tableName, wheres, sql);
         return sql;
     }
 
@@ -95,7 +94,7 @@ public class ProviderUtils {
             sql = sql.WHERE("true");
             return sql;
         }
-        where(wheres, sql);
+        where(tableName, wheres, sql);
         return sql;
     }
 
@@ -104,15 +103,56 @@ public class ProviderUtils {
         return sql;
     }
 
-    public static final void set(Set<String> sets, SQL sql) {
-        for (String set : sets) {
-            sql.SET(StringUtils.lowerCamel2LowerHyphen(set) + "=#{" + set + "}");
+//    public static final void set(Map<String, String> fieldTableNameMap, Set<String> sets, SQL sql) {
+//        sets.stream().forEach(set -> set(fieldTableNameMap, set, sql));
+//    }
+//
+//    public static final void set(Map<String, String> fieldTableNameMap, String fieldName, SQL sql) {
+//        sql.SET(equalSign(fieldTableNameMap.get(fieldName), fieldName).toString());
+//    }
+//
+//    public static final void where(Map<String, String> fieldTableNameMap, Set<String> wheres, SQL sql) {
+//        wheres.stream().forEach(where -> where(fieldTableNameMap, where, sql));
+//    }
+//
+//    public static final void where(Map<String, String> fieldTableNameMap, String fieldName, SQL sql) {
+//        sql.WHERE(equalSign(fieldTableNameMap.get(fieldName), fieldName));
+//    }
+
+    public static final void set(String tableName, Set<String> propertys, SQL sql) {
+        propertys.stream().forEach(property -> set(tableName, property, sql));
+    }
+
+    public static final void set(String tableName, String property, SQL sql) {
+        sql.SET(equalSign(tableName, property));
+    }
+
+    public static final void where(String tableName, Set<String> propertys, SQL sql) {
+        propertys.stream().forEach(property -> where(tableName, property, sql));
+    }
+
+    public static final void where(String tableName, String property, SQL sql) {
+        sql.WHERE(equalSign(tableName, property));
+    }
+
+    public static final void select(String tableName, Class<?> clazz, SQL sql) {
+        for (Field field : clazz.getDeclaredFields()) {
+            String modifier = Modifier.toString(field.getModifiers());
+            if (!modifier.contains("static") && !modifier.contains("final")) {
+                sql.SELECT(column(tableName, field.getName()));
+            }
         }
     }
 
-    public static final void where(Set<String> wheres, SQL sql) {
-        for (String where : wheres) {
-            sql.WHERE(StringUtils.lowerCamel2LowerHyphen(where) + "=#{" + where + "}");
-        }
+    public static final String equalSign(String tableName, String property) {
+        return column(tableName, property) + "=" + property(property);
+    }
+
+    public static final String property(String property) {
+        return "#{" + property + "}";
+    }
+
+    public static final String column(String tableName, String property) {
+        return tableName + "." + StringUtils.lowerCamel2LowerHyphen(property);
     }
 }

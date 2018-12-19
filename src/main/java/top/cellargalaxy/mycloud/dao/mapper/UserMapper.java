@@ -94,7 +94,7 @@ public interface UserMapper extends IDao<UserPo, UserBo, UserQuery> {
 
 
         public String insert(UserPo userPo) {
-            String string = ProviderUtils.insert(tableName, userPo).toString();
+            String string = ProviderUtils.insert(tableName, UserPo.class).toString();
             return string;
         }
 

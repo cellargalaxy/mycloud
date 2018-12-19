@@ -24,12 +24,6 @@ public class UserUserController {
     @Autowired
     private UserService userService;
 
-    @GetMapping("/getUserVo")
-    public Vo getUserVo(HttpServletRequest request) {
-        UserPo userPo = SecurityServiceImpl.getSecurityUser(request);
-        return new Vo(null, userService.getUserVo(userPo));
-    }
-
     @PostMapping("/changeUser")
     public Vo changeUser(HttpServletRequest request, UserPo newUserPo) {
         UserPo userPo = SecurityServiceImpl.getSecurityUser(request);
