@@ -92,30 +92,25 @@ public interface UserMapper extends IDao<UserPo, UserBo, UserQuery> {
             }
         }
 
-
         public String insert(UserPo userPo) {
             String string = ProviderUtils.insert(tableName, UserPo.class).toString();
             return string;
         }
-
 
         public String delete(UserPo userPo) {
             String string = ProviderUtils.limitOne(ProviderUtils.delete(tableName, userPo, this::wheresKey)).toString();
             return string;
         }
 
-
         public String update(UserPo userPo) {
             String string = ProviderUtils.limitOne(ProviderUtils.update(tableName, userPo, "userId", this::sets, this::wheresKey)).toString();
             return string;
         }
 
-
         public String selectOne(UserPo userPo) {
             String string = ProviderUtils.limitOne(ProviderUtils.select(tableName, userPo, this::wheresKey)).toString();
             return string;
         }
-
 
         public String selectPageSome(UserQuery userQuery) {
             SqlUtils.initPageQuery(userQuery);
@@ -123,24 +118,19 @@ public interface UserMapper extends IDao<UserPo, UserBo, UserQuery> {
             return string;
         }
 
-
         public String selectAllSome(UserQuery userQuery) {
             String string = ProviderUtils.select(tableName, userQuery, this::wheresAll).toString();
             return string;
         }
-
 
         public String selectCount(UserQuery userQuery) {
             String string = ProviderUtils.selectCount(tableName, userQuery, this::wheresAll).toString();
             return string;
         }
 
-
         public String selectAll() {
             String string = ProviderUtils.selectAll(tableName).toString();
             return string;
         }
-
-
     }
 }

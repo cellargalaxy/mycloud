@@ -42,8 +42,18 @@ spring:
 #  cache:
 #    type: CAFFEINE
   redis:
+    database: 0
     host: 127.0.0.1
     port: 6379
+    #如果redis没有密码，需要注释掉
+    #    password:
+    timeout: 10s
+    jedis:
+      pool:
+        max-wait: 10s
+        min-idle: 0
+        max-idle: 8
+        max-active: 8
 
 #  autoconfigure:Could not find value method on SQL annotation Error creating SqlSource for SqlProvider Sql provider method can not overload
 #    exclude: org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration,com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceAutoConfigure
