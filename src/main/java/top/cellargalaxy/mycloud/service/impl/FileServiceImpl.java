@@ -54,11 +54,11 @@ public class FileServiceImpl implements FileService {
 
     @Override
     public String addTmpFile(InputStream inputStream, OwnBo ownBo, OwnExpirePo ownExpirePo) throws IOException {
-        if (ownExpirePo == null || ownExpirePo.getExpireTime() == null) {
+        if (ownExpirePo == null || ownExpirePo.getOwnExpireTime() == null) {
             return "临时文件保存时间不得为空";
         }
-        if (ownExpirePo.getExpireTime().getTime() - System.currentTimeMillis() > maxTmpFileSaveTime) {
-            ownExpirePo.setExpireTime(new Date(System.currentTimeMillis() + maxTmpFileSaveTime));
+        if (ownExpirePo.getOwnExpireTime().getTime() - System.currentTimeMillis() > maxTmpFileSaveTime) {
+            ownExpirePo.setOwnExpireTime(new Date(System.currentTimeMillis() + maxTmpFileSaveTime));
         }
         ownBo.setOwnUuid(UUID.randomUUID().toString());
         ownBo.setUserId(UserBo.GUEST.getUserId());

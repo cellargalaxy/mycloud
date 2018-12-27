@@ -57,43 +57,48 @@ public interface AuthorizationMapper extends IDao<AuthorizationPo, Authorization
     @SelectProvider(type = AuthorizationProvider.class, method = "selectAll")
     List<AuthorizationBo> selectAll();
 
-    class AuthorizationProvider /*implements IProvider<AuthorizationPo, AuthorizationQuery>*/ {
-        private String tableName = AuthorizationDao.TABLE_NAME;
+	class AuthorizationProvider /*implements IProvider<AuthorizationPo,AuthorizationQuery>*/ {
+		private final String tableName = AuthorizationDao.TABLE_NAME;
 
-        public void wheresKey(AuthorizationPo authorizationPo, Set<String> wheres) {
-            if (authorizationPo.getAuthorizationId() > 0) {
-                wheres.add("authorizationId");
-                return;
-            }
-            if (authorizationPo.getUserId() > 0 && authorizationPo.getPermission() != null) {
-                wheres.add("userId");
-                wheres.add("permission");
-                return;
-            }
+		public Set<String> wheresKey(AuthorizationPo authorizationPo) {
+			Set<String> wheres = new HashSet<>();
+			if (authorizationPo.getAuthorizationId() > 0) {
+				wheres.add("authorizationId");
+				return wheres;
+			}
+			if (authorizationPo.getUserId() > 0 && authorizationPo.getPermission() != null) {
+				wheres.add("userId");
+				wheres.add("permission");
+				return wheres;
+			}
+			wheres.add("authorizationId");
+			return wheres;
         }
 
-        public void wheresAll(AuthorizationQuery authorizationQuery, Set<String> wheres) {
-            if (authorizationQuery.getAuthorizationId() > 0) {
-                wheres.add("authorizationId");
-            }
-            if (authorizationQuery.getUserId() > 0) {
-                wheres.add("userId");
-            }
-            if (authorizationQuery.getPermission() != null) {
-                wheres.add("permission");
-            }
-        }
+		public Set<String> wheresAll(AuthorizationQuery authorizationQuery) {
+			Set<String> wheres = new HashSet<>();
+			if (authorizationQuery.getAuthorizationId() > 0) {
+				wheres.add("authorizationId");
+			}
+			if (authorizationQuery.getUserId() > 0) {
+				wheres.add("userId");
+			}
+			if (authorizationQuery.getPermission() != null) {
+				wheres.add("permission");
+			}
+			return wheres;
+		}
 
-        public void sets(AuthorizationPo authorizationPo, Set<String> sets) {
-            if (authorizationPo.getUserId() > 0) {
-                sets.add("userId");
-            }
-            if (authorizationPo.getPermission() != null) {
-                sets.add("permission");
-            }
-            if (authorizationPo.getUpdateTime() != null) {
-                sets.add("updateTime");
-            }
+		/**
+		 * 只有删除，没有修改
+		 *
+		 * @param authorizationPo
+		 * @return
+		 */
+		public Set<String> sets(AuthorizationPo authorizationPo) {
+			Set<String> sets = new HashSet<>();
+
+			return sets;
         }
 
         public String insert(AuthorizationPo authorizationPo) {
@@ -102,71 +107,69 @@ public interface AuthorizationMapper extends IDao<AuthorizationPo, Authorization
         }
 
         public String delete(AuthorizationPo authorizationPo) {
-            String string = ProviderUtils.limitOne(ProviderUtils.delete(tableName, authorizationPo, this::wheresKey)).toString();
+	        String string = ProviderUtils.limitOne(ProviderUtils.delete(tableName, wheresKey(authorizationPo))).toString();
             return string;
         }
 
         public String update(AuthorizationPo authorizationPo) {
-            String string = ProviderUtils.limitOne(ProviderUtils.update(tableName, authorizationPo, "userId", this::sets, this::wheresKey)).toString();
-            return string;
+	        String string = null;//ProviderUtils.limitOne(ProviderUtils.update(tableName, sets(authorizationPo), "defaultSet", wheresKey(authorizationPo))).toString();
+	        return string;
         }
 
         public String selectOne(AuthorizationPo authorizationPo) {
-            SQL sql = new SQL();
-            ProviderUtils.select(tableName, AuthorizationPo.class, sql);
-            sql.SELECT(UserDao.TABLE_NAME + ".username")
-                    .FROM(tableName)
-                    .FROM(UserDao.TABLE_NAME)
-                    .WHERE(tableName + ".user_id=" + UserDao.TABLE_NAME + ".user_id");
-            Set<String> wheres = new HashSet<>();
-            wheresKey(authorizationPo, wheres);
-            ProviderUtils.where(tableName, wheres, sql);
-            String string = ProviderUtils.limitOne(sql).toString();
-            return string;
+	        SQL sql = ProviderUtils.select(new SQL(), tableName, AuthorizationPo.class);
+	        sql.SELECT(UserDao.TABLE_NAME + ".username");
+
+	        sql.FROM(tableName + "," + UserDao.TABLE_NAME);
+
+	        sql = ProviderUtils.whereTrue(sql, tableName, wheresKey(authorizationPo));
+	        sql.WHERE(ProviderUtils.column(tableName, "userId") + "=" + ProviderUtils.column(UserDao.TABLE_NAME, "userId"));
+
+	        String string = ProviderUtils.limitOne(sql).toString();
+	        return string;
         }
 
         public String selectPageSome(AuthorizationQuery authorizationQuery) {
             SqlUtils.initPageQuery(authorizationQuery);
-            SQL sql = new SQL();
-            ProviderUtils.select(tableName, AuthorizationPo.class, sql);
-            sql.SELECT(UserDao.TABLE_NAME + ".username")
-                    .FROM(tableName)
-                    .FROM(UserDao.TABLE_NAME)
-                    .WHERE(tableName + ".user_id=" + UserDao.TABLE_NAME + ".user_id");
-            Set<String> wheres = new HashSet<>();
-            wheresAll(authorizationQuery, wheres);
-            ProviderUtils.where(tableName, wheres, sql);
-            String string = ProviderUtils.limitSome(sql).toString();
+
+	        SQL sql = ProviderUtils.select(new SQL(), tableName, AuthorizationPo.class);
+	        sql.SELECT(UserDao.TABLE_NAME + ".username");
+
+	        sql.FROM(tableName + "," + UserDao.TABLE_NAME);
+
+	        sql = ProviderUtils.whereTrue(sql, tableName, wheresAll(authorizationQuery));
+	        sql.WHERE(ProviderUtils.column(tableName, "userId") + "=" + ProviderUtils.column(UserDao.TABLE_NAME, "userId"));
+
+	        String string = ProviderUtils.limitSome(sql).toString();
             return string;
         }
 
         public String selectAllSome(AuthorizationQuery authorizationQuery) {
-            SQL sql = new SQL();
-            ProviderUtils.select(tableName, AuthorizationPo.class, sql);
-            sql.SELECT(UserDao.TABLE_NAME + ".username")
-                    .FROM(tableName)
-                    .FROM(UserDao.TABLE_NAME)
-                    .WHERE(tableName + ".user_id=" + UserDao.TABLE_NAME + ".user_id");
-            Set<String> wheres = new HashSet<>();
-            wheresAll(authorizationQuery, wheres);
-            ProviderUtils.where(tableName, wheres, sql);
-            String string = sql.toString();
+	        SQL sql = ProviderUtils.select(new SQL(), tableName, AuthorizationPo.class);
+	        sql.SELECT(UserDao.TABLE_NAME + ".username");
+
+	        sql.FROM(tableName + "," + UserDao.TABLE_NAME);
+
+	        sql = ProviderUtils.whereTrue(sql, tableName, wheresAll(authorizationQuery));
+	        sql.WHERE(ProviderUtils.column(tableName, "userId") + "=" + ProviderUtils.column(UserDao.TABLE_NAME, "userId"));
+
+	        String string = sql.toString();
             return string;
         }
 
         public String selectCount(AuthorizationQuery authorizationQuery) {
-            String string = ProviderUtils.selectCount(tableName, authorizationQuery, this::wheresAll).toString();
-            return string;
+	        String string = ProviderUtils.selectCount(tableName, wheresAll(authorizationQuery)).toString();
+	        return string;
         }
 
-        public String selectAll() {
-            SQL sql = new SQL();
-            ProviderUtils.select(tableName, AuthorizationPo.class, sql);
-            sql.SELECT(UserDao.TABLE_NAME + ".username")
-                    .FROM(tableName)
-                    .FROM(UserDao.TABLE_NAME)
-                    .WHERE(tableName + ".user_id=" + UserDao.TABLE_NAME + ".user_id");
-            String string = sql.toString();
+		public String selectAll() {SQL sql = ProviderUtils.select(new SQL(), tableName, AuthorizationPo.class);
+			sql.SELECT(UserDao.TABLE_NAME + ".username");
+
+			sql.FROM(tableName + "," + UserDao.TABLE_NAME);
+
+			sql.WHERE(ProviderUtils.column(tableName, "userId") + "=" + ProviderUtils.column(UserDao.TABLE_NAME, "userId"));
+
+			String string = sql.toString();
             return string;
         }
     }

@@ -24,6 +24,9 @@ public interface FileInfoDao extends IDao<FileInfoPo, FileInfoBo, FileInfoQuery>
         if (StringUtils.isBlank(fileInfoPo.getContentType())) {
             return "文件类型不得为空";
         }
+        if (fileInfoPo.getFileLength() < 0) {
+            return "文件大小不得小于零";
+        }
         return null;
     }
 

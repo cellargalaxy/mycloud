@@ -15,12 +15,13 @@ public class OwnPo implements Serializable {
     private int ownId;
     private String ownUuid;
     private int userId;
-    private long fileLength;
-    private String contentType;
     private String fileName;
-    private int fileId;
     private String sort;
     private String description;
+    private String contentType;
+    private long fileLength;
+    private String md5;
+    private int fileId;
     private Date createTime;
     private Date updateTime;
 }

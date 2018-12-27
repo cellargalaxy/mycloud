@@ -23,8 +23,8 @@ public interface OwnExpireDao extends IDao<OwnExpirePo, OwnExpireBo, OwnExpireQu
         if (ownExpirePo.getOwnId() < 1) {
             return "所属id不得为空";
         }
-        if (ownExpirePo.getExpireTime() == null) {
-            return "过期时间不得为空";
+        if (ownExpirePo.getOwnExpireTime() == null) {
+            return "所属过期时间不得为空";
         }
         return null;
     }

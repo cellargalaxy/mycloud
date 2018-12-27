@@ -11,6 +11,7 @@ import top.cellargalaxy.mycloud.util.dao.IDao;
 import top.cellargalaxy.mycloud.util.dao.ProviderUtils;
 import top.cellargalaxy.mycloud.util.dao.SqlUtils;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -58,92 +59,91 @@ public interface FileInfoMapper extends IDao<FileInfoPo, FileInfoBo, FileInfoQue
     @SelectProvider(type = FileInfoProvider.class, method = "selectAllContentType")
     List<String> selectAllContentType();
 
-    class FileInfoProvider /*implements IProvider<FileInfoPo, FileInfoQuery>*/ {
-        private String tableName = FileInfoDao.TABLE_NAME;
+	class FileInfoProvider /*implements IProvider<FileInfoPo,FileInfoQuery>*/ {
+		private final String tableName = FileInfoDao.TABLE_NAME;
 
-        public void wheresKey(FileInfoPo fileInfoPo, Set<String> wheres) {
-            if (fileInfoPo.getFileId() > 0) {
-                wheres.add("fileId");
-                return;
-            }
-            if (!StringUtils.isBlank(fileInfoPo.getMd5())) {
-                wheres.add("md5");
-                return;
-            }
-        }
+		public Set<String> wheresKey(FileInfoPo fileinfoPo) {
+			Set<String> wheres = new HashSet<>();
+			if (fileinfoPo.getFileId() > 0) {
+				wheres.add("fileId");
+				return wheres;
+			}
+			if (!StringUtils.isBlank(fileinfoPo.getMd5())) {
+				wheres.add("md5");
+				return wheres;
+			}
+			wheres.add("fileId");
+			return wheres;
+		}
 
+		public Set<String> wheresAll(FileInfoQuery fileinfoQuery) {
+			Set<String> wheres = new HashSet<>();
+			if (fileinfoQuery.getFileId() > 0) {
+				wheres.add("fileId");
+			}
+			if (!StringUtils.isBlank(fileinfoQuery.getMd5())) {
+				wheres.add("md5");
+			}
+			return wheres;
+		}
 
-        public void wheresAll(FileInfoQuery fileInfoQuery, Set<String> wheres) {
-            if (fileInfoQuery.getFileId() > 0) {
-                wheres.add("fileId");
-            }
-            if (!StringUtils.isBlank(fileInfoQuery.getMd5())) {
-                wheres.add("md5");
-            }
-            if (!StringUtils.isBlank(fileInfoQuery.getContentType())) {
-                wheres.add("contentType");
-            }
-        }
+		/**
+		 * 只有删除，没有修改
+		 *
+		 * @param fileinfoPo
+		 * @return
+		 */
+		public Set<String> sets(FileInfoPo fileinfoPo) {
+			Set<String> sets = new HashSet<>();
 
+			return sets;
+		}
 
-        public void sets(FileInfoPo fileInfoPo, Set<String> sets) {
+		public String insert(FileInfoPo fileinfoPo) {
+			String string = ProviderUtils.insert(tableName, FileInfoPo.class).toString();
+			return string;
+		}
 
-        }
+		public String delete(FileInfoPo fileinfoPo) {
+			String string = ProviderUtils.limitOne(ProviderUtils.delete(tableName, wheresKey(fileinfoPo))).toString();
+			return string;
+		}
 
-        public String insert(FileInfoPo fileInfoPo) {
-            String string = ProviderUtils.insert(tableName, FileInfoPo.class).toString();
-            return string;
-        }
+		public String update(FileInfoPo fileinfoPo) {
+			String string = ProviderUtils.limitOne(ProviderUtils.update(tableName, sets(fileinfoPo), "defaultSet", wheresKey(fileinfoPo))).toString();
+			return string;
+		}
 
+		public String selectOne(FileInfoPo fileinfoPo) {
+			String string = ProviderUtils.limitOne(ProviderUtils.select(tableName, null, wheresKey(fileinfoPo))).toString();
+			return string;
+		}
 
-        public String delete(FileInfoPo fileInfoPo) {
-            String string = ProviderUtils.limitOne(ProviderUtils.delete(tableName, fileInfoPo, this::wheresKey)).toString();
-            return string;
-        }
+		public String selectPageSome(FileInfoQuery fileinfoQuery) {
+			SqlUtils.initPageQuery(fileinfoQuery);
+			String string = ProviderUtils.limitSome(ProviderUtils.select(tableName, null, wheresAll(fileinfoQuery))).toString();
+			return string;
+		}
 
+		public String selectAllSome(FileInfoQuery fileinfoQuery) {
+			String string = ProviderUtils.select(tableName, null, wheresAll(fileinfoQuery)).toString();
+			return string;
+		}
 
-        public String update(FileInfoPo fileInfoPo) {
-            String string = ProviderUtils.limitOne(ProviderUtils.update(tableName, fileInfoPo, "fileId", this::sets, this::wheresKey)).toString();
-            return string;
-        }
+		public String selectCount(FileInfoQuery fileinfoQuery) {
+			String string = ProviderUtils.selectCount(tableName, wheresAll(fileinfoQuery)).toString();
+			return string;
+		}
 
+		public String selectAll() {
+			String string = ProviderUtils.selectAll(tableName, null).toString();
+			return string;
+		}
 
-        public String selectOne(FileInfoPo fileInfoPo) {
-            String string = ProviderUtils.limitOne(ProviderUtils.select(tableName, fileInfoPo, this::wheresKey)).toString();
-            return string;
-        }
-
-
-        public String selectPageSome(FileInfoQuery fileInfoQuery) {
-            SqlUtils.initPageQuery(fileInfoQuery);
-            String string = ProviderUtils.limitSome(ProviderUtils.select(tableName, fileInfoQuery, this::wheresAll)).toString();
-            return string;
-        }
-
-
-        public String selectAllSome(FileInfoQuery fileInfoQuery) {
-            String string = ProviderUtils.select(tableName, fileInfoQuery, this::wheresAll).toString();
-            return string;
-        }
-
-
-        public String selectCount(FileInfoQuery fileInfoQuery) {
-            String string = ProviderUtils.selectCount(tableName, fileInfoQuery, this::wheresAll).toString();
-            return string;
-        }
-
-
-        public String selectAll() {
-            String string = ProviderUtils.selectAll(tableName).toString();
-            return string;
-        }
-
-        public String selectAllContentType() {
-            SQL sql = new SQL()
-                    .SELECT("distinct " + tableName + ".content_type")
-                    .FROM(tableName);
-            String string = sql.toString();
-            return string;
-        }
+		public String selectAllContentType() {
+			SQL sql = new SQL().SELECT("distinct " + ProviderUtils.column(tableName, "contentType")).FROM(tableName);
+			String string = sql.toString();
+			return string;
+		}
     }
 }

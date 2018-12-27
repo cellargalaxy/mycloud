@@ -2,157 +2,174 @@ package top.cellargalaxy.mycloud.util.dao;
 
 import org.apache.ibatis.jdbc.SQL;
 import top.cellargalaxy.mycloud.util.StringUtils;
-import top.cellargalaxy.mycloud.util.model.PageQuery;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.function.BiConsumer;
+import java.util.stream.Collectors;
 
 /**
  * Created by cellargalaxy on 18-8-4.
  */
 public class ProviderUtils {
 
-    public static final StringBuilder limitOne(SQL sql) {
-        return new StringBuilder(sql.toString()).append(" limit 1");
-    }
+	public static final SQL selectAll(String tableName, Set<String> selectFieldNames) {
+		return select(tableName, selectFieldNames, Collections.EMPTY_SET);
+	}
 
-    public static final StringBuilder limitSome(SQL sql) {
-        return new StringBuilder(sql.toString()).append(" limit #{off},#{len}");
-    }
+	public static final SQL selectCount(String tableName, Set<String> whereFieldNames) {
+		Set<String> selectFieldNames = new HashSet<>();
+		selectFieldNames.add("count(*)");
+		return select(tableName, selectFieldNames, whereFieldNames);
+	}
 
-    public static final SQL insert(String tableName, Class<?> clazz) {
-        SQL sql = new SQL().INSERT_INTO(tableName);
+	public static final SQL select(SQL sql, String tableName, Class<?> clazz, String... ignores) {
+		createSelect(tableName, clazz, ignores).stream().forEach(select -> sql.SELECT(select));
+		return sql;
+	}
 
-        do {
-            for (Field field : clazz.getDeclaredFields()) {
-                String modifier = Modifier.toString(field.getModifiers());
-                if (!modifier.contains("static") && !modifier.contains("final")) {
-                    sql.VALUES(column(tableName, field.getName()), property(field.getName()));
-                }
-            }
-            clazz = clazz.getSuperclass();
-        } while (!Object.class.equals(clazz));
+	public static final SQL select(String tableName, Set<String> selectFieldNames) {
+		SQL sql = new SQL();
+		createSelect(tableName, selectFieldNames).stream().forEach(select -> sql.SELECT(select));
+		return sql;
+	}
 
-        return sql;
-    }
+	public static final SQL select(String tableName, Set<String> selectFieldNames, Set<String> whereFieldNames) {
+		SQL sql = new SQL();
+		createSelect(tableName, selectFieldNames).stream().forEach(select -> sql.SELECT(select));
+		sql.FROM(tableName);
+		createWhereTrue(tableName, whereFieldNames).stream().forEach(where -> sql.WHERE(where));
+		return sql;
+	}
 
-    public static final <Po> SQL delete(String tableName, Po po, BiConsumer<Po, Set<String>> wheresKeyFunc) {
-        SQL sql = new SQL().DELETE_FROM(tableName);
+	public static final SQL update(String tableName, Set<String> setFieldNames, String defaultSet, Set<String> whereFieldNames) {
+		SQL sql = new SQL().UPDATE(tableName);
+		createSet(tableName, setFieldNames, defaultSet).stream().forEach(set -> sql.SET(set));
+		createWhereFalse(tableName, whereFieldNames).stream().forEach(where -> sql.WHERE(where));
+		return sql;
+	}
 
-        Set<String> wheres = new HashSet<>();
-        wheresKeyFunc.accept(po, wheres);
-        if (wheres.size() == 0) {
-            sql.WHERE("false");
-            return sql;
-        }
-        where(tableName, wheres, sql);
-        return sql;
-    }
+	public static final SQL delete(String tableName, Set<String> whereFieldNames) {
+		SQL sql = new SQL().DELETE_FROM(tableName);
+		createWhereFalse(tableName, whereFieldNames).stream().forEach(where -> sql.WHERE(where));
+		return sql;
+	}
 
-    public static final <Po> SQL update(String tableName, Po po, String defaultSet, BiConsumer<Po, Set<String>> setsFunc, BiConsumer<Po, Set<String>> wheresKeyFunc) {
-        SQL sql = new SQL().UPDATE(tableName);
+	public static final SQL insert(String tableName, Class<?> clazz, String... ignores) {
+		Set<String> fieldNames = createFieldName(clazz, ignores);
+		return insert(tableName, fieldNames);
+	}
 
-        Set<String> sets = new HashSet<>();
-        setsFunc.accept(po, sets);
-        if (sets.size() == 0) {
-            sets.add(defaultSet);
-        }
-        set(tableName, sets, sql);
+	public static final SQL insert(String tableName, Set<String> fieldNames) {
+		SQL sql = new SQL().INSERT_INTO(tableName);
+		fieldNames.stream().forEach(fieldName -> sql.VALUES(column(tableName, fieldName), field(fieldName)));
+		return sql;
+	}
 
-        Set<String> wheres = new HashSet<>();
-        wheresKeyFunc.accept(po, wheres);
-        if (wheres.size() == 0) {
-            sql.WHERE("false");
-            return sql;
-        }
-        where(tableName, wheres, sql);
-        return sql;
-    }
+	public static final SQL whereTrue(SQL sql, String tableName, Set<String> whereFieldNames) {
+		createWhereTrue(tableName, whereFieldNames).stream().forEach(where -> sql.WHERE(where));
+		return sql;
+	}
 
-    public static final <Po> SQL select(String tableName, Po po, BiConsumer<Po, Set<String>> wheresFunc) {
-        SQL sql = new SQL().SELECT("*").FROM(tableName);
+	public static final SQL whereFalse(SQL sql, String tableName, Set<String> whereFieldNames) {
+		createWhereFalse(tableName, whereFieldNames).stream().forEach(where -> sql.WHERE(where));
+		return sql;
+	}
 
-        Set<String> wheres = new HashSet<>();
-        wheresFunc.accept(po, wheres);
-        if (wheres.size() == 0) {
-            sql.WHERE("true");
-            return sql;
-        }
-        where(tableName, wheres, sql);
-        return sql;
-    }
+	public static final Set<String> createSelect(String tableName, Class<?> clazz, String... ignores) {
+		Set<String> selectFieldNames = createFieldName(clazz, ignores);
+		return createSelect(tableName, selectFieldNames);
+	}
 
-    public static final <Query extends PageQuery> SQL selectCount(String tableName, Query query, BiConsumer<Query, Set<String>> wheresAllFunc) {
-        SQL sql = new SQL().SELECT("count(*)").FROM(tableName);
+	public static final Set<String> createSelect(String tableName, Set<String> fieldNames) {
+		if (fieldNames == null || fieldNames.size() == 0) {
+			Set<String> select = new HashSet<>();
+			select.add("*");
+			return select;
+		}
+		return fieldNames.stream().map(select -> column(tableName, select)).collect(Collectors.toSet());
+	}
 
-        Set<String> wheres = new HashSet<>();
-        wheresAllFunc.accept(query, wheres);
-        if (wheres.size() == 0) {
-            sql = sql.WHERE("true");
-            return sql;
-        }
-        where(tableName, wheres, sql);
-        return sql;
-    }
+	public static final Set<String> createSet(String tableName, Set<String> fieldNames, String defaultSet) {
+		if (fieldNames == null || fieldNames.size() == 0) {
+			Set<String> sets = new HashSet<>();
+			sets.add(equalSign(tableName, defaultSet));
+			return sets;
+		}
+		return fieldNames.stream().map(fieldName -> equalSign(tableName, fieldName)).collect(Collectors.toSet());
+	}
 
-    public static final SQL selectAll(String tableName) {
-        SQL sql = new SQL().SELECT("*").FROM(tableName);
-        return sql;
-    }
+	public static final Set<String> createWhereTrue(String tableName, Set<String> fieldNames) {
+		if (fieldNames == null || fieldNames.size() == 0) {
+			Set<String> wheres = new HashSet<>();
+			wheres.add("true");
+			return wheres;
+		}
+		return fieldNames.stream().map(fieldName -> equalSign(tableName, fieldName)).collect(Collectors.toSet());
+	}
 
-//    public static final void set(Map<String, String> fieldTableNameMap, Set<String> sets, SQL sql) {
-//        sets.stream().forEach(set -> set(fieldTableNameMap, set, sql));
-//    }
-//
-//    public static final void set(Map<String, String> fieldTableNameMap, String fieldName, SQL sql) {
-//        sql.SET(equalSign(fieldTableNameMap.get(fieldName), fieldName).toString());
-//    }
-//
-//    public static final void where(Map<String, String> fieldTableNameMap, Set<String> wheres, SQL sql) {
-//        wheres.stream().forEach(where -> where(fieldTableNameMap, where, sql));
-//    }
-//
-//    public static final void where(Map<String, String> fieldTableNameMap, String fieldName, SQL sql) {
-//        sql.WHERE(equalSign(fieldTableNameMap.get(fieldName), fieldName));
-//    }
+	public static final Set<String> createWhereFalse(String tableName, Set<String> fieldNames) {
+		if (fieldNames == null || fieldNames.size() == 0) {
+			Set<String> wheres = new HashSet<>();
+			wheres.add("false");
+			return wheres;
+		}
+		return fieldNames.stream().map(fieldName -> equalSign(tableName, fieldName)).collect(Collectors.toSet());
+	}
 
-    public static final void set(String tableName, Set<String> propertys, SQL sql) {
-        propertys.stream().forEach(property -> set(tableName, property, sql));
-    }
+	public static final Set<String> createFieldName(Class<?> clazz, String... ignores) {
+		Set<String> fieldNames = Arrays.stream(clazz.getDeclaredFields())
+				.filter(field -> {
+					String modifier = Modifier.toString(field.getModifiers());
+					return !modifier.contains("static") && !modifier.contains("final");
+				})
+				.map(field -> field.getName()).collect(Collectors.toSet());
+		for (String ignore : ignores) {
+			fieldNames.remove(ignore);
+		}
+		return fieldNames;
+	}
 
-    public static final void set(String tableName, String property, SQL sql) {
-        sql.SET(equalSign(tableName, property));
-    }
+	/**
+	 * table_name.field_name=#{fieldName}
+	 *
+	 * @param tableName
+	 * @param fieldName
+	 * @return
+	 */
+	public static final String equalSign(String tableName, String fieldName) {
+		return column(tableName, fieldName) + "=" + field(fieldName);
+	}
 
-    public static final void where(String tableName, Set<String> propertys, SQL sql) {
-        propertys.stream().forEach(property -> where(tableName, property, sql));
-    }
+	/**
+	 * fieldName > #{fieldName}
+	 *
+	 * @param fieldName
+	 * @return
+	 */
+	public static final String field(String fieldName) {
+		return "#{" + fieldName + "}";
+	}
 
-    public static final void where(String tableName, String property, SQL sql) {
-        sql.WHERE(equalSign(tableName, property));
-    }
+	/**
+	 * tableName.fieldName > table_name.field_name
+	 *
+	 * @param tableName
+	 * @param fieldName
+	 * @return
+	 */
+	public static final String column(String tableName, String fieldName) {
+		return StringUtils.lowerCamel2LowerHyphen(tableName) + "." + StringUtils.lowerCamel2LowerHyphen(fieldName);
+	}
 
-    public static final void select(String tableName, Class<?> clazz, SQL sql) {
-        for (Field field : clazz.getDeclaredFields()) {
-            String modifier = Modifier.toString(field.getModifiers());
-            if (!modifier.contains("static") && !modifier.contains("final")) {
-                sql.SELECT(column(tableName, field.getName()));
-            }
-        }
-    }
+	public static final StringBuilder limitOne(SQL sql) {
+		return new StringBuilder(sql.toString()).append(" limit 1");
+	}
 
-    public static final String equalSign(String tableName, String property) {
-        return column(tableName, property) + "=" + property(property);
-    }
+	public static final StringBuilder limitSome(SQL sql) {
+		return new StringBuilder(sql.toString()).append(" limit #{off},#{len}");
+	}
 
-    public static final String property(String property) {
-        return "#{" + property + "}";
-    }
-
-    public static final String column(String tableName, String property) {
-        return tableName + "." + StringUtils.lowerCamel2LowerHyphen(property);
-    }
 }

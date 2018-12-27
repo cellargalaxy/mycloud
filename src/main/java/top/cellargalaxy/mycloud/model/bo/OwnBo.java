@@ -10,7 +10,6 @@ import top.cellargalaxy.mycloud.model.po.OwnPo;
 @Data
 public class OwnBo extends OwnPo {
     private String username;
-    private String md5;
     private String md5Url;
     private String ownUrl;
 
@@ -18,7 +17,6 @@ public class OwnBo extends OwnPo {
     public String toString() {
         return "OwnBo{" +
                 "username='" + username + '\'' +
-                ", md5='" + md5 + '\'' +
                 ", md5Url='" + md5Url + '\'' +
                 ", ownUrl='" + ownUrl + '\'' +
                 ", super=" + super.toString() +

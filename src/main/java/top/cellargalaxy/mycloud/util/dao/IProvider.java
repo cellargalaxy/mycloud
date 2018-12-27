@@ -7,25 +7,25 @@ import java.util.Set;
  * @time 2018/8/10
  */
 public interface IProvider<Po, Query> {
-    void wheresKey(Po po, Set<String> wheres);
+	Set<String> wheresKey(Po po);
 
-    void wheresAll(Query query, Set<String> wheres);
+	Set<String> wheresAll(Query query);
 
-    void sets(Po po, Set<String> sets);
+	Set<String> sets(Po po);
 
-    String insert(Po po);
+	String insert(Po po);
 
-    String delete(Po po);
+	String delete(Po po);
 
-    String update(Po po);
+	String update(Po po);
 
-    String selectOne(Po po);
+	String selectOne(Po po);
 
-    String selectPageSome(Query query);
+	String selectPageSome(Query query);
 
-    String selectAllSome(Query query);
+	String selectAllSome(Query query);
 
-    String selectCount(Query query);
+	String selectCount(Query query);
 
-    String selectAll();
+	String selectAll();
 }

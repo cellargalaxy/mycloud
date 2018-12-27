@@ -12,6 +12,8 @@ import top.cellargalaxy.mycloud.util.dao.IDao;
 import top.cellargalaxy.mycloud.util.dao.ProviderUtils;
 import top.cellargalaxy.mycloud.util.dao.SqlUtils;
 
+import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -32,8 +34,17 @@ public interface OwnExpireMapper extends IDao<OwnExpirePo, OwnExpireBo, OwnExpir
     int update(OwnExpirePo ownExpirePo);
 
     @Results(id = "ownExpireResults", value = {
-            @Result(property = "ownId", column = "own_id"),
-            @Result(property = "expireTime", column = "expire_time"),
+		    @Result(property = "ownId", column = "own_id"),
+		    @Result(property = "ownExpireTime", column = "own_expire_time"),
+		    @Result(property = "ownUuid", column = "own_uuid"),
+		    @Result(property = "userId", column = "user_id"),
+		    @Result(property = "fileName", column = "file_name"),
+		    @Result(property = "sort", column = "sort"),
+		    @Result(property = "description", column = "description"),
+		    @Result(property = "contentType", column = "content_type"),
+		    @Result(property = "fileLength", column = "file_length"),
+		    @Result(property = "md5", column = "md5"),
+		    @Result(property = "fileId", column = "file_id"),
     })
     @SelectProvider(type = OwnExpireProvider.class, method = "selectOne")
     OwnExpireBo selectOne(OwnExpirePo ownExpirePo);
@@ -57,117 +68,143 @@ public interface OwnExpireMapper extends IDao<OwnExpirePo, OwnExpireBo, OwnExpir
     @SelectProvider(type = OwnExpireProvider.class, method = "selectExpireOwnExpire")
     List<OwnExpireBo> selectExpireOwnExpire(OwnExpireQuery ownExpireQuery);
 
-    @Results(id = "ownResults", value = {
-            @Result(property = "ownId", column = "own_id"),
-            @Result(property = "ownUuid", column = "own_uuid"),
-            @Result(property = "userId", column = "user_id"),
-            @Result(property = "fileLength", column = "file_length"),
-            @Result(property = "contentType", column = "content_type"),
-            @Result(property = "fileName", column = "file_name"),
-            @Result(property = "fileId", column = "file_id"),
-            @Result(property = "sort", column = "sort"),
-            @Result(property = "description", column = "description"),
-            @Result(property = "createTime", column = "create_time"),
-            @Result(property = "updateTime", column = "update_time"),
-    })
+	@ResultMap(value = "ownExpireResults")
     @SelectProvider(type = OwnExpireProvider.class, method = "selectRecentExpireOwn")
     List<OwnPo> selectRecentExpireOwn(OwnExpireQuery ownExpireQuery);
 
-    class OwnExpireProvider /*implements IProvider<OwnExpirePo, OwnExpireQuery>*/ {
-        private String tableName = OwnExpireDao.TABLE_NAME;
+	class OwnExpireProvider /*implements IProvider<OwnExpirePo,OwnExpireQuery>*/ {
+		private final String tableName = OwnExpireDao.TABLE_NAME;
 
-        public void wheresKey(OwnExpirePo ownExpirePo, Set<String> wheres) {
-            if (ownExpirePo.getOwnId() > 0) {
-                wheres.add("ownId");
-                return;
-            }
-        }
+		public Set<String> wheresKey(OwnExpirePo ownexpirePo) {
+			Set<String> wheres = new HashSet<>();
+			wheres.add("ownId");
+			return wheres;
+		}
 
+		public Set<String> wheresAll(OwnExpireQuery ownexpireQuery) {
+			Set<String> wheres = new HashSet<>();
+			if (ownexpireQuery.getOwnId() > 0) {
+				wheres.add("ownId");
+			}
+			return wheres;
+		}
 
-        public void wheresAll(OwnExpireQuery ownExpireQuery, Set<String> wheres) {
-            if (ownExpireQuery.getOwnId() > 0) {
-                wheres.add("ownId");
-            }
-        }
+		/**
+		 * 只有删除，没有修改
+		 *
+		 * @param ownexpirePo
+		 * @return
+		 */
+		public Set<String> sets(OwnExpirePo ownexpirePo) {
+			Set<String> sets = new HashSet<>();
 
+			return sets;
+		}
 
-        public void sets(OwnExpirePo ownExpirePo, Set<String> sets) {
+		public String insert(OwnExpirePo ownexpirePo) {
+			String string = ProviderUtils.insert(tableName, OwnExpirePo.class).toString();
+			return string;
+		}
 
-        }
+		public String delete(OwnExpirePo ownexpirePo) {
+			String string = ProviderUtils.limitOne(ProviderUtils.delete(tableName, wheresKey(ownexpirePo))).toString();
+			return string;
+		}
 
+		public String update(OwnExpirePo ownexpirePo) {
+			String string = ProviderUtils.limitOne(ProviderUtils.update(tableName, sets(ownexpirePo), "ownId", wheresKey(ownexpirePo))).toString();
+			return string;
+		}
 
-        public String insert(OwnExpirePo ownExpirePo) {
-            String string = ProviderUtils.insert(tableName, OwnExpirePo.class).toString();
-            return string;
-        }
+		public String selectOne(OwnExpirePo ownexpirePo) {
+			SQL sql = ProviderUtils.select(new SQL(), tableName, OwnExpirePo.class);
+			sql = ProviderUtils.select(sql, OwnDao.TABLE_NAME, OwnPo.class, "ownId", "createTime", "updateTime");
 
+			sql.FROM(tableName + "," + OwnDao.TABLE_NAME);
 
-        public String delete(OwnExpirePo ownExpirePo) {
-            String string = ProviderUtils.limitOne(ProviderUtils.delete(tableName, ownExpirePo, this::wheresKey)).toString();
-            return string;
-        }
+			sql = ProviderUtils.whereTrue(sql, tableName, wheresKey(ownexpirePo));
+			sql.WHERE(ProviderUtils.column(tableName, "ownId") + "=" + ProviderUtils.column(OwnDao.TABLE_NAME, "ownId"));
 
+			String string = ProviderUtils.limitOne(sql).toString();
+			return string;
+		}
 
-        public String update(OwnExpirePo ownExpirePo) {
-            String string = ProviderUtils.limitOne(ProviderUtils.update(tableName, ownExpirePo, "ownId", this::sets, this::wheresKey)).toString();
-            return string;
-        }
+		public String selectPageSome(OwnExpireQuery ownexpireQuery) {
+			SqlUtils.initPageQuery(ownexpireQuery);
 
+			SQL sql = ProviderUtils.select(new SQL(), tableName, OwnExpirePo.class);
+			sql = ProviderUtils.select(sql, OwnDao.TABLE_NAME, OwnPo.class, "ownId", "createTime", "updateTime");
 
-        public String selectOne(OwnExpirePo ownExpirePo) {
-            String string = ProviderUtils.limitOne(ProviderUtils.select(tableName, ownExpirePo, this::wheresKey)).toString();
-            return string;
-        }
+			sql.FROM(tableName + "," + OwnDao.TABLE_NAME);
 
+			sql = ProviderUtils.whereTrue(sql, tableName, wheresAll(ownexpireQuery));
+			sql.WHERE(ProviderUtils.column(tableName, "ownId") + "=" + ProviderUtils.column(OwnDao.TABLE_NAME, "ownId"));
 
-        public String selectPageSome(OwnExpireQuery ownExpireQuery) {
-            SqlUtils.initPageQuery(ownExpireQuery);
-            String string = ProviderUtils.limitSome(ProviderUtils.select(tableName, ownExpireQuery, this::wheresAll)).toString();
-            return string;
-        }
+			String string = ProviderUtils.limitSome(sql).toString();
+			return string;
+		}
 
+		public String selectAllSome(OwnExpireQuery ownexpireQuery) {
+			SQL sql = ProviderUtils.select(new SQL(), tableName, OwnExpirePo.class);
+			sql = ProviderUtils.select(sql, OwnDao.TABLE_NAME, OwnPo.class, "ownId", "createTime", "updateTime");
 
-        public String selectAllSome(OwnExpireQuery ownExpireQuery) {
-            String string = ProviderUtils.select(tableName, ownExpireQuery, this::wheresAll).toString();
-            return string;
-        }
+			sql.FROM(tableName + "," + OwnDao.TABLE_NAME);
 
+			sql = ProviderUtils.whereTrue(sql, tableName, wheresAll(ownexpireQuery));
+			sql.WHERE(ProviderUtils.column(tableName, "ownId") + "=" + ProviderUtils.column(OwnDao.TABLE_NAME, "ownId"));
 
-        public String selectCount(OwnExpireQuery ownExpireQuery) {
-            String string = ProviderUtils.selectCount(tableName, ownExpireQuery, this::wheresAll).toString();
-            return string;
-        }
+			String string = sql.toString();
+			return string;
+		}
 
+		public String selectCount(OwnExpireQuery ownexpireQuery) {
+			String string = ProviderUtils.selectCount(tableName, wheresAll(ownexpireQuery)).toString();
+			return string;
+		}
 
-        public String selectAll() {
-            String string = ProviderUtils.selectAll(tableName).toString();
-            return string;
-        }
+		public String selectAll() {
+			SQL sql = ProviderUtils.select(new SQL(), tableName, OwnExpirePo.class);
+			sql = ProviderUtils.select(sql, OwnDao.TABLE_NAME, OwnPo.class, "ownId", "createTime", "updateTime");
 
-        public String selectExpireOwnExpire(OwnExpireQuery ownExpireQuery) {
-            SQL sql = new SQL()
-                    .SELECT("*")
-                    .FROM(tableName);
-            if (ownExpireQuery.getExpireTime() == null) {
-                sql.WHERE("false");
-            } else {
-                sql.WHERE("expire_time<=#{expireTime}");
-            }
-            String string = sql.toString();
-            return string;
-        }
+			sql.FROM(tableName + "," + OwnDao.TABLE_NAME);
 
+			sql.WHERE(ProviderUtils.column(tableName, "ownId") + "=" + ProviderUtils.column(OwnDao.TABLE_NAME, "ownId"));
 
-        public String selectRecentExpireOwn(OwnExpireQuery ownExpireQuery) {
-            SqlUtils.initPageQuery(ownExpireQuery);
-            SQL sql = new SQL()
-                    .SELECT("*")
-                    .FROM(tableName)
-                    .FROM(OwnDao.TABLE_NAME)
-                    .WHERE(tableName + ".own_id=" + OwnDao.TABLE_NAME + ".own_id")
-                    .ORDER_BY("expire_time desc");
-            String string = ProviderUtils.limitSome(sql).toString();
-            return string;
-        }
+			String string = sql.toString();
+			return string;
+		}
+
+		public String selectExpireOwnExpire(OwnExpireQuery ownExpireQuery) {
+			SQL sql = ProviderUtils.select(new SQL(), tableName, OwnExpirePo.class);
+			sql = ProviderUtils.select(sql, OwnDao.TABLE_NAME, OwnPo.class, "ownId", "createTime", "updateTime");
+
+			sql.FROM(tableName + "," + OwnDao.TABLE_NAME);
+
+			if (ownExpireQuery.getOwnExpireTime() != null) {
+				sql.WHERE(ProviderUtils.column(tableName, "ownExpireTime") + "<=" + ProviderUtils.field("ownExpireTime"));
+			} else {
+				sql.WHERE("false");
+			}
+			sql.WHERE(ProviderUtils.column(tableName, "ownId") + "=" + ProviderUtils.column(OwnDao.TABLE_NAME, "ownId"));
+
+			String string = sql.toString();
+			return string;
+		}
+
+		public String selectRecentExpireOwn(OwnExpireQuery ownExpireQuery) {
+			SqlUtils.initPageQuery(ownExpireQuery);
+
+			SQL sql = ProviderUtils.select(new SQL(), tableName, OwnExpirePo.class);
+			sql = ProviderUtils.select(sql, OwnDao.TABLE_NAME, OwnPo.class, "ownId", "createTime", "updateTime");
+
+			sql.FROM(tableName + "," + OwnDao.TABLE_NAME);
+
+			sql.WHERE(ProviderUtils.column(tableName, "ownId") + "=" + ProviderUtils.column(OwnDao.TABLE_NAME, "ownId"));
+
+			sql.ORDER_BY(ProviderUtils.column(tableName, "ownExpireTime desc"));
+
+			String string = ProviderUtils.limitSome(sql).toString();
+			return string;
+		}
     }
 }

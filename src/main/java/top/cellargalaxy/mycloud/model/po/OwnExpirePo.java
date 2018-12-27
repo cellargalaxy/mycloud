@@ -11,5 +11,5 @@ import java.util.Date;
 @Data
 public class OwnExpirePo {
     private int ownId;
-    private Date expireTime;
+    private Date ownExpireTime;
 }

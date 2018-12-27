@@ -2,10 +2,10 @@ package top.cellargalaxy.mycloud.dao.mapper;
 
 import org.apache.ibatis.annotations.*;
 import org.apache.ibatis.jdbc.SQL;
-import top.cellargalaxy.mycloud.dao.FileInfoDao;
 import top.cellargalaxy.mycloud.dao.OwnDao;
 import top.cellargalaxy.mycloud.dao.UserDao;
 import top.cellargalaxy.mycloud.model.bo.OwnBo;
+import top.cellargalaxy.mycloud.model.po.AuthorizationPo;
 import top.cellargalaxy.mycloud.model.po.OwnPo;
 import top.cellargalaxy.mycloud.model.query.OwnQuery;
 import top.cellargalaxy.mycloud.util.StringUtils;
@@ -37,16 +37,16 @@ public interface OwnMapper extends IDao<OwnPo, OwnBo, OwnQuery> {
             @Result(property = "ownId", column = "own_id"),
             @Result(property = "ownUuid", column = "own_uuid"),
             @Result(property = "userId", column = "user_id"),
-            @Result(property = "fileLength", column = "file_length"),
-            @Result(property = "contentType", column = "content_type"),
-            @Result(property = "fileName", column = "file_name"),
-            @Result(property = "fileId", column = "file_id"),
-            @Result(property = "sort", column = "sort"),
-            @Result(property = "description", column = "description"),
+		    @Result(property = "fileName", column = "file_name"),
+		    @Result(property = "sort", column = "sort"),
+		    @Result(property = "description", column = "description"),
+		    @Result(property = "contentType", column = "content_type"),
+		    @Result(property = "fileLength", column = "file_length"),
+		    @Result(property = "md5", column = "md5"),
+		    @Result(property = "fileId", column = "file_id"),
             @Result(property = "createTime", column = "create_time"),
             @Result(property = "updateTime", column = "update_time"),
             @Result(property = "username", column = "username"),
-            @Result(property = "md5", column = "md5"),
     })
     @SelectProvider(type = OwnProvider.class, method = "selectOne")
     OwnBo selectOne(OwnPo ownPo);
@@ -69,150 +69,151 @@ public interface OwnMapper extends IDao<OwnPo, OwnBo, OwnQuery> {
     @SelectProvider(type = OwnProvider.class, method = "selectAllSort")
     List<String> selectAllSort(OwnQuery ownQuery);
 
-    class OwnProvider /*implements IProvider<OwnPo, OwnQuery>*/ {
-        private String tableName = OwnDao.TABLE_NAME;
+	class OwnProvider /*implements IProvider<OwnPo,OwnQuery>*/ {
+		private final String tableName = OwnDao.TABLE_NAME;
 
-        public void wheresKey(OwnPo ownPo, Set<String> wheres) {
-            if (ownPo.getOwnId() > 0) {
-                wheres.add("ownId");
-                return;
-            }
-            if (!StringUtils.isBlank(ownPo.getOwnUuid())) {
-                wheres.add("ownUuid");
-                return;
-            }
-        }
+		public Set<String> wheresKey(OwnPo ownPo) {
+			Set<String> wheres = new HashSet<>();
+			if (ownPo.getOwnId() > 0) {
+				wheres.add("ownId");
+				return wheres;
+			}
+			if (!StringUtils.isBlank(ownPo.getOwnUuid())) {
+				wheres.add("ownUuid");
+				return wheres;
+			}
+			wheres.add("ownId");
+			return wheres;
+		}
 
+		public Set<String> wheresAll(OwnQuery ownQuery) {
+			Set<String> wheres = new HashSet<>();
+			if (ownQuery.getOwnId() > 0) {
+				wheres.add("ownId");
+			}
+			if (!StringUtils.isBlank(ownQuery.getOwnUuid())) {
+				wheres.add("ownUuid");
+			}
+			if (ownQuery.getUserId() > 0) {
+				wheres.add("userId");
+			}
+			if (!StringUtils.isBlank(ownQuery.getSort())) {
+				wheres.add("sort");
+			}
+			if (!StringUtils.isBlank(ownQuery.getMd5())) {
+				wheres.add("md5");
+			}
+			if (ownQuery.getFileId() > 0) {
+				wheres.add("fileId");
+			}
+			return wheres;
+		}
 
-        public void wheresAll(OwnQuery ownQuery, Set<String> wheres) {
-            if (ownQuery.getOwnId() > 0) {
-                wheres.add("ownId");
-            }
-            if (!StringUtils.isBlank(ownQuery.getOwnUuid())) {
-                wheres.add("ownUuid");
-            }
-            if (ownQuery.getUserId() > 0) {
-                wheres.add("userId");
-            }
-            if (ownQuery.getFileId() > 0) {
-                wheres.add("fileId");
-            }
-            if (!StringUtils.isBlank(ownQuery.getContentType())) {
-                wheres.add("contentType");
-            }
-            if (!StringUtils.isBlank(ownQuery.getSort())) {
-                wheres.add("sort");
-            }
-        }
+		public Set<String> sets(OwnPo ownPo) {
+			Set<String> sets = new HashSet<>();
+			if (!StringUtils.isBlank(ownPo.getFileName())) {
+				sets.add("fileName");
+			}
+			if (!StringUtils.isBlank(ownPo.getSort())) {
+				sets.add("sort");
+			}
+			if (!StringUtils.isBlank(ownPo.getDescription())) {
+				sets.add("description");
+			}
+			if (!StringUtils.isBlank(ownPo.getMd5())) {
+				sets.add("md5");
+			}
+			if (ownPo.getFileId() > 0) {
+				sets.add("fileId");
+			}
+			if (ownPo.getUpdateTime()!=null) {
+				sets.add("updateTime");
+			}
+			return sets;
+		}
 
+		public String insert(OwnPo ownPo) {
+			String string = ProviderUtils.insert(tableName, OwnPo.class).toString();
+			return string;
+		}
 
-        public void sets(OwnPo ownPo, Set<String> sets) {
-            if (ownPo.getFileId() > 0) {
-                sets.add("fileId");
-            }
-            if (!StringUtils.isBlank(ownPo.getFileName())) {
-                sets.add("fileName");
-            }
-            if (!StringUtils.isBlank(ownPo.getSort())) {
-                sets.add("sort");
-            }
-            if (!StringUtils.isBlank(ownPo.getDescription())) {
-                sets.add("description");
-            }
-            if (ownPo.getUpdateTime() != null) {
-                sets.add("updateTime");
-            }
-        }
+		public String delete(OwnPo ownPo) {
+			String string = ProviderUtils.limitOne(ProviderUtils.delete(tableName, wheresKey(ownPo))).toString();
+			return string;
+		}
 
+		public String update(OwnPo ownPo) {
+			String string = ProviderUtils.limitOne(ProviderUtils.update(tableName, sets(ownPo), "ownId", wheresKey(ownPo))).toString();
+			return string;
+		}
 
-        public String insert(OwnPo ownPo) {
-            String string = ProviderUtils.insert(tableName, OwnPo.class).toString();
-            return string;
-        }
+		public String selectOne(OwnPo ownPo) {
+			SQL sql = ProviderUtils.select(new SQL(), tableName, OwnPo.class);
+			sql.SELECT(UserDao.TABLE_NAME + ".username");
 
+			sql.FROM(tableName + "," + UserDao.TABLE_NAME);
 
-        public String delete(OwnPo ownPo) {
-            String string = ProviderUtils.limitOne(ProviderUtils.delete(tableName, ownPo, this::wheresKey)).toString();
-            return string;
-        }
+			sql = ProviderUtils.whereTrue(sql, tableName, wheresKey(ownPo));
+			sql.WHERE(ProviderUtils.column(tableName, "userId") + "=" + ProviderUtils.column(UserDao.TABLE_NAME, "userId"));
 
+			String string = ProviderUtils.limitOne(sql).toString();
+			return string;
+		}
 
-        public String update(OwnPo ownPo) {
-            String string = ProviderUtils.limitOne(ProviderUtils.update(tableName, ownPo, "ownId", this::sets, this::wheresKey)).toString();
-            return string;
-        }
+		public String selectPageSome(OwnQuery ownQuery) {
+			SqlUtils.initPageQuery(ownQuery);
 
-        public String selectOne(OwnPo ownPo) {
-            SQL sql = new SQL();
-            ProviderUtils.select(tableName, OwnPo.class, sql);
-            sql.SELECT(UserDao.TABLE_NAME + ".username")
-                    .SELECT(FileInfoDao.TABLE_NAME + ".md5")
-                    //own left join user on own.user_id=user.user_id left join file_info on own.file_id=file_info.file_id
-                    .FROM(tableName + " left join " + UserDao.TABLE_NAME + " on " + tableName + ".user_id=" + UserDao.TABLE_NAME + ".user_id left join " + FileInfoDao.TABLE_NAME + " on " + tableName + ".file_id=" + FileInfoDao.TABLE_NAME + ".file_id");
-            Set<String> wheres = new HashSet<>();
-            wheresKey(ownPo, wheres);
-            ProviderUtils.where(tableName, wheres, sql);
-            String string = ProviderUtils.limitOne(sql).toString();
-            return string;
-        }
+			SQL sql = ProviderUtils.select(new SQL(), tableName, OwnPo.class);
+			sql.SELECT(UserDao.TABLE_NAME + ".username");
 
+			sql.FROM(tableName + "," + UserDao.TABLE_NAME);
 
-        public String selectPageSome(OwnQuery ownQuery) {
-            SqlUtils.initPageQuery(ownQuery);
-            SQL sql = new SQL();
-            ProviderUtils.select(tableName, OwnPo.class, sql);
-            sql.SELECT(UserDao.TABLE_NAME + ".username")
-                    .SELECT(FileInfoDao.TABLE_NAME + ".md5")
-                    //own left join user on own.user_id=user.user_id left join file_info on own.file_id=file_info.file_id
-                    .FROM(tableName + " left join " + UserDao.TABLE_NAME + " on " + tableName + ".user_id=" + UserDao.TABLE_NAME + ".user_id left join " + FileInfoDao.TABLE_NAME + " on " + tableName + ".file_id=" + FileInfoDao.TABLE_NAME + ".file_id");
-            Set<String> wheres = new HashSet<>();
-            wheresAll(ownQuery, wheres);
-            ProviderUtils.where(tableName, wheres, sql);
-            String string = ProviderUtils.limitSome(sql).toString();
-            return string;
-        }
+			sql = ProviderUtils.whereTrue(sql, tableName, wheresAll(ownQuery));
+			sql.WHERE(ProviderUtils.column(tableName, "userId") + "=" + ProviderUtils.column(UserDao.TABLE_NAME, "userId"));
 
+			String string = ProviderUtils.limitSome(sql).toString();
+			return string;
+		}
 
-        public String selectAllSome(OwnQuery ownQuery) {
-            SQL sql = new SQL();
-            ProviderUtils.select(tableName, OwnPo.class, sql);
-            sql.SELECT(UserDao.TABLE_NAME + ".username")
-                    .SELECT(FileInfoDao.TABLE_NAME + ".md5")
-                    //own left join user on own.user_id=user.user_id left join file_info on own.file_id=file_info.file_id
-                    .FROM(tableName + " left join " + UserDao.TABLE_NAME + " on " + tableName + ".user_id=" + UserDao.TABLE_NAME + ".user_id left join " + FileInfoDao.TABLE_NAME + " on " + tableName + ".file_id=" + FileInfoDao.TABLE_NAME + ".file_id");
-            Set<String> wheres = new HashSet<>();
-            wheresAll(ownQuery, wheres);
-            ProviderUtils.where(tableName, wheres, sql);
-            String string = sql.toString();
-            return string;
-        }
+		public String selectAllSome(OwnQuery ownQuery) {
+			SQL sql = ProviderUtils.select(new SQL(), tableName, OwnPo.class);
+			sql.SELECT(UserDao.TABLE_NAME + ".username");
 
-        public String selectCount(OwnQuery ownQuery) {
-            String string = ProviderUtils.selectCount(tableName, ownQuery, this::wheresAll).toString();
-            return string;
-        }
+			sql.FROM(tableName + "," + UserDao.TABLE_NAME);
 
+			sql = ProviderUtils.whereTrue(sql, tableName, wheresAll(ownQuery));
+			sql.WHERE(ProviderUtils.column(tableName, "userId") + "=" + ProviderUtils.column(UserDao.TABLE_NAME, "userId"));
 
-        public String selectAll() {
-            SQL sql = new SQL();
-            ProviderUtils.select(tableName, OwnPo.class, sql);
-            sql.SELECT(UserDao.TABLE_NAME + ".username")
-                    .SELECT(FileInfoDao.TABLE_NAME + ".md5")
-                    //own left join user on own.user_id=user.user_id left join file_info on own.file_id=file_info.file_id
-                    .FROM(tableName + " left join " + UserDao.TABLE_NAME + " on " + tableName + ".user_id=" + UserDao.TABLE_NAME + ".user_id left join " + FileInfoDao.TABLE_NAME + " on " + tableName + ".file_id=" + FileInfoDao.TABLE_NAME + ".file_id");
-            String string = sql.toString();
-            return string;
-        }
+			String string = sql.toString();
+			return string;
+		}
 
-        public String selectAllSort(OwnQuery ownQuery) {
-            SQL sql = new SQL()
-                    .SELECT("distinct " + tableName + ".sort")
-                    .FROM(tableName);
-            Set<String> wheres = new HashSet<>();
-            wheresAll(ownQuery, wheres);
-            ProviderUtils.where(tableName, wheres, sql);
-            String string = sql.toString();
-            return string;
-        }
+		public String selectCount(OwnQuery ownQuery) {
+			String string = ProviderUtils.selectCount(tableName, wheresAll(ownQuery)).toString();
+			return string;
+		}
+
+		public String selectAll() {
+			SQL sql = ProviderUtils.select(new SQL(), tableName, OwnPo.class);
+			sql.SELECT(UserDao.TABLE_NAME + ".username");
+
+			sql.FROM(tableName + "," + UserDao.TABLE_NAME);
+
+			sql.WHERE(ProviderUtils.column(tableName, "userId") + "=" + ProviderUtils.column(UserDao.TABLE_NAME, "userId"));
+
+			String string = sql.toString();
+			return string;
+		}
+
+		public String selectAllSort(OwnQuery ownQuery) {
+			SQL sql=new SQL().SELECT("distinct " + ProviderUtils.column(tableName, "sort"));
+
+			sql.FROM(tableName);
+
+			sql = ProviderUtils.whereTrue(sql, tableName, wheresAll(ownQuery));
+
+			String string = sql.toString();
+			return string;
+		}
     }
 }
