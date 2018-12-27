@@ -32,182 +32,182 @@ import java.util.UUID;
  */
 @Service
 public class FileServiceImpl implements FileService {
-    public static final String TMP_FILE_DEFAULT_SORT = "<TMP_FILE>";
-    private final PathService pathService;
-    private final File sqliteFile;
-    private final File driveFolder;
-    private final long maxTmpFileSaveTime;
-    @Autowired
-    private FileInfoService fileInfoService;
-    @Autowired
-    private OwnService ownService;
-    @Autowired
-    private FileDriverService fileDriverService;
-    @Autowired
-    private OwnExpireService ownExpireService;
+	public static final String TMP_FILE_DEFAULT_SORT = "<TMP_FILE>";
+	private final PathService pathService;
+	private final File sqliteFile;
+	private final File driveFolder;
+	private final long maxTmpFileSaveTime;
+	@Autowired
+	private FileInfoService fileInfoService;
+	@Autowired
+	private OwnService ownService;
+	@Autowired
+	private FileDriverService fileDriverService;
+	@Autowired
+	private OwnExpireService ownExpireService;
 
-    @Autowired
-    public FileServiceImpl(PathService pathService, MycloudConfiguration mycloudConfiguration) {
-        this.pathService = pathService;
-        sqliteFile = pathService.getSqliteFile();
-        driveFolder = pathService.getDriveFolder();
-        maxTmpFileSaveTime = mycloudConfiguration.getMaxTmpFileSaveTime();
-    }
+	@Autowired
+	public FileServiceImpl(PathService pathService, MycloudConfiguration mycloudConfiguration) {
+		this.pathService = pathService;
+		sqliteFile = pathService.getSqliteFile();
+		driveFolder = pathService.getDriveFolder();
+		maxTmpFileSaveTime = mycloudConfiguration.getMaxTmpFileSaveTime();
+	}
 
-    @Override
-    public String addTmpFile(InputStream inputStream, OwnBo ownBo, OwnExpirePo ownExpirePo) throws IOException {
-        if (ownExpirePo == null || ownExpirePo.getOwnExpireTime() == null) {
-            return "临时文件保存时间不得为空";
-        }
-        if (ownExpirePo.getOwnExpireTime().getTime() - System.currentTimeMillis() > maxTmpFileSaveTime) {
-            ownExpirePo.setOwnExpireTime(new Date(System.currentTimeMillis() + maxTmpFileSaveTime));
-        }
-        ownBo.setOwnUuid(UUID.randomUUID().toString());
-        ownBo.setUserId(UserBo.GUEST.getUserId());
-        ownBo.setUsername(UserBo.GUEST.getUsername());
-        ownBo.setSort(TMP_FILE_DEFAULT_SORT);
-        String string = fileDriverService.addFile(inputStream, ownBo);
-        if (string != null) {
-            fileDriverService.removeFile(ownBo);
-            return string;
-        }
-        string = ownExpireService.addOwnExpire(ownBo, ownExpirePo);
-        if (string != null) {
-            fileDriverService.removeFile(ownBo);
-            return string;
-        }
-        pathService.setUrl(ownBo);
-        return string;
-    }
+	@Override
+	public String addTmpFile(InputStream inputStream, OwnBo ownBo, OwnExpirePo ownExpirePo) throws IOException {
+		if (ownExpirePo == null || ownExpirePo.getOwnExpireTime() == null) {
+			return "临时文件保存时间不得为空";
+		}
+		if (ownExpirePo.getOwnExpireTime().getTime() - System.currentTimeMillis() > maxTmpFileSaveTime) {
+			ownExpirePo.setOwnExpireTime(new Date(System.currentTimeMillis() + maxTmpFileSaveTime));
+		}
+		ownBo.setOwnUuid(UUID.randomUUID().toString());
+		ownBo.setUserId(UserBo.GUEST.getUserId());
+		ownBo.setUsername(UserBo.GUEST.getUsername());
+		ownBo.setSort(TMP_FILE_DEFAULT_SORT);
+		String string = fileDriverService.addFile(inputStream, ownBo);
+		if (string != null) {
+			fileDriverService.removeFile(ownBo);
+			return string;
+		}
+		string = ownExpireService.addOwnExpire(ownBo, ownExpirePo);
+		if (string != null) {
+			fileDriverService.removeFile(ownBo);
+			return string;
+		}
+		pathService.setUrl(ownBo);
+		return string;
+	}
 
-    @Override
-    public String addFile(InputStream inputStream, OwnBo ownBo, UserPo userPo) throws IOException {
-        ownBo.setOwnUuid(UUID.randomUUID().toString());
-        ownBo.setUserId(userPo.getUserId());
-        ownBo.setUsername(userPo.getUsername());
-        String string = fileDriverService.addFile(inputStream, ownBo);
-        return addFile(string, ownBo);
-    }
+	@Override
+	public String addFile(InputStream inputStream, OwnBo ownBo, UserPo userPo) throws IOException {
+		ownBo.setOwnUuid(UUID.randomUUID().toString());
+		ownBo.setUserId(userPo.getUserId());
+		ownBo.setUsername(userPo.getUsername());
+		String string = fileDriverService.addFile(inputStream, ownBo);
+		return addFile(string, ownBo);
+	}
 
-    @Override
-    public String addFile(String urlString, OwnBo ownBo, UserPo userPo) throws IOException {
-        ownBo.setOwnUuid(UUID.randomUUID().toString());
-        ownBo.setUserId(userPo.getUserId());
-        ownBo.setUsername(userPo.getUsername());
-        String string = fileDriverService.addFile(urlString, ownBo);
-        return addFile(string, ownBo);
-    }
+	@Override
+	public String addFile(String urlString, OwnBo ownBo, UserPo userPo) throws IOException {
+		ownBo.setOwnUuid(UUID.randomUUID().toString());
+		ownBo.setUserId(userPo.getUserId());
+		ownBo.setUsername(userPo.getUsername());
+		String string = fileDriverService.addFile(urlString, ownBo);
+		return addFile(string, ownBo);
+	}
 
-    private String addFile(String string, OwnBo ownBo) throws IOException {
-        if (string != null) {
-            fileDriverService.removeFile(ownBo);
-            return string;
-        }
-        string = ownService.addOwn(ownBo);
-        if (string != null) {
-            fileDriverService.removeFile(ownBo);
-            return string;
-        }
-        pathService.setUrl(ownBo);
-        return string;
-    }
+	private String addFile(String string, OwnBo ownBo) throws IOException {
+		if (string != null) {
+			fileDriverService.removeFile(ownBo);
+			return string;
+		}
+		string = ownService.addOwn(ownBo);
+		if (string != null) {
+			fileDriverService.removeFile(ownBo);
+			return string;
+		}
+		pathService.setUrl(ownBo);
+		return string;
+	}
 
-    @Override
-    public String removeFile(FileInfoPo fileInfoPo) throws IOException {
-	    String string = fileInfoService.removeFileInfo(fileInfoPo);
-	    if (string != null) {
-		    return string;
-	    }
-        return fileDriverService.removeFile(fileInfoPo);
-    }
+	@Override
+	public String removeFile(FileInfoPo fileInfoPo) throws IOException {
+		String string = fileInfoService.removeFileInfo(fileInfoPo);
+		if (string != null) {
+			return string;
+		}
+		return fileDriverService.removeFile(fileInfoPo);
+	}
 
-    @Override
-    public String removeFile(OwnPo ownPo) throws IOException {
-	    String string = ownService.removeOwn(ownPo);
-	    if (string != null) {
-		    return string;
-	    }
-        return fileDriverService.removeFile(ownPo);
-    }
+	@Override
+	public String removeFile(OwnPo ownPo) throws IOException {
+		String string = ownService.removeOwn(ownPo);
+		if (string != null) {
+			return string;
+		}
+		return fileDriverService.removeFile(ownPo);
+	}
 
-    @Override
-    public String removeFile(OwnPo ownPo, UserPo userPo) throws IOException {
-        OwnBo ownBo = ownService.getOwn(ownPo);
-        if (ownBo == null) {
-            return null;
-        }
-        if (ownBo.getUserId() != userPo.getUserId()) {
-            return "不得删除他人文件";
-        }
-        ownService.removeOwn(ownBo);
-        return fileDriverService.removeFile(ownBo);
-    }
+	@Override
+	public String removeFile(OwnPo ownPo, UserPo userPo) throws IOException {
+		OwnBo ownBo = ownService.getOwn(ownPo);
+		if (ownBo == null) {
+			return null;
+		}
+		if (ownBo.getUserId() != userPo.getUserId()) {
+			return "不得删除他人文件";
+		}
+		ownService.removeOwn(ownBo);
+		return fileDriverService.removeFile(ownBo);
+	}
 
-    @Override
-    public FileInfoPo getFileInfoPoByMd5OrUuid(String md5OrUuid) {
-        if (md5OrUuid == null) {
-            return null;
-        }
-        if (md5OrUuid.indexOf('-') > 0) {
-            OwnPo ownPo = new OwnPo();
-            ownPo.setOwnUuid(md5OrUuid);
-            OwnBo ownBo = ownService.getOwn(ownPo);
-            if (ownBo == null) {
-                return null;
-            }
-            FileInfoPo fileInfoPo = new FileInfoPo();
-            BeanUtils.copyProperties(ownBo, fileInfoPo);
-            return fileInfoPo;
-        } else {
-            FileInfoPo fileInfoPo = new FileInfoPo();
-            fileInfoPo.setMd5(md5OrUuid);
-            return fileInfoService.getFileInfo(fileInfoPo);
-        }
-    }
+	@Override
+	public FileInfoPo getFileInfoPoByMd5OrUuid(String md5OrUuid) {
+		if (md5OrUuid == null) {
+			return null;
+		}
+		if (md5OrUuid.indexOf('-') > 0) {
+			OwnPo ownPo = new OwnPo();
+			ownPo.setOwnUuid(md5OrUuid);
+			OwnBo ownBo = ownService.getOwn(ownPo);
+			if (ownBo == null) {
+				return null;
+			}
+			FileInfoPo fileInfoPo = new FileInfoPo();
+			BeanUtils.copyProperties(ownBo, fileInfoPo);
+			return fileInfoPo;
+		} else {
+			FileInfoPo fileInfoPo = new FileInfoPo();
+			fileInfoPo.setMd5(md5OrUuid);
+			return fileInfoService.getFileInfo(fileInfoPo);
+		}
+	}
 
-    @Override
-    public String getFileByMd5OrUuid(String md5OrUuid, OutputStream outputStream) throws IOException {
-        if (md5OrUuid == null) {
-            return null;
-        }
-        if (md5OrUuid.indexOf('-') > 0) {
-            OwnBo ownBo = new OwnBo();
-            ownBo.setOwnUuid(md5OrUuid);
-            return fileDriverService.getFile(ownBo, outputStream);
-        } else {
-            FileInfoPo fileInfoPo = new FileInfoPo();
-            fileInfoPo.setMd5(md5OrUuid);
-            return fileDriverService.getFile(fileInfoPo, outputStream);
-        }
-    }
+	@Override
+	public String getFileByMd5OrUuid(String md5OrUuid, OutputStream outputStream) throws IOException {
+		if (md5OrUuid == null) {
+			return null;
+		}
+		if (md5OrUuid.indexOf('-') > 0) {
+			OwnBo ownBo = new OwnBo();
+			ownBo.setOwnUuid(md5OrUuid);
+			return fileDriverService.getFile(ownBo, outputStream);
+		} else {
+			FileInfoPo fileInfoPo = new FileInfoPo();
+			fileInfoPo.setMd5(md5OrUuid);
+			return fileDriverService.getFile(fileInfoPo, outputStream);
+		}
+	}
 
-    @Override
-    public String getTar(OutputStream outputStream) throws IOException {
-        TarArchiveOutputStream tarArchiveOutputStream = IOUtils.createTarArchiveOutputStream(outputStream);
-        if (driveFolder.exists()) {
-            IOUtils.archive(tarArchiveOutputStream, driveFolder);
-        }
-        if (sqliteFile.exists()) {
-            IOUtils.archiveFile(tarArchiveOutputStream, sqliteFile);
-        }
-        return null;
-    }
+	@Override
+	public String getTar(OutputStream outputStream) throws IOException {
+		TarArchiveOutputStream tarArchiveOutputStream = IOUtils.createTarArchiveOutputStream(outputStream);
+		if (driveFolder.exists()) {
+			IOUtils.archive(tarArchiveOutputStream, driveFolder);
+		}
+		if (sqliteFile.exists()) {
+			IOUtils.archiveFile(tarArchiveOutputStream, sqliteFile);
+		}
+		return null;
+	}
 
-    @Override
-    public String getTar(UserPo userPo, OutputStream outputStream) throws IOException {
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        TarArchiveOutputStream tarArchiveOutputStream = IOUtils.createTarArchiveOutputStream(outputStream);
-        OwnQuery ownQuery = new OwnQuery();
-        ownQuery.setUserId(userPo.getUserId());
-	    List<OwnBo> ownBos = ownService.listSomeOwn(ownQuery);
-        for (OwnBo ownBo : ownBos) {
-            try (InputStream inputStream = fileDriverService.getFileInputStream(ownBo)) {
-                if (inputStream != null) {
-                    IOUtils.archiveFile(tarArchiveOutputStream, inputStream, ownBo.getFileLength(),
-                            userPo.getUsername() + "/" + dateFormat.format(ownBo.getCreateTime()) + "_" + ownBo.getOwnUuid() + "_" + ownBo.getFileName());
-                }
-            }
-        }
-        return null;
-    }
+	@Override
+	public String getTar(UserPo userPo, OutputStream outputStream) throws IOException {
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		TarArchiveOutputStream tarArchiveOutputStream = IOUtils.createTarArchiveOutputStream(outputStream);
+		OwnQuery ownQuery = new OwnQuery();
+		ownQuery.setUserId(userPo.getUserId());
+		List<OwnBo> ownBos = ownService.listSomeOwn(ownQuery);
+		for (OwnBo ownBo : ownBos) {
+			try (InputStream inputStream = fileDriverService.getFileInputStream(ownBo)) {
+				if (inputStream != null) {
+					IOUtils.archiveFile(tarArchiveOutputStream, inputStream, ownBo.getFileLength(),
+							userPo.getUsername() + "/" + dateFormat.format(ownBo.getCreateTime()) + "_" + ownBo.getOwnUuid() + "_" + ownBo.getFileName());
+				}
+			}
+		}
+		return null;
+	}
 }

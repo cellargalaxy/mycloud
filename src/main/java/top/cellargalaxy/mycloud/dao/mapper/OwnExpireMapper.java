@@ -22,54 +22,54 @@ import java.util.Set;
  */
 @Mapper
 public interface OwnExpireMapper extends IDao<OwnExpirePo, OwnExpireBo, OwnExpireQuery> {
-    @Options(useGeneratedKeys = true, keyProperty = "ownId")
-    @InsertProvider(type = OwnExpireProvider.class, method = "insert")
-    int insert(OwnExpirePo ownExpirePo);
+	@Options(useGeneratedKeys = true, keyProperty = "ownId")
+	@InsertProvider(type = OwnExpireProvider.class, method = "insert")
+	int insert(OwnExpirePo ownExpirePo);
 
-    @DeleteProvider(type = OwnExpireProvider.class, method = "delete")
-    int delete(OwnExpirePo ownExpirePo);
+	@DeleteProvider(type = OwnExpireProvider.class, method = "delete")
+	int delete(OwnExpirePo ownExpirePo);
 
-    @UpdateProvider(type = OwnExpireProvider.class, method = "update")
-    int update(OwnExpirePo ownExpirePo);
+	@UpdateProvider(type = OwnExpireProvider.class, method = "update")
+	int update(OwnExpirePo ownExpirePo);
 
-    @Results(id = "ownExpireResults", value = {
-		    @Result(property = "ownId", column = "own_id"),
-		    @Result(property = "ownExpireTime", column = "own_expire_time"),
-		    @Result(property = "ownUuid", column = "own_uuid"),
-		    @Result(property = "userId", column = "user_id"),
-		    @Result(property = "fileName", column = "file_name"),
-		    @Result(property = "sort", column = "sort"),
-		    @Result(property = "description", column = "description"),
-		    @Result(property = "contentType", column = "content_type"),
-		    @Result(property = "fileLength", column = "file_length"),
-		    @Result(property = "md5", column = "md5"),
-		    @Result(property = "fileId", column = "file_id"),
-    })
-    @SelectProvider(type = OwnExpireProvider.class, method = "selectOne")
-    OwnExpireBo selectOne(OwnExpirePo ownExpirePo);
-
-    @ResultMap(value = "ownExpireResults")
-    @SelectProvider(type = OwnExpireProvider.class, method = "selectPageSome")
-    List<OwnExpireBo> selectPageSome(OwnExpireQuery ownExpireQuery);
-
-    @ResultMap(value = "ownExpireResults")
-    @SelectProvider(type = OwnExpireProvider.class, method = "selectAllSome")
-    List<OwnExpireBo> selectAllSome(OwnExpireQuery ownExpireQuery);
-
-    @SelectProvider(type = OwnExpireProvider.class, method = "selectCount")
-    int selectCount(OwnExpireQuery ownExpireQuery);
-
-    @ResultMap(value = "ownExpireResults")
-    @SelectProvider(type = OwnExpireProvider.class, method = "selectAll")
-    List<OwnExpireBo> selectAll();
-
-    @ResultMap(value = "ownExpireResults")
-    @SelectProvider(type = OwnExpireProvider.class, method = "selectExpireOwnExpire")
-    List<OwnExpireBo> selectExpireOwnExpire(OwnExpireQuery ownExpireQuery);
+	@Results(id = "ownExpireResults", value = {
+			@Result(property = "ownId", column = "own_id"),
+			@Result(property = "ownExpireTime", column = "own_expire_time"),
+			@Result(property = "ownUuid", column = "own_uuid"),
+			@Result(property = "userId", column = "user_id"),
+			@Result(property = "fileName", column = "file_name"),
+			@Result(property = "sort", column = "sort"),
+			@Result(property = "description", column = "description"),
+			@Result(property = "contentType", column = "content_type"),
+			@Result(property = "fileLength", column = "file_length"),
+			@Result(property = "md5", column = "md5"),
+			@Result(property = "fileId", column = "file_id"),
+	})
+	@SelectProvider(type = OwnExpireProvider.class, method = "selectOne")
+	OwnExpireBo selectOne(OwnExpirePo ownExpirePo);
 
 	@ResultMap(value = "ownExpireResults")
-    @SelectProvider(type = OwnExpireProvider.class, method = "selectRecentExpireOwn")
-    List<OwnPo> selectRecentExpireOwn(OwnExpireQuery ownExpireQuery);
+	@SelectProvider(type = OwnExpireProvider.class, method = "selectPageSome")
+	List<OwnExpireBo> selectPageSome(OwnExpireQuery ownExpireQuery);
+
+	@ResultMap(value = "ownExpireResults")
+	@SelectProvider(type = OwnExpireProvider.class, method = "selectAllSome")
+	List<OwnExpireBo> selectAllSome(OwnExpireQuery ownExpireQuery);
+
+	@SelectProvider(type = OwnExpireProvider.class, method = "selectCount")
+	int selectCount(OwnExpireQuery ownExpireQuery);
+
+	@ResultMap(value = "ownExpireResults")
+	@SelectProvider(type = OwnExpireProvider.class, method = "selectAll")
+	List<OwnExpireBo> selectAll();
+
+	@ResultMap(value = "ownExpireResults")
+	@SelectProvider(type = OwnExpireProvider.class, method = "selectExpireOwnExpire")
+	List<OwnExpireBo> selectExpireOwnExpire(OwnExpireQuery ownExpireQuery);
+
+	@ResultMap(value = "ownExpireResults")
+	@SelectProvider(type = OwnExpireProvider.class, method = "selectRecentExpireOwn")
+	List<OwnPo> selectRecentExpireOwn(OwnExpireQuery ownExpireQuery);
 
 	class OwnExpireProvider /*implements IProvider<OwnExpirePo,OwnExpireQuery>*/ {
 		private final String tableName = OwnExpireDao.TABLE_NAME;
@@ -203,5 +203,5 @@ public interface OwnExpireMapper extends IDao<OwnExpirePo, OwnExpireBo, OwnExpir
 			String string = ProviderUtils.limitSome(sql).toString();
 			return string;
 		}
-    }
+	}
 }

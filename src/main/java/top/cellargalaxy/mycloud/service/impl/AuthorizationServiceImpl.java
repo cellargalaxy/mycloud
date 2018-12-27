@@ -19,31 +19,31 @@ import java.util.List;
 @Transactional
 @Service
 public class AuthorizationServiceImpl implements AuthorizationService {
-    private static final String NAME = "授权";
-    @Autowired
-    private AuthorizationDao authorizationDao;
+	private static final String NAME = "授权";
+	@Autowired
+	private AuthorizationDao authorizationDao;
 
-    @Override
-    public String addAuthorization(AuthorizationPo authorizationPo) {
-        return ServiceUtils.add(authorizationPo, NAME, AuthorizationDao::checkInsert, authorizationDao);
-    }
+	@Override
+	public String addAuthorization(AuthorizationPo authorizationPo) {
+		return ServiceUtils.add(authorizationPo, NAME, AuthorizationDao::checkInsert, authorizationDao);
+	}
 
-    @Override
-    public String removeAuthorization(AuthorizationPo authorizationPo) {
-        return ServiceUtils.remove(authorizationPo, NAME, authorizationDao);
-    }
+	@Override
+	public String removeAuthorization(AuthorizationPo authorizationPo) {
+		return ServiceUtils.remove(authorizationPo, NAME, authorizationDao);
+	}
 
-    @Override
-    public List<AuthorizationBo> listAuthorizationByUserId(AuthorizationQuery authorizationQuery) {
-        int page = authorizationQuery.getPage();
-        int pageSize = authorizationQuery.getPageSize();
-        int userId = authorizationQuery.getUserId();
+	@Override
+	public List<AuthorizationBo> listAuthorizationByUserId(AuthorizationQuery authorizationQuery) {
+		int page = authorizationQuery.getPage();
+		int pageSize = authorizationQuery.getPageSize();
+		int userId = authorizationQuery.getUserId();
 
-        authorizationQuery = new AuthorizationQuery();
-        authorizationQuery.setPage(page);
-        authorizationQuery.setPageSize(pageSize);
-        authorizationQuery.setUserId(userId);
+		authorizationQuery = new AuthorizationQuery();
+		authorizationQuery.setPage(page);
+		authorizationQuery.setPageSize(pageSize);
+		authorizationQuery.setUserId(userId);
 
-        return authorizationDao.selectAllSome(authorizationQuery);
-    }
+		return authorizationDao.selectAllSome(authorizationQuery);
+	}
 }

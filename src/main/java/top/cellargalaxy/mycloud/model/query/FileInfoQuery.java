@@ -11,21 +11,21 @@ import top.cellargalaxy.mycloud.util.model.PageQuery;
  */
 @Data
 public class FileInfoQuery extends FileInfoPo implements PageQuery {
-    private int maxPageSize = SqlUtils.MAX_PAGE_SIZE;
-    private int pageSize = SqlUtils.MAX_PAGE_SIZE;
-    private int page = 1;
-    private int off;
-    private int len;
+	private int maxPageSize = SqlUtils.MAX_PAGE_SIZE;
+	private int pageSize = SqlUtils.MAX_PAGE_SIZE;
+	private int page = 1;
+	private int off;
+	private int len;
 
-    @Override
-    public String toString() {
-        return "AuthorizationQuery{" +
-                "maxPageSize=" + maxPageSize +
-                ", pageSize=" + pageSize +
-                ", page=" + page +
-                ", off=" + off +
-                ", len=" + len +
-                ", super=" + super.toString() +
-                '}';
-    }
+	@Override
+	public String toString() {
+		return "AuthorizationQuery{" +
+				"maxPageSize=" + maxPageSize +
+				", pageSize=" + pageSize +
+				", page=" + page +
+				", off=" + off +
+				", len=" + len +
+				", super=" + super.toString() +
+				'}';
+	}
 }

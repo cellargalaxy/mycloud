@@ -8,9 +8,9 @@ import java.util.Set;
  * @time 2018/7/31
  */
 public interface SecurityUser extends Serializable {
-    String getUsername();
+	String getUsername();
 
-    String getPassword();
+	String getPassword();
 
-    Set<String> getPermissions();
+	Set<String> getPermissions();
 }

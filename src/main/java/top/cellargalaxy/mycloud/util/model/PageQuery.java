@@ -5,21 +5,21 @@ package top.cellargalaxy.mycloud.util.model;
  * @time 2018/7/12
  */
 public interface PageQuery {
-    int getMaxPageSize();
+	int getMaxPageSize();
 
-    int getPageSize();
+	int getPageSize();
 
-    void setPageSize(int pageSize);
+	void setPageSize(int pageSize);
 
-    int getPage();
+	int getPage();
 
-    void setPage(int page);
+	void setPage(int page);
 
-    int getOff();
+	int getOff();
 
-    void setOff(int off);
+	void setOff(int off);
 
-    int getLen();
+	int getLen();
 
-    void setLen(int len);
+	void setLen(int len);
 }

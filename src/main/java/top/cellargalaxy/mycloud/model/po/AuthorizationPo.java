@@ -10,10 +10,10 @@ import java.util.Date;
  */
 @Data
 public class AuthorizationPo implements Serializable {
-    private static final long serialVersionUID = 1523109653163477354L;
-    private int authorizationId;
-    private int userId;
-    private Permission permission;
-    private Date createTime;
-    private Date updateTime;
+	private static final long serialVersionUID = 1523109653163477354L;
+	private int authorizationId;
+	private int userId;
+	private Permission permission;
+	private Date createTime;
+	private Date updateTime;
 }

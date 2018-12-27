@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import top.cellargalaxy.mycloud.model.po.FileInfoPo;
-import top.cellargalaxy.mycloud.util.model.Vo;
 import top.cellargalaxy.mycloud.service.FileInfoService;
+import top.cellargalaxy.mycloud.util.model.Vo;
 
 /**
  * @author cellargalaxy
@@ -18,14 +18,14 @@ import top.cellargalaxy.mycloud.service.FileInfoService;
 @RestController
 @RequestMapping(FileInfoUserController.URL)
 public class FileInfoUserController {
-    public static final String URL = "/user/fileInfo";
-    @Autowired
-    private FileInfoService fileInfoService;
+	public static final String URL = "/user/fileInfo";
+	@Autowired
+	private FileInfoService fileInfoService;
 
-    @GetMapping("/getFileInfo")
-    public Vo getFileInfo(@RequestParam("md5") String md5) {
-        FileInfoPo fileInfoPo = new FileInfoPo();
-        fileInfoPo.setMd5(md5);
-        return new Vo(null, fileInfoService.getFileInfo(fileInfoPo));
-    }
+	@GetMapping("/getFileInfo")
+	public Vo getFileInfo(@RequestParam("md5") String md5) {
+		FileInfoPo fileInfoPo = new FileInfoPo();
+		fileInfoPo.setMd5(md5);
+		return new Vo(null, fileInfoService.getFileInfo(fileInfoPo));
+	}
 }

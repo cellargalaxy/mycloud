@@ -9,13 +9,13 @@ import top.cellargalaxy.mycloud.model.po.FileInfoPo;
  */
 @Data
 public class FileInfoBo extends FileInfoPo {
-    private String md5Url;
+	private String md5Url;
 
-    @Override
-    public String toString() {
-        return "FileInfoBo{" +
-                "md5Url='" + md5Url + '\'' +
-                ", super=" + super.toString() +
-                '}';
-    }
+	@Override
+	public String toString() {
+		return "FileInfoBo{" +
+				"md5Url='" + md5Url + '\'' +
+				", super=" + super.toString() +
+				'}';
+	}
 }

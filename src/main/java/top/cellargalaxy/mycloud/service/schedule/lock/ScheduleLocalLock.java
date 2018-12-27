@@ -1,7 +1,5 @@
 package top.cellargalaxy.mycloud.service.schedule.lock;
 
-import org.springframework.stereotype.Service;
-
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;

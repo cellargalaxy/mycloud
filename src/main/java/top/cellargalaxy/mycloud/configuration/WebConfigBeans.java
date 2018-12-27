@@ -25,58 +25,58 @@ import java.util.Date;
  */
 @SpringBootConfiguration
 public class WebConfigBeans {
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
-    @Autowired
-    private RequestMappingHandlerAdapter handlerAdapter;
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
+	@Autowired
+	private RequestMappingHandlerAdapter handlerAdapter;
 
-    /**
-     * http参数的日期字符串转Date对象
-     */
-    @PostConstruct
-    public void dataConfig() {
-        ConfigurableWebBindingInitializer initializer = (ConfigurableWebBindingInitializer) handlerAdapter.getWebBindingInitializer();
-        if (initializer.getConversionService() != null) {
-            GenericConversionService genericConversionService = (GenericConversionService) initializer.getConversionService();
-            genericConversionService.addConverter(new Converter<String, Date>() {
-                private final DateFormat DATE_FORMAT_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                private final DateFormat SHORT_DATE_FORMAT_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
+	/**
+	 * http参数的日期字符串转Date对象
+	 */
+	@PostConstruct
+	public void dataConfig() {
+		ConfigurableWebBindingInitializer initializer = (ConfigurableWebBindingInitializer) handlerAdapter.getWebBindingInitializer();
+		if (initializer.getConversionService() != null) {
+			GenericConversionService genericConversionService = (GenericConversionService) initializer.getConversionService();
+			genericConversionService.addConverter(new Converter<String, Date>() {
+				private final DateFormat DATE_FORMAT_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+				private final DateFormat SHORT_DATE_FORMAT_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 
-                @Override
-                public Date convert(String string) {
-                    if (string == null || (string = string.trim()).length() == 0) {
-                        return null;
-                    }
-                    try {
-                        if (string.matches("^\\d+$")) {
-                            return new Date(Long.valueOf(string) * 1000);
-                        }
-                        if (string.contains(":")) {
-                            return DATE_FORMAT_FORMAT.parse(string);
-                        } else {
-                            return SHORT_DATE_FORMAT_FORMAT.parse(string);
-                        }
-                    } catch (Exception e) {
-                        return null;
-                    }
-                }
-            });
-        }
-    }
+				@Override
+				public Date convert(String string) {
+					if (string == null || (string = string.trim()).length() == 0) {
+						return null;
+					}
+					try {
+						if (string.matches("^\\d+$")) {
+							return new Date(Long.valueOf(string) * 1000);
+						}
+						if (string.contains(":")) {
+							return DATE_FORMAT_FORMAT.parse(string);
+						} else {
+							return SHORT_DATE_FORMAT_FORMAT.parse(string);
+						}
+					} catch (Exception e) {
+						return null;
+					}
+				}
+			});
+		}
+	}
 
-    @Bean
-    public MultipartConfigElement multipartConfigElement(MycloudConfiguration mycloudConfiguration, PathService pathService) {
-        File mycloudTmpFolder = pathService.getTmpFolder();
-        if (!mycloudTmpFolder.exists()) {
-            mycloudTmpFolder.mkdirs();
-        }
-        String webUploadMaxFileSize = mycloudConfiguration.getWebUploadMaxFileSize();
-        String webUploadMaxRequestSize = mycloudConfiguration.getWebUploadMaxRequestSize();
-        logger.info("webUploadMaxFileSize: {}; webUploadMaxRequestSize: {}; mycloudTmpPath: {}", webUploadMaxFileSize, webUploadMaxRequestSize, mycloudTmpFolder);
+	@Bean
+	public MultipartConfigElement multipartConfigElement(MycloudConfiguration mycloudConfiguration, PathService pathService) {
+		File mycloudTmpFolder = pathService.getTmpFolder();
+		if (!mycloudTmpFolder.exists()) {
+			mycloudTmpFolder.mkdirs();
+		}
+		String webUploadMaxFileSize = mycloudConfiguration.getWebUploadMaxFileSize();
+		String webUploadMaxRequestSize = mycloudConfiguration.getWebUploadMaxRequestSize();
+		logger.info("webUploadMaxFileSize: {}; webUploadMaxRequestSize: {}; mycloudTmpPath: {}", webUploadMaxFileSize, webUploadMaxRequestSize, mycloudTmpFolder);
 
-        MultipartConfigFactory factory = new MultipartConfigFactory();
-        factory.setLocation(mycloudTmpFolder.getAbsolutePath());
-        factory.setMaxFileSize(webUploadMaxFileSize);
-        factory.setMaxRequestSize(webUploadMaxRequestSize);
-        return factory.createMultipartConfig();
-    }
+		MultipartConfigFactory factory = new MultipartConfigFactory();
+		factory.setLocation(mycloudTmpFolder.getAbsolutePath());
+		factory.setMaxFileSize(webUploadMaxFileSize);
+		factory.setMaxRequestSize(webUploadMaxRequestSize);
+		return factory.createMultipartConfig();
+	}
 }

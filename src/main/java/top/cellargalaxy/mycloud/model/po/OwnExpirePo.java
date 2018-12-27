@@ -10,6 +10,6 @@ import java.util.Date;
  */
 @Data
 public class OwnExpirePo {
-    private int ownId;
-    private Date ownExpireTime;
+	private int ownId;
+	private Date ownExpireTime;
 }

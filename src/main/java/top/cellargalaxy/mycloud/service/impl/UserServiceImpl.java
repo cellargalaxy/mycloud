@@ -25,93 +25,93 @@ import java.util.stream.Collectors;
 @Transactional
 @Service
 public class UserServiceImpl implements UserService {
-    private static final String NAME = "账号";
-    @Autowired
-    private UserDao userDao;
-    @Autowired
-    private AuthorizationService authorizationService;
+	private static final String NAME = "账号";
+	@Autowired
+	private UserDao userDao;
+	@Autowired
+	private AuthorizationService authorizationService;
 
-    @Override
-    public String addUser(UserPo userPo) {
-        if (userPo.getPassword() != null) {
-            userPo.setPassword(StringUtils.PASSWORD_HEAD + StringUtils.encoderPassword(userPo.getPassword()));
-        }
-        return ServiceUtils.add(userPo, NAME, UserDao::checkInsert, userDao);
-    }
+	@Override
+	public String addUser(UserPo userPo) {
+		if (userPo.getPassword() != null) {
+			userPo.setPassword(StringUtils.PASSWORD_HEAD + StringUtils.encoderPassword(userPo.getPassword()));
+		}
+		return ServiceUtils.add(userPo, NAME, UserDao::checkInsert, userDao);
+	}
 
-    @Override
-    public String removeUser(UserPo userPo) {
-        return ServiceUtils.remove(userPo, NAME, userDao);
-    }
+	@Override
+	public String removeUser(UserPo userPo) {
+		return ServiceUtils.remove(userPo, NAME, userDao);
+	}
 
-    @Override
-    public String changeUser(UserPo userPo) {
-        if (userPo.getPassword() != null) {
-            userPo.setPassword(StringUtils.PASSWORD_HEAD + StringUtils.encoderPassword(userPo.getPassword()));
-        }
-        return ServiceUtils.change(userPo, NAME, UserDao::checkUpdate, userDao);
-    }
+	@Override
+	public String changeUser(UserPo userPo) {
+		if (userPo.getPassword() != null) {
+			userPo.setPassword(StringUtils.PASSWORD_HEAD + StringUtils.encoderPassword(userPo.getPassword()));
+		}
+		return ServiceUtils.change(userPo, NAME, UserDao::checkUpdate, userDao);
+	}
 
-    @Override
-    public String changeUser(UserPo userPo, UserPo newUserPo) {
-        if (userPo == null) {
-            return "未登录";
-        }
-        if (userPo.getUserId() != newUserPo.getUserId()) {
-            return "不得修改他人信息";
-        }
-        return ServiceUtils.change(newUserPo, NAME, UserDao::checkUpdate, userDao);
-    }
+	@Override
+	public String changeUser(UserPo userPo, UserPo newUserPo) {
+		if (userPo == null) {
+			return "未登录";
+		}
+		if (userPo.getUserId() != newUserPo.getUserId()) {
+			return "不得修改他人信息";
+		}
+		return ServiceUtils.change(newUserPo, NAME, UserDao::checkUpdate, userDao);
+	}
 
-    @Override
-    public UserBo getUser(UserPo userPo) {
-        return userDao.selectOne(userPo);
-    }
+	@Override
+	public UserBo getUser(UserPo userPo) {
+		return userDao.selectOne(userPo);
+	}
 
-    @Override
-    public UserVo getUserVo(UserPo userPo) {
-        UserBo userBo = userDao.selectOne(userPo);
-        return bo2vo(userBo);
-    }
+	@Override
+	public UserVo getUserVo(UserPo userPo) {
+		UserBo userBo = userDao.selectOne(userPo);
+		return bo2vo(userBo);
+	}
 
-    @Override
-    public List<UserBo> listAllUser() {
-        return userDao.selectAll();
-    }
+	@Override
+	public List<UserBo> listAllUser() {
+		return userDao.selectAll();
+	}
 
-    @Override
-    public List<UserVo> listAllUserVo() {
-        List<UserBo> userBos = userDao.selectAll();
-        return bo2vo(userBos);
-    }
+	@Override
+	public List<UserVo> listAllUserVo() {
+		List<UserBo> userBos = userDao.selectAll();
+		return bo2vo(userBos);
+	}
 
-    @Override
-    public Permission[] listAllPermission() {
-        return Permission.values();
-    }
+	@Override
+	public Permission[] listAllPermission() {
+		return Permission.values();
+	}
 
-    private List<UserVo> bo2vo(List<UserBo> userBos) {
-        if (userBos == null) {
-            return null;
-        }
-        return userBos.stream().map(userBo -> bo2vo(userBo)).collect(Collectors.toList());
-    }
+	private List<UserVo> bo2vo(List<UserBo> userBos) {
+		if (userBos == null) {
+			return null;
+		}
+		return userBos.stream().map(userBo -> bo2vo(userBo)).collect(Collectors.toList());
+	}
 
-    private UserVo bo2vo(UserBo userBo) {
-        if (userBo == null) {
-            return null;
-        }
+	private UserVo bo2vo(UserBo userBo) {
+		if (userBo == null) {
+			return null;
+		}
 
-        AuthorizationQuery authorizationQuery = new AuthorizationQuery();
-        authorizationQuery.setUserId(userBo.getUserId());
-        List<AuthorizationBo> authorizationBos = authorizationService.listAuthorizationByUserId(authorizationQuery).stream().collect(Collectors.toList());
-        if (authorizationBos.size() == 0) {
-            authorizationBos.add(AuthorizationBo.GUEST);
-        }
+		AuthorizationQuery authorizationQuery = new AuthorizationQuery();
+		authorizationQuery.setUserId(userBo.getUserId());
+		List<AuthorizationBo> authorizationBos = authorizationService.listAuthorizationByUserId(authorizationQuery).stream().collect(Collectors.toList());
+		if (authorizationBos.size() == 0) {
+			authorizationBos.add(AuthorizationBo.GUEST);
+		}
 
-        UserVo userVo = new UserVo();
-        userVo.setUser(userBo);
-        userVo.setAuthorizations(authorizationBos);
-        return userVo;
-    }
+		UserVo userVo = new UserVo();
+		userVo.setUser(userBo);
+		userVo.setAuthorizations(authorizationBos);
+		return userVo;
+	}
 }

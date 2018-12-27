@@ -13,26 +13,26 @@ import java.util.List;
  * @time 2018/12/13
  */
 public interface OwnExpireDao extends IDao<OwnExpirePo, OwnExpireBo, OwnExpireQuery> {
-    String TABLE_NAME = "own_expire";
+	String TABLE_NAME = "own_expire";
 
-    List<OwnExpireBo> selectExpireOwnExpire(OwnExpireQuery ownExpireQuery);
+	static String checkInsert(OwnExpirePo ownExpirePo) {
+		if (ownExpirePo.getOwnId() < 1) {
+			return "所属id不得为空";
+		}
+		if (ownExpirePo.getOwnExpireTime() == null) {
+			return "所属过期时间不得为空";
+		}
+		return null;
+	}
 
-    List<OwnPo> selectRecentExpireOwn(OwnExpireQuery ownExpireQuery);
+	static String checkUpdate(OwnExpirePo ownExpirePo) {
+		if (ownExpirePo.getOwnId() < 1) {
+			return "所属过期id不得为空";
+		}
+		return null;
+	}
 
-    static String checkInsert(OwnExpirePo ownExpirePo) {
-        if (ownExpirePo.getOwnId() < 1) {
-            return "所属id不得为空";
-        }
-        if (ownExpirePo.getOwnExpireTime() == null) {
-            return "所属过期时间不得为空";
-        }
-        return null;
-    }
+	List<OwnExpireBo> selectExpireOwnExpire(OwnExpireQuery ownExpireQuery);
 
-    static String checkUpdate(OwnExpirePo ownExpirePo) {
-        if (ownExpirePo.getOwnId() < 1) {
-            return "所属过期id不得为空";
-        }
-        return null;
-    }
+	List<OwnPo> selectRecentExpireOwn(OwnExpireQuery ownExpireQuery);
 }

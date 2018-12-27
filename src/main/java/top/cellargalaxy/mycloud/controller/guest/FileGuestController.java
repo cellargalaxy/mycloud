@@ -8,12 +8,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import top.cellargalaxy.mycloud.model.bo.OwnBo;
 import top.cellargalaxy.mycloud.model.po.OwnExpirePo;
-import top.cellargalaxy.mycloud.model.po.UserPo;
 import top.cellargalaxy.mycloud.service.FileService;
-import top.cellargalaxy.mycloud.service.security.SecurityServiceImpl;
 import top.cellargalaxy.mycloud.util.model.Vo;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 /**
@@ -23,20 +20,20 @@ import java.io.IOException;
 @RestController
 @RequestMapping(FileGuestController.URL)
 public class FileGuestController {
-    public static final String URL = "/guest/file";
+	public static final String URL = "/guest/file";
 
-    @Autowired
-    private FileService fileService;
+	@Autowired
+	private FileService fileService;
 
-    @PostMapping("/uploadTmpFile")
-    public Vo uploadTmpFile( OwnBo ownBo, OwnExpirePo ownExpirePo, @RequestParam("file") MultipartFile multipartFile) throws IOException {
-        if (multipartFile == null || multipartFile.isEmpty()) {
-            return new Vo("无上传文件", null);
-        }
-        ownBo.setContentType(multipartFile.getContentType());
-        ownBo.setFileLength(multipartFile.getSize());
-        ownBo.setFileName(multipartFile.getOriginalFilename());
-        String string = fileService.addTmpFile(multipartFile.getInputStream(), ownBo, ownExpirePo);
-        return new Vo(string, string == null ? ownBo : null);
-    }
+	@PostMapping("/uploadTmpFile")
+	public Vo uploadTmpFile(OwnBo ownBo, OwnExpirePo ownExpirePo, @RequestParam("file") MultipartFile multipartFile) throws IOException {
+		if (multipartFile == null || multipartFile.isEmpty()) {
+			return new Vo("无上传文件", null);
+		}
+		ownBo.setContentType(multipartFile.getContentType());
+		ownBo.setFileLength(multipartFile.getSize());
+		ownBo.setFileName(multipartFile.getOriginalFilename());
+		String string = fileService.addTmpFile(multipartFile.getInputStream(), ownBo, ownExpirePo);
+		return new Vo(string, string == null ? ownBo : null);
+	}
 }

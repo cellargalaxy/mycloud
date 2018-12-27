@@ -21,43 +21,43 @@ import java.util.Set;
  */
 @Mapper
 public interface FileInfoMapper extends IDao<FileInfoPo, FileInfoBo, FileInfoQuery> {
-    @Options(useGeneratedKeys = true, keyProperty = "fileId")
-    @InsertProvider(type = FileInfoProvider.class, method = "insert")
-    int insert(FileInfoPo fileInfoPo);
+	@Options(useGeneratedKeys = true, keyProperty = "fileId")
+	@InsertProvider(type = FileInfoProvider.class, method = "insert")
+	int insert(FileInfoPo fileInfoPo);
 
-    @DeleteProvider(type = FileInfoProvider.class, method = "delete")
-    int delete(FileInfoPo fileInfoPo);
+	@DeleteProvider(type = FileInfoProvider.class, method = "delete")
+	int delete(FileInfoPo fileInfoPo);
 
-    @UpdateProvider(type = FileInfoProvider.class, method = "update")
-    int update(FileInfoPo fileInfoPo);
+	@UpdateProvider(type = FileInfoProvider.class, method = "update")
+	int update(FileInfoPo fileInfoPo);
 
-    @Results(id = "fileInfoResults", value = {
-            @Result(property = "fileId", column = "file_id"),
-            @Result(property = "md5", column = "md5"),
-            @Result(property = "fileLength", column = "file_length"),
-            @Result(property = "contentType", column = "content_type"),
-            @Result(property = "createTime", column = "create_time"),
-    })
-    @SelectProvider(type = FileInfoProvider.class, method = "selectOne")
-    FileInfoBo selectOne(FileInfoPo fileInfoPo);
+	@Results(id = "fileInfoResults", value = {
+			@Result(property = "fileId", column = "file_id"),
+			@Result(property = "md5", column = "md5"),
+			@Result(property = "fileLength", column = "file_length"),
+			@Result(property = "contentType", column = "content_type"),
+			@Result(property = "createTime", column = "create_time"),
+	})
+	@SelectProvider(type = FileInfoProvider.class, method = "selectOne")
+	FileInfoBo selectOne(FileInfoPo fileInfoPo);
 
-    @ResultMap(value = "fileInfoResults")
-    @SelectProvider(type = FileInfoProvider.class, method = "selectPageSome")
-    List<FileInfoBo> selectPageSome(FileInfoQuery fileInfoQuery);
+	@ResultMap(value = "fileInfoResults")
+	@SelectProvider(type = FileInfoProvider.class, method = "selectPageSome")
+	List<FileInfoBo> selectPageSome(FileInfoQuery fileInfoQuery);
 
-    @ResultMap(value = "fileInfoResults")
-    @SelectProvider(type = FileInfoProvider.class, method = "selectAllSome")
-    List<FileInfoBo> selectAllSome(FileInfoQuery fileInfoQuery);
+	@ResultMap(value = "fileInfoResults")
+	@SelectProvider(type = FileInfoProvider.class, method = "selectAllSome")
+	List<FileInfoBo> selectAllSome(FileInfoQuery fileInfoQuery);
 
-    @SelectProvider(type = FileInfoProvider.class, method = "selectCount")
-    int selectCount(FileInfoQuery fileInfoQuery);
+	@SelectProvider(type = FileInfoProvider.class, method = "selectCount")
+	int selectCount(FileInfoQuery fileInfoQuery);
 
-    @ResultMap(value = "fileInfoResults")
-    @SelectProvider(type = FileInfoProvider.class, method = "selectAll")
-    List<FileInfoBo> selectAll();
+	@ResultMap(value = "fileInfoResults")
+	@SelectProvider(type = FileInfoProvider.class, method = "selectAll")
+	List<FileInfoBo> selectAll();
 
-    @SelectProvider(type = FileInfoProvider.class, method = "selectAllContentType")
-    List<String> selectAllContentType();
+	@SelectProvider(type = FileInfoProvider.class, method = "selectAllContentType")
+	List<String> selectAllContentType();
 
 	class FileInfoProvider /*implements IProvider<FileInfoPo,FileInfoQuery>*/ {
 		private final String tableName = FileInfoDao.TABLE_NAME;
@@ -145,5 +145,5 @@ public interface FileInfoMapper extends IDao<FileInfoPo, FileInfoBo, FileInfoQue
 			String string = sql.toString();
 			return string;
 		}
-    }
+	}
 }

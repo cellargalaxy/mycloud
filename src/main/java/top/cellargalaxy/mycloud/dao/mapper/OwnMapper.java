@@ -5,7 +5,6 @@ import org.apache.ibatis.jdbc.SQL;
 import top.cellargalaxy.mycloud.dao.OwnDao;
 import top.cellargalaxy.mycloud.dao.UserDao;
 import top.cellargalaxy.mycloud.model.bo.OwnBo;
-import top.cellargalaxy.mycloud.model.po.AuthorizationPo;
 import top.cellargalaxy.mycloud.model.po.OwnPo;
 import top.cellargalaxy.mycloud.model.query.OwnQuery;
 import top.cellargalaxy.mycloud.util.StringUtils;
@@ -23,51 +22,51 @@ import java.util.Set;
  */
 @Mapper
 public interface OwnMapper extends IDao<OwnPo, OwnBo, OwnQuery> {
-    @Options(useGeneratedKeys = true, keyProperty = "ownId")
-    @InsertProvider(type = OwnProvider.class, method = "insert")
-    int insert(OwnPo ownPo);
+	@Options(useGeneratedKeys = true, keyProperty = "ownId")
+	@InsertProvider(type = OwnProvider.class, method = "insert")
+	int insert(OwnPo ownPo);
 
-    @DeleteProvider(type = OwnProvider.class, method = "delete")
-    int delete(OwnPo ownPo);
+	@DeleteProvider(type = OwnProvider.class, method = "delete")
+	int delete(OwnPo ownPo);
 
-    @UpdateProvider(type = OwnProvider.class, method = "update")
-    int update(OwnPo ownPo);
+	@UpdateProvider(type = OwnProvider.class, method = "update")
+	int update(OwnPo ownPo);
 
-    @Results(id = "ownResults", value = {
-            @Result(property = "ownId", column = "own_id"),
-            @Result(property = "ownUuid", column = "own_uuid"),
-            @Result(property = "userId", column = "user_id"),
-		    @Result(property = "fileName", column = "file_name"),
-		    @Result(property = "sort", column = "sort"),
-		    @Result(property = "description", column = "description"),
-		    @Result(property = "contentType", column = "content_type"),
-		    @Result(property = "fileLength", column = "file_length"),
-		    @Result(property = "md5", column = "md5"),
-		    @Result(property = "fileId", column = "file_id"),
-            @Result(property = "createTime", column = "create_time"),
-            @Result(property = "updateTime", column = "update_time"),
-            @Result(property = "username", column = "username"),
-    })
-    @SelectProvider(type = OwnProvider.class, method = "selectOne")
-    OwnBo selectOne(OwnPo ownPo);
+	@Results(id = "ownResults", value = {
+			@Result(property = "ownId", column = "own_id"),
+			@Result(property = "ownUuid", column = "own_uuid"),
+			@Result(property = "userId", column = "user_id"),
+			@Result(property = "fileName", column = "file_name"),
+			@Result(property = "sort", column = "sort"),
+			@Result(property = "description", column = "description"),
+			@Result(property = "contentType", column = "content_type"),
+			@Result(property = "fileLength", column = "file_length"),
+			@Result(property = "md5", column = "md5"),
+			@Result(property = "fileId", column = "file_id"),
+			@Result(property = "createTime", column = "create_time"),
+			@Result(property = "updateTime", column = "update_time"),
+			@Result(property = "username", column = "username"),
+	})
+	@SelectProvider(type = OwnProvider.class, method = "selectOne")
+	OwnBo selectOne(OwnPo ownPo);
 
-    @ResultMap(value = "ownResults")
-    @SelectProvider(type = OwnProvider.class, method = "selectPageSome")
-    List<OwnBo> selectPageSome(OwnQuery ownQuery);
+	@ResultMap(value = "ownResults")
+	@SelectProvider(type = OwnProvider.class, method = "selectPageSome")
+	List<OwnBo> selectPageSome(OwnQuery ownQuery);
 
-    @ResultMap(value = "ownResults")
-    @SelectProvider(type = OwnProvider.class, method = "selectAllSome")
-    List<OwnBo> selectAllSome(OwnQuery ownQuery);
+	@ResultMap(value = "ownResults")
+	@SelectProvider(type = OwnProvider.class, method = "selectAllSome")
+	List<OwnBo> selectAllSome(OwnQuery ownQuery);
 
-    @SelectProvider(type = OwnProvider.class, method = "selectCount")
-    int selectCount(OwnQuery ownQuery);
+	@SelectProvider(type = OwnProvider.class, method = "selectCount")
+	int selectCount(OwnQuery ownQuery);
 
-    @ResultMap(value = "ownResults")
-    @SelectProvider(type = OwnProvider.class, method = "selectAll")
-    List<OwnBo> selectAll();
+	@ResultMap(value = "ownResults")
+	@SelectProvider(type = OwnProvider.class, method = "selectAll")
+	List<OwnBo> selectAll();
 
-    @SelectProvider(type = OwnProvider.class, method = "selectAllSort")
-    List<String> selectAllSort(OwnQuery ownQuery);
+	@SelectProvider(type = OwnProvider.class, method = "selectAllSort")
+	List<String> selectAllSort(OwnQuery ownQuery);
 
 	class OwnProvider /*implements IProvider<OwnPo,OwnQuery>*/ {
 		private final String tableName = OwnDao.TABLE_NAME;
@@ -126,7 +125,7 @@ public interface OwnMapper extends IDao<OwnPo, OwnBo, OwnQuery> {
 			if (ownPo.getFileId() > 0) {
 				sets.add("fileId");
 			}
-			if (ownPo.getUpdateTime()!=null) {
+			if (ownPo.getUpdateTime() != null) {
 				sets.add("updateTime");
 			}
 			return sets;
@@ -151,7 +150,7 @@ public interface OwnMapper extends IDao<OwnPo, OwnBo, OwnQuery> {
 			SQL sql = ProviderUtils.select(new SQL(), tableName, OwnPo.class);
 			sql.SELECT(UserDao.TABLE_NAME + ".username");
 
-			sql.FROM(tableName ).LEFT_OUTER_JOIN(UserDao.TABLE_NAME+" on "+ProviderUtils.column(tableName, "userId") + "=" + ProviderUtils.column(UserDao.TABLE_NAME, "userId"));
+			sql.FROM(tableName).LEFT_OUTER_JOIN(UserDao.TABLE_NAME + " on " + ProviderUtils.column(tableName, "userId") + "=" + ProviderUtils.column(UserDao.TABLE_NAME, "userId"));
 
 			sql = ProviderUtils.whereTrue(sql, tableName, wheresKey(ownPo));
 
@@ -165,7 +164,7 @@ public interface OwnMapper extends IDao<OwnPo, OwnBo, OwnQuery> {
 			SQL sql = ProviderUtils.select(new SQL(), tableName, OwnPo.class);
 			sql.SELECT(UserDao.TABLE_NAME + ".username");
 
-			sql.FROM(tableName ).LEFT_OUTER_JOIN(UserDao.TABLE_NAME+" on "+ProviderUtils.column(tableName, "userId") + "=" + ProviderUtils.column(UserDao.TABLE_NAME, "userId"));
+			sql.FROM(tableName).LEFT_OUTER_JOIN(UserDao.TABLE_NAME + " on " + ProviderUtils.column(tableName, "userId") + "=" + ProviderUtils.column(UserDao.TABLE_NAME, "userId"));
 
 			sql = ProviderUtils.whereTrue(sql, tableName, wheresAll(ownQuery));
 
@@ -177,7 +176,7 @@ public interface OwnMapper extends IDao<OwnPo, OwnBo, OwnQuery> {
 			SQL sql = ProviderUtils.select(new SQL(), tableName, OwnPo.class);
 			sql.SELECT(UserDao.TABLE_NAME + ".username");
 
-			sql.FROM(tableName ).LEFT_OUTER_JOIN(UserDao.TABLE_NAME+" on "+ProviderUtils.column(tableName, "userId") + "=" + ProviderUtils.column(UserDao.TABLE_NAME, "userId"));
+			sql.FROM(tableName).LEFT_OUTER_JOIN(UserDao.TABLE_NAME + " on " + ProviderUtils.column(tableName, "userId") + "=" + ProviderUtils.column(UserDao.TABLE_NAME, "userId"));
 
 			sql = ProviderUtils.whereTrue(sql, tableName, wheresAll(ownQuery));
 
@@ -194,14 +193,14 @@ public interface OwnMapper extends IDao<OwnPo, OwnBo, OwnQuery> {
 			SQL sql = ProviderUtils.select(new SQL(), tableName, OwnPo.class);
 			sql.SELECT(UserDao.TABLE_NAME + ".username");
 
-			sql.FROM(tableName ).LEFT_OUTER_JOIN(UserDao.TABLE_NAME+" on "+ProviderUtils.column(tableName, "userId") + "=" + ProviderUtils.column(UserDao.TABLE_NAME, "userId"));
+			sql.FROM(tableName).LEFT_OUTER_JOIN(UserDao.TABLE_NAME + " on " + ProviderUtils.column(tableName, "userId") + "=" + ProviderUtils.column(UserDao.TABLE_NAME, "userId"));
 
 			String string = sql.toString();
 			return string;
 		}
 
 		public String selectAllSort(OwnQuery ownQuery) {
-			SQL sql=new SQL().SELECT("distinct " + ProviderUtils.column(tableName, "sort"));
+			SQL sql = new SQL().SELECT("distinct " + ProviderUtils.column(tableName, "sort"));
 
 			sql.FROM(tableName);
 
@@ -210,5 +209,5 @@ public interface OwnMapper extends IDao<OwnPo, OwnBo, OwnQuery> {
 			String string = sql.toString();
 			return string;
 		}
-    }
+	}
 }

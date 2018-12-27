@@ -21,23 +21,23 @@ import java.util.List;
 @RestController
 @RequestMapping(UserGuestController.URL)
 public class UserGuestController {
-    public static final String URL = "/guest/user";
+	public static final String URL = "/guest/user";
 
-    @GetMapping("/getUserVo")
-    public Vo getUserVo(HttpServletRequest request) {
-        UserPo userPo = SecurityServiceImpl.getSecurityUser(request);
-        if (userPo != null) {
-            return new Vo(null, userPo);
-        }
+	@GetMapping("/getUserVo")
+	public Vo getUserVo(HttpServletRequest request) {
+		UserPo userPo = SecurityServiceImpl.getSecurityUser(request);
+		if (userPo != null) {
+			return new Vo(null, userPo);
+		}
 
-        UserVo userVo = UserVo.GUEST;
-        SecurityServiceImpl.SecurityUserImpl securityUser = new SecurityServiceImpl.SecurityUserImpl();
+		UserVo userVo = UserVo.GUEST;
+		SecurityServiceImpl.SecurityUserImpl securityUser = new SecurityServiceImpl.SecurityUserImpl();
 
-        UserBo userBo = userVo.getUser();
-        BeanUtils.copyProperties(userBo, securityUser);
+		UserBo userBo = userVo.getUser();
+		BeanUtils.copyProperties(userBo, securityUser);
 
-        List<AuthorizationBo> authorizationBos = userVo.getAuthorizations();
-        authorizationBos.stream().forEach(authorizationBo -> securityUser.getPermissions().add(authorizationBo.getPermission().toString()));
-        return new Vo(null, securityUser);
-    }
+		List<AuthorizationBo> authorizationBos = userVo.getAuthorizations();
+		authorizationBos.stream().forEach(authorizationBo -> securityUser.getPermissions().add(authorizationBo.getPermission().toString()));
+		return new Vo(null, securityUser);
+	}
 }

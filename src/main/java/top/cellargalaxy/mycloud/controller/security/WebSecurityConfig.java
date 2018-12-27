@@ -2,7 +2,6 @@ package top.cellargalaxy.mycloud.controller.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -20,51 +19,51 @@ import top.cellargalaxy.mycloud.service.security.SecurityService;
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-    @Autowired
-    private SecurityService securityService;
+	@Autowired
+	private SecurityService securityService;
 
-    @Autowired
-    public void configureAuthentication(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
-        authenticationManagerBuilder.userDetailsService(new UserDetailsServiceImpl(securityService));
-    }
+	@Autowired
+	public void configureAuthentication(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
+		authenticationManagerBuilder.userDetailsService(new UserDetailsServiceImpl(securityService));
+	}
 
-    @Override
-    protected void configure(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity
-                //由于使用的是JWT，这里不需要csrf
-                .csrf().disable()
+	@Override
+	protected void configure(HttpSecurity httpSecurity) throws Exception {
+		httpSecurity
+				//由于使用的是JWT，这里不需要csrf
+				.csrf().disable()
 
-                //跨域
-                .cors().and()
+				//跨域
+				.cors().and()
 
-                //基于token，所以不需要session
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+				//基于token，所以不需要session
+				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
 
-                .authorizeRequests()
+				.authorizeRequests()
 
-                //允许对于网站静态资源的无授权访问
-                .antMatchers(
-                        "/",
-                        "/*",
-                        "/guest/**",
-                        "/favicon.ico"
-                ).permitAll()
+				//允许对于网站静态资源的无授权访问
+				.antMatchers(
+						"/",
+						"/*",
+						"/guest/**",
+						"/favicon.ico"
+				).permitAll()
 
-                //除上面外的，所有请求全部需要登录与鉴权
-                .anyRequest().authenticated()
+				//除上面外的，所有请求全部需要登录与鉴权
+				.anyRequest().authenticated()
 
-                .and()
+				.and()
 
-                //登录
-                .addFilterBefore(
-                        new LoginFilter("/login", authenticationManager(), securityService),
-                        UsernamePasswordAuthenticationFilter.class)
+				//登录
+				.addFilterBefore(
+						new LoginFilter("/login", authenticationManager(), securityService),
+						UsernamePasswordAuthenticationFilter.class)
 
-                //检验token
-                .addFilterBefore(new AuthenticationFilter(securityService),
-                        UsernamePasswordAuthenticationFilter.class);
+				//检验token
+				.addFilterBefore(new AuthenticationFilter(securityService),
+						UsernamePasswordAuthenticationFilter.class);
 
-        //禁用缓存
-        httpSecurity.headers().cacheControl();
-    }
+		//禁用缓存
+		httpSecurity.headers().cacheControl();
+	}
 }

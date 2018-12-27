@@ -17,65 +17,65 @@ import java.util.concurrent.TimeUnit;
  */
 @SpringBootConfiguration
 public class CacheConfiguration {
-    private static final int second = 1;
-    private static final int minute = 60 * second;
-    private static final int hour = 60 * minute;
-    private static final int day = 24 * hour;
-    private static final int month = 30 * day;
-    private static final int year = 12 * month;
+	private static final int second = 1;
+	private static final int minute = 60 * second;
+	private static final int hour = 60 * minute;
+	private static final int day = 24 * hour;
+	private static final int month = 30 * day;
+	private static final int year = 12 * month;
 
-    @Bean
-    @Primary
-    public CacheManager caffeineCacheManager() {
-        SimpleCacheManager cacheManager = new SimpleCacheManager();
+	@Bean
+	@Primary
+	public CacheManager caffeineCacheManager() {
+		SimpleCacheManager cacheManager = new SimpleCacheManager();
 
-        ArrayList<CaffeineCache> caches = new ArrayList<>();
+		ArrayList<CaffeineCache> caches = new ArrayList<>();
 
-        for (int i = 1; i < 60; i++) {
-            caches.add(
-                    new CaffeineCache(
-                            i + "s",
-                            Caffeine.newBuilder().recordStats()
-                                    .expireAfterWrite(i, TimeUnit.SECONDS)
-                                    .maximumSize(100)
-                                    .build())
-            );
-        }
-        for (int i = 1; i < 60; i++) {
-            caches.add(
-                    new CaffeineCache(
-                            i + "m",
-                            Caffeine.newBuilder().recordStats()
-                                    .expireAfterWrite(i, TimeUnit.MINUTES)
-                                    .maximumSize(100)
-                                    .build())
-            );
-        }
-        for (int i = 1; i < 24; i++) {
-            caches.add(
-                    new CaffeineCache(
-                            i + "h",
-                            Caffeine.newBuilder().recordStats()
-                                    .expireAfterWrite(i, TimeUnit.HOURS)
-                                    .maximumSize(100)
-                                    .build())
-            );
-        }
-        for (int i = 1; i < 3650; i++) {
-            caches.add(
-                    new CaffeineCache(
-                            i + "d",
-                            Caffeine.newBuilder().recordStats()
-                                    .expireAfterWrite(i, TimeUnit.DAYS)
-                                    .maximumSize(100)
-                                    .build())
-            );
-        }
+		for (int i = 1; i < 60; i++) {
+			caches.add(
+					new CaffeineCache(
+							i + "s",
+							Caffeine.newBuilder().recordStats()
+									.expireAfterWrite(i, TimeUnit.SECONDS)
+									.maximumSize(100)
+									.build())
+			);
+		}
+		for (int i = 1; i < 60; i++) {
+			caches.add(
+					new CaffeineCache(
+							i + "m",
+							Caffeine.newBuilder().recordStats()
+									.expireAfterWrite(i, TimeUnit.MINUTES)
+									.maximumSize(100)
+									.build())
+			);
+		}
+		for (int i = 1; i < 24; i++) {
+			caches.add(
+					new CaffeineCache(
+							i + "h",
+							Caffeine.newBuilder().recordStats()
+									.expireAfterWrite(i, TimeUnit.HOURS)
+									.maximumSize(100)
+									.build())
+			);
+		}
+		for (int i = 1; i < 3650; i++) {
+			caches.add(
+					new CaffeineCache(
+							i + "d",
+							Caffeine.newBuilder().recordStats()
+									.expireAfterWrite(i, TimeUnit.DAYS)
+									.maximumSize(100)
+									.build())
+			);
+		}
 
-        cacheManager.setCaches(caches);
+		cacheManager.setCaches(caches);
 
-        return cacheManager;
-    }
+		return cacheManager;
+	}
 
 //	@Bean
 //	public CacheManager cacheManager(RedisConnectionFactory redisConnectionFactory) {

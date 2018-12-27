@@ -18,37 +18,37 @@ import top.cellargalaxy.mycloud.util.model.Vo;
 @RestController
 @RequestMapping(FileInfoAdminController.URL)
 public class FileInfoAdminController {
-    public static final String URL = "/admin/fileInfo";
-    @Autowired
-    private FileInfoService fileInfoService;
+	public static final String URL = "/admin/fileInfo";
+	@Autowired
+	private FileInfoService fileInfoService;
 
-    @GetMapping("/getFileInfo")
-    public Vo getFileInfo(FileInfoPo fileInfoPo) {
-        return new Vo(null, fileInfoService.getFileInfo(fileInfoPo));
-    }
+	@GetMapping("/getFileInfo")
+	public Vo getFileInfo(FileInfoPo fileInfoPo) {
+		return new Vo(null, fileInfoService.getFileInfo(fileInfoPo));
+	}
 
-    @GetMapping("/getFileInfoVo")
-    public Vo getFileInfoVo(FileInfoPo fileInfoPo) {
-        return new Vo(null, fileInfoService.getFileInfoVo(fileInfoPo));
-    }
+	@GetMapping("/getFileInfoVo")
+	public Vo getFileInfoVo(FileInfoPo fileInfoPo) {
+		return new Vo(null, fileInfoService.getFileInfoVo(fileInfoPo));
+	}
 
-    @GetMapping("/listFileInfo")
-    public Vo listFileInfo(FileInfoQuery fileInfoQuery) {
-	    return new Vo(null, fileInfoService.listPageFileInfo(fileInfoQuery));
-    }
+	@GetMapping("/listFileInfo")
+	public Vo listFileInfo(FileInfoQuery fileInfoQuery) {
+		return new Vo(null, fileInfoService.listPageFileInfo(fileInfoQuery));
+	}
 
-    @GetMapping("/listFileInfoVo")
-    public Vo listFileInfoVo(FileInfoQuery fileInfoQuery) {
-	    return new Vo(null, fileInfoService.listPageFileInfoVo(fileInfoQuery));
-    }
+	@GetMapping("/listFileInfoVo")
+	public Vo listFileInfoVo(FileInfoQuery fileInfoQuery) {
+		return new Vo(null, fileInfoService.listPageFileInfoVo(fileInfoQuery));
+	}
 
-    @GetMapping("/getFileInfoCount")
-    public Vo getFileInfoCount(FileInfoQuery fileInfoQuery) {
-        return new Vo(null, fileInfoService.getFileInfoCount(fileInfoQuery));
-    }
+	@GetMapping("/getFileInfoCount")
+	public Vo getFileInfoCount(FileInfoQuery fileInfoQuery) {
+		return new Vo(null, fileInfoService.getFileInfoCount(fileInfoQuery));
+	}
 
-    @GetMapping("/listContentType")
-    public Vo listContentType() {
-        return new Vo(null, fileInfoService.listContentType());
-    }
+	@GetMapping("/listContentType")
+	public Vo listContentType() {
+		return new Vo(null, fileInfoService.listContentType());
+	}
 }

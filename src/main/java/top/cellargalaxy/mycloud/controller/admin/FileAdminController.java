@@ -24,27 +24,27 @@ import java.net.URLEncoder;
 @RestController
 @RequestMapping(FileAdminController.URL)
 public class FileAdminController {
-    public static final String URL = "/admin/file";
-    @Autowired
-    private FileService fileService;
+	public static final String URL = "/admin/file";
+	@Autowired
+	private FileService fileService;
 
-    @PostMapping("/removeFileByFileInfo")
-    public Vo removeFileByFileInfo(FileInfoPo fileInfoPo) throws Exception {
-        return new Vo(fileService.removeFile(fileInfoPo), null);
-    }
+	@PostMapping("/removeFileByFileInfo")
+	public Vo removeFileByFileInfo(FileInfoPo fileInfoPo) throws Exception {
+		return new Vo(fileService.removeFile(fileInfoPo), null);
+	}
 
-    @PostMapping("/removeFileByOwn")
-    public Vo removeFileByOwn(OwnPo ownPo) throws Exception {
-        return new Vo(fileService.removeFile(ownPo), null);
-    }
+	@PostMapping("/removeFileByOwn")
+	public Vo removeFileByOwn(OwnPo ownPo) throws Exception {
+		return new Vo(fileService.removeFile(ownPo), null);
+	}
 
-    @GetMapping("/downloadTar")
-    public void download(HttpServletResponse response) throws IOException {
-        response.reset();
-        response.setContentType("application/x-tar");
-        response.setHeader("Content-Disposition", "attachment; filename=" + URLEncoder.encode("mycloudDrive.tar", "UTF-8"));
-        try (OutputStream outputStream = response.getOutputStream()) {
-            fileService.getTar(outputStream);
-        }
-    }
+	@GetMapping("/downloadTar")
+	public void download(HttpServletResponse response) throws IOException {
+		response.reset();
+		response.setContentType("application/x-tar");
+		response.setHeader("Content-Disposition", "attachment; filename=" + URLEncoder.encode("mycloudDrive.tar", "UTF-8"));
+		try (OutputStream outputStream = response.getOutputStream()) {
+			fileService.getTar(outputStream);
+		}
+	}
 }

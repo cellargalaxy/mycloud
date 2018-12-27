@@ -9,12 +9,12 @@ import java.util.Date;
  * @time 2018/7/16
  */
 public class UserBo extends UserPo {
-    public static final UserBo GUEST = new UserBo();
+	public static final UserBo GUEST = new UserBo();
 
-    static {
-        GUEST.setUserId(0);
-        GUEST.setUsername("GUEST");
-        GUEST.setCreateTime(new Date());
-        GUEST.setUpdateTime(new Date());
-    }
+	static {
+		GUEST.setUserId(0);
+		GUEST.setUsername("GUEST");
+		GUEST.setCreateTime(new Date());
+		GUEST.setUpdateTime(new Date());
+	}
 }

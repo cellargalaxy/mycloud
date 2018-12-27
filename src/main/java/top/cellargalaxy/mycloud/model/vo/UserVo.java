@@ -14,14 +14,14 @@ import java.util.List;
  */
 @Data
 public class UserVo implements Serializable {
-    private static final long serialVersionUID = 4950747715064264519L;
-    private UserBo user;
-    private List<AuthorizationBo> authorizations;
+	public static final UserVo GUEST = new UserVo();
+	private static final long serialVersionUID = 4950747715064264519L;
 
-    public static final UserVo GUEST = new UserVo();
+	static {
+		GUEST.setUser(UserBo.GUEST);
+		GUEST.setAuthorizations(Arrays.asList(AuthorizationBo.GUEST));
+	}
 
-    static {
-        GUEST.setUser(UserBo.GUEST);
-        GUEST.setAuthorizations(Arrays.asList(AuthorizationBo.GUEST));
-    }
+	private UserBo user;
+	private List<AuthorizationBo> authorizations;
 }

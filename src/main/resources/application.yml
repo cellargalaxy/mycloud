@@ -40,8 +40,8 @@ spring:
       #json返回时间戳
       write-dates-as-timestamps: true
 
-#  cache:
-#    type: CAFFEINE
+  #  cache:
+  #    type: CAFFEINE
 
   redis:
     database: ${mycloud.redis.database}

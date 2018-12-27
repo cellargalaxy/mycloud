@@ -13,7 +13,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @SpringBootApplication
 public class MycloudApplication {
 
-    public static void main(String[] args) {
-        SpringApplication.run(MycloudApplication.class, args);
-    }
+	public static void main(String[] args) {
+		SpringApplication.run(MycloudApplication.class, args);
+	}
 }

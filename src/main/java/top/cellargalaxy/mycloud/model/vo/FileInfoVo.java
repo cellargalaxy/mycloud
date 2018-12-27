@@ -13,7 +13,7 @@ import java.util.List;
  */
 @Data
 public class FileInfoVo implements Serializable {
-    private static final long serialVersionUID = -8081110814279748765L;
-    private FileInfoBo fileInfo;
-    private List<OwnBo> owns;
+	private static final long serialVersionUID = -8081110814279748765L;
+	private FileInfoBo fileInfo;
+	private List<OwnBo> owns;
 }

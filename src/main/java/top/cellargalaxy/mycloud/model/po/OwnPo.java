@@ -11,17 +11,17 @@ import java.util.Date;
  */
 @Data
 public class OwnPo implements Serializable {
-    private static final long serialVersionUID = -1711152764871510164L;
-    private int ownId;
-    private String ownUuid;
-    private int userId;
-    private String fileName;
-    private String sort;
-    private String description;
-    private String contentType;
-    private long fileLength;
-    private String md5;
-    private int fileId;
-    private Date createTime;
-    private Date updateTime;
+	private static final long serialVersionUID = -1711152764871510164L;
+	private int ownId;
+	private String ownUuid;
+	private int userId;
+	private String fileName;
+	private String sort;
+	private String description;
+	private String contentType;
+	private long fileLength;
+	private String md5;
+	private int fileId;
+	private Date createTime;
+	private Date updateTime;
 }

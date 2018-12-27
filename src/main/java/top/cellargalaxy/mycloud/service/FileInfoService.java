@@ -12,19 +12,19 @@ import java.util.List;
  * @time 2018/7/20
  */
 public interface FileInfoService {
-    String addFileInfo(FileInfoPo fileInfoPo);
+	String addFileInfo(FileInfoPo fileInfoPo);
 
-    String removeFileInfo(FileInfoPo fileInfoPo);
+	String removeFileInfo(FileInfoPo fileInfoPo);
 
-    FileInfoBo getFileInfo(FileInfoPo fileInfoPo);
+	FileInfoBo getFileInfo(FileInfoPo fileInfoPo);
 
-    FileInfoVo getFileInfoVo(FileInfoPo fileInfoPo);
+	FileInfoVo getFileInfoVo(FileInfoPo fileInfoPo);
 
-    List<FileInfoBo> listPageFileInfo(FileInfoQuery fileInfoQuery);
+	List<FileInfoBo> listPageFileInfo(FileInfoQuery fileInfoQuery);
 
-    List<FileInfoVo> listPageFileInfoVo(FileInfoQuery fileInfoQuery);
+	List<FileInfoVo> listPageFileInfoVo(FileInfoQuery fileInfoQuery);
 
-    int getFileInfoCount(FileInfoQuery fileInfoQuery);
+	int getFileInfoCount(FileInfoQuery fileInfoQuery);
 
-    List<String> listContentType();
+	List<String> listContentType();
 }

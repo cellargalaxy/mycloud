@@ -10,17 +10,17 @@ import java.io.File;
  * @time 2018/12/14
  */
 public interface PathService {
-    void setUrl(OwnBo ownBo);
+	void setUrl(OwnBo ownBo);
 
-    void setUrl(FileInfoBo fileInfoBo);
+	void setUrl(FileInfoBo fileInfoBo);
 
-    File getDriveFolder();
+	File getDriveFolder();
 
-    File getMd5Folder();
+	File getMd5Folder();
 
-    File getUuidFolder();
+	File getUuidFolder();
 
-    File getTmpFolder();
+	File getTmpFolder();
 
-    File getSqliteFile();
+	File getSqliteFile();
 }

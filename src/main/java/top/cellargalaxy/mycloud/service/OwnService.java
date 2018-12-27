@@ -12,33 +12,33 @@ import java.util.List;
  * @time 2018/7/17
  */
 public interface OwnService {
-    String addOwn(OwnPo ownPo);
+	String addOwn(OwnPo ownPo);
 
-    String addOwn(UserPo userPo, OwnPo ownPo);
+	String addOwn(UserPo userPo, OwnPo ownPo);
 
-    String removeOwn(OwnPo ownPo);
+	String removeOwn(OwnPo ownPo);
 
-    String removeOwn(UserPo userPo, OwnPo ownPo);
+	String removeOwn(UserPo userPo, OwnPo ownPo);
 
-    String changeOwn(OwnPo ownPo);
+	String changeOwn(OwnPo ownPo);
 
-    String changeOwn(UserPo userPo, OwnPo ownPo);
+	String changeOwn(UserPo userPo, OwnPo ownPo);
 
-    OwnBo getOwn(OwnPo ownPo);
+	OwnBo getOwn(OwnPo ownPo);
 
-    OwnBo getOwn(UserPo userPo, OwnPo ownPo);
+	OwnBo getOwn(UserPo userPo, OwnPo ownPo);
 
-    List<OwnBo> listPageOwn(OwnQuery ownQuery);
+	List<OwnBo> listPageOwn(OwnQuery ownQuery);
 
-    List<OwnBo> listPageOwn(UserPo userPo, OwnQuery ownQuery);
+	List<OwnBo> listPageOwn(UserPo userPo, OwnQuery ownQuery);
 
-    List<OwnBo> listSomeOwn(OwnQuery ownQuery);
+	List<OwnBo> listSomeOwn(OwnQuery ownQuery);
 
-    List<OwnBo> listAllOwn();
+	List<OwnBo> listAllOwn();
 
-    int getOwnCount(OwnQuery ownQuery);
+	int getOwnCount(OwnQuery ownQuery);
 
-    List<String> listSort();
+	List<String> listSort();
 
-    List<String> listSort(UserPo userPo);
+	List<String> listSort(UserPo userPo);
 }

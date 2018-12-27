@@ -18,46 +18,46 @@ import java.net.URLConnection;
  */
 @Service
 public class FileDownloadImpl implements FileDownload {
-    private final int connectTimeout;
+	private final int connectTimeout;
 
-    public FileDownloadImpl(MycloudConfiguration mycloudConfiguration) {
-        connectTimeout = mycloudConfiguration.getDownloadUrlConnectTimeout();
-    }
+	public FileDownloadImpl(MycloudConfiguration mycloudConfiguration) {
+		connectTimeout = mycloudConfiguration.getDownloadUrlConnectTimeout();
+	}
 
-    @Override
-    public String downloadFile(String urlString, FileInfoPo fileInfoPo, OutputStream... outputStreams) throws IOException {
-        URLConnection urlConnection = createURLConnection(urlString);
-        fileInfoPo.setContentType(urlConnection.getContentType());
-        fileInfoPo.setFileLength(urlConnection.getContentLength());
-        try (InputStream inputStream = urlConnection.getInputStream()) {
-            IOUtils.stream(inputStream, outputStreams);
-        }
-        return null;
-    }
+	@Override
+	public String downloadFile(String urlString, FileInfoPo fileInfoPo, OutputStream... outputStreams) throws IOException {
+		URLConnection urlConnection = createURLConnection(urlString);
+		fileInfoPo.setContentType(urlConnection.getContentType());
+		fileInfoPo.setFileLength(urlConnection.getContentLength());
+		try (InputStream inputStream = urlConnection.getInputStream()) {
+			IOUtils.stream(inputStream, outputStreams);
+		}
+		return null;
+	}
 
-    @Override
-    public String downloadFile(String urlString, OwnPo ownPo, OutputStream... outputStreams) throws IOException {
-        URLConnection urlConnection = createURLConnection(urlString);
-        ownPo.setContentType(urlConnection.getContentType());
-        ownPo.setFileLength(urlConnection.getContentLength());
-        String suffixName = MimeSuffixNameUtils.mime2SuffixName(ownPo.getContentType());
-        if (suffixName != null) {
-            ownPo.setFileName(ownPo.getOwnUuid() + "." + MimeSuffixNameUtils.mime2SuffixName(ownPo.getContentType()));
-        } else {
-            ownPo.setFileName(ownPo.getOwnUuid());
-        }
-        try (InputStream inputStream = urlConnection.getInputStream()) {
-            IOUtils.stream(inputStream, outputStreams);
-        }
-        return null;
-    }
+	@Override
+	public String downloadFile(String urlString, OwnPo ownPo, OutputStream... outputStreams) throws IOException {
+		URLConnection urlConnection = createURLConnection(urlString);
+		ownPo.setContentType(urlConnection.getContentType());
+		ownPo.setFileLength(urlConnection.getContentLength());
+		String suffixName = MimeSuffixNameUtils.mime2SuffixName(ownPo.getContentType());
+		if (suffixName != null) {
+			ownPo.setFileName(ownPo.getOwnUuid() + "." + MimeSuffixNameUtils.mime2SuffixName(ownPo.getContentType()));
+		} else {
+			ownPo.setFileName(ownPo.getOwnUuid());
+		}
+		try (InputStream inputStream = urlConnection.getInputStream()) {
+			IOUtils.stream(inputStream, outputStreams);
+		}
+		return null;
+	}
 
-    private URLConnection createURLConnection(String urlString) throws IOException {
-        URL url = new URL(urlString);
-        URLConnection urlConnection = url.openConnection();
-        urlConnection.setConnectTimeout(connectTimeout);
-        //防止屏蔽程序抓取而返回403错误
-        urlConnection.setRequestProperty("User-Agent", "Mozilla/4.0 (compatible; MSIE 5.0; Windows NT; DigExt)");
-        return urlConnection;
-    }
+	private URLConnection createURLConnection(String urlString) throws IOException {
+		URL url = new URL(urlString);
+		URLConnection urlConnection = url.openConnection();
+		urlConnection.setConnectTimeout(connectTimeout);
+		//防止屏蔽程序抓取而返回403错误
+		urlConnection.setRequestProperty("User-Agent", "Mozilla/4.0 (compatible; MSIE 5.0; Windows NT; DigExt)");
+		return urlConnection;
+	}
 }

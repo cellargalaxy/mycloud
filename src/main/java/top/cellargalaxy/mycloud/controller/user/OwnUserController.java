@@ -22,42 +22,42 @@ import javax.servlet.http.HttpServletRequest;
 @RestController
 @RequestMapping(OwnUserController.URL)
 public class OwnUserController {
-    public static final String URL = "/user/own";
-    @Autowired
-    private OwnService ownService;
+	public static final String URL = "/user/own";
+	@Autowired
+	private OwnService ownService;
 
-    @PostMapping("/addOwn")
-    public Vo addOwn(HttpServletRequest request, OwnPo ownPo) {
-        UserPo userPo = SecurityServiceImpl.getSecurityUser(request);
-        return new Vo(ownService.addOwn(userPo, ownPo), null);
-    }
+	@PostMapping("/addOwn")
+	public Vo addOwn(HttpServletRequest request, OwnPo ownPo) {
+		UserPo userPo = SecurityServiceImpl.getSecurityUser(request);
+		return new Vo(ownService.addOwn(userPo, ownPo), null);
+	}
 
-    @PostMapping("/changeOwn")
-    public Vo changeOwn(HttpServletRequest request, OwnPo ownPo) {
-        UserPo userPo = SecurityServiceImpl.getSecurityUser(request);
-        return new Vo(ownService.changeOwn(userPo, ownPo), null);
-    }
+	@PostMapping("/changeOwn")
+	public Vo changeOwn(HttpServletRequest request, OwnPo ownPo) {
+		UserPo userPo = SecurityServiceImpl.getSecurityUser(request);
+		return new Vo(ownService.changeOwn(userPo, ownPo), null);
+	}
 
-    @GetMapping("/getOwn")
-    public Vo getOwn(HttpServletRequest request, OwnPo ownPo) {
-        UserPo userPo = SecurityServiceImpl.getSecurityUser(request);
-        return new Vo(null, ownService.getOwn(userPo, ownPo));
-    }
+	@GetMapping("/getOwn")
+	public Vo getOwn(HttpServletRequest request, OwnPo ownPo) {
+		UserPo userPo = SecurityServiceImpl.getSecurityUser(request);
+		return new Vo(null, ownService.getOwn(userPo, ownPo));
+	}
 
-    @GetMapping("/listOwn")
-    public Vo listOwn(HttpServletRequest request, OwnQuery ownQuery) {
-        UserPo userPo = SecurityServiceImpl.getSecurityUser(request);
-        return new Vo(null, ownService.listPageOwn(userPo, ownQuery));
-    }
+	@GetMapping("/listOwn")
+	public Vo listOwn(HttpServletRequest request, OwnQuery ownQuery) {
+		UserPo userPo = SecurityServiceImpl.getSecurityUser(request);
+		return new Vo(null, ownService.listPageOwn(userPo, ownQuery));
+	}
 
-    @GetMapping("/getOwnCount")
-    public Vo getOwnCount(OwnQuery ownQuery) {
-        return new Vo(null, ownService.getOwnCount(ownQuery));
-    }
+	@GetMapping("/getOwnCount")
+	public Vo getOwnCount(OwnQuery ownQuery) {
+		return new Vo(null, ownService.getOwnCount(ownQuery));
+	}
 
-    @GetMapping("/listSort")
-    public Vo listSort(HttpServletRequest request) {
-        UserPo userPo = SecurityServiceImpl.getSecurityUser(request);
-        return new Vo(null, ownService.listSort(userPo));
-    }
+	@GetMapping("/listSort")
+	public Vo listSort(HttpServletRequest request) {
+		UserPo userPo = SecurityServiceImpl.getSecurityUser(request);
+		return new Vo(null, ownService.listSort(userPo));
+	}
 }

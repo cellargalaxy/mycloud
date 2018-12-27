@@ -11,10 +11,10 @@ import java.util.Date;
  */
 @Data
 public class FileInfoPo implements Serializable {
-    private static final long serialVersionUID = 4632424672128158014L;
-    private int fileId;
-    private String md5;
-    private long fileLength;
-    private String contentType;
-    private Date createTime;
+	private static final long serialVersionUID = 4632424672128158014L;
+	private int fileId;
+	private String md5;
+	private long fileLength;
+	private String contentType;
+	private Date createTime;
 }

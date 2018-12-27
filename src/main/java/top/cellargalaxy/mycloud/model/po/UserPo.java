@@ -12,21 +12,21 @@ import java.util.Date;
  */
 @Data
 public class UserPo implements Serializable {
-    private static final long serialVersionUID = -8175567370336139965L;
-    private int userId;
-    private String username;
-    @JsonIgnore
-    private String password;
-    private Date createTime;
-    private Date updateTime;
+	private static final long serialVersionUID = -8175567370336139965L;
+	private int userId;
+	private String username;
+	@JsonIgnore
+	private String password;
+	private Date createTime;
+	private Date updateTime;
 
-    @Override
-    public String toString() {
-        return "UserPo{" +
-                "userId=" + userId +
-                ", username='" + username + '\'' +
-                ", createTime=" + createTime +
-                ", updateTime=" + updateTime +
-                '}';
-    }
+	@Override
+	public String toString() {
+		return "UserPo{" +
+				"userId=" + userId +
+				", username='" + username + '\'' +
+				", createTime=" + createTime +
+				", updateTime=" + updateTime +
+				'}';
+	}
 }

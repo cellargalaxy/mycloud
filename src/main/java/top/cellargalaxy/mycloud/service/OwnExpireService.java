@@ -11,13 +11,13 @@ import java.util.List;
  * @time 2018/12/13
  */
 public interface OwnExpireService {
-    String addOwnExpire(OwnPo ownPo, OwnExpirePo ownExpirePo);
+	String addOwnExpire(OwnPo ownPo, OwnExpirePo ownExpirePo);
 
-    String removeOwnExpire(OwnExpirePo ownExpirePo);
+	String removeOwnExpire(OwnExpirePo ownExpirePo);
 
-    List<OwnExpireBo> listAllOwnExpire();
+	List<OwnExpireBo> listAllOwnExpire();
 
-    List<OwnExpireBo> listExpireOwnExpire();
+	List<OwnExpireBo> listExpireOwnExpire();
 
-    List<OwnPo> listRecentExpireOwn();
+	List<OwnPo> listRecentExpireOwn();
 }
