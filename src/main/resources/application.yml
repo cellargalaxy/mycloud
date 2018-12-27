@@ -1,24 +1,25 @@
 spring:
   datasource:
     druid:
-      url: jdbc:mysql://${mycloud.db.host}:${mycloud.db.port}/${mycloud.db.name}?useUnicode=true&characterEncoding=UTF8&useSSL=false
-      driver-class-name: com.mysql.jdbc.Driver
+      url: ${mycloud.db.url}
       username: ${mycloud.db.username}
       password: ${mycloud.db.password}
-      #      初始化大小，最小，最大
+      #初始化大小，最小，最大
       initial-size: 2
       min-idle: 2
       max-active: 8
-      #      获取连接等待超时的时间
+      #获取连接等待超时的时间
       max-wait: 60000
       validation-query-timeout: 28000
       test-while-idle: true
       validation-query: SELECT'x'
-      filters: stat,wall,slf4j
+      #使用sqlite要注释掉，不然会报
+      #java.lang.IllegalStateException: dbType not support : sqlite, url jdbc:sqlite:
+      #      filters: stat,wall,slf4j
       test-on-borrow: false
       pool-prepared-statements: false
       test-on-return: false
-      #      间隔多久检测需要关闭的空闲连接，单位毫秒
+      #间隔多久检测需要关闭的空闲连接，单位毫秒
       time-between-eviction-runs-millis: 28000
       stat-view-servlet:
         enabled: true
@@ -41,6 +42,7 @@ spring:
 
 #  cache:
 #    type: CAFFEINE
+
   redis:
     database: ${mycloud.redis.database}
     host: ${mycloud.redis.host}
@@ -54,9 +56,6 @@ spring:
         max-idle: 8
         max-active: 8
 
-#  autoconfigure:Could not find value method on SQL annotation Error creating SqlSource for SqlProvider Sql provider method can not overload
-#    exclude: org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration,com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceAutoConfigure
-
 mycloud:
   webUploadMaxFileSize: ${MYCLOUD_WEB_UPLOAD_MAX_FILE_SIZE:1024MB}
   webUploadMaxRequestSize: ${MYCLOUD_WEB_UPLOAD_MAX_REQUEST_SIZE:1024MB}
@@ -69,6 +68,10 @@ mycloud:
   secret: ${MYCLOUD_SECRET:${random.value}}
 
   db:
+    type: sqlite
+    url: ${mycloud.db.${mycloud.db.type}}
+    mysql: jdbc:mysql://${mycloud.db.host}:${mycloud.db.port}/${mycloud.db.name}?useUnicode=true&characterEncoding=UTF8&useSSL=false
+    sqlite: jdbc:sqlite:${mycloud.mycloudPath}/mycloud.db
     host: ${MYCLOUD_DB_HOST:127.0.0.1}
     port: ${MYCLOUD_DB_PORT:3306}
     name: ${MYCLOUD_DB_NAME:mycloud}

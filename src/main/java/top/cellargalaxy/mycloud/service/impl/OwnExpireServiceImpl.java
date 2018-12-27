@@ -47,6 +47,11 @@ public class OwnExpireServiceImpl implements OwnExpireService {
     }
 
     @Override
+    public List<OwnExpireBo> listAllOwnExpire() {
+        return ownExpireDao.selectAll();
+    }
+
+    @Override
     public List<OwnExpireBo> listExpireOwnExpire() {
         OwnExpireQuery ownExpireQuery = new OwnExpireQuery();
         ownExpireQuery.setOwnExpireTime(new Date());

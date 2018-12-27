@@ -106,12 +106,12 @@ public interface UserMapper extends IDao<UserPo, UserBo, UserQuery> {
 		}
 
 		public String delete(UserPo userPo) {
-			String string = ProviderUtils.limitOne(ProviderUtils.delete(tableName, wheresKey(userPo))).toString();
+			String string = ProviderUtils.delete(tableName, wheresKey(userPo)).toString();
 			return string;
 		}
 
 		public String update(UserPo userPo) {
-			String string = ProviderUtils.limitOne(ProviderUtils.update(tableName, sets(userPo), "defaultSet", wheresKey(userPo))).toString();
+			String string = ProviderUtils.update(tableName, sets(userPo), "defaultSet", wheresKey(userPo)).toString();
 			return string;
 		}
 

@@ -39,8 +39,7 @@ CREATE TABLE `authorization` (
 
 LOCK TABLES `authorization` WRITE;
 /*!40000 ALTER TABLE `authorization` DISABLE KEYS */;
-INSERT INTO `authorization` VALUES (1,1,'ADMIN','2018-08-01 00:00:00','2018-08-01 00:00:00');
-INSERT INTO `authorization` VALUES (2,1,'USER','2018-08-01 00:00:00','2018-08-01 00:00:00');
+INSERT INTO `authorization` VALUES (1,1,'ADMIN','2018-08-01 00:00:00','2018-08-01 00:00:00'),(2,1,'USER','2018-08-01 00:00:00','2018-08-01 00:00:00');
 /*!40000 ALTER TABLE `authorization` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -83,18 +82,20 @@ CREATE TABLE `own` (
   `own_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '所属id',
   `own_uuid` varchar(36) NOT NULL COMMENT '所属uuid',
   `user_id` int(11) NOT NULL COMMENT '用户id',
-  `file_id` int(11) NOT NULL COMMENT '文件id',
+  `file_name` varchar(256) NOT NULL COMMENT '文件名',
+  `sort` varchar(32) NOT NULL DEFAULT '<default>' COMMENT '分类',
+  `description` varchar(256) DEFAULT NULL COMMENT '描述',
   `file_length` bigint(20) NOT NULL COMMENT '文件长度',
   `content_type` varchar(32) NOT NULL COMMENT '文件类型',
-  `file_name` varchar(256) NOT NULL COMMENT '文件名',
-  `sort` varchar(32) NOT NULL COMMENT '分类',
-  `description` varchar(255) DEFAULT NULL COMMENT '描述',
+  `md5` char(32) NOT NULL COMMENT 'MD5',
+  `file_id` int(11) DEFAULT NULL COMMENT '文件id',
   `create_time` datetime NOT NULL COMMENT '创建时间',
   `update_time` datetime NOT NULL COMMENT '更新时间',
   PRIMARY KEY (`own_id`),
   UNIQUE KEY `uk_own_uuid` (`own_uuid`),
   KEY `idx_user_id_sort` (`user_id`,`sort`),
-  KEY `idx_file_id` (`file_id`)
+  KEY `idx_file_id` (`file_id`),
+  KEY `idx_md5` (`md5`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='所属表';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -105,6 +106,30 @@ CREATE TABLE `own` (
 LOCK TABLES `own` WRITE;
 /*!40000 ALTER TABLE `own` DISABLE KEYS */;
 /*!40000 ALTER TABLE `own` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `own_expire`
+--
+
+DROP TABLE IF EXISTS `own_expire`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `own_expire` (
+  `own_id` int(11) NOT NULL COMMENT '所属id',
+  `own_expire_time` datetime NOT NULL COMMENT '所属过期时间',
+  PRIMARY KEY (`own_id`),
+  KEY `idx_own_expire_time` (`own_expire_time`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='所属过期表';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `own_expire`
+--
+
+LOCK TABLES `own_expire` WRITE;
+/*!40000 ALTER TABLE `own_expire` DISABLE KEYS */;
+/*!40000 ALTER TABLE `own_expire` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -144,4 +169,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-10-27 21:33:07
+-- Dump completed on 2018-12-27 10:20:35

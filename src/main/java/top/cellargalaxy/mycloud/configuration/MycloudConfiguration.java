@@ -1,7 +1,11 @@
 package top.cellargalaxy.mycloud.configuration;
 
 import lombok.Data;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Component;
 
 /**
@@ -22,6 +26,9 @@ public class MycloudConfiguration {
     private volatile long maxTmpFileSaveTime;
     private volatile String secret;
     private volatile String domain;
+
+    @Value("${mycloud.db.type}")
+    private volatile String dbType;
 
     private volatile String hdfsUrl;
 }

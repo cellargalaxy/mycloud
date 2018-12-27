@@ -138,12 +138,12 @@ public interface OwnMapper extends IDao<OwnPo, OwnBo, OwnQuery> {
 		}
 
 		public String delete(OwnPo ownPo) {
-			String string = ProviderUtils.limitOne(ProviderUtils.delete(tableName, wheresKey(ownPo))).toString();
+			String string = ProviderUtils.delete(tableName, wheresKey(ownPo)).toString();
 			return string;
 		}
 
 		public String update(OwnPo ownPo) {
-			String string = ProviderUtils.limitOne(ProviderUtils.update(tableName, sets(ownPo), "ownId", wheresKey(ownPo))).toString();
+			String string = ProviderUtils.update(tableName, sets(ownPo), "ownId", wheresKey(ownPo)).toString();
 			return string;
 		}
 
@@ -151,10 +151,9 @@ public interface OwnMapper extends IDao<OwnPo, OwnBo, OwnQuery> {
 			SQL sql = ProviderUtils.select(new SQL(), tableName, OwnPo.class);
 			sql.SELECT(UserDao.TABLE_NAME + ".username");
 
-			sql.FROM(tableName + "," + UserDao.TABLE_NAME);
+			sql.FROM(tableName ).LEFT_OUTER_JOIN(UserDao.TABLE_NAME+" on "+ProviderUtils.column(tableName, "userId") + "=" + ProviderUtils.column(UserDao.TABLE_NAME, "userId"));
 
 			sql = ProviderUtils.whereTrue(sql, tableName, wheresKey(ownPo));
-			sql.WHERE(ProviderUtils.column(tableName, "userId") + "=" + ProviderUtils.column(UserDao.TABLE_NAME, "userId"));
 
 			String string = ProviderUtils.limitOne(sql).toString();
 			return string;
@@ -166,10 +165,9 @@ public interface OwnMapper extends IDao<OwnPo, OwnBo, OwnQuery> {
 			SQL sql = ProviderUtils.select(new SQL(), tableName, OwnPo.class);
 			sql.SELECT(UserDao.TABLE_NAME + ".username");
 
-			sql.FROM(tableName + "," + UserDao.TABLE_NAME);
+			sql.FROM(tableName ).LEFT_OUTER_JOIN(UserDao.TABLE_NAME+" on "+ProviderUtils.column(tableName, "userId") + "=" + ProviderUtils.column(UserDao.TABLE_NAME, "userId"));
 
 			sql = ProviderUtils.whereTrue(sql, tableName, wheresAll(ownQuery));
-			sql.WHERE(ProviderUtils.column(tableName, "userId") + "=" + ProviderUtils.column(UserDao.TABLE_NAME, "userId"));
 
 			String string = ProviderUtils.limitSome(sql).toString();
 			return string;
@@ -179,10 +177,9 @@ public interface OwnMapper extends IDao<OwnPo, OwnBo, OwnQuery> {
 			SQL sql = ProviderUtils.select(new SQL(), tableName, OwnPo.class);
 			sql.SELECT(UserDao.TABLE_NAME + ".username");
 
-			sql.FROM(tableName + "," + UserDao.TABLE_NAME);
+			sql.FROM(tableName ).LEFT_OUTER_JOIN(UserDao.TABLE_NAME+" on "+ProviderUtils.column(tableName, "userId") + "=" + ProviderUtils.column(UserDao.TABLE_NAME, "userId"));
 
 			sql = ProviderUtils.whereTrue(sql, tableName, wheresAll(ownQuery));
-			sql.WHERE(ProviderUtils.column(tableName, "userId") + "=" + ProviderUtils.column(UserDao.TABLE_NAME, "userId"));
 
 			String string = sql.toString();
 			return string;
@@ -197,9 +194,7 @@ public interface OwnMapper extends IDao<OwnPo, OwnBo, OwnQuery> {
 			SQL sql = ProviderUtils.select(new SQL(), tableName, OwnPo.class);
 			sql.SELECT(UserDao.TABLE_NAME + ".username");
 
-			sql.FROM(tableName + "," + UserDao.TABLE_NAME);
-
-			sql.WHERE(ProviderUtils.column(tableName, "userId") + "=" + ProviderUtils.column(UserDao.TABLE_NAME, "userId"));
+			sql.FROM(tableName ).LEFT_OUTER_JOIN(UserDao.TABLE_NAME+" on "+ProviderUtils.column(tableName, "userId") + "=" + ProviderUtils.column(UserDao.TABLE_NAME, "userId"));
 
 			String string = sql.toString();
 			return string;

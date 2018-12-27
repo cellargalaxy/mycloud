@@ -105,12 +105,12 @@ public interface FileInfoMapper extends IDao<FileInfoPo, FileInfoBo, FileInfoQue
 		}
 
 		public String delete(FileInfoPo fileinfoPo) {
-			String string = ProviderUtils.limitOne(ProviderUtils.delete(tableName, wheresKey(fileinfoPo))).toString();
+			String string = ProviderUtils.delete(tableName, wheresKey(fileinfoPo)).toString();
 			return string;
 		}
 
 		public String update(FileInfoPo fileinfoPo) {
-			String string = ProviderUtils.limitOne(ProviderUtils.update(tableName, sets(fileinfoPo), "defaultSet", wheresKey(fileinfoPo))).toString();
+			String string = null;//ProviderUtils.limitOne(ProviderUtils.update(tableName, sets(fileinfoPo), "defaultSet", wheresKey(fileinfoPo))).toString();
 			return string;
 		}
 

@@ -12,7 +12,6 @@ import top.cellargalaxy.mycloud.util.dao.IDao;
 import top.cellargalaxy.mycloud.util.dao.ProviderUtils;
 import top.cellargalaxy.mycloud.util.dao.SqlUtils;
 
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -107,12 +106,12 @@ public interface OwnExpireMapper extends IDao<OwnExpirePo, OwnExpireBo, OwnExpir
 		}
 
 		public String delete(OwnExpirePo ownexpirePo) {
-			String string = ProviderUtils.limitOne(ProviderUtils.delete(tableName, wheresKey(ownexpirePo))).toString();
+			String string = ProviderUtils.delete(tableName, wheresKey(ownexpirePo)).toString();
 			return string;
 		}
 
 		public String update(OwnExpirePo ownexpirePo) {
-			String string = ProviderUtils.limitOne(ProviderUtils.update(tableName, sets(ownexpirePo), "ownId", wheresKey(ownexpirePo))).toString();
+			String string = ProviderUtils.update(tableName, sets(ownexpirePo), "ownId", wheresKey(ownexpirePo)).toString();
 			return string;
 		}
 
@@ -166,9 +165,7 @@ public interface OwnExpireMapper extends IDao<OwnExpirePo, OwnExpireBo, OwnExpir
 			SQL sql = ProviderUtils.select(new SQL(), tableName, OwnExpirePo.class);
 			sql = ProviderUtils.select(sql, OwnDao.TABLE_NAME, OwnPo.class, "ownId", "createTime", "updateTime");
 
-			sql.FROM(tableName + "," + OwnDao.TABLE_NAME);
-
-			sql.WHERE(ProviderUtils.column(tableName, "ownId") + "=" + ProviderUtils.column(OwnDao.TABLE_NAME, "ownId"));
+			sql.FROM(tableName).LEFT_OUTER_JOIN(OwnDao.TABLE_NAME + " on " + ProviderUtils.column(tableName, "ownId") + "=" + ProviderUtils.column(OwnDao.TABLE_NAME, "ownId"));
 
 			String string = sql.toString();
 			return string;

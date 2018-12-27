@@ -107,7 +107,7 @@ public interface AuthorizationMapper extends IDao<AuthorizationPo, Authorization
         }
 
         public String delete(AuthorizationPo authorizationPo) {
-	        String string = ProviderUtils.limitOne(ProviderUtils.delete(tableName, wheresKey(authorizationPo))).toString();
+	        String string = ProviderUtils.delete(tableName, wheresKey(authorizationPo)).toString();
             return string;
         }
 
@@ -120,10 +120,9 @@ public interface AuthorizationMapper extends IDao<AuthorizationPo, Authorization
 	        SQL sql = ProviderUtils.select(new SQL(), tableName, AuthorizationPo.class);
 	        sql.SELECT(UserDao.TABLE_NAME + ".username");
 
-	        sql.FROM(tableName + "," + UserDao.TABLE_NAME);
+	        sql.FROM(tableName).LEFT_OUTER_JOIN(UserDao.TABLE_NAME + " on " + ProviderUtils.column(tableName, "userId") + "=" + ProviderUtils.column(UserDao.TABLE_NAME, "userId"));
 
 	        sql = ProviderUtils.whereTrue(sql, tableName, wheresKey(authorizationPo));
-	        sql.WHERE(ProviderUtils.column(tableName, "userId") + "=" + ProviderUtils.column(UserDao.TABLE_NAME, "userId"));
 
 	        String string = ProviderUtils.limitOne(sql).toString();
 	        return string;
@@ -135,10 +134,9 @@ public interface AuthorizationMapper extends IDao<AuthorizationPo, Authorization
 	        SQL sql = ProviderUtils.select(new SQL(), tableName, AuthorizationPo.class);
 	        sql.SELECT(UserDao.TABLE_NAME + ".username");
 
-	        sql.FROM(tableName + "," + UserDao.TABLE_NAME);
+	        sql.FROM(tableName).LEFT_OUTER_JOIN(UserDao.TABLE_NAME + " on " + ProviderUtils.column(tableName, "userId") + "=" + ProviderUtils.column(UserDao.TABLE_NAME, "userId"));
 
 	        sql = ProviderUtils.whereTrue(sql, tableName, wheresAll(authorizationQuery));
-	        sql.WHERE(ProviderUtils.column(tableName, "userId") + "=" + ProviderUtils.column(UserDao.TABLE_NAME, "userId"));
 
 	        String string = ProviderUtils.limitSome(sql).toString();
             return string;
@@ -148,10 +146,9 @@ public interface AuthorizationMapper extends IDao<AuthorizationPo, Authorization
 	        SQL sql = ProviderUtils.select(new SQL(), tableName, AuthorizationPo.class);
 	        sql.SELECT(UserDao.TABLE_NAME + ".username");
 
-	        sql.FROM(tableName + "," + UserDao.TABLE_NAME);
+	        sql.FROM(tableName).LEFT_OUTER_JOIN(UserDao.TABLE_NAME + " on " + ProviderUtils.column(tableName, "userId") + "=" + ProviderUtils.column(UserDao.TABLE_NAME, "userId"));
 
 	        sql = ProviderUtils.whereTrue(sql, tableName, wheresAll(authorizationQuery));
-	        sql.WHERE(ProviderUtils.column(tableName, "userId") + "=" + ProviderUtils.column(UserDao.TABLE_NAME, "userId"));
 
 	        String string = sql.toString();
             return string;
@@ -165,9 +162,7 @@ public interface AuthorizationMapper extends IDao<AuthorizationPo, Authorization
 		public String selectAll() {SQL sql = ProviderUtils.select(new SQL(), tableName, AuthorizationPo.class);
 			sql.SELECT(UserDao.TABLE_NAME + ".username");
 
-			sql.FROM(tableName + "," + UserDao.TABLE_NAME);
-
-			sql.WHERE(ProviderUtils.column(tableName, "userId") + "=" + ProviderUtils.column(UserDao.TABLE_NAME, "userId"));
+			sql.FROM(tableName).LEFT_OUTER_JOIN(UserDao.TABLE_NAME + " on " + ProviderUtils.column(tableName, "userId") + "=" + ProviderUtils.column(UserDao.TABLE_NAME, "userId"));
 
 			String string = sql.toString();
             return string;

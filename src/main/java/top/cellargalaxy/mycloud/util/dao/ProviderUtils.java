@@ -64,7 +64,7 @@ public class ProviderUtils {
 
 	public static final SQL insert(String tableName, Set<String> fieldNames) {
 		SQL sql = new SQL().INSERT_INTO(tableName);
-		fieldNames.stream().forEach(fieldName -> sql.VALUES(column(tableName, fieldName), field(fieldName)));
+		fieldNames.stream().forEach(fieldName -> sql.VALUES(StringUtils.lowerCamel2LowerHyphen(fieldName), field(fieldName)));
 		return sql;
 	}
 

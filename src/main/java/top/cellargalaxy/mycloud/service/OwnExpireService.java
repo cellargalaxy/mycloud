@@ -15,6 +15,8 @@ public interface OwnExpireService {
 
     String removeOwnExpire(OwnExpirePo ownExpirePo);
 
+    List<OwnExpireBo> listAllOwnExpire();
+
     List<OwnExpireBo> listExpireOwnExpire();
 
     List<OwnPo> listRecentExpireOwn();
