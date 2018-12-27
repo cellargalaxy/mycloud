@@ -47,7 +47,7 @@ public class OwnUserController {
     @GetMapping("/listOwn")
     public Vo listOwn(HttpServletRequest request, OwnQuery ownQuery) {
         UserPo userPo = SecurityServiceImpl.getSecurityUser(request);
-        return new Vo(null, ownService.listOwn(userPo, ownQuery));
+        return new Vo(null, ownService.listPageOwn(userPo, ownQuery));
     }
 
     @GetMapping("/getOwnCount")

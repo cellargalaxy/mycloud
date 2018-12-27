@@ -1,4 +1,4 @@
-package top.cellargalaxy.mycloud.service.fileDeal;
+package top.cellargalaxy.mycloud.service.fileDriver;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FSDataOutputStream;

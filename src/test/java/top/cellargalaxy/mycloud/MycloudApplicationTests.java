@@ -29,7 +29,6 @@ public class MycloudApplicationTests {
 
     @Test
     public void test() throws Exception {
-        db();
     }
 
     private void db() {

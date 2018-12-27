@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import top.cellargalaxy.mycloud.model.po.FileInfoPo;
 import top.cellargalaxy.mycloud.model.query.FileInfoQuery;
-import top.cellargalaxy.mycloud.util.model.Vo;
 import top.cellargalaxy.mycloud.service.FileInfoService;
+import top.cellargalaxy.mycloud.util.model.Vo;
 
 /**
  * @author cellargalaxy
@@ -34,12 +34,12 @@ public class FileInfoAdminController {
 
     @GetMapping("/listFileInfo")
     public Vo listFileInfo(FileInfoQuery fileInfoQuery) {
-        return new Vo(null, fileInfoService.listFileInfo(fileInfoQuery));
+	    return new Vo(null, fileInfoService.listPageFileInfo(fileInfoQuery));
     }
 
     @GetMapping("/listFileInfoVo")
     public Vo listFileInfoVo(FileInfoQuery fileInfoQuery) {
-        return new Vo(null, fileInfoService.listFileInfoVo(fileInfoQuery));
+	    return new Vo(null, fileInfoService.listPageFileInfoVo(fileInfoQuery));
     }
 
     @GetMapping("/getFileInfoCount")

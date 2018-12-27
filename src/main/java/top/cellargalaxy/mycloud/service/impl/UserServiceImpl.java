@@ -36,11 +36,7 @@ public class UserServiceImpl implements UserService {
         if (userPo.getPassword() != null) {
             userPo.setPassword(StringUtils.PASSWORD_HEAD + StringUtils.encoderPassword(userPo.getPassword()));
         }
-        return ServiceUtils.add(userPo, NAME, this::checkAddUser, userDao);
-    }
-
-    private String checkAddUser(UserPo userPo) {
-        return UserDao.checkInsert(userPo);
+        return ServiceUtils.add(userPo, NAME, UserDao::checkInsert, userDao);
     }
 
     @Override
@@ -53,7 +49,7 @@ public class UserServiceImpl implements UserService {
         if (userPo.getPassword() != null) {
             userPo.setPassword(StringUtils.PASSWORD_HEAD + StringUtils.encoderPassword(userPo.getPassword()));
         }
-        return ServiceUtils.change(userPo, NAME, this::checkChangeUser, userDao);
+        return ServiceUtils.change(userPo, NAME, UserDao::checkUpdate, userDao);
     }
 
     @Override
@@ -64,11 +60,7 @@ public class UserServiceImpl implements UserService {
         if (userPo.getUserId() != newUserPo.getUserId()) {
             return "不得修改他人信息";
         }
-        return ServiceUtils.change(newUserPo, NAME, this::checkChangeUser, userDao);
-    }
-
-    private String checkChangeUser(UserPo userPo) {
-        return UserDao.checkUpdate(userPo);
+        return ServiceUtils.change(newUserPo, NAME, UserDao::checkUpdate, userDao);
     }
 
     @Override
@@ -78,27 +70,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserVo getUserVo(UserPo userPo) {
-        UserBo userBo = userDao.selectOne(userPo);
-        return bo2vo(userBo);
-    }
-
-    @Override
-    public UserBo getUserByUsername(UserPo userPo) {
-        String username = userPo.getUsername();
-
-        userPo = new UserPo();
-        userPo.setUsername(username);
-
-        return userDao.selectOne(userPo);
-    }
-
-    @Override
-    public UserVo getUserVoByUsername(UserPo userPo) {
-        String username = userPo.getUsername();
-
-        userPo = new UserPo();
-        userPo.setUsername(username);
-
         UserBo userBo = userDao.selectOne(userPo);
         return bo2vo(userBo);
     }

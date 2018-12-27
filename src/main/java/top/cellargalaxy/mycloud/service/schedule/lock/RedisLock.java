@@ -1,6 +1,7 @@
 package top.cellargalaxy.mycloud.service.schedule.lock;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.stereotype.Service;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
@@ -15,6 +16,7 @@ import java.util.UUID;
  * @author cellargalaxy
  * @time 2018/12/19
  */
+@ConditionalOnBean(JedisPool.class)
 @Service
 public final class RedisLock implements DistributedLock {
 	//加锁操作成功返回的字符串

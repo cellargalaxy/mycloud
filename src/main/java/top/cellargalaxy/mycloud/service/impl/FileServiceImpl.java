@@ -13,7 +13,7 @@ import top.cellargalaxy.mycloud.model.po.OwnPo;
 import top.cellargalaxy.mycloud.model.po.UserPo;
 import top.cellargalaxy.mycloud.model.query.OwnQuery;
 import top.cellargalaxy.mycloud.service.*;
-import top.cellargalaxy.mycloud.service.fileDeal.FileDriverService;
+import top.cellargalaxy.mycloud.service.fileDriver.FileDriverService;
 import top.cellargalaxy.mycloud.util.IOUtils;
 
 import java.io.File;
@@ -112,13 +112,19 @@ public class FileServiceImpl implements FileService {
 
     @Override
     public String removeFile(FileInfoPo fileInfoPo) throws IOException {
-        fileInfoService.removeFileInfo(fileInfoPo);
+	    String string = fileInfoService.removeFileInfo(fileInfoPo);
+	    if (string != null) {
+		    return string;
+	    }
         return fileDriverService.removeFile(fileInfoPo);
     }
 
     @Override
     public String removeFile(OwnPo ownPo) throws IOException {
-        ownService.removeOwn(ownPo);
+	    String string = ownService.removeOwn(ownPo);
+	    if (string != null) {
+		    return string;
+	    }
         return fileDriverService.removeFile(ownPo);
     }
 
@@ -186,7 +192,7 @@ public class FileServiceImpl implements FileService {
         TarArchiveOutputStream tarArchiveOutputStream = IOUtils.createTarArchiveOutputStream(outputStream);
         OwnQuery ownQuery = new OwnQuery();
         ownQuery.setUserId(userPo.getUserId());
-        List<OwnBo> ownBos = ownService.listAllOwn(ownQuery);
+	    List<OwnBo> ownBos = ownService.listSomeOwn(ownQuery);
         for (OwnBo ownBo : ownBos) {
             try (InputStream inputStream = fileDriverService.getFileInputStream(ownBo)) {
                 if (inputStream != null) {

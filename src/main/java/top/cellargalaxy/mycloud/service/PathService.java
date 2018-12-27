@@ -14,11 +14,11 @@ public interface PathService {
 
     void setUrl(FileInfoBo fileInfoBo);
 
+    File getDriveFolder();
+
     File getMd5Folder();
 
     File getUuidFolder();
-
-    File getDriveFolder();
 
     File getTmpFolder();
 }

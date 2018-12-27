@@ -28,11 +28,11 @@ public interface OwnService {
 
     OwnBo getOwn(UserPo userPo, OwnPo ownPo);
 
-    List<OwnBo> listOwn(OwnQuery ownQuery);
+    List<OwnBo> listPageOwn(OwnQuery ownQuery);
 
-    List<OwnBo> listOwn(UserPo userPo, OwnQuery ownQuery);
+    List<OwnBo> listPageOwn(UserPo userPo, OwnQuery ownQuery);
 
-    List<OwnBo> listAllOwn(OwnQuery ownQuery);
+    List<OwnBo> listSomeOwn(OwnQuery ownQuery);
 
     List<OwnBo> listAllOwn();
 

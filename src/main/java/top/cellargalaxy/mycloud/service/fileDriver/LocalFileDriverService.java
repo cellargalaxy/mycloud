@@ -1,4 +1,4 @@
-package top.cellargalaxy.mycloud.service.fileDeal;
+package top.cellargalaxy.mycloud.service.fileDriver;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -239,7 +239,11 @@ public class LocalFileDriverService implements FileDriverService {
     }
 
     private File createLocalFile(OwnPo ownPo) {
-        return new File(uuidFolder.getAbsolutePath() + File.separator + ownPo.getOwnUuid());
+        File file = new File(uuidFolder.getAbsolutePath() + File.separator + ownPo.getOwnUuid());
+        if (file.exists()) {
+            return file;
+        }
+        return new File(md5Folder.getAbsolutePath() + File.separator + ownPo.getMd5());
     }
 
     private boolean isFull() {

@@ -35,11 +35,7 @@ public class OwnExpireServiceImpl implements OwnExpireService {
             return string;
         }
         ownExpirePo.setOwnId(ownPo.getOwnId());
-        return ServiceUtils.add(ownExpirePo, NAME, this::checkAddOwnExpire, ownExpireDao);
-    }
-
-    private String checkAddOwnExpire(OwnExpirePo ownExpirePo) {
-        return OwnExpireDao.checkInsert(ownExpirePo);
+        return ServiceUtils.add(ownExpirePo, NAME, OwnExpireDao::checkInsert, ownExpireDao);
     }
 
     @Override

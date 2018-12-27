@@ -29,7 +29,7 @@ public class OwnServiceImpl implements OwnService {
 
     @Override
     public String addOwn(OwnPo ownPo) {
-        return ServiceUtils.add(ownPo, NAME, this::checkAddOwn, ownDao);
+        return ServiceUtils.add(ownPo, NAME, OwnDao::checkInsert, ownDao);
     }
 
     @Override
@@ -38,11 +38,7 @@ public class OwnServiceImpl implements OwnService {
             return "未登录";
         }
         ownPo.setUserId(userPo.getUserId());
-        return ServiceUtils.add(ownPo, NAME, this::checkAddOwn, ownDao);
-    }
-
-    private String checkAddOwn(OwnPo ownPo) {
-        return OwnDao.checkInsert(ownPo);
+        return ServiceUtils.add(ownPo, NAME, OwnDao::checkInsert, ownDao);
     }
 
     @Override
@@ -61,7 +57,7 @@ public class OwnServiceImpl implements OwnService {
 
     @Override
     public String changeOwn(OwnPo ownPo) {
-        return ServiceUtils.change(ownPo, NAME, this::checkChangeOwn, ownDao);
+        return ServiceUtils.change(ownPo, NAME, OwnDao::checkUpdate, ownDao);
     }
 
     @Override
@@ -70,11 +66,7 @@ public class OwnServiceImpl implements OwnService {
             return "未登录";
         }
         ownPo.setUserId(userPo.getUserId());
-        return ServiceUtils.change(ownPo, NAME, this::checkChangeOwn, ownDao);
-    }
-
-    private String checkChangeOwn(OwnPo ownPo) {
-        return OwnDao.checkUpdate(ownPo);
+        return ServiceUtils.change(ownPo, NAME, OwnDao::checkUpdate, ownDao);
     }
 
     @Override
@@ -96,14 +88,14 @@ public class OwnServiceImpl implements OwnService {
     }
 
     @Override
-    public List<OwnBo> listOwn(OwnQuery ownQuery) {
+    public List<OwnBo> listPageOwn(OwnQuery ownQuery) {
         List<OwnBo> ownBos = ownDao.selectPageSome(ownQuery);
         ownBos.stream().forEach(ownBo -> pathService.setUrl(ownBo));
         return ownBos;
     }
 
     @Override
-    public List<OwnBo> listOwn(UserPo userPo, OwnQuery ownQuery) {
+    public List<OwnBo> listPageOwn(UserPo userPo, OwnQuery ownQuery) {
         if (userPo == null) {
             return null;
         }
@@ -114,7 +106,7 @@ public class OwnServiceImpl implements OwnService {
     }
 
     @Override
-    public List<OwnBo> listAllOwn(OwnQuery ownQuery) {
+    public List<OwnBo> listSomeOwn(OwnQuery ownQuery) {
         List<OwnBo> ownBos = ownDao.selectAllSome(ownQuery);
         ownBos.stream().forEach(ownBo -> pathService.setUrl(ownBo));
         return ownBos;

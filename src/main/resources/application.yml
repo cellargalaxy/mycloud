@@ -1,14 +1,14 @@
 spring:
   datasource:
     druid:
-      url: jdbc:mysql://${mycloud.dbHost}:${mycloud.dbPort}/${mycloud.dbName}?useUnicode=true&characterEncoding=UTF8&useSSL=false
+      url: jdbc:mysql://${mycloud.db.host}:${mycloud.db.port}/${mycloud.db.name}?useUnicode=true&characterEncoding=UTF8&useSSL=false
       driver-class-name: com.mysql.jdbc.Driver
-      username: ${mycloud.dbUsername}
-      password: ${mycloud.dbPassword}
+      username: ${mycloud.db.username}
+      password: ${mycloud.db.password}
       #      初始化大小，最小，最大
       initial-size: 2
       min-idle: 2
-      max-active: 5
+      max-active: 8
       #      获取连接等待超时的时间
       max-wait: 60000
       validation-query-timeout: 28000
@@ -42,12 +42,11 @@ spring:
 #  cache:
 #    type: CAFFEINE
   redis:
-    database: 0
-    host: 127.0.0.1
-    port: 6379
-    #如果redis没有密码，需要注释掉
-    #    password:
-    timeout: 10s
+    database: ${mycloud.redis.database}
+    host: ${mycloud.redis.host}
+    port: ${mycloud.redis.port}
+    password: ${mycloud.redis.password}
+    timeout: ${mycloud.redis.timeout}
     jedis:
       pool:
         max-wait: 10s
@@ -69,11 +68,20 @@ mycloud:
   domain: ${MYCLOUD_DOMAIN:}
   secret: ${MYCLOUD_SECRET:${random.value}}
 
-  dbHost: ${MYCLOUD_DB_HOST:127.0.0.1}
-  dbPort: ${MYCLOUD_DB_PORT:3306}
-  dbName: ${MYCLOUD_DB_NAME:mycloud}
-  dbUsername: ${MYCLOUD_DB_USERNAME:root}
-  dbPassword: ${MYCLOUD_DB_PASSWORD:root}
+  db:
+    host: ${MYCLOUD_DB_HOST:127.0.0.1}
+    port: ${MYCLOUD_DB_PORT:3306}
+    name: ${MYCLOUD_DB_NAME:mycloud}
+    username: ${MYCLOUD_DB_USERNAME:root}
+    password: ${MYCLOUD_DB_PASSWORD:root}
+
+  redis:
+    enable: ${MYCLOUD_REDIS_ENABLE:false}
+    database: ${MYCLOUD_REDIS_DATABASE:0}
+    host: ${MYCLOUD_REDIS_HOST:127.0.0.1}
+    port: ${MYCLOUD_REDIS_PORT:6379}
+    password: ${MYCLOUD_REDIS_PASSWORD:root}
+    timeout: ${MYCLOUD_REDIS_TIMEOUT:10s}
 
   hdfsUrl: ${MYCLOUD_HDFS_URL:}
 
@@ -87,4 +95,7 @@ logging:
             '*': DEBUG
           controller:
             security:
+              '*': DEBUG
+          service:
+            schedule:
               '*': DEBUG

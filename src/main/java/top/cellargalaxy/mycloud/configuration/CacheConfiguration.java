@@ -1,11 +1,11 @@
 package top.cellargalaxy.mycloud.configuration;
 
 import com.github.benmanes.caffeine.cache.Caffeine;
+import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.caffeine.CaffeineCache;
 import org.springframework.cache.support.SimpleCacheManager;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 
 import java.util.ArrayList;
@@ -15,7 +15,7 @@ import java.util.concurrent.TimeUnit;
  * @author cellargalaxy
  * @time 2018/8/21
  */
-@Configuration
+@SpringBootConfiguration
 public class CacheConfiguration {
     private static final int second = 1;
     private static final int minute = 60 * second;

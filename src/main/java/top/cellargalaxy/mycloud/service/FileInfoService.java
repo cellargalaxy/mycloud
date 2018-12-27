@@ -20,11 +20,9 @@ public interface FileInfoService {
 
     FileInfoVo getFileInfoVo(FileInfoPo fileInfoPo);
 
-    List<FileInfoBo> listFileInfo(FileInfoQuery fileInfoQuery);
+    List<FileInfoBo> listPageFileInfo(FileInfoQuery fileInfoQuery);
 
-    List<FileInfoVo> listFileInfoVo(FileInfoQuery fileInfoQuery);
-
-    List<FileInfoBo> listAllFileInfo();
+    List<FileInfoVo> listPageFileInfoVo(FileInfoQuery fileInfoQuery);
 
     int getFileInfoCount(FileInfoQuery fileInfoQuery);
 

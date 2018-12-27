@@ -5,7 +5,7 @@ package top.cellargalaxy.mycloud.service.schedule.lock;
  * @time 2018/12/19
  */
 public interface ScheduleLock {
-    boolean tryTmpFileCleanLock();
+    boolean tryTmpFileCleanLock(int expireTime);
 
     boolean unTmpFileCleanLock();
 

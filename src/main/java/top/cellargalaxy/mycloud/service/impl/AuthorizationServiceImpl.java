@@ -25,11 +25,7 @@ public class AuthorizationServiceImpl implements AuthorizationService {
 
     @Override
     public String addAuthorization(AuthorizationPo authorizationPo) {
-        return ServiceUtils.add(authorizationPo, NAME, this::checkAddAuthorization, authorizationDao);
-    }
-
-    private String checkAddAuthorization(AuthorizationPo authorizationPo) {
-        return AuthorizationDao.checkInsert(authorizationPo);
+        return ServiceUtils.add(authorizationPo, NAME, AuthorizationDao::checkInsert, authorizationDao);
     }
 
     @Override

@@ -35,11 +35,7 @@ public class FileInfoServiceImpl implements FileInfoService {
 
     @Override
     public String addFileInfo(FileInfoPo fileInfoPo) {
-        return ServiceUtils.add(fileInfoPo, NAME, this::checkAddFileInfo, fileInfoDao);
-    }
-
-    private String checkAddFileInfo(FileInfoPo fileInfoPo) {
-        return FileInfoDao.checkInsert(fileInfoPo);
+	    return ServiceUtils.add(fileInfoPo, NAME, FileInfoDao::checkInsert, fileInfoDao);
     }
 
     @Override
@@ -62,24 +58,17 @@ public class FileInfoServiceImpl implements FileInfoService {
     }
 
     @Override
-    public List<FileInfoBo> listFileInfo(FileInfoQuery fileInfoQuery) {
+    public List<FileInfoBo> listPageFileInfo(FileInfoQuery fileInfoQuery) {
         List<FileInfoBo> fileInfoBos = fileInfoDao.selectPageSome(fileInfoQuery);
         fileInfoBos.stream().forEach(fileInfoBo -> pathService.setUrl(fileInfoBo));
         return fileInfoBos;
     }
 
     @Override
-    public List<FileInfoVo> listFileInfoVo(FileInfoQuery fileInfoQuery) {
+    public List<FileInfoVo> listPageFileInfoVo(FileInfoQuery fileInfoQuery) {
         List<FileInfoBo> fileInfoBos = fileInfoDao.selectPageSome(fileInfoQuery);
         fileInfoBos.stream().forEach(fileInfoBo -> pathService.setUrl(fileInfoBo));
         return bo2vo(fileInfoBos);
-    }
-
-    @Override
-    public List<FileInfoBo> listAllFileInfo() {
-        List<FileInfoBo> fileInfoBos = fileInfoDao.selectAll();
-        fileInfoBos.stream().forEach(fileInfoBo -> pathService.setUrl(fileInfoBo));
-        return fileInfoBos;
     }
 
     @Override
@@ -98,7 +87,7 @@ public class FileInfoServiceImpl implements FileInfoService {
         }
         OwnQuery ownQuery = new OwnQuery();
         ownQuery.setFileId(fileInfoBo.getFileId());
-        List<OwnBo> ownBos = ownService.listAllOwn(ownQuery);
+	    List<OwnBo> ownBos = ownService.listSomeOwn(ownQuery);
         FileInfoVo fileInfoVo = new FileInfoVo();
         fileInfoVo.setFileInfo(fileInfoBo);
         fileInfoVo.setOwns(ownBos);

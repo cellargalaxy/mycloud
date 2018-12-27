@@ -24,10 +24,6 @@ public interface UserService {
 
     UserVo getUserVo(UserPo userPo);
 
-    UserBo getUserByUsername(UserPo userPo);
-
-    UserVo getUserVoByUsername(UserPo userPo);
-
     List<UserBo> listAllUser();
 
     List<UserVo> listAllUserVo();

@@ -6,6 +6,7 @@ import top.cellargalaxy.mycloud.configuration.MycloudConfiguration;
 import top.cellargalaxy.mycloud.model.bo.FileInfoBo;
 import top.cellargalaxy.mycloud.model.bo.OwnBo;
 import top.cellargalaxy.mycloud.service.PathService;
+import top.cellargalaxy.mycloud.util.StringUtils;
 
 import java.io.File;
 
@@ -33,13 +34,19 @@ public class PathServiceImpl implements PathService {
 
     @Override
     public void setUrl(OwnBo ownBo) {
-        ownBo.setMd5Url(domain + "/" + ownBo.getMd5());
-        ownBo.setOwnUrl(domain + "/" + ownBo.getOwnUuid());
+        if (!StringUtils.isBlank(ownBo.getMd5())) {
+            ownBo.setMd5Url(domain + "/" + ownBo.getMd5());
+        }
+        if (!StringUtils.isBlank(ownBo.getOwnUuid())) {
+            ownBo.setOwnUrl(domain + "/" + ownBo.getOwnUuid());
+        }
     }
 
     @Override
     public void setUrl(FileInfoBo fileInfoBo) {
-        fileInfoBo.setMd5Url(domain + "/" + fileInfoBo.getMd5());
+        if (!StringUtils.isBlank(fileInfoBo.getMd5())) {
+            fileInfoBo.setMd5Url(domain + "/" + fileInfoBo.getMd5());
+        }
     }
 
     @Override

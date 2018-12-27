@@ -39,16 +39,4 @@ public class ServiceUtils {
         }
         return null;
     }
-
-    public static final <Po, Bo extends Po, Query extends Po> String checkAdd(Po po, String name, Function<Po, String> checkInsert, IDao<Po, Bo, Query> iDao) {
-        String string = checkInsert.apply(po);
-        if (string != null) {
-            return string;
-        }
-        Bo bo = iDao.selectOne(po);
-        if (bo != null) {
-            return name + "已存在";
-        }
-        return null;
-    }
 }

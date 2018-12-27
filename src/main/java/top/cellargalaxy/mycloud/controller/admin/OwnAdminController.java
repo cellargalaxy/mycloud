@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import top.cellargalaxy.mycloud.model.po.OwnPo;
 import top.cellargalaxy.mycloud.model.query.OwnQuery;
-import top.cellargalaxy.mycloud.util.model.Vo;
 import top.cellargalaxy.mycloud.service.OwnService;
+import top.cellargalaxy.mycloud.util.model.Vo;
 
 /**
  * @author cellargalaxy
@@ -45,7 +45,7 @@ public class OwnAdminController {
 
     @GetMapping("/listOwn")
     public Vo listOwn(OwnQuery ownQuery) {
-        return new Vo(null, ownService.listOwn(ownQuery));
+	    return new Vo(null, ownService.listPageOwn(ownQuery));
     }
 
     @GetMapping("/getOwnCount")

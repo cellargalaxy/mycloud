@@ -3,9 +3,9 @@ package top.cellargalaxy.mycloud.configuration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.boot.web.servlet.MultipartConfigFactory;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.core.convert.support.GenericConversionService;
 import org.springframework.web.bind.support.ConfigurableWebBindingInitializer;
@@ -23,7 +23,7 @@ import java.util.Date;
  * @author cellargalaxy
  * @time 2018/7/20
  */
-@Configuration
+@SpringBootConfiguration
 public class WebConfigBeans {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
     @Autowired

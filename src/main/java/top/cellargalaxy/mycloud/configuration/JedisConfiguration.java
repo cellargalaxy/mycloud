@@ -1,9 +1,9 @@
 package top.cellargalaxy.mycloud.configuration;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Conditional;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 
@@ -11,13 +11,12 @@ import redis.clients.jedis.JedisPoolConfig;
  * @author cellargalaxy
  * @time 18-12-22
  */
-@Configuration
+@SpringBootConfiguration
 public class JedisConfiguration {
-	@Autowired
-	private RedisProperties properties;
 
 	@Bean
-	public JedisPool jedisPool() {
+	@Conditional(RedisCondition.class)
+	public JedisPool jedisPool(RedisProperties properties) {
 		JedisPoolConfig jedisPoolConfig = new JedisPoolConfig();
 		//最多有多少个jedis实例，-1表示不限制，默认8
 		jedisPoolConfig.setMaxTotal(properties.getJedis().getPool().getMaxActive());
