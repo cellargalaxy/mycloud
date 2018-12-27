@@ -21,4 +21,6 @@ public interface PathService {
     File getUuidFolder();
 
     File getTmpFolder();
+
+    File getSqliteFile();
 }

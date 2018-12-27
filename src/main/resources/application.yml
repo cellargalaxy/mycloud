@@ -71,12 +71,13 @@ mycloud:
     type: sqlite
     url: ${mycloud.db.${mycloud.db.type}}
     mysql: jdbc:mysql://${mycloud.db.host}:${mycloud.db.port}/${mycloud.db.name}?useUnicode=true&characterEncoding=UTF8&useSSL=false
-    sqlite: jdbc:sqlite:${mycloud.mycloudPath}/mycloud.db
+    sqlite: jdbc:sqlite:${mycloud.db.sqlitePath}
     host: ${MYCLOUD_DB_HOST:127.0.0.1}
     port: ${MYCLOUD_DB_PORT:3306}
     name: ${MYCLOUD_DB_NAME:mycloud}
     username: ${MYCLOUD_DB_USERNAME:root}
     password: ${MYCLOUD_DB_PASSWORD:root}
+    sqlitePath: ${mycloud.mycloudPath}/mycloud.db
 
   redis:
     enable: ${MYCLOUD_REDIS_ENABLE:false}

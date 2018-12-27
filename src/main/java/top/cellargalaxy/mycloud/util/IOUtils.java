@@ -51,6 +51,12 @@ public class IOUtils {
         }
     }
 
+    public static final void archiveFile(TarArchiveOutputStream tarArchiveOutputStream, File file) throws IOException {
+        try (InputStream inputStream = IOUtils.getInputStream(file)) {
+            archiveFile(tarArchiveOutputStream, inputStream, file.length(), file.getName());
+        }
+    }
+
     public static void archiveFile(TarArchiveOutputStream tarArchiveOutputStream, InputStream inputStream, long fileLength, String archiveName) throws IOException {
         TarArchiveEntry tarArchiveEntry = new TarArchiveEntry(archiveName);
         tarArchiveEntry.setSize(fileLength);

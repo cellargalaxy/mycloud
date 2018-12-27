@@ -34,6 +34,7 @@ import java.util.UUID;
 public class FileServiceImpl implements FileService {
     public static final String TMP_FILE_DEFAULT_SORT = "<TMP_FILE>";
     private final PathService pathService;
+    private final File sqliteFile;
     private final File driveFolder;
     private final long maxTmpFileSaveTime;
     @Autowired
@@ -48,6 +49,7 @@ public class FileServiceImpl implements FileService {
     @Autowired
     public FileServiceImpl(PathService pathService, MycloudConfiguration mycloudConfiguration) {
         this.pathService = pathService;
+        sqliteFile = pathService.getSqliteFile();
         driveFolder = pathService.getDriveFolder();
         maxTmpFileSaveTime = mycloudConfiguration.getMaxTmpFileSaveTime();
     }
@@ -182,7 +184,12 @@ public class FileServiceImpl implements FileService {
     @Override
     public String getTar(OutputStream outputStream) throws IOException {
         TarArchiveOutputStream tarArchiveOutputStream = IOUtils.createTarArchiveOutputStream(outputStream);
-        IOUtils.archive(tarArchiveOutputStream, driveFolder);
+        if (driveFolder.exists()) {
+            IOUtils.archive(tarArchiveOutputStream, driveFolder);
+        }
+        if (sqliteFile.exists()) {
+            IOUtils.archiveFile(tarArchiveOutputStream, sqliteFile);
+        }
         return null;
     }
 

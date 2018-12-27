@@ -34,7 +34,7 @@ public class InitSqlite {
 						"  \"user_id\",\n" +
 						"  \"permission\"\n" +
 						");");
-				jdbcTemplate.execute("INSERT INTO `authorization` VALUES (1,1,'ADMIN','2018-08-01 00:00:00','2018-08-01 00:00:00'),(2,1,'USER','2018-08-01 00:00:00','2018-08-01 00:00:00');");
+				jdbcTemplate.execute("INSERT INTO `authorization` VALUES (1,1,'ADMIN',1533052800000,1533052800000),(2,1,'USER',1533052800000,1533052800000);");
 			}
 
 			if (!JDBCUtils.existTable(connection, FileInfoDao.TABLE_NAME)) {
@@ -113,6 +113,7 @@ public class InitSqlite {
 						"ON \"user\" (\n" +
 						"  \"username\"\n" +
 						");");
+				jdbcTemplate.execute("INSERT INTO `user` VALUES (1,'mycloud','{bcrypt}$2a$04$hGp/prtFmGykz4eEl9DaNO.Nbm/nJASJk7kNf8m3nCCVF/ElRCG7a',1533052800000,1533052800000);");
 			}
 		}
 	}

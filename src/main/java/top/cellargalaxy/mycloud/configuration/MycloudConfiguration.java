@@ -29,6 +29,8 @@ public class MycloudConfiguration {
 
     @Value("${mycloud.db.type}")
     private volatile String dbType;
+    @Value("${mycloud.db.sqlitePath}")
+    private volatile String sqlitePath;
 
     private volatile String hdfsUrl;
 }

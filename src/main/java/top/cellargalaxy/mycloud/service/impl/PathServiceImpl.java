@@ -16,56 +16,69 @@ import java.io.File;
  */
 @Service
 public class PathServiceImpl implements PathService {
-    private final String domain;
-    private final File tmpFolder;
-    private final File driveFolder;
-    private final File md5Folder;
-    private final File uuidFolder;
+	private final String domain;
+	private final File sqliteFile;
+	private final File tmpFolder;
+	private final File driveFolder;
+	private final File md5Folder;
+	private final File uuidFolder;
 
-    @Autowired
-    public PathServiceImpl(MycloudConfiguration mycloudConfiguration) {
-        domain = mycloudConfiguration.getDomain();
-        File mycloudFolder = new File(mycloudConfiguration.getMycloudPath());
-        tmpFolder = new File(mycloudFolder.getAbsolutePath() + File.separator + "tmp");
-        driveFolder = new File(mycloudFolder.getAbsolutePath() + File.separator + "drive");
-        md5Folder = new File(driveFolder.getAbsolutePath() + File.separator + "md5");
-        uuidFolder = new File(driveFolder.getAbsolutePath() + File.separator + "uuid");
-    }
+	@Autowired
+	public PathServiceImpl(MycloudConfiguration mycloudConfiguration) {
+		domain = mycloudConfiguration.getDomain();
+		File mycloudFolder = new File(mycloudConfiguration.getMycloudPath());
+		sqliteFile = new File(mycloudConfiguration.getSqlitePath());
+		tmpFolder = new File(mycloudFolder.getAbsolutePath() + File.separator + "tmp");
+		driveFolder = new File(mycloudFolder.getAbsolutePath() + File.separator + "drive");
+		md5Folder = new File(driveFolder.getAbsolutePath() + File.separator + "md5");
+		uuidFolder = new File(driveFolder.getAbsolutePath() + File.separator + "uuid");
+	}
 
-    @Override
-    public void setUrl(OwnBo ownBo) {
-        if (!StringUtils.isBlank(ownBo.getMd5())) {
-            ownBo.setMd5Url(domain + "/" + ownBo.getMd5());
-        }
-        if (!StringUtils.isBlank(ownBo.getOwnUuid())) {
-            ownBo.setOwnUrl(domain + "/" + ownBo.getOwnUuid());
-        }
-    }
+	@Override
+	public void setUrl(OwnBo ownBo) {
+		if (ownBo == null) {
+			return;
+		}
+		if (!StringUtils.isBlank(ownBo.getMd5())) {
+			ownBo.setMd5Url(domain + "/" + ownBo.getMd5());
+		}
+		if (!StringUtils.isBlank(ownBo.getOwnUuid())) {
+			ownBo.setOwnUrl(domain + "/" + ownBo.getOwnUuid());
+		}
+	}
 
-    @Override
-    public void setUrl(FileInfoBo fileInfoBo) {
-        if (!StringUtils.isBlank(fileInfoBo.getMd5())) {
-            fileInfoBo.setMd5Url(domain + "/" + fileInfoBo.getMd5());
-        }
-    }
+	@Override
+	public void setUrl(FileInfoBo fileInfoBo) {
+		if (fileInfoBo == null) {
+			return;
+		}
+		if (!StringUtils.isBlank(fileInfoBo.getMd5())) {
+			fileInfoBo.setMd5Url(domain + "/" + fileInfoBo.getMd5());
+		}
+	}
 
-    @Override
-    public File getMd5Folder() {
-        return md5Folder;
-    }
+	@Override
+	public File getMd5Folder() {
+		return md5Folder;
+	}
 
-    @Override
-    public File getUuidFolder() {
-        return uuidFolder;
-    }
+	@Override
+	public File getUuidFolder() {
+		return uuidFolder;
+	}
 
-    @Override
-    public File getDriveFolder() {
-        return driveFolder;
-    }
+	@Override
+	public File getDriveFolder() {
+		return driveFolder;
+	}
 
-    @Override
-    public File getTmpFolder() {
-        return tmpFolder;
-    }
+	@Override
+	public File getTmpFolder() {
+		return tmpFolder;
+	}
+
+	@Override
+	public File getSqliteFile() {
+		return sqliteFile;
+	}
 }
