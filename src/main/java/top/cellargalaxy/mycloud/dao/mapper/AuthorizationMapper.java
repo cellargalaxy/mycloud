@@ -102,7 +102,7 @@ public interface AuthorizationMapper extends IDao<AuthorizationPo, Authorization
 		}
 
 		public String insert(AuthorizationPo authorizationPo) {
-			String string = ProviderUtils.insert(tableName, AuthorizationPo.class).toString();
+			String string = ProviderUtils.insert(tableName, AuthorizationPo.class, "authorizationId").toString();
 			return string;
 		}
 

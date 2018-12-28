@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import top.cellargalaxy.mycloud.configuration.MycloudConfiguration;
-import top.cellargalaxy.mycloud.dao.OwnExpireDao;
 import top.cellargalaxy.mycloud.model.bo.OwnExpireBo;
 import top.cellargalaxy.mycloud.model.po.OwnPo;
 import top.cellargalaxy.mycloud.service.FileService;
@@ -37,14 +36,11 @@ public class TmpFileCleanSchedule {
 	private FileService fileService;
 
 	@Autowired
-	private OwnExpireDao ownExpireDao;
-
-	@Autowired
 	public TmpFileCleanSchedule(MycloudConfiguration mycloudConfiguration) {
 		dbType = mycloudConfiguration.getDbType();
 	}
 
-	@Scheduled(initialDelay = 1000 * 10, fixedDelay = 1000 * 60 * 5)
+	@Scheduled(initialDelay = 1000 * 10, fixedDelay = 1000 * 60 * 10)
 	public void cleanTmpFile() throws IOException {
 		if (!StringUtils.isBlank(dbType) && dbType.trim().toLowerCase().equals("sqlite")) {
 			logger.debug("sqlite数据库，开始清理临时文件");
@@ -55,7 +51,7 @@ public class TmpFileCleanSchedule {
 			return;
 		}
 		try {
-			if (!scheduleLock.tryTmpFileCleanLock(1000 * 10)) {
+			if (!scheduleLock.tryTmpFileCleanLock(1000 * 60 * 5)) {
 				logger.debug("清理临时文件定时任务没有获取到锁，取消清理");
 				return;
 			}

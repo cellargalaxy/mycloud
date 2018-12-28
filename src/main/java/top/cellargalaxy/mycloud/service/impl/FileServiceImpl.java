@@ -15,6 +15,7 @@ import top.cellargalaxy.mycloud.model.query.OwnQuery;
 import top.cellargalaxy.mycloud.service.*;
 import top.cellargalaxy.mycloud.service.fileDriver.FileDriverService;
 import top.cellargalaxy.mycloud.util.IOUtils;
+import top.cellargalaxy.mycloud.util.StringUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -157,6 +158,9 @@ public class FileServiceImpl implements FileService {
 			}
 			FileInfoPo fileInfoPo = new FileInfoPo();
 			BeanUtils.copyProperties(ownBo, fileInfoPo);
+			if (StringUtils.isBlank(ownBo.getMd5())) {
+				fileInfoPo.setMd5(ownBo.getOwnUuid());
+			}
 			return fileInfoPo;
 		} else {
 			FileInfoPo fileInfoPo = new FileInfoPo();

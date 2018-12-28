@@ -120,6 +120,18 @@ public class IOUtils {
 		}
 	}
 
+	public static final void stream(final long limit, InputStream inputStream, OutputStream... outputStreams) throws IOException {
+		byte[] bytes = new byte[1024];
+		int count = 0;
+		int len;
+		while (count <= limit && (len = inputStream.read(bytes, 0, bytes.length)) != -1) {
+			count += len;
+			for (OutputStream outputStream : outputStreams) {
+				outputStream.write(bytes, 0, len);
+			}
+		}
+	}
+
 	public static final long getFolderLength(File folder) {
 		long length = 0;
 		File[] files = folder.listFiles();

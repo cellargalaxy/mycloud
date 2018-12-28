@@ -27,11 +27,26 @@ public class PathServiceImpl implements PathService {
 	public PathServiceImpl(MycloudConfiguration mycloudConfiguration) {
 		domain = mycloudConfiguration.getDomain();
 		File mycloudFolder = new File(mycloudConfiguration.getMycloudPath());
+		if (!mycloudFolder.exists()) {
+			mycloudFolder.mkdirs();
+		}
 		sqliteFile = new File(mycloudConfiguration.getSqlitePath());
-		tmpFolder = new File(mycloudFolder.getAbsolutePath() + File.separator + "tmp");
+		tmpFolder = new File(mycloudConfiguration.getWebUploadTmpFolderPath());
+		if (!tmpFolder.exists()) {
+			tmpFolder.mkdirs();
+		}
 		driveFolder = new File(mycloudFolder.getAbsolutePath() + File.separator + "drive");
+		if (!driveFolder.exists()) {
+			driveFolder.mkdirs();
+		}
 		md5Folder = new File(driveFolder.getAbsolutePath() + File.separator + "md5");
+		if (!md5Folder.exists()) {
+			md5Folder.mkdirs();
+		}
 		uuidFolder = new File(driveFolder.getAbsolutePath() + File.separator + "uuid");
+		if (!uuidFolder.exists()) {
+			uuidFolder.mkdirs();
+		}
 	}
 
 	@Override
@@ -70,11 +85,6 @@ public class PathServiceImpl implements PathService {
 	@Override
 	public File getDriveFolder() {
 		return driveFolder;
-	}
-
-	@Override
-	public File getTmpFolder() {
-		return tmpFolder;
 	}
 
 	@Override

@@ -1,20 +1,13 @@
 package top.cellargalaxy.mycloud.configuration;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringBootConfiguration;
-import org.springframework.boot.web.servlet.MultipartConfigFactory;
-import org.springframework.context.annotation.Bean;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.core.convert.support.GenericConversionService;
 import org.springframework.web.bind.support.ConfigurableWebBindingInitializer;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
-import top.cellargalaxy.mycloud.service.PathService;
 
 import javax.annotation.PostConstruct;
-import javax.servlet.MultipartConfigElement;
-import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -25,7 +18,6 @@ import java.util.Date;
  */
 @SpringBootConfiguration
 public class WebConfigBeans {
-	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	@Autowired
 	private RequestMappingHandlerAdapter handlerAdapter;
 
@@ -62,21 +54,7 @@ public class WebConfigBeans {
 			});
 		}
 	}
-
-	@Bean
-	public MultipartConfigElement multipartConfigElement(MycloudConfiguration mycloudConfiguration, PathService pathService) {
-		File mycloudTmpFolder = pathService.getTmpFolder();
-		if (!mycloudTmpFolder.exists()) {
-			mycloudTmpFolder.mkdirs();
-		}
-		String webUploadMaxFileSize = mycloudConfiguration.getWebUploadMaxFileSize();
-		String webUploadMaxRequestSize = mycloudConfiguration.getWebUploadMaxRequestSize();
-		logger.info("webUploadMaxFileSize: {}; webUploadMaxRequestSize: {}; mycloudTmpPath: {}", webUploadMaxFileSize, webUploadMaxRequestSize, mycloudTmpFolder);
-
-		MultipartConfigFactory factory = new MultipartConfigFactory();
-		factory.setLocation(mycloudTmpFolder.getAbsolutePath());
-		factory.setMaxFileSize(webUploadMaxFileSize);
-		factory.setMaxRequestSize(webUploadMaxRequestSize);
-		return factory.createMultipartConfig();
-	}
 }
+
+
+

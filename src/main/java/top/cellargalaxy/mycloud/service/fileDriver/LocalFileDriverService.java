@@ -42,7 +42,7 @@ public class LocalFileDriverService implements FileDriverService {
 		}
 		File localFile = createLocalFile(fileInfoPo);
 		try (OutputStream outputStream = IOUtils.getOutputStream(localFile)) {
-			IOUtils.stream(inputStream, outputStream);
+			IOUtils.stream(fileInfoPo.getFileLength(), inputStream, outputStream);
 		} catch (IOException e) {
 			localFile.delete();
 			throw e;
@@ -61,7 +61,7 @@ public class LocalFileDriverService implements FileDriverService {
 		}
 		File localFile = createLocalFile(ownPo);
 		try (OutputStream outputStream = IOUtils.getOutputStream(localFile)) {
-			IOUtils.stream(inputStream, outputStream);
+			IOUtils.stream(ownPo.getFileLength(), inputStream, outputStream);
 		} catch (IOException e) {
 			localFile.delete();
 			throw e;

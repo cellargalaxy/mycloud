@@ -132,7 +132,7 @@ public interface OwnMapper extends IDao<OwnPo, OwnBo, OwnQuery> {
 		}
 
 		public String insert(OwnPo ownPo) {
-			String string = ProviderUtils.insert(tableName, OwnPo.class).toString();
+			String string = ProviderUtils.insert(tableName, OwnPo.class, "ownId").toString();
 			return string;
 		}
 
