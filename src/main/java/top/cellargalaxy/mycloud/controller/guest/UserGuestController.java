@@ -1,6 +1,7 @@
 package top.cellargalaxy.mycloud.controller.guest;
 
 import org.springframework.beans.BeanUtils;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,6 +19,7 @@ import java.util.List;
  * @author cellargalaxy
  * @time 2018/12/19
  */
+@PreAuthorize("hasAuthority('GUEST')")
 @RestController
 @RequestMapping(UserGuestController.URL)
 public class UserGuestController {
