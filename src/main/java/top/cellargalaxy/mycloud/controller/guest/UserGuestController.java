@@ -2,7 +2,6 @@ package top.cellargalaxy.mycloud.controller.guest;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,35 +25,35 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping(UserGuestController.URL)
 public class UserGuestController {
-    public static final String URL = "/guest/user";
+	public static final String URL = "/guest/user";
 
-    @Autowired
-    private SecurityService securityService;
+	@Autowired
+	private SecurityService securityService;
 
-    @GetMapping("/getUserVo")
-    public Vo getUserVo(HttpServletRequest request) {
-        UserPo userPo = SecurityServiceImpl.getSecurityUser(request);
-        if (userPo != null) {
-            return new Vo(null, userPo);
-        }
+	@GetMapping("/getUserVo")
+	public Vo getUserVo(HttpServletRequest request) {
+		UserPo userPo = SecurityServiceImpl.getSecurityUser(request);
+		if (userPo != null) {
+			return new Vo(null, userPo);
+		}
 
-        UserVo userVo = UserVo.GUEST;
-        SecurityServiceImpl.SecurityUserImpl securityUser = new SecurityServiceImpl.SecurityUserImpl();
+		UserVo userVo = UserVo.GUEST;
+		SecurityServiceImpl.SecurityUserImpl securityUser = new SecurityServiceImpl.SecurityUserImpl();
 
-        UserBo userBo = userVo.getUser();
-        BeanUtils.copyProperties(userBo, securityUser);
+		UserBo userBo = userVo.getUser();
+		BeanUtils.copyProperties(userBo, securityUser);
 
-        List<AuthorizationBo> authorizationBos = userVo.getAuthorizations();
-        authorizationBos.stream().forEach(authorizationBo -> securityUser.getPermissions().add(authorizationBo.getPermission().toString()));
-        return new Vo(null, securityUser);
-    }
+		List<AuthorizationBo> authorizationBos = userVo.getAuthorizations();
+		authorizationBos.stream().forEach(authorizationBo -> securityUser.getPermissions().add(authorizationBo.getPermission().toString()));
+		return new Vo(null, securityUser);
+	}
 
-    @GetMapping("/getGuestToken")
-    public Vo getGuestToken() {
-        UserVo userVo = UserVo.GUEST;
-        SecurityUser securityUser = new SecurityServiceImpl.SecurityUserImpl();
-        BeanUtils.copyProperties(userVo.getUser(), securityUser);
-        securityUser.getPermissions().addAll(userVo.getAuthorizations().stream().map(authorizationBo -> authorizationBo.getPermission().toString()).collect(Collectors.toSet()));
-        return new Vo(null, securityService.createToken(securityUser));
-    }
+	@GetMapping("/getGuestToken")
+	public Vo getGuestToken() {
+		UserVo userVo = UserVo.GUEST;
+		SecurityUser securityUser = new SecurityServiceImpl.SecurityUserImpl();
+		BeanUtils.copyProperties(userVo.getUser(), securityUser);
+		securityUser.getPermissions().addAll(userVo.getAuthorizations().stream().map(authorizationBo -> authorizationBo.getPermission().toString()).collect(Collectors.toSet()));
+		return new Vo(null, securityService.createToken(securityUser));
+	}
 }
