@@ -45,6 +45,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers(
 						"/",
 						"/*",
+						"/guest/user/*",
 						"/favicon.ico"
 				).permitAll()
 
