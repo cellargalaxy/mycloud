@@ -18,8 +18,6 @@ public interface OwnService {
 
 	String removeOwn(OwnPo ownPo);
 
-	String removeOwn(UserPo userPo, OwnPo ownPo);
-
 	String changeOwn(OwnPo ownPo);
 
 	String changeOwn(UserPo userPo, OwnPo ownPo);

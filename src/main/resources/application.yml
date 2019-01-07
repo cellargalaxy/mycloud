@@ -106,8 +106,8 @@ logging:
     top:
       cellargalaxy:
         mycloud:
-          #          dao:
-          #            '*': DEBUG
+          dao:
+            '*': DEBUG
           controller:
             security:
               '*': DEBUG

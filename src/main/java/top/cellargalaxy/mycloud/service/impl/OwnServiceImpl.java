@@ -47,15 +47,6 @@ public class OwnServiceImpl implements OwnService {
 	}
 
 	@Override
-	public String removeOwn(UserPo userPo, OwnPo ownPo) {
-		if (userPo == null) {
-			return "未登录";
-		}
-		ownPo.setUserId(userPo.getUserId());
-		return ServiceUtils.remove(ownPo, NAME, ownDao);
-	}
-
-	@Override
 	public String changeOwn(OwnPo ownPo) {
 		return ServiceUtils.change(ownPo, NAME, OwnDao::checkUpdate, ownDao);
 	}

@@ -20,9 +20,8 @@ public class ProviderUtils {
 	}
 
 	public static final SQL selectCount(String tableName, Set<String> whereFieldNames) {
-		Set<String> selectFieldNames = new HashSet<>();
-		selectFieldNames.add("count(*)");
-		return select(tableName, selectFieldNames, whereFieldNames);
+		SQL sql = new SQL().SELECT("count(*)").FROM(tableName);
+		return whereTrue(sql, tableName, whereFieldNames);
 	}
 
 	public static final SQL select(SQL sql, String tableName, Class<?> clazz, String... ignores) {
@@ -46,14 +45,14 @@ public class ProviderUtils {
 
 	public static final SQL update(String tableName, Set<String> setFieldNames, String defaultSet, Set<String> whereFieldNames) {
 		SQL sql = new SQL().UPDATE(tableName);
-		createSet(tableName, setFieldNames, defaultSet).stream().forEach(set -> sql.SET(set));
-		createWhereFalse(tableName, whereFieldNames).stream().forEach(where -> sql.WHERE(where));
+		createSet(null, setFieldNames, defaultSet).stream().forEach(set -> sql.SET(set));
+		createWhereFalse(null, whereFieldNames).stream().forEach(where -> sql.WHERE(where));
 		return sql;
 	}
 
 	public static final SQL delete(String tableName, Set<String> whereFieldNames) {
 		SQL sql = new SQL().DELETE_FROM(tableName);
-		createWhereFalse(tableName, whereFieldNames).stream().forEach(where -> sql.WHERE(where));
+		createWhereFalse(null, whereFieldNames).stream().forEach(where -> sql.WHERE(where));
 		return sql;
 	}
 
@@ -104,7 +103,7 @@ public class ProviderUtils {
 	public static final Set<String> createWhereTrue(String tableName, Set<String> fieldNames) {
 		if (fieldNames == null || fieldNames.size() == 0) {
 			Set<String> wheres = new HashSet<>();
-			wheres.add("true");
+			wheres.add("1");
 			return wheres;
 		}
 		return fieldNames.stream().map(fieldName -> equalSign(tableName, fieldName)).collect(Collectors.toSet());
@@ -113,7 +112,7 @@ public class ProviderUtils {
 	public static final Set<String> createWhereFalse(String tableName, Set<String> fieldNames) {
 		if (fieldNames == null || fieldNames.size() == 0) {
 			Set<String> wheres = new HashSet<>();
-			wheres.add("false");
+			wheres.add("0");
 			return wheres;
 		}
 		return fieldNames.stream().map(fieldName -> equalSign(tableName, fieldName)).collect(Collectors.toSet());
@@ -161,7 +160,11 @@ public class ProviderUtils {
 	 * @return
 	 */
 	public static final String column(String tableName, String fieldName) {
-		return StringUtils.lowerCamel2LowerHyphen(tableName) + "." + StringUtils.lowerCamel2LowerHyphen(fieldName);
+		if (StringUtils.isBlank(tableName)) {
+			return StringUtils.lowerCamel2LowerHyphen(fieldName);
+		} else {
+			return StringUtils.lowerCamel2LowerHyphen(tableName) + "." + StringUtils.lowerCamel2LowerHyphen(fieldName);
+		}
 	}
 
 	public static final StringBuilder limitOne(SQL sql) {
