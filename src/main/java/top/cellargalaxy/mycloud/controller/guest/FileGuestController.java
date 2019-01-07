@@ -1,6 +1,7 @@
 package top.cellargalaxy.mycloud.controller.guest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -18,6 +19,7 @@ import java.io.IOException;
  * @author cellargalaxy
  * @time 2018/12/14
  */
+@PreAuthorize("hasAuthority('GUEST')")
 @RestController
 @RequestMapping(FileGuestController.URL)
 public class FileGuestController {
