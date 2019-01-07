@@ -10,6 +10,7 @@ import top.cellargalaxy.mycloud.model.po.OwnPo;
 import top.cellargalaxy.mycloud.model.query.OwnExpireQuery;
 import top.cellargalaxy.mycloud.service.OwnExpireService;
 import top.cellargalaxy.mycloud.service.OwnService;
+import top.cellargalaxy.mycloud.service.PathService;
 import top.cellargalaxy.mycloud.util.serivce.ServiceUtils;
 
 import java.util.Date;
@@ -27,6 +28,8 @@ public class OwnExpireServiceImpl implements OwnExpireService {
 	private OwnExpireDao ownExpireDao;
 	@Autowired
 	private OwnService ownService;
+	@Autowired
+	private PathService pathService;
 
 	@Override
 	public String addOwnExpire(OwnPo ownPo, OwnExpirePo ownExpirePo) {
@@ -59,7 +62,9 @@ public class OwnExpireServiceImpl implements OwnExpireService {
 	}
 
 	@Override
-	public List<OwnPo> listRecentExpireOwn() {
-		return ownExpireDao.selectRecentExpireOwn(new OwnExpireQuery());
+	public List<OwnExpireBo> listRecentExpireOwn() {
+		List<OwnExpireBo> list = ownExpireDao.selectRecentExpireOwn(new OwnExpireQuery());
+		list.stream().forEach(ownExpireBo -> pathService.setUrl(ownExpireBo));
+		return list;
 	}
 }

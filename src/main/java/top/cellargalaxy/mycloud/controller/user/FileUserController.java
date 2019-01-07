@@ -16,6 +16,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URLEncoder;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by cellargalaxy on 18-8-4.
@@ -59,7 +61,7 @@ public class FileUserController {
 		UserPo userPo = SecurityServiceImpl.getSecurityUser(request);
 		response.reset();
 		response.setContentType("application/x-tar");
-		response.setHeader("Content-Disposition", "attachment; filename=" + URLEncoder.encode(userPo.getUsername() + ".tar", "UTF-8"));
+		response.addHeader("Content-Disposition", "attachment; filename=" + URLEncoder.encode(userPo.getUsername() + ".tar", "UTF-8"));
 		try (OutputStream outputStream = response.getOutputStream()) {
 			fileService.getTar(userPo, outputStream);
 		}

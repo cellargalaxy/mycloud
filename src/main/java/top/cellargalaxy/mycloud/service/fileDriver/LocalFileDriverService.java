@@ -125,25 +125,25 @@ public class LocalFileDriverService implements FileDriverService {
 
 	@Override
 	public String removeFile(FileInfoPo fileInfoPo) throws IOException {
-		File localFile = createLocalFile(fileInfoPo);
+		File localFile = getLocalFile(fileInfoPo);
 		return localFile.exists() && !localFile.delete() ? "删除失败" : null;
 	}
 
 	@Override
 	public String removeFile(OwnPo ownPo) throws IOException {
-		File localFile = createLocalFile(ownPo);
+		File localFile = getLocalFile(ownPo);
 		return localFile.exists() && !localFile.delete() ? "删除失败" : null;
 	}
 
 	@Override
 	public String getFile(FileInfoPo fileInfoPo, OutputStream outputStream) throws IOException {
-		File localFile = createLocalFile(fileInfoPo);
+		File localFile = getLocalFile(fileInfoPo);
 		return getFile(localFile, outputStream);
 	}
 
 	@Override
 	public String getFile(OwnBo ownBo, OutputStream outputStream) throws IOException {
-		File localFile = createLocalFile(ownBo);
+		File localFile = getLocalFile(ownBo);
 		if (localFile.exists()) {
 			return getFile(localFile, outputStream);
 		} else {
@@ -170,7 +170,7 @@ public class LocalFileDriverService implements FileDriverService {
 
 	@Override
 	public InputStream getFileInputStream(FileInfoPo fileInfoPo) throws FileNotFoundException {
-		File localFile = createLocalFile(fileInfoPo);
+		File localFile = getLocalFile(fileInfoPo);
 		if (!localFile.exists()) {
 			return null;
 		}
@@ -179,7 +179,7 @@ public class LocalFileDriverService implements FileDriverService {
 
 	@Override
 	public InputStream getFileInputStream(OwnBo ownBo) throws FileNotFoundException {
-		File localFile = createLocalFile(ownBo);
+		File localFile = getLocalFile(ownBo);
 		if (localFile.exists()) {
 			return IOUtils.getInputStream(localFile);
 		} else {
@@ -239,6 +239,14 @@ public class LocalFileDriverService implements FileDriverService {
 	}
 
 	private File createLocalFile(OwnPo ownPo) {
+		return new File(uuidFolder.getAbsolutePath() + File.separator + ownPo.getOwnUuid());
+	}
+
+	private File getLocalFile(FileInfoPo fileInfoPo) {
+		return new File(md5Folder.getAbsolutePath() + File.separator + fileInfoPo.getMd5());
+	}
+
+	private File getLocalFile(OwnPo ownPo) {
 		File file = new File(uuidFolder.getAbsolutePath() + File.separator + ownPo.getOwnUuid());
 		if (file.exists()) {
 			return file;

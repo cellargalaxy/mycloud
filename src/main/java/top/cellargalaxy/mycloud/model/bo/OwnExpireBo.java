@@ -18,6 +18,8 @@ public class OwnExpireBo extends OwnExpirePo {
 	private String contentType;
 	private String md5;
 	private int fileId;
+	private String md5Url;
+	private String ownUrl;
 
 	@Override
 	public String toString() {

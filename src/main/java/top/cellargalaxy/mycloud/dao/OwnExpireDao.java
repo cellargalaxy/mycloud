@@ -1,8 +1,8 @@
 package top.cellargalaxy.mycloud.dao;
 
+import top.cellargalaxy.mycloud.model.bo.OwnBo;
 import top.cellargalaxy.mycloud.model.bo.OwnExpireBo;
 import top.cellargalaxy.mycloud.model.po.OwnExpirePo;
-import top.cellargalaxy.mycloud.model.po.OwnPo;
 import top.cellargalaxy.mycloud.model.query.OwnExpireQuery;
 import top.cellargalaxy.mycloud.util.dao.IDao;
 
@@ -34,5 +34,5 @@ public interface OwnExpireDao extends IDao<OwnExpirePo, OwnExpireBo, OwnExpireQu
 
 	List<OwnExpireBo> selectExpireOwnExpire(OwnExpireQuery ownExpireQuery);
 
-	List<OwnPo> selectRecentExpireOwn(OwnExpireQuery ownExpireQuery);
+	List<OwnExpireBo> selectRecentExpireOwn(OwnExpireQuery ownExpireQuery);
 }

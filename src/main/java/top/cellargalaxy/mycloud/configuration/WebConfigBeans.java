@@ -39,8 +39,11 @@ public class WebConfigBeans {
 						return null;
 					}
 					try {
-						if (string.matches("^\\d+$")) {
+						if (string.matches("^\\d{10}$")) {
 							return new Date(Long.valueOf(string) * 1000);
+						}
+						if (string.matches("^\\d{13}$")) {
+							return new Date(Long.valueOf(string));
 						}
 						if (string.contains(":")) {
 							return DATE_FORMAT_FORMAT.parse(string);

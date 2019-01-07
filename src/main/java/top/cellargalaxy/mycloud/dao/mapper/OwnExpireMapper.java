@@ -4,6 +4,7 @@ import org.apache.ibatis.annotations.*;
 import org.apache.ibatis.jdbc.SQL;
 import top.cellargalaxy.mycloud.dao.OwnDao;
 import top.cellargalaxy.mycloud.dao.OwnExpireDao;
+import top.cellargalaxy.mycloud.model.bo.OwnBo;
 import top.cellargalaxy.mycloud.model.bo.OwnExpireBo;
 import top.cellargalaxy.mycloud.model.po.OwnExpirePo;
 import top.cellargalaxy.mycloud.model.po.OwnPo;
@@ -69,7 +70,7 @@ public interface OwnExpireMapper extends IDao<OwnExpirePo, OwnExpireBo, OwnExpir
 
 	@ResultMap(value = "ownExpireResults")
 	@SelectProvider(type = OwnExpireProvider.class, method = "selectRecentExpireOwn")
-	List<OwnPo> selectRecentExpireOwn(OwnExpireQuery ownExpireQuery);
+	List<OwnExpireBo> selectRecentExpireOwn(OwnExpireQuery ownExpireQuery);
 
 	class OwnExpireProvider /*implements IProvider<OwnExpirePo,OwnExpireQuery>*/ {
 		private final String tableName = OwnExpireDao.TABLE_NAME;

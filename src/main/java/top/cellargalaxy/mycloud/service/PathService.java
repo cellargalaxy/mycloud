@@ -2,6 +2,7 @@ package top.cellargalaxy.mycloud.service;
 
 import top.cellargalaxy.mycloud.model.bo.FileInfoBo;
 import top.cellargalaxy.mycloud.model.bo.OwnBo;
+import top.cellargalaxy.mycloud.model.bo.OwnExpireBo;
 
 import java.io.File;
 
@@ -11,6 +12,8 @@ import java.io.File;
  */
 public interface PathService {
 	void setUrl(OwnBo ownBo);
+
+	void setUrl(OwnExpireBo ownExpireBo);
 
 	void setUrl(FileInfoBo fileInfoBo);
 

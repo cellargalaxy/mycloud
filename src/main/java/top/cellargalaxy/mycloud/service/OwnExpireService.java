@@ -1,5 +1,6 @@
 package top.cellargalaxy.mycloud.service;
 
+import top.cellargalaxy.mycloud.model.bo.OwnBo;
 import top.cellargalaxy.mycloud.model.bo.OwnExpireBo;
 import top.cellargalaxy.mycloud.model.po.OwnExpirePo;
 import top.cellargalaxy.mycloud.model.po.OwnPo;
@@ -19,5 +20,5 @@ public interface OwnExpireService {
 
 	List<OwnExpireBo> listExpireOwnExpire();
 
-	List<OwnPo> listRecentExpireOwn();
+	List<OwnExpireBo> listRecentExpireOwn();
 }

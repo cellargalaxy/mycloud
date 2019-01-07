@@ -4,9 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import top.cellargalaxy.mycloud.dao.OwnExpireDao;
 import top.cellargalaxy.mycloud.dao.mapper.OwnExpireMapper;
+import top.cellargalaxy.mycloud.model.bo.OwnBo;
 import top.cellargalaxy.mycloud.model.bo.OwnExpireBo;
 import top.cellargalaxy.mycloud.model.po.OwnExpirePo;
-import top.cellargalaxy.mycloud.model.po.OwnPo;
 import top.cellargalaxy.mycloud.model.query.OwnExpireQuery;
 
 import java.util.List;
@@ -25,7 +25,7 @@ public class OwnExpireCache implements OwnExpireDao {
 	}
 
 
-	public List<OwnPo> selectRecentExpireOwn(OwnExpireQuery ownExpireQuery) {
+	public List<OwnExpireBo> selectRecentExpireOwn(OwnExpireQuery ownExpireQuery) {
 		return ownExpireMapper.selectRecentExpireOwn(ownExpireQuery);
 	}
 

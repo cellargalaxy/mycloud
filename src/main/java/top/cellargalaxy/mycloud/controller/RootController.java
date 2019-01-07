@@ -34,9 +34,9 @@ public class RootController {
 			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
 			return;
 		}
-		response.setHeader("cache-control", "max-age=" + expires);
-		response.setHeader("expires", new Date(System.currentTimeMillis() + expires * 100).toString());
-		response.setHeader("Content-Disposition", "attachment; filename=" + URLEncoder.encode(fileInfoPo.getMd5() + "." + MimeSuffixNameUtils.mime2SuffixName(fileInfoPo.getContentType()), "UTF-8"));
+		response.addHeader("cache-control", "max-age=" + expires);
+		response.addHeader("expires", new Date(System.currentTimeMillis() + expires * 100).toString());
+		response.addHeader("Content-Disposition", "attachment; filename=" + URLEncoder.encode(fileInfoPo.getMd5() + "." + MimeSuffixNameUtils.mime2SuffixName(fileInfoPo.getContentType()), "UTF-8"));
 		response.setContentLength((int) fileInfoPo.getFileLength());
 		response.setContentType(fileInfoPo.getContentType());
 		try (OutputStream outputStream = response.getOutputStream()) {
