@@ -60,7 +60,7 @@ public class UserServiceImpl implements UserService {
 		if (userPo.getUserId() != newUserPo.getUserId()) {
 			return "不得修改他人信息";
 		}
-		return ServiceUtils.change(newUserPo, NAME, UserDao::checkUpdate, userDao);
+		return changeUser(newUserPo);
 	}
 
 	@Override
