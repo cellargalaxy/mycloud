@@ -79,15 +79,15 @@ mycloud:
   webUploadTmpFolderPath: ${mycloud.mycloudPath}/tmp
 
   db:
-    type: sqlite
+    type: ${MYCLOUD_DB_TYPE:sqlite}
     url: ${mycloud.db.${mycloud.db.type}}
     mysql: jdbc:mysql://${mycloud.db.host}:${mycloud.db.port}/${mycloud.db.name}?useUnicode=true&characterEncoding=UTF8&useSSL=false
     sqlite: jdbc:sqlite:${mycloud.db.sqlitePath}
-    host: ${MYCLOUD_DB_HOST:127.0.0.1}
-    port: ${MYCLOUD_DB_PORT:3306}
-    name: ${MYCLOUD_DB_NAME:mycloud}
-    username: ${MYCLOUD_DB_USERNAME:root}
-    password: ${MYCLOUD_DB_PASSWORD:root}
+    host: ${MYCLOUD_MYSQL_HOST:127.0.0.1}
+    port: ${MYCLOUD_MYSQL_PORT:3306}
+    name: ${MYCLOUD_MYSQL_NAME:mycloud}
+    username: ${MYCLOUD_MYSQL_USERNAME:root}
+    password: ${MYCLOUD_MYSQL_PASSWORD:root}
     sqlitePath: ${mycloud.mycloudPath}/mycloud.db
 
   redis:
@@ -101,16 +101,16 @@ mycloud:
   hdfsUrl: ${MYCLOUD_HDFS_URL:}
 
 
-logging:
-  level:
-    top:
-      cellargalaxy:
-        mycloud:
-          dao:
-            '*': DEBUG
-          controller:
-            security:
-              '*': DEBUG
-          service:
-            schedule:
-              '*': DEBUG
+#logging:
+#  level:
+#    top:
+#      cellargalaxy:
+#        mycloud:
+#          dao:
+#            '*': DEBUG
+#          controller:
+#            security:
+#              '*': DEBUG
+#          service:
+#            schedule:
+#              '*': DEBUG

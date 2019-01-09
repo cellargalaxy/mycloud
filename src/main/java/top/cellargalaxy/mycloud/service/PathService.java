@@ -17,6 +17,8 @@ public interface PathService {
 
 	void setUrl(FileInfoBo fileInfoBo);
 
+	File getMycloudFolder();
+
 	File getDriveFolder();
 
 	File getMd5Folder();

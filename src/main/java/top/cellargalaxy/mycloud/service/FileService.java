@@ -6,6 +6,7 @@ import top.cellargalaxy.mycloud.model.po.OwnExpirePo;
 import top.cellargalaxy.mycloud.model.po.OwnPo;
 import top.cellargalaxy.mycloud.model.po.UserPo;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -34,4 +35,24 @@ public interface FileService {
 	String getTar(OutputStream outputStream) throws IOException;
 
 	String getTar(UserPo userPo, OutputStream outputStream) throws IOException;
+
+	/**
+	 * 无法直接通过流替换sqltile文件
+	 *
+	 * @param tarInputStream
+	 * @return
+	 * @throws IOException
+	 */
+	@Deprecated
+	String restoreTar(InputStream tarInputStream) throws IOException;
+
+	/**
+	 * 无法直接通过流替换sqltile文件
+	 *
+	 * @param tarFile
+	 * @return
+	 * @throws IOException
+	 */
+	@Deprecated
+	String restoreTar(File tarFile) throws IOException;
 }

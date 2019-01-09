@@ -21,6 +21,7 @@ import java.io.File;
 public class PathServiceImpl implements PathService {
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	private final String domain;
+	private final File mycloudFolder;
 	private final File sqliteFile;
 	private final File tmpFolder;
 	private final File driveFolder;
@@ -32,7 +33,7 @@ public class PathServiceImpl implements PathService {
 		domain = mycloudConfiguration.getDomain();
 		logger.info("domain: {}", domain);
 
-		File mycloudFolder = new File(mycloudConfiguration.getMycloudPath());
+		mycloudFolder = new File(mycloudConfiguration.getMycloudPath());
 		if (!mycloudFolder.exists()) {
 			mycloudFolder.mkdirs();
 		}
@@ -100,6 +101,11 @@ public class PathServiceImpl implements PathService {
 		if (!StringUtils.isBlank(fileInfoBo.getMd5())) {
 			fileInfoBo.setMd5Url(domain + "/" + fileInfoBo.getMd5());
 		}
+	}
+
+	@Override
+	public File getMycloudFolder() {
+		return mycloudFolder;
 	}
 
 	@Override

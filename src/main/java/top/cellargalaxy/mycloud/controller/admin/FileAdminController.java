@@ -2,10 +2,8 @@ package top.cellargalaxy.mycloud.controller.admin;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import top.cellargalaxy.mycloud.model.po.FileInfoPo;
 import top.cellargalaxy.mycloud.model.po.OwnPo;
 import top.cellargalaxy.mycloud.service.FileService;
@@ -13,6 +11,7 @@ import top.cellargalaxy.mycloud.util.model.Vo;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URLEncoder;
 
@@ -45,6 +44,24 @@ public class FileAdminController {
 		response.setHeader("Content-Disposition", "attachment; filename=" + URLEncoder.encode("mycloudDrive.tar", "UTF-8"));
 		try (OutputStream outputStream = response.getOutputStream()) {
 			fileService.getTar(outputStream);
+		}
+	}
+
+	/**
+	 * 无法直接通过流替换sqltile文件
+	 *
+	 * @param multipartFile
+	 * @return
+	 * @throws IOException
+	 */
+//	@PostMapping("/uploadRestoreTarFile")
+	public Vo uploadRestoreTarFile(@RequestParam("file") MultipartFile multipartFile) throws IOException {
+		if (multipartFile == null || multipartFile.isEmpty()) {
+			return new Vo("无上传文件", null);
+		}
+		try (InputStream inputStream = multipartFile.getInputStream()) {
+			String string = fileService.restoreTar(inputStream);
+			return new Vo(string, null);
 		}
 	}
 }

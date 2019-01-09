@@ -2,6 +2,7 @@ package top.cellargalaxy.mycloud.util;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
+import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
 import org.apache.commons.compress.archivers.tar.TarArchiveOutputStream;
 
 import java.io.*;
@@ -12,8 +13,37 @@ import java.io.*;
  */
 public class IOUtils {
 
+	public static final void unArchive(File file, File folder) throws IOException {
+		try (TarArchiveInputStream tarArchiveInputStream = createTarArchiveInputStream(file)) {
+			unArchive(tarArchiveInputStream, folder);
+		}
+	}
+
+	public static final void unArchive(TarArchiveInputStream tarArchiveInputStream, File folder) throws IOException {
+		TarArchiveEntry tarArchiveEntry;
+		while ((tarArchiveEntry = tarArchiveInputStream.getNextTarEntry()) != null) {
+			String name = tarArchiveEntry.getName();
+			File file = new File(folder.getAbsolutePath(), name);
+			if (tarArchiveEntry.isDirectory()) {
+				file.mkdirs();
+			} else {
+				try (OutputStream outputStream = getOutputStream(file)) {
+					stream(tarArchiveInputStream, outputStream);
+				}
+			}
+		}
+	}
+
+	public static final TarArchiveInputStream createTarArchiveInputStream(File file) throws FileNotFoundException {
+		return createTarArchiveInputStream(getInputStream(file));
+	}
+
+	public static final TarArchiveInputStream createTarArchiveInputStream(InputStream inputStream) {
+		return new TarArchiveInputStream(inputStream);
+	}
+
 	public static final TarArchiveOutputStream createTarArchiveOutputStream(File file) throws FileNotFoundException {
-		return createTarArchiveOutputStream(IOUtils.getOutputStream(file));
+		return createTarArchiveOutputStream(getOutputStream(file));
 	}
 
 	public static final TarArchiveOutputStream createTarArchiveOutputStream(OutputStream outputStream) {

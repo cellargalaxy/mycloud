@@ -35,6 +35,7 @@ import java.util.UUID;
 public class FileServiceImpl implements FileService {
 	public static final String TMP_FILE_DEFAULT_SORT = "<TMP_FILE>";
 	private final PathService pathService;
+	private final File mycloudFolder;
 	private final File sqliteFile;
 	private final File driveFolder;
 	private final long maxTmpFileSaveTime;
@@ -50,6 +51,7 @@ public class FileServiceImpl implements FileService {
 	@Autowired
 	public FileServiceImpl(PathService pathService, MycloudConfiguration mycloudConfiguration) {
 		this.pathService = pathService;
+		mycloudFolder = pathService.getMycloudFolder();
 		sqliteFile = pathService.getSqliteFile();
 		driveFolder = pathService.getDriveFolder();
 		maxTmpFileSaveTime = mycloudConfiguration.getMaxTmpFileSaveTime();
@@ -199,7 +201,7 @@ public class FileServiceImpl implements FileService {
 
 	@Override
 	public String getTar(UserPo userPo, OutputStream outputStream) throws IOException {
-		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		DateFormat dateFormat = new SimpleDateFormat("yyyy_MM_dd-HH_mm_ss");
 		TarArchiveOutputStream tarArchiveOutputStream = IOUtils.createTarArchiveOutputStream(outputStream);
 		OwnQuery ownQuery = new OwnQuery();
 		ownQuery.setUserId(userPo.getUserId());
@@ -208,10 +210,30 @@ public class FileServiceImpl implements FileService {
 			try (InputStream inputStream = fileDriverService.getFileInputStream(ownBo)) {
 				if (inputStream != null) {
 					IOUtils.archiveFile(tarArchiveOutputStream, inputStream, ownBo.getFileLength(),
-							userPo.getUsername() + "/" + dateFormat.format(ownBo.getCreateTime()) + "_" + ownBo.getOwnUuid() + "_" + ownBo.getFileName());
+							userPo.getUsername() + "/(" + dateFormat.format(ownBo.getCreateTime()) + ")[" + ownBo.getOwnUuid() + "]" + ownBo.getFileName());
 				}
 			}
 		}
+		return null;
+	}
+
+	@Override
+	public String restoreTar(InputStream tarInputStream) throws IOException {
+		File tarFile = new File(mycloudFolder, UUID.randomUUID().toString());
+		try (OutputStream outputStream = IOUtils.getOutputStream(tarFile)) {
+			IOUtils.stream(tarInputStream, outputStream);
+			return restoreTar(tarFile);
+		} finally {
+			tarFile.delete();
+		}
+	}
+
+	@Override
+	public String restoreTar(File tarFile) throws IOException {
+		if (tarFile == null || !tarFile.exists()) {
+			return "压缩文件不存在";
+		}
+		IOUtils.unArchive(tarFile, mycloudFolder);
 		return null;
 	}
 }

@@ -14,10 +14,9 @@ import top.cellargalaxy.mycloud.util.model.Vo;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URLEncoder;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by cellargalaxy on 18-8-4.
@@ -39,8 +38,10 @@ public class FileUserController {
 		ownBo.setContentType(multipartFile.getContentType());
 		ownBo.setFileLength(multipartFile.getSize());
 		ownBo.setFileName(multipartFile.getOriginalFilename());
-		String string = fileService.addFile(multipartFile.getInputStream(), ownBo, userPo);
-		return new Vo(string, string == null ? ownBo : null);
+		try (InputStream inputStream = multipartFile.getInputStream()) {
+			String string = fileService.addFile(inputStream, ownBo, userPo);
+			return new Vo(string, string == null ? ownBo : null);
+		}
 	}
 
 	@PostMapping("/submitUrl")

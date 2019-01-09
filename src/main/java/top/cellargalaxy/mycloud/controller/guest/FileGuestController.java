@@ -13,6 +13,7 @@ import top.cellargalaxy.mycloud.service.FileService;
 import top.cellargalaxy.mycloud.util.model.Vo;
 
 import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * @author cellargalaxy
@@ -45,7 +46,9 @@ public class FileGuestController {
 		ownBo.setContentType(multipartFile.getContentType());
 		ownBo.setFileLength(multipartFile.getSize());
 		ownBo.setFileName(multipartFile.getOriginalFilename());
-		String string = fileService.addTmpFile(multipartFile.getInputStream(), ownBo, ownExpirePo);
-		return new Vo(string, string == null ? ownBo : null);
+		try (InputStream inputStream = multipartFile.getInputStream()) {
+			String string = fileService.addTmpFile(inputStream, ownBo, ownExpirePo);
+			return new Vo(string, string == null ? ownBo : null);
+		}
 	}
 }

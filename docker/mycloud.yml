@@ -5,25 +5,33 @@ services:
     container_name: mycloud
     restart: always
     environment:
-      MYCLOUD_DB_HOST: 10.0.2.15
-      MYCLOUD_DB_HOST: 3306
-      MYCLOUD_DB_NAME: mycloud
-      MYCLOUD_DB_USERNAME: root
-      MYCLOUD_DB_PASSWORD: mysqlpw123
-
-      MYCLOUD_USERNAME: mycloud
-      MYCLOUD_PASSWORD: mycloud
-
       MYCLOUD_DOMAIN: http://drive.cellargalaxy.top
       MYCLOUD_SECRET: MYCLOUD_SECRET
+
+      MYCLOUD_DB_TYPE: sqlite
+
+      MYCLOUD_MYSQL_HOST: 127.0.0.1
+      MYCLOUD_MYSQL_PORT: 3306
+      MYCLOUD_MYSQL_NAME: mycloud
+      MYCLOUD_MYSQL_USERNAME: root
+      MYCLOUD_MYSQL_PASSWORD: root
+
+      MYCLOUD_REDIS_ENABLE: false
+      MYCLOUD_REDIS_DATABASE: 0
+      MYCLOUD_REDIS_HOST: 127.0.0.1
+      MYCLOUD_REDIS_PORT: 6379
+      MYCLOUD_REDIS_PASSWORD: root
+      MYCLOUD_REDIS_TIMEOUT: 10s
 
       MYCLOUD_WEB_UPLOAD_MAX_FILE_SIZE: 1024MB
       MYCLOUD_WEB_UPLOAD_MAX_REQUEST_SIZE: 1024MB
       MYCLOUD_LOCAL_FILE_MAX_SPACE_RATE: 0.8
+      MYCLOUD_MAX_TMP_FILE_SAVE_TIME: 864000000 #十天
+      MYCLOUD_MAX_TMP_FILE_SIZE: 10485760 #10MB
+      MYCLOUD_DOWBLOAD_UTL_CONNECT_TIMEOUT: 5000 #五秒
       MYCLOUD_PATH: /root
     volumes:
       - ./mycloud.jar:/root/mycloud.jar
-      - ./application.yml:/root/application.yml
       - mycloud:/root/mycloud
       - /etc/timezone:/etc/timezone
       - /etc/localtime:/etc/localtime
