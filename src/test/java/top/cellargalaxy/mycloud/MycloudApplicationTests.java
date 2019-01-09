@@ -8,8 +8,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class MycloudApplicationTests {
-    @Test
-    public void test() throws Exception {
-    }
-
+	@Test
+	public void test() throws Exception {
+	}
 }

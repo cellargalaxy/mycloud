@@ -126,7 +126,7 @@ public class JDBCUtils {
         }
     }
 
-    public static Map<String, Object>[] selectSAll(Connection connection, String tableName, Map<String, Object> where) throws SQLException {
+    public static Map<String, Object>[] selectAll(Connection connection, String tableName, Map<String, Object> where) throws SQLException {
         StringBuilder sql = createSelectSql(tableName, where);
         return executeQuery(connection, sql.toString(), where != null ? where.values() : Collections.EMPTY_LIST);
     }
